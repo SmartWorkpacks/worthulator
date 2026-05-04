@@ -394,6 +394,7 @@ export const tools: Tool[] = [
   { name: "Screen Time to Money Calculator",    slug: "screen-time-to-money",       tier: 3, category: "time", subcategory: "screen",    toolType: "calculator", popular: true  },
 
   // Work Hours
+  { name: "Hours to Decimal Calculator",      slug: "hours-to-decimal",           tier: 2, category: "time", subcategory: "work-hours", toolType: "calculator", popular: true, status: "live", href: "/tools/time-calculators/hours-to-decimal", description: "Convert hours and minutes into decimal hours instantly. Perfect for timesheets, payroll, and billing." },
   { name: "Work Hours Lifetime Calculator",  slug: "work-hours-lifetime",        tier: 3, category: "time", subcategory: "work-hours", toolType: "calculator"                },
   { name: "Overtime Value Calculator",        slug: "overtime-value",             tier: 3, category: "time", subcategory: "work-hours", toolType: "calculator"                },
   { name: "Time vs Money Tool",               slug: "time-vs-money-trade",        tier: 3, category: "time", subcategory: "work-hours", toolType: "tool",       popular: true },
