@@ -256,49 +256,6 @@ export default function ConcreteCalculatorPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════════
-          FUNNEL BRIDGE — GOT YOUR VOLUME? NOW ESTIMATE THE COST
-      ══════════════════════════════════════════════════════════════════ */}
-      <section className="border-t border-gray-100 bg-emerald-50 px-5 py-12 md:py-16 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-2xl font-bold text-gray-900">Got your volume? Now estimate the cost</h2>
-          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-gray-500">
-            Once you know how many cubic yards of concrete you need, the next step is
-            estimating the total cost. Concrete is priced per yard, but your final cost
-            depends on thickness, delivery, and finishing.
-          </p>
-          <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {[
-              {
-                title: "Concrete Slab Cost",
-                desc: "Installed cost estimate for driveways, patios, and foundations.",
-                href: "/construction-calculators/concrete/concrete-slab-calculator",
-              },
-              {
-                title: "Home Improvement Cost Calculators",
-                desc: "Explore cost tools for concrete, roofing, flooring, and more.",
-                href: "/tools/cost-calculators/home-improvement",
-              },
-              {
-                title: "All Construction Calculators",
-                desc: "Volume, materials, and cost tools for every concrete project.",
-                href: "/construction-calculators",
-              },
-            ].map((card) => (
-              <Link
-                key={card.title}
-                href={card.href}
-                className="flex flex-col rounded-2xl border border-emerald-200 bg-white p-5 shadow-sm transition hover:shadow-md"
-              >
-                <p className="text-sm font-bold text-gray-900">{card.title}</p>
-                <p className="mt-1.5 flex-1 text-xs leading-relaxed text-gray-500">{card.desc}</p>
-                <span className="mt-4 text-xs font-semibold text-emerald-700">Estimate cost →</span>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════════════
           SECTION 2 — CONCRETE COST CALCULATORS
       ══════════════════════════════════════════════════════════════════ */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-12 md:py-16 sm:px-8 lg:px-16">
