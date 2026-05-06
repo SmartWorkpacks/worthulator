@@ -393,8 +393,8 @@ export default function ConcreteCalculatorPage() {
                 type. Stamped and colored concrete add $3–12 per square foot. Always
                 get at least two quotes from local contractors before committing.
               </p>
-              <Link href="/construction-calculators" className="mt-4 inline-block text-xs font-semibold text-emerald-700 hover:underline">
-                View all construction calculators →
+              <Link href="/construction-calculators/concrete/concrete-driveway-cost" className="mt-4 inline-block text-xs font-semibold text-emerald-700 hover:underline">
+                Estimate driveway cost →
               </Link>
             </div>
 
@@ -407,7 +407,7 @@ export default function ConcreteCalculatorPage() {
                 the most affordable option. Use a concrete slab cost calculator to
                 estimate your patio before budgeting for the full project.
               </p>
-              <Link href="/construction-calculators/concrete/concrete-slab-calculator" className="mt-4 inline-block text-xs font-semibold text-emerald-700 hover:underline">
+              <Link href="/construction-calculators/concrete/concrete-patio-cost" className="mt-4 inline-block text-xs font-semibold text-emerald-700 hover:underline">
                 Estimate patio cost →
               </Link>
             </div>
