@@ -750,8 +750,8 @@ export default function PassiveIncomeCalculator({
       {/* ── LEFT: INPUTS ────────────────────────────────────────────────── */}
       <div className="flex flex-col gap-5">
 
-        {/* Scenario presets */}
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+        {/* Scenario presets — only relevant when at least one growth stream exists */}
+        {result.hasGrowthStreams && <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
           <div className="border-b border-gray-100 px-5 py-3">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
               Scenario
@@ -778,10 +778,10 @@ export default function PassiveIncomeCalculator({
               </button>
             ))}
           </div>
-        </div>
+        </div>}
 
-        {/* Global settings */}
-        <div className="space-y-5 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+        {/* Global settings — only relevant when at least one growth stream exists */}
+        {result.hasGrowthStreams && <div className="space-y-5 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
             Global Settings
           </p>
@@ -850,7 +850,7 @@ export default function PassiveIncomeCalculator({
               Your target monthly passive income — we calculate when you reach it.
             </p>
           </div>
-        </div>
+        </div>}
 
         {/* Income streams */}
         <div className="space-y-3">
@@ -949,10 +949,14 @@ export default function PassiveIncomeCalculator({
 
           <p className="relative mt-2 text-sm font-medium text-gray-400">
             {streams.length} stream{streams.length !== 1 ? "s" : ""}
-            &nbsp;&middot;&nbsp;
-            <span className="font-bold text-white">{withdrawalRate}%</span>{" "}
-            withdrawal &nbsp;&middot;&nbsp;
-            <span className="font-bold text-white">{years} yr</span> horizon
+            {result.hasGrowthStreams && (
+              <>
+                &nbsp;&middot;&nbsp;
+                <span className="font-bold text-white">{withdrawalRate}%</span>{" "}
+                withdrawal &nbsp;&middot;&nbsp;
+                <span className="font-bold text-white">{years} yr</span> horizon
+              </>
+            )}
           </p>
 
           {result.totalMonthlyIncome > 0 && multiStream && (
