@@ -122,7 +122,7 @@ export default function ConcreteBlockCalculatorPage() {
       jsonLd={jsonLd}
       category="Construction · Concrete Tools"
       title="Concrete Block Calculator"
-      subtitle="Calculate how many concrete blocks you need for any wall, footing, or project."
+      subtitle="Work out how many concrete blocks you need instantly for walls, footings, and builds."
       description={
         <>
           Enter your wall length, height, and block size to instantly calculate how
