@@ -292,7 +292,7 @@ export default function ConcretePatioCostCalculator() {
                   dataKey="value" strokeWidth={0} paddingAngle={2}>
                   {chartData.map((entry, i) => <Cell key={i} fill={entry.fill} />)}
                 </Pie>
-                <Tooltip formatter={(v: number) => fmt(v)} />
+                <Tooltip formatter={(v) => fmt(v as number)} />
               </PieChart>
               <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                 <span className="text-2xl font-extrabold text-gray-900">{pctMaterial}%</span>
