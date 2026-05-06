@@ -101,7 +101,7 @@ export default function TakeHomePayUKPage() {
               </p>
               <h1 className="mt-4 text-[clamp(2.4rem,5.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.04em] text-gray-950">
                 Take Home Pay Calculator
-                <span className="mt-1 block font-semibold text-gray-400">
+                <span className="mt-1 block tracking-normal font-semibold text-gray-400">
                   See your net salary after income tax, National Insurance, and deductions.
                 </span>
               </h1>

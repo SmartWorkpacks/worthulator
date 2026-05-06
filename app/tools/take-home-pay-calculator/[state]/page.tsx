@@ -304,7 +304,7 @@ export default async function StateCalculatorPage({ params }: Props) {
             </p>
             <h1 className="mt-4 text-[clamp(2.4rem,5.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.04em] text-gray-950">
               Take Home Pay Calculator{" "}
-              <span className="block mt-1 font-semibold text-gray-400">for {name}</span>
+              <span className="block mt-1 tracking-normal font-semibold text-gray-400">for {name}</span>
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-gray-500">
               Use our take home pay calculator for {name} to estimate your after-tax income. This includes federal tax{rate > 0 ? ` and ${name} state income tax (${rate}%)` : ""}, giving you a clearer picture of what you actually take home.

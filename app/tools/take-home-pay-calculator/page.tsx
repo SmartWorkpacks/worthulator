@@ -93,7 +93,7 @@ export default function TakeHomePayPage() {
             </p>
             <h1 className="mt-4 text-[clamp(2.4rem,5.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.04em] text-gray-950">
               Take Home Pay Calculator
-              <span className="block mt-1 text-gray-400 font-semibold">See your net salary after federal tax, state tax, and Social Security.</span>
+              <span className="block mt-1 tracking-normal text-gray-400 font-semibold">See your net salary after federal tax, state tax, and Social Security.</span>
             </h1>
             <p className="mt-3 text-base font-medium text-gray-600">
               Enter your salary and see exactly how much you take home after tax instantly.

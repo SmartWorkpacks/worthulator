@@ -83,7 +83,7 @@ export default function SimpleCalculatorShell({
             <h1 className="mt-4 text-[clamp(2.4rem,5.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.04em] text-gray-950">
               {title}
               {subtitle && (
-                <span className="mt-2 block text-base font-medium text-gray-400 sm:text-lg">{subtitle}</span>
+                <span className="mt-2 block text-base font-medium tracking-normal text-gray-400 sm:text-lg">{subtitle}</span>
               )}
             </h1>
             <div className="mt-5 max-w-lg text-lg leading-relaxed text-gray-500">
