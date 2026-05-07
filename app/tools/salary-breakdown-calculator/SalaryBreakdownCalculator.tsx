@@ -559,8 +559,8 @@ export default function SalaryBreakdownCalculator({
                       ))}
                     </Pie>
                     <Tooltip
-                      formatter={(value: number) => [
-                        `${currency}${Math.round(value).toLocaleString()}`,
+                      formatter={(value) => [
+                        typeof value === "number" ? `${currency}${Math.round(value).toLocaleString()}` : "",
                         "",
                       ]}
                       contentStyle={{ fontSize: "12px", borderRadius: "8px" }}
