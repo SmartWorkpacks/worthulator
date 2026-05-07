@@ -114,6 +114,40 @@ const heroCard = (
   </div>
 );
 
+const statChips = (
+  <>
+    {[
+      {
+        stat: "£12,570",
+        color: "text-emerald-600",
+        label: "personal allowance — the amount you earn completely tax-free every year (2025/26)",
+      },
+      {
+        stat: "28%",
+        color: "text-blue-500",
+        label: "combined basic-rate burden: 20% income tax + 8% National Insurance on most taxable income",
+      },
+      {
+        stat: "60%",
+        color: "text-rose-500",
+        label: "effective marginal rate inside the £100k–£125,140 personal allowance taper trap",
+      },
+    ].map((item) => (
+      <div
+        key={item.stat}
+        className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl"
+      >
+        <p
+          className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}
+        >
+          {item.stat}
+        </p>
+        <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
+      </div>
+    ))}
+  </>
+);
+
 export default function SalaryBreakdownCalculatorUKPage() {
   return (
     <SimpleCalculatorShell
@@ -132,6 +166,7 @@ export default function SalaryBreakdownCalculatorUKPage() {
           </span>
         </>
       }
+      statChips={statChips}
       heroCard={heroCard}
       calculator={<SalaryBreakdownCalculatorLoader defaultRegion="UK" />}
       insightText={
@@ -339,6 +374,82 @@ export default function SalaryBreakdownCalculatorUKPage() {
               >
                 <p className="text-sm font-bold text-gray-700">{title}</p>
                 <p className="mt-2 text-sm leading-relaxed text-gray-500">{body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT THIS MEANS ──────────────────────────────────────────── */}
+      <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-950">What this means for you</h2>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-500">
+            Three things that change how UK tax actually works in practice.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                icon: "🎯",
+                title: "You don’t pay 40% on your whole salary",
+                body: "If you earn £55,000, only the £4,730 above £50,270 is taxed at 40%. Everything below that is taxed at 20% or 0%. Your effective rate is well below your marginal rate.",
+              },
+              {
+                icon: "🔒",
+                title: "NI is charged on top of income tax",
+                body: "National Insurance is a separate payroll levy calculated independently. Most basic-rate earners pay 20% income tax + 8% NI on their taxable income — a combined 28% on that band, not just 20%.",
+              },
+              {
+                icon: "⚠️",
+                title: "The £100k trap is real",
+                body: "Between £100,000 and £125,140 your personal allowance tapers away. For every £2 above £100k you lose £1 of allowance — creating an effective 60% marginal rate. Pension contributions can avoid this entirely.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <span className="text-2xl">{item.icon}</span>
+                <h3 className="mt-4 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-gray-500">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT YOU CAN DO NEXT ─────────────────────────────────────── */}
+      <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-950">What you can do next</h2>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-500">
+            Practical steps to legally reduce your UK tax and National Insurance bill.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                step: "01",
+                title: "Check your tax code",
+                body: "HMRC issues a tax code telling your employer how much to deduct. An incorrect code — common after a job change, benefits update, or P11D filing — can mean overpaying thousands. Check your payslip and verify via the HMRC Personal Tax Account.",
+              },
+              {
+                step: "02",
+                title: "Use salary sacrifice for your pension",
+                body: "Salary sacrifice contributions reduce both income tax and National Insurance. At the basic rate you save 28p per pound sacrificed (vs 20p from a personal pension). At the higher rate, the combined saving is 42p per pound.",
+              },
+              {
+                step: "03",
+                title: "Avoid the £100k trap",
+                body: "If your income is near or above £100,000, pension contributions that bring adjusted net income below that threshold restore your full personal allowance. The effective saving rate can exceed 60p per pound — the most tax-efficient move available to most UK earners.",
+              },
+            ].map((item) => (
+              <div
+                key={item.step}
+                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{item.step}</span>
+                <h3 className="mt-3 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-gray-600">{item.body}</p>
               </div>
             ))}
           </div>

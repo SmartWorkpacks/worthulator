@@ -114,6 +114,40 @@ const heroCard = (
   </div>
 );
 
+const statChips = (
+  <>
+    {[
+      {
+        stat: "$12,953",
+        color: "text-emerald-600",
+        label: "average federal income tax on an $80,000 salary (single filer, 2024)",
+      },
+      {
+        stat: "7.65%",
+        color: "text-blue-500",
+        label: "combined FICA rate — 6.2% Social Security + 1.45% Medicare employee share",
+      },
+      {
+        stat: "22%",
+        color: "text-orange-500",
+        label: "marginal federal rate on income between $47,150 and $100,525 (2024 single filer)",
+      },
+    ].map((item) => (
+      <div
+        key={item.stat}
+        className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl"
+      >
+        <p
+          className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}
+        >
+          {item.stat}
+        </p>
+        <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
+      </div>
+    ))}
+  </>
+);
+
 export default function SalaryBreakdownCalculatorPage() {
   return (
     <SimpleCalculatorShell
@@ -133,6 +167,7 @@ export default function SalaryBreakdownCalculatorPage() {
           </span>
         </>
       }
+      statChips={statChips}
       heroCard={heroCard}
       calculator={<SalaryBreakdownCalculatorLoader defaultRegion="US" />}
       insightText={
@@ -191,73 +226,6 @@ export default function SalaryBreakdownCalculatorPage() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── UK BANDS ─────────────────────────────────────────────────── */}
-      <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-5xl">
-          <h2 className="text-2xl font-bold text-gray-900">
-            UK income tax and National Insurance rates (2024/25)
-          </h2>
-          <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-500">
-            These are the bands applied to all UK PAYE employees. Scotland has
-            its own income tax rates which this calculator does not currently
-            model.
-          </p>
-          <div className="mt-6 grid gap-4 sm:grid-cols-2">
-            <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-400">
-                Income Tax
-              </p>
-              <div className="space-y-2">
-                {[
-                  { band: "Personal Allowance", range: "£0 – £12,570", rate: "0%" },
-                  { band: "Basic Rate",          range: "£12,570 – £50,270", rate: "20%" },
-                  { band: "Higher Rate",         range: "£50,270 – £125,140", rate: "40%" },
-                  { band: "Additional Rate",     range: "Above £125,140", rate: "45%" },
-                ].map(({ band, range, rate }) => (
-                  <div
-                    key={band}
-                    className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm"
-                  >
-                    <div>
-                      <span className="font-semibold text-gray-700">{band}</span>
-                      <span className="ml-2 text-gray-400">{range}</span>
-                    </div>
-                    <span className="font-bold text-emerald-600">{rate}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div>
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-gray-400">
-                National Insurance
-              </p>
-              <div className="space-y-2">
-                {[
-                  { band: "Below primary threshold", range: "Under £12,570", rate: "0%" },
-                  { band: "Main rate", range: "£12,570 – £50,270", rate: "8%" },
-                  { band: "Above upper limit",  range: "Above £50,270", rate: "2%" },
-                ].map(({ band, range, rate }) => (
-                  <div
-                    key={band}
-                    className="flex items-center justify-between rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm"
-                  >
-                    <div>
-                      <span className="font-semibold text-gray-700">{band}</span>
-                      <span className="ml-2 text-gray-400">{range}</span>
-                    </div>
-                    <span className="font-bold text-emerald-600">{rate}</span>
-                  </div>
-                ))}
-              </div>
-              <p className="mt-3 text-xs text-gray-400">
-                The personal allowance tapers from £100,000 to £125,140,
-                creating an effective 60% marginal rate in that range.
-              </p>
-            </div>
           </div>
         </div>
       </section>
@@ -362,6 +330,82 @@ export default function SalaryBreakdownCalculatorPage() {
                 <p className="mt-2 text-sm leading-relaxed text-gray-500">
                   {example}
                 </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT THIS MEANS ──────────────────────────────────────────── */}
+      <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-950">What this means for you</h2>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-500">
+            Three things most people misunderstand about how US federal tax actually works.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                icon: "📊",
+                title: "Your marginal rate ≠ your real rate",
+                body: "On an $80,000 salary your marginal rate is 22%, but your effective federal rate is around 15.8%. Only income above $47,150 is taxed at 22% — everything below is taxed at lower rates.",
+              },
+              {
+                icon: "🔒",
+                title: "Social Security has a ceiling",
+                body: "The 6.2% Social Security tax only applies to wages up to $168,600 in 2024. Above that cap you stop paying SS — though Medicare (1.45%) has no ceiling and applies to all wages.",
+              },
+              {
+                icon: "💡",
+                title: "Every 401(k) dollar saves tax now",
+                body: "A traditional 401(k) contribution reduces your federal taxable income dollar-for-dollar. At a 22% marginal rate, $1,000 into your 401(k) saves $220 in federal tax — immediately, before any investment growth.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <span className="text-2xl">{item.icon}</span>
+                <h3 className="mt-4 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-gray-500">{item.body}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT YOU CAN DO NEXT ─────────────────────────────────────── */}
+      <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-950">What you can do next</h2>
+          <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-500">
+            Practical steps to legally reduce your federal tax bill.
+          </p>
+          <div className="mt-8 grid gap-4 sm:grid-cols-3">
+            {[
+              {
+                step: "01",
+                title: "Check your W-4 withholding",
+                body: "If your employer is withholding too much or too little, you'll get a large refund — or owe at filing time. Update your W-4 after a pay rise, marriage, or new dependant to stay accurate throughout the year.",
+              },
+              {
+                step: "02",
+                title: "Max your 401(k) first",
+                body: "The 2024 limit is $23,000 ($30,500 if 50+). Every dollar goes in pre-tax, reducing taxable income at your marginal rate. If your employer matches contributions, that's an instant 50–100% return before any investment gains.",
+              },
+              {
+                step: "03",
+                title: "Compare single vs married filing",
+                body: "Filing jointly gives wider brackets and a higher standard deduction. Use this calculator to model both statuses and see which produces the lower effective rate — especially useful in the year you get married.",
+              },
+            ].map((item) => (
+              <div
+                key={item.step}
+                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+              >
+                <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{item.step}</span>
+                <h3 className="mt-3 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-7 text-gray-600">{item.body}</p>
               </div>
             ))}
           </div>

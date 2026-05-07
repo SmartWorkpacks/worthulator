@@ -178,8 +178,45 @@ export default function HourlyToSalaryUKPage() {
           </>
         }
       >
-        {/* HOW THE CALCULATION WORKS */}
+        {/* HOW IT WORKS */}
         <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">How it works</h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  step: "1",
+                  title: "Enter your hourly rate",
+                  body: "Type in your hourly wage in pounds — the rate shown on your payslip, contract, or job offer before any tax is taken.",
+                },
+                {
+                  step: "2",
+                  title: "Set your weekly hours and weeks",
+                  body: "Use your contracted hours per week (typically 37.5 for UK full-time) and the number of weeks you actually work — deduct unpaid leave for an accurate result.",
+                },
+                {
+                  step: "3",
+                  title: "See your annual, monthly and weekly breakdown",
+                  body: "Your equivalent annual salary, monthly, weekly, and daily pay update instantly. All figures are gross — before income tax and National Insurance.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.step}
+                  className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm font-bold text-gray-600">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-4 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-gray-500">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* HOW THE CALCULATION WORKS */}
+        <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-3xl">
             <h2 className="text-2xl font-bold tracking-tight text-gray-950">
               How does the hourly to salary calculation work?
@@ -236,8 +273,50 @@ export default function HourlyToSalaryUKPage() {
           </div>
         </section>
 
-        {/* COMMON UK WAGE EXAMPLES */}
+        {/* RATE REFERENCE TABLE */}
         <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-3xl">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">UK hourly rate reference</h2>
+            <p className="mt-4 leading-7 text-gray-600">
+              Quick reference for common UK hourly rates at the standard 37.5-hour week. All figures are gross (before tax and NI).
+            </p>
+            <div className="mt-6 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-100 bg-gray-50">
+                    <th className="px-5 py-3 text-left font-semibold text-gray-700">Hourly rate</th>
+                    <th className="px-5 py-3 text-right font-semibold text-gray-700">Annual (37.5h)</th>
+                    <th className="px-5 py-3 text-right font-semibold text-gray-700">Monthly</th>
+                    <th className="hidden px-5 py-3 text-right font-semibold text-gray-700 sm:table-cell">Weekly</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {[
+                    { rate: "£12.21 (NLW)", annual: "£23,810", monthly: "£1,984", weekly: "£458" },
+                    { rate: "£13.00",       annual: "£25,350", monthly: "£2,113", weekly: "£488" },
+                    { rate: "£15.00",       annual: "£29,250", monthly: "£2,438", weekly: "£563" },
+                    { rate: "£18.00",       annual: "£35,100", monthly: "£2,925", weekly: "£675" },
+                    { rate: "£20.00",       annual: "£39,000", monthly: "£3,250", weekly: "£750" },
+                    { rate: "£25.00",       annual: "£48,750", monthly: "£4,063", weekly: "£938" },
+                    { rate: "£30.00",       annual: "£58,500", monthly: "£4,875", weekly: "£1,125" },
+                    { rate: "£35.00",       annual: "£68,250", monthly: "£5,688", weekly: "£1,313" },
+                  ].map((row) => (
+                    <tr key={row.rate} className="hover:bg-gray-50">
+                      <td className="px-5 py-3 font-medium text-gray-800">{row.rate}</td>
+                      <td className="px-5 py-3 text-right font-semibold text-emerald-700">{row.annual}</td>
+                      <td className="px-5 py-3 text-right text-gray-600">{row.monthly}</td>
+                      <td className="hidden px-5 py-3 text-right text-gray-600 sm:table-cell">{row.weekly}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-3 text-xs text-gray-400">Based on 37.5 hrs/week × 52 weeks. NLW = National Living Wage (April 2025, age 21+). Gross figures only.</p>
+          </div>
+        </section>
+
+        {/* COMMON UK WAGE EXAMPLES */}
+        <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-3xl">
             <h2 className="text-2xl font-bold tracking-tight text-gray-950">
               Common hourly wage examples
@@ -282,8 +361,46 @@ export default function HourlyToSalaryUKPage() {
           </div>
         </section>
 
-        {/* FAQ */}
+        {/* WHAT YOU CAN DO NEXT */}
         <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">What you can do next</h2>
+            <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-500">
+              Now that you know your gross annual salary, here are the most useful next steps.
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  step: "01",
+                  title: "See your actual take-home pay",
+                  body: "Your gross salary and your take-home pay can differ by thousands of pounds a year. Use the Take Home Pay Calculator UK to see exactly what lands in your account after income tax, National Insurance, and pension.",
+                },
+                {
+                  step: "02",
+                  title: "Compare job offers accurately",
+                  body: "When comparing a salaried offer with a contract or hourly role, make sure you're comparing net figures — not gross. A higher hourly rate doesn't always mean more take-home pay if the salaried role includes pension contributions or benefits.",
+                },
+                {
+                  step: "03",
+                  title: "Check you're above National Minimum Wage",
+                  body: "The National Living Wage is £12.21/hr for workers aged 21+ from April 2025. If your effective hourly rate (including unpaid overtime or breaks) falls below this, your employer is breaking the law.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.step}
+                  className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{item.step}</span>
+                  <h3 className="mt-3 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-gray-600">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ */}
+        <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-3xl">
             <h2 className="text-2xl font-bold tracking-tight text-gray-950">Frequently asked questions</h2>
             <div className="mt-6 space-y-4">

@@ -13,6 +13,7 @@ import {
   SUPPORTED_YEARS,
   type SupportedYear,
 } from "@/data/tax";
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -161,6 +162,30 @@ export default function SalaryBreakdownCalculator({
   }, [netMonthly]);
 
   const salaryPicks = region === "UK" ? UK_SALARY_PICKS : US_SALARY_PICKS;
+
+  const chartData = useMemo(() => {
+    const segments = [
+      { name: "Net Pay", value: result.netAnnual, color: "#10b981" },
+      {
+        name: region === "UK" ? "Income Tax" : "Federal Tax",
+        value: result.incomeTax,
+        color: "#f43f5e",
+      },
+      {
+        name: region === "UK" ? "Nat. Insurance" : "FICA",
+        value: result.socialLevy,
+        color: "#f59e0b",
+      },
+    ];
+    if (result.pensionDeduction > 0) {
+      segments.push({
+        name: region === "UK" ? "Pension" : "401(k)",
+        value: result.pensionDeduction,
+        color: "#3b82f6",
+      });
+    }
+    return segments.filter((s) => s.value > 0);
+  }, [result, region]);
 
   const isHighSalary =
     salary >= (region === "UK" ? 50_000 : 80_000) && salary > 0;
@@ -508,6 +533,70 @@ export default function SalaryBreakdownCalculator({
             </div>
           </div>
         </div>
+
+        {/* Donut chart */}
+        {salary > 0 && (
+          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">
+              Pay Breakdown
+            </p>
+            <div className="flex items-center gap-5">
+              <div className="h-36 w-36 shrink-0">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={chartData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius="58%"
+                      outerRadius="80%"
+                      dataKey="value"
+                      strokeWidth={0}
+                      paddingAngle={2}
+                    >
+                      {chartData.map((entry) => (
+                        <Cell key={entry.name} fill={entry.color} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      formatter={(value: number) => [
+                        `${currency}${Math.round(value).toLocaleString()}`,
+                        "",
+                      ]}
+                      contentStyle={{ fontSize: "12px", borderRadius: "8px" }}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+              <div className="flex flex-1 flex-col gap-2.5">
+                {chartData.map((entry) => (
+                  <div key={entry.name} className="flex items-center justify-between">
+                    <span className="flex items-center gap-2 text-xs text-gray-500">
+                      <span
+                        className="h-2 w-2 shrink-0 rounded-full"
+                        style={{ backgroundColor: entry.color }}
+                      />
+                      {entry.name}
+                    </span>
+                    <span className="text-xs font-semibold text-gray-700">
+                      {currency}{Math.round(entry.value).toLocaleString()}
+                    </span>
+                  </div>
+                ))}
+                <div className="mt-1 border-t border-gray-100 pt-2">
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400">% kept</span>
+                    <span className="text-xs font-bold text-emerald-600">
+                      {result.grossSalary > 0
+                        ? ((result.netAnnual / result.grossSalary) * 100).toFixed(1)
+                        : "0"}% take-home
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Insight strip */}
         <div className="rounded-2xl border border-emerald-100 bg-emerald-50 p-4">
