@@ -90,7 +90,7 @@ export default function TakeHomePayUKPage() {
 
         {/* HERO */}
         <section className="relative overflow-hidden border-b border-gray-100 bg-white px-5 py-14 sm:px-8 sm:py-24 lg:px-16">
-          <div className="pointer-events-none absolute -top-32 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-emerald-50/80 blur-[80px]" />
+          <div className="pointer-events-none absolute -top-32 left-1/2 h-125 w-125 -translate-x-1/2 rounded-full bg-emerald-50/80 blur-[80px]" />
           <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-gray-100/60 blur-3xl" />
 
           <div className="relative mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-2">
@@ -248,6 +248,81 @@ export default function TakeHomePayUKPage() {
                   <h3 className="mt-4 text-base font-semibold tracking-tight text-gray-900">
                     {item.title}
                   </h3>
+                  <p className="mt-2 text-sm leading-7 text-gray-500">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHAT YOU CAN DO NEXT */}
+        <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">What you can do next</h2>
+            <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-500">
+              Once you know your take-home pay, here are the most useful next steps.
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  step: "01",
+                  title: "Check your tax code",
+                  body: "Millions of UK workers are on the wrong tax code and overpaying tax every month. Check your payslip and compare with HMRC's Personal Tax Account — a simple fix can mean hundreds back.",
+                },
+                {
+                  step: "02",
+                  title: "Explore salary sacrifice",
+                  body: "Directing pre-tax salary into your pension or cycle-to-work scheme cuts both income tax and National Insurance. Higher-rate taxpayers save 42p in combined deductions for every £1 they sacrifice.",
+                },
+                {
+                  step: "03",
+                  title: "Build a budget around real figures",
+                  body: "Now you know what actually lands in your account, you can build a monthly budget around real numbers — not the gross salary figure on your offer letter.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.step}
+                  className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{item.step}</span>
+                  <h3 className="mt-3 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-gray-600">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* HOW IT WORKS */}
+        <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">How it works</h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  step: "1",
+                  title: "Enter your salary",
+                  body: "Type in your gross annual salary — the figure before any tax or deductions, as shown on your offer letter or payslip.",
+                },
+                {
+                  step: "2",
+                  title: "See your breakdown instantly",
+                  body: "The calculator applies the current PAYE income tax bands and National Insurance rates and shows your full deduction breakdown in real time.",
+                },
+                {
+                  step: "3",
+                  title: "Explore scenarios",
+                  body: "Use the 'What if your salary changed?' panel to model the impact of a pay rise, a new job offer, or extra hours — all instantly.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.step}
+                  className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm font-bold text-gray-600">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-4 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
                   <p className="mt-2 text-sm leading-7 text-gray-500">{item.body}</p>
                 </div>
               ))}

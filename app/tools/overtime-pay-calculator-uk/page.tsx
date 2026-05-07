@@ -114,7 +114,7 @@ export default function OvertimePayCalculatorUKPage() {
 
         {/* HERO */}
         <section className="relative overflow-hidden border-b border-gray-100 bg-white px-5 py-14 sm:px-8 sm:py-24 lg:px-16">
-          <div className="pointer-events-none absolute -top-32 left-1/2 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-emerald-50/80 blur-[80px]" />
+          <div className="pointer-events-none absolute -top-32 left-1/2 h-125 w-125 -translate-x-1/2 rounded-full bg-emerald-50/80 blur-[80px]" />
           <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-gray-100/60 blur-3xl" />
 
           <div className="relative mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-2">
@@ -271,6 +271,81 @@ export default function OvertimePayCalculatorUKPage() {
           </div>
         </section>
 
+        {/* HOW IT WORKS */}
+        <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">How it works</h2>
+            <div className="mt-6 grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  step: "1",
+                  title: "Enter your hourly rate",
+                  body: "Type in your base hourly wage before any overtime premium — this is the rate shown on your payslip or contract.",
+                },
+                {
+                  step: "2",
+                  title: "Set your weekly hours",
+                  body: "Enter the total hours you worked that week, including overtime. The calculator automatically separates regular from overtime hours based on your contracted threshold.",
+                },
+                {
+                  step: "3",
+                  title: "Choose your multiplier",
+                  body: "Select 1.5× (time and a half), 2× (double time), or enter a custom rate if your employer uses a flat enhanced rate or a different contractual arrangement.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.step}
+                  className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-gray-100 text-sm font-bold text-gray-600">
+                    {item.step}
+                  </span>
+                  <h3 className="mt-4 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-gray-500">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHAT YOU CAN DO NEXT */}
+        <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">What you can do next</h2>
+            <p className="mt-3 max-w-2xl text-base leading-relaxed text-gray-500">
+              Once you know your overtime figure, here are the most valuable steps to take.
+            </p>
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              {[
+                {
+                  step: "01",
+                  title: "Check what your contract says",
+                  body: "There is no legal overtime rate in the UK — your rate is entirely set by your contract. Review your employment contract or employee handbook to confirm exactly what rate applies and when overtime is triggered.",
+                },
+                {
+                  step: "02",
+                  title: "Factor in tax and NI",
+                  body: "Overtime pay is taxed the same as regular pay under PAYE. Use the Take Home Pay Calculator to see exactly how much of your overtime you actually keep after income tax and National Insurance.",
+                },
+                {
+                  step: "03",
+                  title: "Understand how it affects holiday pay",
+                  body: "If your overtime is regular and consistent, UK employment law may require your employer to include it in your holiday pay calculation. If you believe this applies to you, raise it with HR.",
+                },
+              ].map((item) => (
+                <div
+                  key={item.step}
+                  className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg"
+                >
+                  <span className="text-xs font-bold uppercase tracking-widest text-gray-400">{item.step}</span>
+                  <h3 className="mt-3 text-base font-semibold tracking-tight text-gray-900">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-7 text-gray-600">{item.body}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
         {/* SEO CONTENT */}
         <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-3xl space-y-8 text-gray-600">
@@ -312,6 +387,96 @@ export default function OvertimePayCalculatorUKPage() {
                 as your regular pay. If extra overtime pushes you into a higher tax band in a
                 particular month, you may pay more tax on those earnings — though this typically
                 evens out across the tax year under PAYE. This calculator shows gross figures only.
+              </p>
+            </div>
+
+            {/* WORKED EXAMPLE */}
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-gray-950">
+                Worked example: 42-hour week at £15/hr
+              </h2>
+              <p className="mt-4 leading-7">
+                Say your contracted hours are 40/week, your hourly rate is £15, and your employer
+                pays 1.5× for overtime. Here is how your weekly pay breaks down:
+              </p>
+              <div className="mt-5 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-100 bg-gray-50">
+                      <th className="px-5 py-3 text-left font-semibold text-gray-700">Component</th>
+                      <th className="px-5 py-3 text-left font-semibold text-gray-700">Calculation</th>
+                      <th className="px-5 py-3 text-right font-semibold text-gray-700">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    <tr>
+                      <td className="px-5 py-3 text-gray-600">Regular pay (40h)</td>
+                      <td className="px-5 py-3 text-gray-500">40 × £15.00</td>
+                      <td className="px-5 py-3 text-right font-semibold text-gray-800">£600.00</td>
+                    </tr>
+                    <tr>
+                      <td className="px-5 py-3 text-gray-600">Overtime pay (2h × 1.5×)</td>
+                      <td className="px-5 py-3 text-gray-500">2 × £22.50</td>
+                      <td className="px-5 py-3 text-right font-semibold text-emerald-600">£45.00</td>
+                    </tr>
+                    <tr className="bg-gray-50">
+                      <td className="px-5 py-3 font-semibold text-gray-800">Total weekly (gross)</td>
+                      <td className="px-5 py-3 text-gray-500"></td>
+                      <td className="px-5 py-3 text-right text-lg font-bold text-gray-950">£645.00</td>
+                    </tr>
+                    <tr>
+                      <td className="px-5 py-3 text-gray-600">Annual projection</td>
+                      <td className="px-5 py-3 text-gray-500">£645 × 52</td>
+                      <td className="px-5 py-3 text-right font-semibold text-gray-800">£33,540</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-3 text-xs text-gray-400">Figures are gross. Use the Take Home Pay Calculator to see the net amount after PAYE and National Insurance.</p>
+            </div>
+
+            {/* NMW REFERENCE */}
+            <div>
+              <h2 className="text-2xl font-bold tracking-tight text-gray-950">
+                National Minimum Wage &amp; National Living Wage 2025/26
+              </h2>
+              <p className="mt-4 leading-7">
+                Regardless of what overtime rate your contract sets, your total pay across all
+                hours worked must never fall below the applicable NMW/NLW rate. Here are the
+                current rates:
+              </p>
+              <div className="mt-5 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-100 bg-gray-50">
+                      <th className="px-5 py-3 text-left font-semibold text-gray-700">Age group</th>
+                      <th className="px-5 py-3 text-right font-semibold text-gray-700">Hourly rate</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {[
+                      { group: "21 and over (National Living Wage)", rate: "£12.21" },
+                      { group: "18–20", rate: "£10.00" },
+                      { group: "Under 18", rate: "£7.55" },
+                      { group: "Apprentice", rate: "£7.55" },
+                    ].map((row) => (
+                      <tr key={row.group}>
+                        <td className="px-5 py-3 text-gray-600">{row.group}</td>
+                        <td className="px-5 py-3 text-right font-semibold text-gray-800">{row.rate}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p className="mt-3 text-xs text-gray-400">Rates effective April 2025. Check gov.uk for the latest figures.</p>
+            </div>
+
+            <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+              <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">Important</p>
+              <p className="mt-2 text-sm leading-6 text-gray-500">
+                This calculator provides gross estimates only and does not account for income tax,
+                National Insurance, pension contributions, or employer-specific policies. Consult
+                your employer or an employment adviser for figures specific to your situation.
               </p>
             </div>
           </div>
