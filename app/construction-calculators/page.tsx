@@ -1,11 +1,11 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Construction Calculators | Worthulator",
   description:
     "Free construction calculators for concrete, materials, project costing and more. Estimate quantities, costs, and planning figures instantly.",
-  alternates: { canonical: "https://www.worthulator.com/construction-calculators" },
+  alternates: { canonical: "https://worthulator.com/construction-calculators" },
   robots: { index: true, follow: true },
 };
 
@@ -54,7 +54,7 @@ export default function ConstructionCalculatorsPage() {
         <h1 className="text-3xl font-bold text-slate-950">Construction Calculators</h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-slate-500">
           Free calculators for builders, tradespeople, and DIY enthusiasts. Estimate
-          concrete volumes, material quantities, project costs, and more — without
+          concrete volumes, material quantities, project costs, and more � without
           the guesswork.
         </p>
       </div>
@@ -108,7 +108,7 @@ export default function ConstructionCalculatorsPage() {
           href="/tools"
           className="text-sm text-slate-400 transition-colors hover:text-slate-700"
         >
-          ← Browse all calculators
+          ? Browse all calculators
         </Link>
       </div>
     </div>

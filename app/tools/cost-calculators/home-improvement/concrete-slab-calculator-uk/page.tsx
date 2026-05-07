@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical:
-      "https://www.worthulator.com/tools/cost-calculators/home-improvement/concrete-slab-calculator-uk",
+      "https://worthulator.com/tools/cost-calculators/home-improvement/concrete-slab-calculator-uk",
   },
   robots: { index: true, follow: true },
 };
@@ -26,7 +26,7 @@ const jsonLd = [
     "@type": "WebPage",
     name: "Concrete Slab Cost Calculator UK",
     description: "Estimate the cost of a concrete slab in the UK in £/m².",
-    url: "https://www.worthulator.com/tools/cost-calculators/home-improvement/concrete-slab-calculator-uk",
+    url: "https://worthulator.com/tools/cost-calculators/home-improvement/concrete-slab-calculator-uk",
   },
   {
     "@context": "https://schema.org",

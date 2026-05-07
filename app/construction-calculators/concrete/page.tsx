@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Free concrete calculators for every project. Calculate cubic yards, bag count, block quantities, and installed slab cost — for US projects.",
   alternates: {
-    canonical: "https://www.worthulator.com/construction-calculators/concrete",
+    canonical: "https://worthulator.com/construction-calculators/concrete",
   },
   robots: { index: true, follow: true },
 };

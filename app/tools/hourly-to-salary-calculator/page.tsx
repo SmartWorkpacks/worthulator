@@ -1,11 +1,11 @@
-ï»¿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import RelatedTools from "@/components/RelatedTools";
 import HourlyToSalaryCalculator from "./HourlyToSalaryCalculatorLoader";
 import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
 import RegionToggle from "@/components/RegionToggle";
 
 export const metadata: Metadata = {
-  title: "Hourly to Salary Calculator â€“ Work Out Your Annual Salary Instantly",
+  title: "Hourly to Salary Calculator – Work Out Your Annual Salary Instantly",
   description:
     "Work out your annual salary from your hourly rate. Enter your wage and hours worked and get instant results for yearly, monthly, and weekly income.",
   keywords: [
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "annual salary calculator",
     "hourly to yearly salary",
   ],
-  alternates: { canonical: "https://www.worthulator.com/tools/hourly-to-salary-calculator" },
+  alternates: { canonical: "https://worthulator.com/tools/hourly-to-salary-calculator" },
   robots: { index: true, follow: true },
 };
 
@@ -27,7 +27,7 @@ const jsonLd = [
     name: "Hourly to Salary Calculator",
     description:
       "Convert your hourly wage to an annual salary instantly. See your monthly and weekly income based on your hours and weeks worked.",
-    url: "https://www.worthulator.com/tools/hourly-to-salary-calculator",
+    url: "https://worthulator.com/tools/hourly-to-salary-calculator",
   },
   {
     "@context": "https://schema.org",
@@ -38,7 +38,7 @@ const jsonLd = [
         name: "How many hours are used in a full-time annual salary?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "A standard full-time year is 2,080 hours â€” 40 hours per week multiplied by 52 weeks. This is the most common basis for converting an hourly rate to an annual salary.",
+          text: "A standard full-time year is 2,080 hours — 40 hours per week multiplied by 52 weeks. This is the most common basis for converting an hourly rate to an annual salary.",
         },
       },
       {
@@ -62,7 +62,7 @@ const jsonLd = [
         name: "How accurate is this calculator?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The conversion is mathematically exact based on the inputs you provide. Accuracy depends on how closely your actual working pattern matches what you enter â€” adjust hours and weeks to reflect your real situation.",
+          text: "The conversion is mathematically exact based on the inputs you provide. Accuracy depends on how closely your actual working pattern matches what you enter — adjust hours and weeks to reflect your real situation.",
         },
       },
     ],
@@ -96,7 +96,7 @@ const statChips = (
   <>
     {[
       { stat: "$25/hr",  color: "text-emerald-600", label: "is the approximate US median hourly wage in 2024" },
-      { stat: "2,080",   color: "text-blue-500",    label: "hours in a standard full-time working year (40 hrs Ã— 52 wks)" },
+      { stat: "2,080",   color: "text-blue-500",    label: "hours in a standard full-time working year (40 hrs × 52 wks)" },
       { stat: "5 secs",  color: "text-orange-500",  label: "to convert any hourly rate to an annual salary with this tool" },
     ].map((item) => (
       <div key={item.stat} className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl">
@@ -111,7 +111,7 @@ export default function HourlyToSalaryPage() {
   return (
     <SimpleCalculatorShell
       jsonLd={jsonLd}
-      category="United States Â· Income Tools"
+      category="United States · Income Tools"
       title="Hourly to Salary Calculator"
       subtitle="Convert your hourly wage into an annual salary, monthly income, and weekly pay in seconds."
       description={
@@ -125,7 +125,7 @@ export default function HourlyToSalaryPage() {
           <ul className="mt-3 space-y-1 text-sm text-gray-400">
             <li>Adjustable hours per week and weeks worked per year</li>
             <li>Annual, monthly, weekly, and daily breakdowns</li>
-            <li>Gross figures â€” use the Take Home Pay Calculator for after-tax</li>
+            <li>Gross figures — use the Take Home Pay Calculator for after-tax</li>
           </ul>
           <p className="mt-3 text-xs text-gray-400">
             For planning purposes only. Results show gross income before tax.
@@ -145,7 +145,7 @@ export default function HourlyToSalaryPage() {
         <>
           A standard full-time year is{" "}
           <span className="font-semibold text-gray-800">2,080 hours</span>{" "}
-          (40 hrs Ã— 52 weeks). Adjust weeks worked below to account for vacation or part-time schedules.
+          (40 hrs × 52 weeks). Adjust weeks worked below to account for vacation or part-time schedules.
         </>
       }
     >
@@ -160,10 +160,10 @@ export default function HourlyToSalaryPage() {
             The conversion is straightforward: multiply your hourly rate by the number of hours you work each week, then multiply by the number of weeks you work in a year.
           </p>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
-            For example, if you earn $25 per hour and work 40 hours a week, your annual salary works out to $25 Ã— 40 Ã— 52 â€” which is $52,000. If you only work 50 weeks a year after taking two weeks of unpaid leave, that same rate gives you $50,000 instead. The difference adds up quickly.
+            For example, if you earn $25 per hour and work 40 hours a week, your annual salary works out to $25 × 40 × 52 — which is $52,000. If you only work 50 weeks a year after taking two weeks of unpaid leave, that same rate gives you $50,000 instead. The difference adds up quickly.
           </p>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
-            You can adjust both your weekly hours and the number of weeks you work in the calculator above. Most tools assume 52 weeks and 40 hours â€” this one lets you be more precise.
+            You can adjust both your weekly hours and the number of weeks you work in the calculator above. Most tools assume 52 weeks and 40 hours — this one lets you be more precise.
           </p>
         </div>
       </section>
@@ -181,7 +181,7 @@ export default function HourlyToSalaryPage() {
             {[
               {
                 title: "Hours per week",
-                body: "Full-time is typically 40 hours a week in the US, but many roles run at 37.5, 32, or fewer hours. Even a small difference compounds over a year â€” 37.5 hours instead of 40 reduces your annual total by around 6%.",
+                body: "Full-time is typically 40 hours a week in the US, but many roles run at 37.5, 32, or fewer hours. Even a small difference compounds over a year — 37.5 hours instead of 40 reduces your annual total by around 6%.",
               },
               {
                 title: "Unpaid time off",
@@ -189,11 +189,11 @@ export default function HourlyToSalaryPage() {
               },
               {
                 title: "Overtime",
-                body: "Regular overtime is typically paid at 1.5Ã— your base rate and is not included here. If overtime is a consistent part of your work, your actual annual earnings will be higher than this estimate shows.",
+                body: "Regular overtime is typically paid at 1.5× your base rate and is not included here. If overtime is a consistent part of your work, your actual annual earnings will be higher than this estimate shows.",
               },
               {
                 title: "Bonuses and allowances",
-                body: "Many hourly roles include bonuses, shift differentials, or allowances that add to your total income. These are not factored into this calculation â€” the figure shown reflects your base hourly rate only.",
+                body: "Many hourly roles include bonuses, shift differentials, or allowances that add to your total income. These are not factored into this calculation — the figure shown reflects your base hourly rate only.",
               },
             ].map((item) => (
               <div
@@ -215,13 +215,13 @@ export default function HourlyToSalaryPage() {
             Common hourly wage examples
           </h2>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
-            Someone earning around $15 per hour at full-time hours typically brings in just over $30,000 per year â€” a figure that comes up frequently in discussions around minimum wage and entry-level roles. A $20 hourly rate works out to roughly $41,600, while $25 an hour lands at $52,000 annually.
+            Someone earning around $15 per hour at full-time hours typically brings in just over $30,000 per year — a figure that comes up frequently in discussions around minimum wage and entry-level roles. A $20 hourly rate works out to roughly $41,600, while $25 an hour lands at $52,000 annually.
           </p>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
-            As hourly rates climb, the annual numbers grow quickly. At $35 per hour, a full-time worker earns around $72,800 per year. Rates of $40 or $50 an hour â€” common in skilled trades, nursing, or consulting â€” translate to $83,200 and $104,000 respectively. At $75 or more, annual income moves comfortably into the six-figure range.
+            As hourly rates climb, the annual numbers grow quickly. At $35 per hour, a full-time worker earns around $72,800 per year. Rates of $40 or $50 an hour — common in skilled trades, nursing, or consulting — translate to $83,200 and $104,000 respectively. At $75 or more, annual income moves comfortably into the six-figure range.
           </p>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
-            These are all gross figures â€” before federal tax, state income tax, and payroll deductions. The amount that actually lands in your bank account will be lower depending on where you live and how you file.
+            These are all gross figures — before federal tax, state income tax, and payroll deductions. The amount that actually lands in your bank account will be lower depending on where you live and how you file.
           </p>
         </div>
       </section>
@@ -233,13 +233,13 @@ export default function HourlyToSalaryPage() {
             How does tax affect your salary?
           </h2>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
-            The annual figure shown is your gross income â€” what you earn before any taxes are taken out. In the US, several things reduce that number before it reaches your account.
+            The annual figure shown is your gross income — what you earn before any taxes are taken out. In the US, several things reduce that number before it reaches your account.
           </p>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
             Federal income tax uses a progressive bracket system, starting at 10% on the lowest earnings and rising to 37% at the highest incomes. Most people earning between $40,000 and $80,000 have an effective federal rate well below their marginal rate, because only earnings above each threshold are taxed at the higher rate.
           </p>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
-            On top of that, payroll taxes cover Social Security (6.2% up to $168,600) and Medicare (1.45% with no ceiling). These apply regardless of income level or filing status. State income tax varies widely â€” from 0% in Texas and Florida to over 13% in California.
+            On top of that, payroll taxes cover Social Security (6.2% up to $168,600) and Medicare (1.45% with no ceiling). These apply regardless of income level or filing status. State income tax varies widely — from 0% in Texas and Florida to over 13% in California.
           </p>
           <p className="mt-4 text-base leading-[1.85] text-gray-600">
             To see your estimated take-home after all these deductions, use the{" "}
@@ -249,7 +249,7 @@ export default function HourlyToSalaryPage() {
             >
               Take Home Pay Calculator
             </a>
-            {" "}â€” it accounts for your state, filing status, and FICA contributions.
+            {" "}— it accounts for your state, filing status, and FICA contributions.
           </p>
         </div>
       </section>
@@ -264,11 +264,11 @@ export default function HourlyToSalaryPage() {
             {[
               {
                 q: "How many hours are used in a full-time annual salary?",
-                a: "The standard is 2,080 hours â€” 40 hours per week multiplied by 52 weeks. This is the most common basis for converting an hourly rate to an annual figure, though your actual hours may differ.",
+                a: "The standard is 2,080 hours — 40 hours per week multiplied by 52 weeks. This is the most common basis for converting an hourly rate to an annual figure, though your actual hours may differ.",
               },
               {
                 q: "Does this calculator include overtime?",
-                a: "No. The calculation uses your stated rate and regular weekly hours only. Overtime is typically paid at 1.5Ã—, so if overtime is a regular part of your role, your actual annual earnings will be higher than this estimate.",
+                a: "No. The calculation uses your stated rate and regular weekly hours only. Overtime is typically paid at 1.5×, so if overtime is a regular part of your role, your actual annual earnings will be higher than this estimate.",
               },
               {
                 q: "Is the salary shown before or after tax?",

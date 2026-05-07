@@ -1,10 +1,10 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
 import SalaryBreakdownCalculatorLoader from "./SalaryBreakdownCalculatorLoader";
 
 export const metadata: Metadata = {
-  title: "Salary Breakdown Calculator – Work Out Your Tax and Take-Home Pay Instantly",
+  title: "Salary Breakdown Calculator � Work Out Your Tax and Take-Home Pay Instantly",
   description:
     "Work out how much tax you pay and what you actually take home. Enter your salary and get instant results for federal tax, FICA, and net pay. US version.",
   keywords: [
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "paycheck breakdown calculator",
   ],
   alternates: {
-    canonical: "https://www.worthulator.com/tools/salary-breakdown-calculator",
+    canonical: "https://worthulator.com/tools/salary-breakdown-calculator",
   },
   robots: { index: true, follow: true },
 };
@@ -30,7 +30,7 @@ const jsonLd = [
     name: "Salary Breakdown Calculator (US)",
     description:
       "Calculate your federal income tax, FICA, and monthly take-home pay for US salaries.",
-    url: "https://www.worthulator.com/tools/salary-breakdown-calculator",
+    url: "https://worthulator.com/tools/salary-breakdown-calculator",
   },
   {
     "@context": "https://schema.org",
@@ -41,7 +41,7 @@ const jsonLd = [
         name: "How much federal income tax do I pay in the US?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The US uses progressive federal tax brackets — 10%, 12%, 22%, 24%, 32%, 35%, and 37%. You only pay the higher rates on the income above each threshold, not on your whole salary.",
+          text: "The US uses progressive federal tax brackets � 10%, 12%, 22%, 24%, 32%, 35%, and 37%. You only pay the higher rates on the income above each threshold, not on your whole salary.",
         },
       },
       {
@@ -49,7 +49,7 @@ const jsonLd = [
         name: "What is FICA?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "FICA is the Federal Insurance Contributions Act tax. It consists of Social Security (6.2% on wages up to $168,600) and Medicare (1.45% on all wages) — a combined 7.65% for most employees.",
+          text: "FICA is the Federal Insurance Contributions Act tax. It consists of Social Security (6.2% on wages up to $168,600) and Medicare (1.45% on all wages) � a combined 7.65% for most employees.",
         },
       },
       {
@@ -91,7 +91,7 @@ const jsonLd = [
 const heroCard = (
   <div className="rounded-2xl border border-white/10 bg-slate-900 p-7 text-white shadow-2xl">
     <p className="text-xs font-semibold uppercase tracking-widest text-white/40">
-      Example — $80,000 salary (US, single)
+      Example � $80,000 salary (US, single)
     </p>
     <div className="mt-5 space-y-1">
       <p className="text-4xl font-bold tracking-tight">$5,102</p>
@@ -125,7 +125,7 @@ const statChips = (
       {
         stat: "7.65%",
         color: "text-blue-500",
-        label: "combined FICA rate — 6.2% Social Security + 1.45% Medicare employee share",
+        label: "combined FICA rate � 6.2% Social Security + 1.45% Medicare employee share",
       },
       {
         stat: "22%",
@@ -152,9 +152,9 @@ export default function SalaryBreakdownCalculatorPage() {
   return (
     <SimpleCalculatorShell
       jsonLd={jsonLd}
-      category="Money · Tax"
+      category="Money � Tax"
       title="Salary Breakdown Calculator"
-      subtitle="See exactly where your money goes — federal income tax, FICA, and your real take-home pay."
+      subtitle="See exactly where your money goes � federal income tax, FICA, and your real take-home pay."
       description={
         <>
           Enter your annual salary, choose single or married filing status, and get
@@ -163,7 +163,7 @@ export default function SalaryBreakdownCalculatorPage() {
           your tax bill.{" "}
           <span className="mt-2 block text-sm text-gray-400">
             Based on 2024 federal rates. Does not include state income tax. For
-            planning purposes — verify with a tax adviser for personal advice.
+            planning purposes � verify with a tax adviser for personal advice.
           </span>
         </>
       }
@@ -174,19 +174,19 @@ export default function SalaryBreakdownCalculatorPage() {
         <>
           On an <strong>$80,000 US salary</strong> (single filer) you take home
           approximately <strong>$5,102/month</strong> after federal income tax
-          and FICA — an effective rate of 23.5%.
+          and FICA � an effective rate of 23.5%.
         </>
       }
     >
 
-      {/* ── HOW IT'S CALCULATED ─────────────────────────────────────── */}
+      {/* -- HOW IT'S CALCULATED --------------------------------------- */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
             How salary tax is calculated
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-500">
-            Both the UK and US use progressive tax systems — you pay a higher
+            Both the UK and US use progressive tax systems � you pay a higher
             rate only on the income above each threshold, not on your whole
             salary. The calculation has three stages:
           </p>
@@ -208,7 +208,7 @@ export default function SalaryBreakdownCalculatorPage() {
                 step: "3",
                 label: "Add payroll levies",
                 value:
-                  "National Insurance (UK) or FICA — Social Security + Medicare (US) — is calculated separately on top of income tax.",
+                  "National Insurance (UK) or FICA � Social Security + Medicare (US) � is calculated separately on top of income tax.",
               },
             ].map(({ step, label, value }) => (
               <div
@@ -230,7 +230,7 @@ export default function SalaryBreakdownCalculatorPage() {
         </div>
       </section>
 
-      {/* ── US BRACKETS ──────────────────────────────────────────────── */}
+      {/* -- US BRACKETS ------------------------------------------------ */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -239,7 +239,7 @@ export default function SalaryBreakdownCalculatorPage() {
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-500">
             Federal income tax is progressive. FICA (Social Security + Medicare)
             is applied separately as a flat percentage. State income tax is not
-            included — rates vary from 0% (Texas, Florida) to over 13%
+            included � rates vary from 0% (Texas, Florida) to over 13%
             (California).
           </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -249,12 +249,12 @@ export default function SalaryBreakdownCalculatorPage() {
               </p>
               <div className="space-y-2">
                 {[
-                  { range: "$0 – $11,600", rate: "10%" },
-                  { range: "$11,600 – $47,150", rate: "12%" },
-                  { range: "$47,150 – $100,525", rate: "22%" },
-                  { range: "$100,525 – $191,950", rate: "24%" },
-                  { range: "$191,950 – $243,725", rate: "32%" },
-                  { range: "$243,725 – $609,350", rate: "35%" },
+                  { range: "$0 � $11,600", rate: "10%" },
+                  { range: "$11,600 � $47,150", rate: "12%" },
+                  { range: "$47,150 � $100,525", rate: "22%" },
+                  { range: "$100,525 � $191,950", rate: "24%" },
+                  { range: "$191,950 � $243,725", rate: "32%" },
+                  { range: "$243,725 � $609,350", rate: "35%" },
                   { range: "Above $609,350", rate: "37%" },
                 ].map(({ range, rate }) => (
                   <div
@@ -290,7 +290,7 @@ export default function SalaryBreakdownCalculatorPage() {
                 ))}
               </div>
               <p className="mt-3 text-xs text-gray-400">
-                Employers match FICA contributions — the employee only pays half
+                Employers match FICA contributions � the employee only pays half
                 the total 15.3%.
               </p>
             </div>
@@ -298,7 +298,7 @@ export default function SalaryBreakdownCalculatorPage() {
         </div>
       </section>
 
-      {/* ── PENSION / 401K ───────────────────────────────────────────── */}
+      {/* -- PENSION / 401K --------------------------------------------- */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -306,18 +306,18 @@ export default function SalaryBreakdownCalculatorPage() {
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-500">
             Contributing to a pension (UK) or traditional 401(k) (US) reduces
-            the income that tax is calculated on — so every pound or dollar you
+            the income that tax is calculated on � so every pound or dollar you
             save also saves you tax at your marginal rate.
           </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-2">
             {[
               {
-                region: "UK — Pension",
+                region: "UK � Pension",
                 example:
-                  "On a £60,000 salary, a 10% pension contribution (£6,000/yr) brings taxable income below the higher-rate threshold. Instead of paying 40% on that £6,000, you pay nothing. Saving £2,400 in tax.",
+                  "On a �60,000 salary, a 10% pension contribution (�6,000/yr) brings taxable income below the higher-rate threshold. Instead of paying 40% on that �6,000, you pay nothing. Saving �2,400 in tax.",
               },
               {
-                region: "US — 401(k)",
+                region: "US � 401(k)",
                 example:
                   "On an $80,000 salary, contributing 10% to a 401(k) ($8,000/yr) reduces federal taxable income to $72,000. At a 22% marginal rate, that saves approximately $1,760 in federal tax.",
               },
@@ -336,7 +336,7 @@ export default function SalaryBreakdownCalculatorPage() {
         </div>
       </section>
 
-      {/* ── WHAT THIS MEANS ──────────────────────────────────────────── */}
+      {/* -- WHAT THIS MEANS -------------------------------------------- */}
       <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold tracking-tight text-gray-950">What this means for you</h2>
@@ -346,19 +346,19 @@ export default function SalaryBreakdownCalculatorPage() {
           <div className="mt-8 grid gap-4 sm:grid-cols-3">
             {[
               {
-                icon: "📊",
-                title: "Your marginal rate ≠ your real rate",
-                body: "On an $80,000 salary your marginal rate is 22%, but your effective federal rate is around 15.8%. Only income above $47,150 is taxed at 22% — everything below is taxed at lower rates.",
+                icon: "??",
+                title: "Your marginal rate ? your real rate",
+                body: "On an $80,000 salary your marginal rate is 22%, but your effective federal rate is around 15.8%. Only income above $47,150 is taxed at 22% � everything below is taxed at lower rates.",
               },
               {
-                icon: "🔒",
+                icon: "??",
                 title: "Social Security has a ceiling",
-                body: "The 6.2% Social Security tax only applies to wages up to $168,600 in 2024. Above that cap you stop paying SS — though Medicare (1.45%) has no ceiling and applies to all wages.",
+                body: "The 6.2% Social Security tax only applies to wages up to $168,600 in 2024. Above that cap you stop paying SS � though Medicare (1.45%) has no ceiling and applies to all wages.",
               },
               {
-                icon: "💡",
+                icon: "??",
                 title: "Every 401(k) dollar saves tax now",
-                body: "A traditional 401(k) contribution reduces your federal taxable income dollar-for-dollar. At a 22% marginal rate, $1,000 into your 401(k) saves $220 in federal tax — immediately, before any investment growth.",
+                body: "A traditional 401(k) contribution reduces your federal taxable income dollar-for-dollar. At a 22% marginal rate, $1,000 into your 401(k) saves $220 in federal tax � immediately, before any investment growth.",
               },
             ].map((item) => (
               <div
@@ -374,7 +374,7 @@ export default function SalaryBreakdownCalculatorPage() {
         </div>
       </section>
 
-      {/* ── WHAT YOU CAN DO NEXT ─────────────────────────────────────── */}
+      {/* -- WHAT YOU CAN DO NEXT --------------------------------------- */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold tracking-tight text-gray-950">What you can do next</h2>
@@ -386,17 +386,17 @@ export default function SalaryBreakdownCalculatorPage() {
               {
                 step: "01",
                 title: "Check your W-4 withholding",
-                body: "If your employer is withholding too much or too little, you'll get a large refund — or owe at filing time. Update your W-4 after a pay rise, marriage, or new dependant to stay accurate throughout the year.",
+                body: "If your employer is withholding too much or too little, you'll get a large refund � or owe at filing time. Update your W-4 after a pay rise, marriage, or new dependant to stay accurate throughout the year.",
               },
               {
                 step: "02",
                 title: "Max your 401(k) first",
-                body: "The 2024 limit is $23,000 ($30,500 if 50+). Every dollar goes in pre-tax, reducing taxable income at your marginal rate. If your employer matches contributions, that's an instant 50–100% return before any investment gains.",
+                body: "The 2024 limit is $23,000 ($30,500 if 50+). Every dollar goes in pre-tax, reducing taxable income at your marginal rate. If your employer matches contributions, that's an instant 50�100% return before any investment gains.",
               },
               {
                 step: "03",
                 title: "Compare single vs married filing",
-                body: "Filing jointly gives wider brackets and a higher standard deduction. Use this calculator to model both statuses and see which produces the lower effective rate — especially useful in the year you get married.",
+                body: "Filing jointly gives wider brackets and a higher standard deduction. Use this calculator to model both statuses and see which produces the lower effective rate � especially useful in the year you get married.",
               },
             ].map((item) => (
               <div
@@ -412,7 +412,7 @@ export default function SalaryBreakdownCalculatorPage() {
         </div>
       </section>
 
-      {/* ── FAQ ──────────────────────────────────────────────────────── */}
+      {/* -- FAQ -------------------------------------------------------- */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -426,7 +426,7 @@ export default function SalaryBreakdownCalculatorPage() {
               },
               {
                 q: "What is FICA and how much do I pay?",
-                a: "FICA covers Social Security (6.2% on wages up to $168,600) and Medicare (1.45% on all wages) — a combined 7.65% employee share. Your employer matches the same amount on top.",
+                a: "FICA covers Social Security (6.2% on wages up to $168,600) and Medicare (1.45% on all wages) � a combined 7.65% employee share. Your employer matches the same amount on top.",
               },
               {
                 q: "Does a 401(k) contribution reduce my Social Security tax?",
@@ -438,7 +438,7 @@ export default function SalaryBreakdownCalculatorPage() {
               },
               {
                 q: "What is the difference between my marginal and effective tax rate?",
-                a: "Your marginal rate is the rate on your top slice of income. Your effective rate is the average across all your income — always lower, because lower bands are taxed at lower rates. On an $80,000 salary, your marginal federal rate is 22% but your effective rate is around 15.8%.",
+                a: "Your marginal rate is the rate on your top slice of income. Your effective rate is the average across all your income � always lower, because lower bands are taxed at lower rates. On an $80,000 salary, your marginal federal rate is 22% but your effective rate is around 15.8%.",
               },
               {
                 q: "Why doesn't this calculator include state income tax?",
@@ -457,7 +457,7 @@ export default function SalaryBreakdownCalculatorPage() {
         </div>
       </section>
 
-      {/* ── DISCLAIMER ───────────────────────────────────────────────── */}
+      {/* -- DISCLAIMER ------------------------------------------------- */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-xl font-bold text-gray-800">Disclaimer</h2>
@@ -471,7 +471,7 @@ export default function SalaryBreakdownCalculatorPage() {
         </div>
       </section>
 
-      {/* ── RELATED ──────────────────────────────────────────────────── */}
+      {/* -- RELATED ---------------------------------------------------- */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-xl font-bold text-gray-800">
@@ -482,7 +482,7 @@ export default function SalaryBreakdownCalculatorPage() {
               {
                 label: "Salary Breakdown Calculator (UK)",
                 href: "/tools/salary-breakdown-calculator-uk",
-                note: "UK salary — income tax, NI, and pension",
+                note: "UK salary � income tax, NI, and pension",
               },
               {
                 label: "Take Home Pay Calculator",

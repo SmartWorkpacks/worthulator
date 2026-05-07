@@ -1,4 +1,4 @@
-ï»¿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import RelatedTools from "@/components/RelatedTools";
 import HourlyToSalaryCalculator from "../hourly-to-salary-calculator/HourlyToSalaryCalculatorLoader";
 import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
@@ -6,7 +6,7 @@ import LocaleSetter from "@/components/LocaleSetter";
 import RegionToggle from "@/components/RegionToggle";
 
 export const metadata: Metadata = {
-  title: "Hourly to Salary Calculator UK â€“ Work Out Your Annual Salary Instantly",
+  title: "Hourly to Salary Calculator UK – Work Out Your Annual Salary Instantly",
   description:
     "Work out your annual salary from your hourly rate in pounds. Enter your wage and hours worked and get instant results for yearly, monthly, and weekly income.",
   keywords: [
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "contractor day rate to salary UK",
     "hourly pay annual equivalent UK",
   ],
-  alternates: { canonical: "https://www.worthulator.com/tools/hourly-to-salary-calculator-uk" },
+  alternates: { canonical: "https://worthulator.com/tools/hourly-to-salary-calculator-uk" },
   robots: { index: true, follow: true },
 };
 
@@ -27,7 +27,7 @@ const jsonLd = [
     name: "Hourly to Salary Calculator UK",
     description:
       "Convert your hourly rate to an annual salary in pounds. See your monthly, weekly, and daily income. UK version.",
-    url: "https://www.worthulator.com/tools/hourly-to-salary-calculator-uk",
+    url: "https://worthulator.com/tools/hourly-to-salary-calculator-uk",
   },
   {
     "@context": "https://schema.org",
@@ -38,7 +38,7 @@ const jsonLd = [
         name: "How do I calculate my annual salary from an hourly rate in the UK?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Multiply your hourly rate by your weekly contracted hours, then multiply by the number of weeks you work per year. The standard UK full-time formula is: hourly rate Ã— 37.5 hours Ã— 52 weeks.",
+          text: "Multiply your hourly rate by your weekly contracted hours, then multiply by the number of weeks you work per year. The standard UK full-time formula is: hourly rate × 37.5 hours × 52 weeks.",
         },
       },
       {
@@ -46,7 +46,7 @@ const jsonLd = [
         name: "What is the standard UK working week for salary calculations?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Most UK full-time contracts specify 37.5 hours per week, though some sectors use 40 hours. Your employment contract will specify your contracted hours â€” always use that figure for an accurate conversion.",
+          text: "Most UK full-time contracts specify 37.5 hours per week, though some sectors use 40 hours. Your employment contract will specify your contracted hours — always use that figure for an accurate conversion.",
         },
       },
       {
@@ -54,7 +54,7 @@ const jsonLd = [
         name: "Is this calculator showing gross or net salary?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Gross only â€” before income tax, National Insurance, and pension contributions. To see your estimated take-home pay, use the Take Home Pay Calculator UK.",
+          text: "Gross only — before income tax, National Insurance, and pension contributions. To see your estimated take-home pay, use the Take Home Pay Calculator UK.",
         },
       },
       {
@@ -62,7 +62,7 @@ const jsonLd = [
         name: "What is the UK National Living Wage 2025/26?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The National Living Wage for workers aged 21 and over is Â£12.21 per hour from April 2025. At 37.5 hours per week and 52 weeks per year, that equals approximately Â£23,810 per year gross.",
+          text: "The National Living Wage for workers aged 21 and over is £12.21 per hour from April 2025. At 37.5 hours per week and 52 weeks per year, that equals approximately £23,810 per year gross.",
         },
       },
       {
@@ -81,23 +81,23 @@ const heroCard = (
   <div className="relative overflow-hidden rounded-2xl border border-white/8 bg-gray-950 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
     <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-emerald-500/15 blur-3xl" />
     <p className="relative text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">
-      Example &middot; Â£15/hr &middot; 37.5 hrs/wk
+      Example &middot; £15/hr &middot; 37.5 hrs/wk
     </p>
     <p className="relative mt-3 text-5xl font-bold tracking-[-0.04em] text-emerald-400 [text-shadow:0_0_20px_rgba(52,211,153,0.28)]">
-      Â£29,250
+      £29,250
     </p>
     <p className="relative mt-1 text-sm text-gray-500">annual salary (gross)</p>
     <div className="mt-4 grid grid-cols-3 gap-3 text-center">
       <div>
-        <p className="text-lg font-bold text-emerald-400">Â£2,438</p>
+        <p className="text-lg font-bold text-emerald-400">£2,438</p>
         <p className="text-xs text-gray-500">/ month</p>
       </div>
       <div>
-        <p className="text-lg font-bold text-emerald-400">Â£563</p>
+        <p className="text-lg font-bold text-emerald-400">£563</p>
         <p className="text-xs text-gray-500">/ week</p>
       </div>
       <div>
-        <p className="text-lg font-bold text-emerald-400">Â£113</p>
+        <p className="text-lg font-bold text-emerald-400">£113</p>
         <p className="text-xs text-gray-500">/ day</p>
       </div>
     </div>
@@ -108,14 +108,14 @@ const statChips = (
   <>
     {[
       {
-        stat: "Â£15/hr",
+        stat: "£15/hr",
         color: "text-emerald-600",
         label: "is approximately the UK median hourly wage for full-time workers in 2024",
       },
       {
         stat: "1,950",
         color: "text-blue-500",
-        label: "hours in a standard full-time UK working year (37.5 hrs Ã— 52 weeks)",
+        label: "hours in a standard full-time UK working year (37.5 hrs × 52 weeks)",
       },
       {
         stat: "5 secs",
@@ -141,12 +141,12 @@ const statChips = (
 export default function HourlyToSalaryUKPage() {
   return (
     <>
-      {/* Forces locale to UK so the calculator displays Â£ */}
+      {/* Forces locale to UK so the calculator displays £ */}
       <LocaleSetter locale="UK" />
 
       <SimpleCalculatorShell
         jsonLd={jsonLd}
-        category="United Kingdom Â· Income Tools"
+        category="United Kingdom · Income Tools"
         title="Hourly to Salary Calculator"
         subtitle="Convert your hourly wage into an annual salary, monthly income, and weekly pay in seconds."
         description={
@@ -174,7 +174,7 @@ export default function HourlyToSalaryUKPage() {
           <>
             A standard full-time UK working year is{" "}
             <span className="font-semibold text-gray-800">1,950 hours</span>{" "}
-            (37.5 hrs Ã— 52 weeks). Adjust hours and weeks to match your contract.
+            (37.5 hrs × 52 weeks). Adjust hours and weeks to match your contract.
           </>
         }
       >
@@ -187,17 +187,17 @@ export default function HourlyToSalaryUKPage() {
                 {
                   step: "1",
                   title: "Enter your hourly rate",
-                  body: "Type in your hourly wage in pounds â€” the rate shown on your payslip, contract, or job offer before any tax is taken.",
+                  body: "Type in your hourly wage in pounds — the rate shown on your payslip, contract, or job offer before any tax is taken.",
                 },
                 {
                   step: "2",
                   title: "Set your weekly hours and weeks",
-                  body: "Use your contracted hours per week (typically 37.5 for UK full-time) and the number of weeks you actually work â€” deduct unpaid leave for an accurate result.",
+                  body: "Use your contracted hours per week (typically 37.5 for UK full-time) and the number of weeks you actually work — deduct unpaid leave for an accurate result.",
                 },
                 {
                   step: "3",
                   title: "See your annual, monthly and weekly breakdown",
-                  body: "Your equivalent annual salary, monthly, weekly, and daily pay update instantly. All figures are gross â€” before income tax and National Insurance.",
+                  body: "Your equivalent annual salary, monthly, weekly, and daily pay update instantly. All figures are gross — before income tax and National Insurance.",
                 },
               ].map((item) => (
                 <div
@@ -225,7 +225,7 @@ export default function HourlyToSalaryUKPage() {
               The conversion is simple: multiply your hourly rate by the number of hours you work each week, then multiply by the number of weeks you work in a year.
             </p>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
-              For example, if you earn Â£15 per hour on a standard UK 37.5-hour contract, your annual salary works out to Â£15 Ã— 37.5 Ã— 52 â€” which is Â£29,250. If you earn Â£20 an hour on a 40-hour contract, that&apos;s Â£41,600 per year. The difference between a 37.5 and 40-hour week may sound small, but it adds up to over Â£1,300 at Â£15/hr.
+              For example, if you earn £15 per hour on a standard UK 37.5-hour contract, your annual salary works out to £15 × 37.5 × 52 — which is £29,250. If you earn £20 an hour on a 40-hour contract, that&apos;s £41,600 per year. The difference between a 37.5 and 40-hour week may sound small, but it adds up to over £1,300 at £15/hr.
             </p>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
               One thing to watch: the UK standard is 37.5 hours per week, not 40. If you enter 40 hours when your contract specifies 37.5, you&apos;ll overestimate your annual salary by about 6.7%. Always use the hours in your employment contract.
@@ -246,7 +246,7 @@ export default function HourlyToSalaryUKPage() {
               {[
                 {
                   title: "Hours per week",
-                  body: "Most UK full-time contracts are 37.5 hours, though some sectors â€” including retail and healthcare â€” use 40. At Â£15/hr, that difference is worth over Â£1,300 per year. Always use your contracted hours, not a round number.",
+                  body: "Most UK full-time contracts are 37.5 hours, though some sectors — including retail and healthcare — use 40. At £15/hr, that difference is worth over £1,300 per year. Always use your contracted hours, not a round number.",
                 },
                 {
                   title: "Holiday and unpaid leave",
@@ -254,7 +254,7 @@ export default function HourlyToSalaryUKPage() {
                 },
                 {
                   title: "Overtime",
-                  body: "Overtime is not included in this calculation. If you regularly work extra hours â€” particularly at enhanced rates such as time-and-a-half â€” your actual annual earnings will be higher than this tool shows.",
+                  body: "Overtime is not included in this calculation. If you regularly work extra hours — particularly at enhanced rates such as time-and-a-half — your actual annual earnings will be higher than this tool shows.",
                 },
                 {
                   title: "Bonuses and shift pay",
@@ -292,14 +292,14 @@ export default function HourlyToSalaryUKPage() {
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {[
-                    { rate: "Â£12.21 (NLW)", annual: "Â£23,810", monthly: "Â£1,984", weekly: "Â£458" },
-                    { rate: "Â£13.00",       annual: "Â£25,350", monthly: "Â£2,113", weekly: "Â£488" },
-                    { rate: "Â£15.00",       annual: "Â£29,250", monthly: "Â£2,438", weekly: "Â£563" },
-                    { rate: "Â£18.00",       annual: "Â£35,100", monthly: "Â£2,925", weekly: "Â£675" },
-                    { rate: "Â£20.00",       annual: "Â£39,000", monthly: "Â£3,250", weekly: "Â£750" },
-                    { rate: "Â£25.00",       annual: "Â£48,750", monthly: "Â£4,063", weekly: "Â£938" },
-                    { rate: "Â£30.00",       annual: "Â£58,500", monthly: "Â£4,875", weekly: "Â£1,125" },
-                    { rate: "Â£35.00",       annual: "Â£68,250", monthly: "Â£5,688", weekly: "Â£1,313" },
+                    { rate: "£12.21 (NLW)", annual: "£23,810", monthly: "£1,984", weekly: "£458" },
+                    { rate: "£13.00",       annual: "£25,350", monthly: "£2,113", weekly: "£488" },
+                    { rate: "£15.00",       annual: "£29,250", monthly: "£2,438", weekly: "£563" },
+                    { rate: "£18.00",       annual: "£35,100", monthly: "£2,925", weekly: "£675" },
+                    { rate: "£20.00",       annual: "£39,000", monthly: "£3,250", weekly: "£750" },
+                    { rate: "£25.00",       annual: "£48,750", monthly: "£4,063", weekly: "£938" },
+                    { rate: "£30.00",       annual: "£58,500", monthly: "£4,875", weekly: "£1,125" },
+                    { rate: "£35.00",       annual: "£68,250", monthly: "£5,688", weekly: "£1,313" },
                   ].map((row) => (
                     <tr key={row.rate} className="hover:bg-gray-50">
                       <td className="px-5 py-3 font-medium text-gray-800">{row.rate}</td>
@@ -311,7 +311,7 @@ export default function HourlyToSalaryUKPage() {
                 </tbody>
               </table>
             </div>
-            <p className="mt-3 text-xs text-gray-400">Based on 37.5 hrs/week Ã— 52 weeks. NLW = National Living Wage (April 2025, age 21+). Gross figures only.</p>
+            <p className="mt-3 text-xs text-gray-400">Based on 37.5 hrs/week × 52 weeks. NLW = National Living Wage (April 2025, age 21+). Gross figures only.</p>
           </div>
         </section>
 
@@ -322,13 +322,13 @@ export default function HourlyToSalaryUKPage() {
               Common hourly wage examples
             </h2>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
-              Someone earning the National Living Wage of Â£12.21 per hour at 37.5 hours a week brings in around Â£23,800 per year â€” a figure that sits just above the UK personal allowance threshold. A Â£15 hourly rate works out to Â£29,250, while Â£20 an hour at full-time hours gives roughly Â£39,000 annually.
+              Someone earning the National Living Wage of £12.21 per hour at 37.5 hours a week brings in around £23,800 per year — a figure that sits just above the UK personal allowance threshold. A £15 hourly rate works out to £29,250, while £20 an hour at full-time hours gives roughly £39,000 annually.
             </p>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
-              For higher-paid roles, the numbers climb quickly. At Â£25 per hour, a 37.5-hour week produces around Â£48,750 per year â€” just below the 40% tax threshold. Rates of Â£30 or Â£35 an hour bring annual gross income to Â£58,500 and Â£68,250 respectively, both comfortably into the higher-rate tax band. Contractors often see rates of Â£50â€“Â£75 per hour, which can translate to six-figure annualised earnings even on a standard full-time basis.
+              For higher-paid roles, the numbers climb quickly. At £25 per hour, a 37.5-hour week produces around £48,750 per year — just below the 40% tax threshold. Rates of £30 or £35 an hour bring annual gross income to £58,500 and £68,250 respectively, both comfortably into the higher-rate tax band. Contractors often see rates of £50–£75 per hour, which can translate to six-figure annualised earnings even on a standard full-time basis.
             </p>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
-              These are all gross figures before tax and National Insurance. The amount you actually take home will be lower â€” particularly as earnings move above Â£50,270, where the 40% PAYE band applies.
+              These are all gross figures before tax and National Insurance. The amount you actually take home will be lower — particularly as earnings move above £50,270, where the 40% PAYE band applies.
             </p>
           </div>
         </section>
@@ -340,13 +340,13 @@ export default function HourlyToSalaryUKPage() {
               How does tax affect your salary in the UK?
             </h2>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
-              The annual salary shown here is gross â€” the amount before any deductions. In practice, most employees see three main deductions on their payslip.
+              The annual salary shown here is gross — the amount before any deductions. In practice, most employees see three main deductions on their payslip.
             </p>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
-              Income tax is collected via PAYE and uses a banded system. For 2025/26, earnings up to Â£12,570 are covered by the personal allowance and taxed at 0%. Earnings above that up to Â£50,270 are taxed at 20% (the basic rate), with income between Â£50,270 and Â£125,140 taxed at 40%. Only the earnings in each band are taxed at that rate â€” not your whole salary.
+              Income tax is collected via PAYE and uses a banded system. For 2025/26, earnings up to £12,570 are covered by the personal allowance and taxed at 0%. Earnings above that up to £50,270 are taxed at 20% (the basic rate), with income between £50,270 and £125,140 taxed at 40%. Only the earnings in each band are taxed at that rate — not your whole salary.
             </p>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
-              National Insurance adds another layer. Employees pay 8% on earnings between Â£12,570 and Â£50,270, and 2% above that. Pension contributions â€” whether into a workplace scheme or a personal pension â€” reduce your taxable income and further change your take-home.
+              National Insurance adds another layer. Employees pay 8% on earnings between £12,570 and £50,270, and 2% above that. Pension contributions — whether into a workplace scheme or a personal pension — reduce your taxable income and further change your take-home.
             </p>
             <p className="mt-4 text-base leading-[1.85] text-gray-600">
               To see your estimated net income after all of these deductions, use the{" "}
@@ -356,7 +356,7 @@ export default function HourlyToSalaryUKPage() {
               >
                 Take Home Pay Calculator UK
               </a>
-              {" "}â€” it accounts for PAYE, National Insurance, and pension contributions.
+              {" "}— it accounts for PAYE, National Insurance, and pension contributions.
             </p>
           </div>
         </section>
@@ -378,12 +378,12 @@ export default function HourlyToSalaryUKPage() {
                 {
                   step: "02",
                   title: "Compare job offers accurately",
-                  body: "When comparing a salaried offer with a contract or hourly role, make sure you're comparing net figures â€” not gross. A higher hourly rate doesn't always mean more take-home pay if the salaried role includes pension contributions or benefits.",
+                  body: "When comparing a salaried offer with a contract or hourly role, make sure you're comparing net figures — not gross. A higher hourly rate doesn't always mean more take-home pay if the salaried role includes pension contributions or benefits.",
                 },
                 {
                   step: "03",
                   title: "Check you're above National Minimum Wage",
-                  body: "The National Living Wage is Â£12.21/hr for workers aged 21+ from April 2025. If your effective hourly rate (including unpaid overtime or breaks) falls below this, your employer is breaking the law.",
+                  body: "The National Living Wage is £12.21/hr for workers aged 21+ from April 2025. If your effective hourly rate (including unpaid overtime or breaks) falls below this, your employer is breaking the law.",
                 },
               ].map((item) => (
                 <div
@@ -407,7 +407,7 @@ export default function HourlyToSalaryUKPage() {
               {[
                 {
                   q: "How do I calculate my annual salary from an hourly rate in the UK?",
-                  a: "Multiply your hourly rate by your hours per week, then multiply by your weeks worked per year. The standard full-time formula is: hourly rate Ã— 37.5 hours Ã— 52 weeks = Â£72,800 for a Â£37.44/hr rate. Adjust the weeks figure to account for unpaid holiday or part-time arrangements.",
+                  a: "Multiply your hourly rate by your hours per week, then multiply by your weeks worked per year. The standard full-time formula is: hourly rate × 37.5 hours × 52 weeks = £72,800 for a £37.44/hr rate. Adjust the weeks figure to account for unpaid holiday or part-time arrangements.",
                 },
                 {
                   q: "What is the standard UK working week for salary calculations?",
@@ -415,15 +415,15 @@ export default function HourlyToSalaryUKPage() {
                 },
                 {
                   q: "Does holiday entitlement affect my annual salary?",
-                  a: "No â€” holiday pay is part of your salary, not in addition to it. Your annual salary already includes the pay you receive during the UKâ€™s statutory minimum of 28 days (5.6 weeks) paid holiday. If you are paid hourly for actual hours worked only, deduct your holiday weeks from the total to get a more accurate gross figure.",
+                  a: "No — holiday pay is part of your salary, not in addition to it. Your annual salary already includes the pay you receive during the UK’s statutory minimum of 28 days (5.6 weeks) paid holiday. If you are paid hourly for actual hours worked only, deduct your holiday weeks from the total to get a more accurate gross figure.",
                 },
                 {
                   q: "What is the UK National Living Wage 2025/26?",
-                  a: "The National Living Wage (for workers aged 21 and over) is Â£12.21 per hour from April 2025. At 37.5 hours per week and 52 weeks per year, that equals Â£23,810 per year gross. The National Minimum Wage for 18-20 year olds is Â£10.00/hr.",
+                  a: "The National Living Wage (for workers aged 21 and over) is £12.21 per hour from April 2025. At 37.5 hours per week and 52 weeks per year, that equals £23,810 per year gross. The National Minimum Wage for 18-20 year olds is £10.00/hr.",
                 },
                 {
                   q: "Is this calculator showing gross or net (take-home) salary?",
-                  a: "This calculator shows gross salary only â€” before income tax, National Insurance, and pension deductions. To see your estimated take-home pay, use our Take Home Pay Calculator UK.",
+                  a: "This calculator shows gross salary only — before income tax, National Insurance, and pension deductions. To see your estimated take-home pay, use our Take Home Pay Calculator UK.",
                 },
               ].map((item) => (
                 <div key={item.q} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">

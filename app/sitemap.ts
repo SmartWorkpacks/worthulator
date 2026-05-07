@@ -3,7 +3,7 @@ import { tools } from "@/src/config/tools";
 import { stateTaxRates, type StateCode } from "@/src/lib/stateTax";
 import { sqftSlugs } from "@/lib/calculators/sqftConfigs";
 
-const BASE_URL = "https://www.worthulator.com";
+const BASE_URL = "https://worthulator.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();

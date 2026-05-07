@@ -1,11 +1,11 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
 import PassiveIncomeCalculatorLoader from "./PassiveIncomeCalculatorLoader";
 import RegionToggle from "@/components/RegionToggle";
 
 export const metadata: Metadata = {
-  title: "Passive Income Calculator – Work Out Your Investment Income Instantly",
+  title: "Passive Income Calculator � Work Out Your Investment Income Instantly",
   description:
     "Work out how much passive income your investments could generate. Enter your portfolio and target income and get instant results for monthly and annual income.",
   keywords: [
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "dividend income calculator",
     "portfolio withdrawal calculator",
   ],
-  alternates: { canonical: "https://www.worthulator.com/tools/passive-income-calculator" },
+  alternates: { canonical: "https://worthulator.com/tools/passive-income-calculator" },
   robots: { index: true, follow: true },
 };
 
@@ -29,7 +29,7 @@ const jsonLd = [
     name: "Passive Income Calculator",
     description:
       "Calculate how much passive income your investments can generate based on compound growth, withdrawal rate, and inflation.",
-    url: "https://www.worthulator.com/tools/passive-income-calculator",
+    url: "https://worthulator.com/tools/passive-income-calculator",
   },
   {
     "@context": "https://schema.org",
@@ -48,7 +48,7 @@ const jsonLd = [
         name: "What is the 4% rule?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The 4% rule (also called the Bengen Rule) states that you can withdraw 4% of your portfolio annually in retirement without running out of money over a 30-year period. It was derived from historical US stock and bond market data. A 3–3.5% rate is considered more conservative for longer time horizons.",
+          text: "The 4% rule (also called the Bengen Rule) states that you can withdraw 4% of your portfolio annually in retirement without running out of money over a 30-year period. It was derived from historical US stock and bond market data. A 3�3.5% rate is considered more conservative for longer time horizons.",
         },
       },
       {
@@ -56,7 +56,7 @@ const jsonLd = [
         name: "What annual return should I use?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The S&P 500 has averaged roughly 10% nominal (7% real after inflation) over the past century. A globally diversified portfolio typically averages 6–8%. Use 5% for a conservative estimate, 7% for a balanced assumption, and 10% only if your portfolio is heavily weighted toward equities.",
+          text: "The S&P 500 has averaged roughly 10% nominal (7% real after inflation) over the past century. A globally diversified portfolio typically averages 6�8%. Use 5% for a conservative estimate, 7% for a balanced assumption, and 10% only if your portfolio is heavily weighted toward equities.",
         },
       },
       {
@@ -72,7 +72,7 @@ const jsonLd = [
         name: "What is a realistic passive income goal?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "A realistic goal depends on your lifestyle. $2,000–3,000/month is enough to cover basic costs in many lower-cost US states or countries. $5,000+/month provides significant financial flexibility. Start with a specific monthly target and work backwards using this calculator to see what contribution level and timeline gets you there.",
+          text: "A realistic goal depends on your lifestyle. $2,000�3,000/month is enough to cover basic costs in many lower-cost US states or countries. $5,000+/month provides significant financial flexibility. Start with a specific monthly target and work backwards using this calculator to see what contribution level and timeline gets you there.",
         },
       },
     ],
@@ -119,7 +119,7 @@ const statChips = (
       {
         stat: "5 streams",
         color: "text-blue-500",
-        label: "supported — model investments, property, dividends, business, or custom income",
+        label: "supported � model investments, property, dividends, business, or custom income",
       },
       {
         stat: "7%",
@@ -146,9 +146,9 @@ export default function PassiveIncomeCalculatorPage() {
   return (
     <SimpleCalculatorShell
       jsonLd={jsonLd}
-      category="United States · Finance Tools"
+      category="United States � Finance Tools"
       title="Passive Income Calculator"
-      subtitle="See how much passive income your portfolio can generate — and how long it takes to get there."
+      subtitle="See how much passive income your portfolio can generate � and how long it takes to get there."
       description={
         <>
           <p>
@@ -157,7 +157,7 @@ export default function PassiveIncomeCalculatorPage() {
             any income target you set.
           </p>
           <ul className="mt-3 space-y-1 text-sm text-gray-400">
-            <li>Multiple income streams — investments, property, dividends, business</li>
+            <li>Multiple income streams � investments, property, dividends, business</li>
             <li>Per-stream income models: compound growth, fixed yield, or hybrid</li>
             <li>Conservative, Balanced, and Aggressive scenario presets</li>
             <li>Time to financial freedom based on your target monthly income</li>
@@ -179,13 +179,13 @@ export default function PassiveIncomeCalculatorPage() {
       insightText={
         <>
           Combine an investment portfolio with dividend income or rental property to build{" "}
-          <strong>diversified passive income</strong> — the calculator models each stream
+          <strong>diversified passive income</strong> � the calculator models each stream
           independently and shows your total monthly income across all sources.
         </>
       }
     >
 
-      {/* ── HOW PASSIVE INCOME WORKS ─────────────────────────────────────── */}
+      {/* -- HOW PASSIVE INCOME WORKS --------------------------------------- */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -194,13 +194,13 @@ export default function PassiveIncomeCalculatorPage() {
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-500">
             Passive income from investments comes from the returns generated by a portfolio
             you have built over time. Unlike a salary, it doesn&apos;t require trading your
-            time for money — the capital works on your behalf.
+            time for money � the capital works on your behalf.
           </p>
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-500">
             The core mechanism is compound growth. When you invest regularly, your returns
             generate their own returns. Over decades, this compounding effect means the
             growth phase of your portfolio significantly outpaces what you actually
-            contributed. A portfolio worth $500,000 at 7% generates $35,000/year — without
+            contributed. A portfolio worth $500,000 at 7% generates $35,000/year � without
             you doing anything.
           </p>
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-500">
@@ -213,7 +213,7 @@ export default function PassiveIncomeCalculatorPage() {
               Core formula
             </p>
             <p className="mt-2 font-mono text-sm text-gray-700">
-              FV = P·(1+r)ⁿ + PMT·[((1+r)ⁿ − 1) ÷ r]
+              FV = P�(1+r)n + PMT�[((1+r)n - 1) � r]
             </p>
             <p className="mt-4 text-xs text-gray-400">
               Where P = starting investment, r = monthly return rate, n = total months,
@@ -223,15 +223,15 @@ export default function PassiveIncomeCalculatorPage() {
         </div>
       </section>
 
-      {/* ── THE 4% RULE ──────────────────────────────────────────────────── */}
+      {/* -- THE 4% RULE ---------------------------------------------------- */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
             The 4% withdrawal rule explained
           </h2>
           <p className="mt-4 max-w-3xl text-base leading-relaxed text-gray-500">
-            The 4% rule — also called the Bengen Rule after financial planner William Bengen
-            who published it in 1994 — states that you can withdraw 4% of your portfolio in
+            The 4% rule � also called the Bengen Rule after financial planner William Bengen
+            who published it in 1994 � states that you can withdraw 4% of your portfolio in
             year one of retirement, then adjust for inflation each year, and statistically
             avoid running out of money over a 30-year retirement horizon.
           </p>
@@ -276,7 +276,7 @@ export default function PassiveIncomeCalculatorPage() {
         </div>
       </section>
 
-      {/* ── REALISTIC RETURN EXPECTATIONS ────────────────────────────────── */}
+      {/* -- REALISTIC RETURN EXPECTATIONS ---------------------------------- */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -320,14 +320,14 @@ export default function PassiveIncomeCalculatorPage() {
             ))}
           </div>
           <p className="mt-5 max-w-3xl text-base leading-relaxed text-gray-500">
-            Any rate above 12–15% consistently is very difficult to sustain and is typically
-            only achievable through concentrated single-stock bets or leveraged strategies —
+            Any rate above 12�15% consistently is very difficult to sustain and is typically
+            only achievable through concentrated single-stock bets or leveraged strategies �
             both of which carry significant downside risk not reflected in this calculator.
           </p>
         </div>
       </section>
 
-      {/* ── PASSIVE INCOME STRATEGIES ────────────────────────────────────── */}
+      {/* -- PASSIVE INCOME STRATEGIES -------------------------------------- */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -342,17 +342,17 @@ export default function PassiveIncomeCalculatorPage() {
               {
                 name: "Index Funds & ETFs",
                 badge: "Most accessible",
-                body: "Low-cost index funds (like Vanguard Total Market, S&P 500 ETFs) track broad market indices and automatically reinvest dividends. They require minimal management and have historically produced 7–10% nominal returns over long periods. Ideal for passive investors who want market-rate returns without stock-picking.",
+                body: "Low-cost index funds (like Vanguard Total Market, S&P 500 ETFs) track broad market indices and automatically reinvest dividends. They require minimal management and have historically produced 7�10% nominal returns over long periods. Ideal for passive investors who want market-rate returns without stock-picking.",
               },
               {
                 name: "Dividend Investing",
                 badge: "Income-focused",
-                body: "Building a portfolio of dividend-paying stocks or dividend ETFs generates regular cash income without needing to sell shares. Dividend yields of 3–5% are achievable with established companies. The risk is dividend cuts during economic downturns — diversification across sectors reduces this.",
+                body: "Building a portfolio of dividend-paying stocks or dividend ETFs generates regular cash income without needing to sell shares. Dividend yields of 3�5% are achievable with established companies. The risk is dividend cuts during economic downturns � diversification across sectors reduces this.",
               },
               {
                 name: "Real Estate (REITs)",
                 badge: "Property exposure",
-                body: "Real Estate Investment Trusts (REITs) let you invest in property portfolios without direct ownership. REITs are legally required to distribute 90%+ of income as dividends, often yielding 4–7%. They add diversification but are sensitive to interest rate changes.",
+                body: "Real Estate Investment Trusts (REITs) let you invest in property portfolios without direct ownership. REITs are legally required to distribute 90%+ of income as dividends, often yielding 4�7%. They add diversification but are sensitive to interest rate changes.",
               },
             ].map(({ name, badge, body }) => (
               <div
@@ -370,7 +370,7 @@ export default function PassiveIncomeCalculatorPage() {
         </div>
       </section>
 
-      {/* ── COMMON MISTAKES ──────────────────────────────────────────────── */}
+      {/* -- COMMON MISTAKES ------------------------------------------------ */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
@@ -380,7 +380,7 @@ export default function PassiveIncomeCalculatorPage() {
             {[
               {
                 title: "Using an unrealistic return rate",
-                body: "Plugging in 15–20% annual returns produces impressive numbers but dangerous plans. Most investors achieve 6–9% over the long run. Overestimating your return and underpreparing is one of the most common planning errors.",
+                body: "Plugging in 15�20% annual returns produces impressive numbers but dangerous plans. Most investors achieve 6�9% over the long run. Overestimating your return and underpreparing is one of the most common planning errors.",
               },
               {
                 title: "Ignoring inflation",
@@ -388,15 +388,15 @@ export default function PassiveIncomeCalculatorPage() {
               },
               {
                 title: "Starting too late",
-                body: "Compounding is time-dependent — the earlier you start, the larger your eventual portfolio relative to what you contributed. A 25-year-old investing $300/month achieves a significantly larger outcome at 65 than a 40-year-old investing $700/month, even with more total contributions.",
+                body: "Compounding is time-dependent � the earlier you start, the larger your eventual portfolio relative to what you contributed. A 25-year-old investing $300/month achieves a significantly larger outcome at 65 than a 40-year-old investing $700/month, even with more total contributions.",
               },
               {
                 title: "Withdrawing too aggressively",
-                body: "Drawing down more than 4–5% per year risks depleting your portfolio during a market downturn. The sequence of returns matters — a bad first decade of retirement combined with high withdrawals can permanently impair a portfolio.",
+                body: "Drawing down more than 4�5% per year risks depleting your portfolio during a market downturn. The sequence of returns matters � a bad first decade of retirement combined with high withdrawals can permanently impair a portfolio.",
               },
               {
                 title: "Stopping contributions too early",
-                body: "The final years of an investment period often generate more growth than the early years. Stopping contributions when life gets busy — a house purchase, career change, children — can cost significantly more than the missed contributions themselves.",
+                body: "The final years of an investment period often generate more growth than the early years. Stopping contributions when life gets busy � a house purchase, career change, children � can cost significantly more than the missed contributions themselves.",
               },
               {
                 title: "Confusing gross and net income",
@@ -415,7 +415,7 @@ export default function PassiveIncomeCalculatorPage() {
         </div>
       </section>
 
-      {/* ── FAQ ──────────────────────────────────────────────────────────── */}
+      {/* -- FAQ ------------------------------------------------------------ */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">Frequently asked questions</h2>
@@ -439,7 +439,7 @@ export default function PassiveIncomeCalculatorPage() {
               },
               {
                 q: "What is a realistic passive income goal for financial independence?",
-                a: "$3,000–5,000/month covers basic to comfortable living in most US states. For full financial independence (no other income needed), target replacing your current monthly expenses. Start with a specific monthly target and use the calculator to work backwards to your required portfolio size and timeline.",
+                a: "$3,000�5,000/month covers basic to comfortable living in most US states. For full financial independence (no other income needed), target replacing your current monthly expenses. Start with a specific monthly target and use the calculator to work backwards to your required portfolio size and timeline.",
               },
             ].map(({ q, a }) => (
               <div
@@ -454,7 +454,7 @@ export default function PassiveIncomeCalculatorPage() {
         </div>
       </section>
 
-      {/* ── DISCLAIMER ───────────────────────────────────────────────────── */}
+      {/* -- DISCLAIMER ----------------------------------------------------- */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-xl font-bold text-gray-800">Disclaimer</h2>
@@ -462,14 +462,14 @@ export default function PassiveIncomeCalculatorPage() {
             This calculator provides estimates only and does not constitute financial,
             investment, or tax advice. Past investment returns are not a guarantee of
             future performance. Results are based on mathematical projections using the
-            inputs provided and assume consistent returns — actual investment returns
+            inputs provided and assume consistent returns � actual investment returns
             vary year to year. Always consult a qualified financial adviser before
             making investment decisions.
           </p>
         </div>
       </section>
 
-      {/* ── RELATED ──────────────────────────────────────────────────────── */}
+      {/* -- RELATED -------------------------------------------------------- */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-xl font-bold text-gray-800">Related calculators</h2>
@@ -478,7 +478,7 @@ export default function PassiveIncomeCalculatorPage() {
               {
                 label: "Passive Income Calculator (UK)",
                 href: "/tools/passive-income-calculator-uk",
-                note: "Same tool in pounds — UK financial assumptions",
+                note: "Same tool in pounds � UK financial assumptions",
               },
               {
                 label: "Hourly to Salary Calculator",

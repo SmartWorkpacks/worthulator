@@ -1,11 +1,11 @@
-ï»¿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import OvertimePayCalculator from "../overtime-pay-calculator/OvertimePayCalculatorLoader";
 import LocaleSetter from "@/components/LocaleSetter";
 import RegionToggle from "@/components/RegionToggle";
 
 export const metadata: Metadata = {
-  title: "Overtime Pay Calculator UK â€“ Work Out Your Overtime Earnings Instantly",
+  title: "Overtime Pay Calculator UK – Work Out Your Overtime Earnings Instantly",
   description:
     "Work out how much you earn in overtime in pounds. Enter your rate and hours and get instant results for enhanced rates and total weekly pay. UK calculator.",
   keywords: [
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     "UK overtime pay",
     "overtime rate calculator England",
   ],
-  alternates: { canonical: "https://www.worthulator.com/tools/overtime-pay-calculator-uk" },
+  alternates: { canonical: "https://worthulator.com/tools/overtime-pay-calculator-uk" },
   robots: { index: true, follow: true },
 };
 
@@ -24,22 +24,22 @@ const relatedTools = [
     slug: "hourly-to-salary-calculator-uk",
     name: "Hourly to Salary Calculator UK",
     desc: "Convert your hourly rate into an estimated annual salary in GBP.",
-    anchor: "Convert hourly to annual salary â†’",
-    emoji: "ðŸ’¼",
+    anchor: "Convert hourly to annual salary ?",
+    emoji: "??",
   },
   {
     slug: "take-home-pay-calculator",
     name: "Take Home Pay Calculator",
     desc: "See your net income after UK tax, NI, and deductions.",
-    anchor: "Calculate your take-home pay â†’",
-    emoji: "ðŸ’°",
+    anchor: "Calculate your take-home pay ?",
+    emoji: "??",
   },
   {
     slug: "budget-planner",
     name: "Budget Planner",
     desc: "Plan where your overtime earnings actually go each month.",
-    anchor: "Plan your budget â†’",
-    emoji: "ðŸ“‹",
+    anchor: "Plan your budget ?",
+    emoji: "??",
   },
 ];
 
@@ -51,7 +51,7 @@ export default function OvertimePayCalculatorUKPage() {
       name: "Overtime Pay Calculator UK",
       description:
         "Calculate overtime pay in GBP for UK workers. See weekly, monthly, and annual earnings including enhanced rates.",
-      url: "https://www.worthulator.com/tools/overtime-pay-calculator-uk",
+      url: "https://worthulator.com/tools/overtime-pay-calculator-uk",
     },
     {
       "@context": "https://schema.org",
@@ -70,7 +70,7 @@ export default function OvertimePayCalculatorUKPage() {
           name: "What is time and a half in the UK?",
           acceptedAnswer: {
             "@type": "Answer",
-            text: "Time and a half means you are paid 1.5Ã— your normal hourly rate for overtime hours. For example, if your standard rate is Â£14/hr, time and a half is Â£21/hr.",
+            text: "Time and a half means you are paid 1.5× your normal hourly rate for overtime hours. For example, if your standard rate is £14/hr, time and a half is £21/hr.",
           },
         },
         {
@@ -103,7 +103,7 @@ export default function OvertimePayCalculatorUKPage() {
 
   return (
     <>
-      {/* Forces locale to UK so the calculator displays Â£ */}
+      {/* Forces locale to UK so the calculator displays £ */}
       <LocaleSetter locale="UK" />
 
       <main className="bg-white text-gray-900">
@@ -118,20 +118,20 @@ export default function OvertimePayCalculatorUKPage() {
           <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-gray-100/60 blur-3xl" />
 
           <div className="relative mx-auto grid max-w-5xl items-center gap-10 lg:grid-cols-2">
-            {/* Left â€” copy */}
+            {/* Left — copy */}
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
-                United Kingdom Â· Income Tools
+                United Kingdom · Income Tools
               </p>
               <h1 className="mt-4 text-[clamp(2.4rem,5.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.04em] text-gray-950">
                 Overtime Pay Calculator
                 <span className="mt-1 block tracking-normal font-semibold text-gray-400">
-                  Time and a half, enhanced rates, and double time â€” in pounds.
+                  Time and a half, enhanced rates, and double time — in pounds.
                 </span>
               </h1>
               <p className="mt-4 max-w-lg text-lg leading-relaxed text-gray-500">
                 Enter your hourly rate and total hours worked to see exactly how much your overtime
-                earns â€” weekly, monthly, and annually â€” in GBP.
+                earns — weekly, monthly, and annually — in GBP.
               </p>
 
               <RegionToggle
@@ -142,15 +142,15 @@ export default function OvertimePayCalculatorUKPage() {
               />
             </div>
 
-            {/* Right â€” preview stat card */}
+            {/* Right — preview stat card */}
             <div className="hidden lg:block">
               <div className="relative overflow-hidden rounded-2xl border border-white/8 bg-gray-950 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
                 <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-emerald-500/15 blur-3xl" />
                 <p className="relative text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">
-                  Example &middot; Â£15/hr &middot; 42h week
+                  Example &middot; £15/hr &middot; 42h week
                 </p>
                 <p className="relative mt-3 text-5xl font-bold tracking-[-0.04em] text-emerald-400 [text-shadow:0_0_20px_rgba(52,211,153,0.28)]">
-                  Â£607
+                  £607
                 </p>
                 <p className="relative mt-1 text-sm text-gray-500">
                   estimated weekly pay incl. overtime
@@ -170,7 +170,7 @@ export default function OvertimePayCalculatorUKPage() {
                   </span>
                 </div>
                 <p className="mt-5 text-xs text-gray-500">
-                  2 overtime hours adds Â£45 â€” adjust below to see yours
+                  2 overtime hours adds £45 — adjust below to see yours
                 </p>
               </div>
             </div>
@@ -183,7 +183,7 @@ export default function OvertimePayCalculatorUKPage() {
             <div className="mb-8 grid gap-3 sm:grid-cols-3">
               {[
                 {
-                  stat: "1.5Ã—",
+                  stat: "1.5×",
                   color: "text-emerald-600",
                   label:
                     "is the common overtime rate in the UK, though there is no statutory minimum for overtime pay above NMW",
@@ -192,7 +192,7 @@ export default function OvertimePayCalculatorUKPage() {
                   stat: "37.5h",
                   color: "text-amber-500",
                   label:
-                    "is the UK standard full-time working week â€” overtime typically starts beyond your contracted hours",
+                    "is the UK standard full-time working week — overtime typically starts beyond your contracted hours",
                 },
                 {
                   stat: "20%+",
@@ -241,19 +241,19 @@ export default function OvertimePayCalculatorUKPage() {
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {[
                 {
-                  icon: "â±",
+                  icon: "?",
                   title: "When does overtime start?",
-                  body: "Overtime in the UK starts when you work beyond your contracted hours â€” usually 37.5 or 40 hours/week. Check your contract for your specific threshold.",
+                  body: "Overtime in the UK starts when you work beyond your contracted hours — usually 37.5 or 40 hours/week. Check your contract for your specific threshold.",
                 },
                 {
-                  icon: "ðŸ“ˆ",
+                  icon: "??",
                   title: "What rate will you be paid?",
-                  body: "Many UK employers pay 1.5Ã— for weekday overtime and 2Ã— for Sunday or Bank Holiday working, but this is not required by law â€” it depends on your contract.",
+                  body: "Many UK employers pay 1.5× for weekday overtime and 2× for Sunday or Bank Holiday working, but this is not required by law — it depends on your contract.",
                 },
                 {
-                  icon: "ðŸ’¡",
+                  icon: "??",
                   title: "Small hours, big impact",
-                  body: "At Â£15/hr with 1.5Ã— overtime, working 5 extra hours each week adds over Â£5,850 gross per year. Use this calculator to see your exact figure.",
+                  body: "At £15/hr with 1.5× overtime, working 5 extra hours each week adds over £5,850 gross per year. Use this calculator to see your exact figure.",
                 },
               ].map((item) => (
                 <div
@@ -280,7 +280,7 @@ export default function OvertimePayCalculatorUKPage() {
                 {
                   step: "1",
                   title: "Enter your hourly rate",
-                  body: "Type in your base hourly wage before any overtime premium â€” this is the rate shown on your payslip or contract.",
+                  body: "Type in your base hourly wage before any overtime premium — this is the rate shown on your payslip or contract.",
                 },
                 {
                   step: "2",
@@ -290,7 +290,7 @@ export default function OvertimePayCalculatorUKPage() {
                 {
                   step: "3",
                   title: "Choose your multiplier",
-                  body: "Select 1.5Ã— (time and a half), 2Ã— (double time), or enter a custom rate if your employer uses a flat enhanced rate or a different contractual arrangement.",
+                  body: "Select 1.5× (time and a half), 2× (double time), or enter a custom rate if your employer uses a flat enhanced rate or a different contractual arrangement.",
                 },
               ].map((item) => (
                 <div
@@ -320,7 +320,7 @@ export default function OvertimePayCalculatorUKPage() {
                 {
                   step: "01",
                   title: "Check what your contract says",
-                  body: "There is no legal overtime rate in the UK â€” your rate is entirely set by your contract. Review your employment contract or employee handbook to confirm exactly what rate applies and when overtime is triggered.",
+                  body: "There is no legal overtime rate in the UK — your rate is entirely set by your contract. Review your employment contract or employee handbook to confirm exactly what rate applies and when overtime is triggered.",
                 },
                 {
                   step: "02",
@@ -355,13 +355,13 @@ export default function OvertimePayCalculatorUKPage() {
               </h2>
               <p className="mt-4 leading-[1.85] text-gray-600">
                 In the UK, overtime pay is governed by your employment contract rather than
-                statutory law. There is no legal requirement to pay a premium rate for overtime â€”
+                statutory law. There is no legal requirement to pay a premium rate for overtime —
                 as long as your total pay for all hours worked doesn&apos;t fall below the National
                 Minimum Wage or National Living Wage.
               </p>
               <p className="mt-4 leading-7">
-                Most employers that do offer overtime pay use a rate of 1.5Ã— (time and a half) for
-                standard overtime and 2Ã— (double time) for Sundays, Bank Holidays, or very long
+                Most employers that do offer overtime pay use a rate of 1.5× (time and a half) for
+                standard overtime and 2× (double time) for Sundays, Bank Holidays, or very long
                 shifts. Some use a flat enhanced rate instead. Always check your contract or
                 employee handbook for the exact terms that apply to you.
               </p>
@@ -385,7 +385,7 @@ export default function OvertimePayCalculatorUKPage() {
               <p className="mt-4 leading-[1.85] text-gray-600">
                 Overtime pay is subject to the same income tax and National Insurance contributions
                 as your regular pay. If extra overtime pushes you into a higher tax band in a
-                particular month, you may pay more tax on those earnings â€” though this typically
+                particular month, you may pay more tax on those earnings — though this typically
                 evens out across the tax year under PAYE. This calculator shows gross figures only.
               </p>
             </div>
@@ -393,11 +393,11 @@ export default function OvertimePayCalculatorUKPage() {
             {/* WORKED EXAMPLE */}
             <div>
               <h2 className="text-2xl font-bold tracking-tight text-gray-950">
-                Worked example: 42-hour week at Â£15/hr
+                Worked example: 42-hour week at £15/hr
               </h2>
               <p className="mt-4 leading-7">
-                Say your contracted hours are 40/week, your hourly rate is Â£15, and your employer
-                pays 1.5Ã— for overtime. Here is how your weekly pay breaks down:
+                Say your contracted hours are 40/week, your hourly rate is £15, and your employer
+                pays 1.5× for overtime. Here is how your weekly pay breaks down:
               </p>
               <div className="mt-5 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
                 <table className="w-full text-sm">
@@ -411,23 +411,23 @@ export default function OvertimePayCalculatorUKPage() {
                   <tbody className="divide-y divide-gray-100">
                     <tr>
                       <td className="px-5 py-3 text-gray-600">Regular pay (40h)</td>
-                      <td className="px-5 py-3 text-gray-500">40 Ã— Â£15.00</td>
-                      <td className="px-5 py-3 text-right font-semibold text-gray-800">Â£600.00</td>
+                      <td className="px-5 py-3 text-gray-500">40 × £15.00</td>
+                      <td className="px-5 py-3 text-right font-semibold text-gray-800">£600.00</td>
                     </tr>
                     <tr>
-                      <td className="px-5 py-3 text-gray-600">Overtime pay (2h Ã— 1.5Ã—)</td>
-                      <td className="px-5 py-3 text-gray-500">2 Ã— Â£22.50</td>
-                      <td className="px-5 py-3 text-right font-semibold text-emerald-600">Â£45.00</td>
+                      <td className="px-5 py-3 text-gray-600">Overtime pay (2h × 1.5×)</td>
+                      <td className="px-5 py-3 text-gray-500">2 × £22.50</td>
+                      <td className="px-5 py-3 text-right font-semibold text-emerald-600">£45.00</td>
                     </tr>
                     <tr className="bg-gray-50">
                       <td className="px-5 py-3 font-semibold text-gray-800">Total weekly (gross)</td>
                       <td className="px-5 py-3 text-gray-500"></td>
-                      <td className="px-5 py-3 text-right text-lg font-bold text-gray-950">Â£645.00</td>
+                      <td className="px-5 py-3 text-right text-lg font-bold text-gray-950">£645.00</td>
                     </tr>
                     <tr>
                       <td className="px-5 py-3 text-gray-600">Annual projection</td>
-                      <td className="px-5 py-3 text-gray-500">Â£645 Ã— 52</td>
-                      <td className="px-5 py-3 text-right font-semibold text-gray-800">Â£33,540</td>
+                      <td className="px-5 py-3 text-gray-500">£645 × 52</td>
+                      <td className="px-5 py-3 text-right font-semibold text-gray-800">£33,540</td>
                     </tr>
                   </tbody>
                 </table>
@@ -455,10 +455,10 @@ export default function OvertimePayCalculatorUKPage() {
                   </thead>
                   <tbody className="divide-y divide-gray-100">
                     {[
-                      { group: "21 and over (National Living Wage)", rate: "Â£12.21" },
-                      { group: "18â€“20", rate: "Â£10.00" },
-                      { group: "Under 18", rate: "Â£7.55" },
-                      { group: "Apprentice", rate: "Â£7.55" },
+                      { group: "21 and over (National Living Wage)", rate: "£12.21" },
+                      { group: "18–20", rate: "£10.00" },
+                      { group: "Under 18", rate: "£7.55" },
+                      { group: "Apprentice", rate: "£7.55" },
                     ].map((row) => (
                       <tr key={row.group}>
                         <td className="px-5 py-3 text-gray-600">{row.group}</td>
@@ -490,11 +490,11 @@ export default function OvertimePayCalculatorUKPage() {
               {[
                 {
                   q: "Do UK employers have to pay overtime?",
-                  a: "No â€” there is no legal minimum overtime rate in the UK. Employers must ensure total pay across all hours worked does not fall below the National Minimum Wage, but any premium for overtime hours above that is a contractual matter. Always check your employment contract or employee handbook.",
+                  a: "No — there is no legal minimum overtime rate in the UK. Employers must ensure total pay across all hours worked does not fall below the National Minimum Wage, but any premium for overtime hours above that is a contractual matter. Always check your employment contract or employee handbook.",
                 },
                 {
                   q: "What is time and a half in the UK?",
-                  a: "Time and a half means you are paid 1.5Ã— your normal hourly rate for overtime hours. For example, if your standard rate is Â£14/hr, time and a half is Â£21/hr. Some employers use double time (2Ã—) for Sundays, Bank Holidays, or extended overnight shifts.",
+                  a: "Time and a half means you are paid 1.5× your normal hourly rate for overtime hours. For example, if your standard rate is £14/hr, time and a half is £21/hr. Some employers use double time (2×) for Sundays, Bank Holidays, or extended overnight shifts.",
                 },
                 {
                   q: "Does working overtime affect my holiday pay in the UK?",

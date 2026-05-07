@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   description:
     "Free cost per square foot calculators for roofing, flooring, painting, concrete, tiling, drywall, and carpet. Get instant estimates for any home improvement project.",
   alternates: {
-    canonical: "https://www.worthulator.com/cost-calculators/sq-ft-cost-calculator",
+    canonical: "https://worthulator.com/cost-calculators/sq-ft-cost-calculator",
   },
   robots: { index: true, follow: true },
 };

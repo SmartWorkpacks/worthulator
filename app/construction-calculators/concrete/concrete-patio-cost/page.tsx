@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "concrete vs paver patio cost",
   ],
   alternates: {
-    canonical: "https://www.worthulator.com/construction-calculators/concrete/concrete-patio-cost",
+    canonical: "https://worthulator.com/construction-calculators/concrete/concrete-patio-cost",
   },
   robots: { index: true, follow: true },
 };
@@ -30,7 +30,7 @@ const jsonLd = [
     name: "Concrete Patio Cost Calculator",
     description:
       "Estimate the full installed cost of a concrete patio — materials, labour, finish type, reinforcement, and optional demolition.",
-    url: "https://www.worthulator.com/construction-calculators/concrete/concrete-patio-cost",
+    url: "https://worthulator.com/construction-calculators/concrete/concrete-patio-cost",
   },
   {
     "@context": "https://schema.org",

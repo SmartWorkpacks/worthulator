@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Free health and dental cost calculators. Estimate dental implant, Invisalign, and veneer costs — updated with real 2026 prices.",
   alternates: {
-    canonical: "https://www.worthulator.com/tools/cost-calculators/health",
+    canonical: "https://worthulator.com/tools/cost-calculators/health",
   },
   robots: { index: true, follow: true },
 };

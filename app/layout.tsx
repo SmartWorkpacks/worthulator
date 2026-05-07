@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://www.worthulator.com"),
+  metadataBase: new URL("https://worthulator.com"),
   title: "Worthulator | Free Financial Calculators",
   description:
     "Free financial calculators for salary, investments, budgeting and more. Get instant answers to your money questions — no sign-up required.",

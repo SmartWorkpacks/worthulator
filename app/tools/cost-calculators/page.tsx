@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Free cost calculators for home improvement, construction, and renovation projects. Get accurate estimates for roofing, concrete, dental work, and more.",
   alternates: {
-    canonical: "https://www.worthulator.com/tools/cost-calculators",
+    canonical: "https://worthulator.com/tools/cost-calculators",
   },
   robots: { index: true, follow: true },
 };

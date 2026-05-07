@@ -17,7 +17,7 @@ export const metadata: Metadata = {
     "cost of dental implants uk",
     "dental implants us price",
   ],
-  alternates: { canonical: "https://www.worthulator.com/tools/cost-calculators/health/dental-implant-cost-calculator" },
+  alternates: { canonical: "https://worthulator.com/tools/cost-calculators/health/dental-implant-cost-calculator" },
   robots: { index: true, follow: true },
 };
 
@@ -27,7 +27,7 @@ const jsonLd = [
     "@type": "WebPage",
     name: "Dental Implant Cost Calculator",
     description: "Estimate dental implant costs based on treatment type, quality, clinic, and location.",
-    url: "https://www.worthulator.com/tools/cost-calculators/health/dental-implant-cost-calculator",
+    url: "https://worthulator.com/tools/cost-calculators/health/dental-implant-cost-calculator",
   },
   {
     "@context": "https://schema.org",

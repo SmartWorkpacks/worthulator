@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "minutes to decimal hours",
   ],
   alternates: {
-    canonical: "https://www.worthulator.com/tools/time-calculators/hours-to-decimal",
+    canonical: "https://worthulator.com/tools/time-calculators/hours-to-decimal",
   },
   robots: { index: true, follow: true },
 };
@@ -28,7 +28,7 @@ const jsonLd = [
     name: "Hours to Decimal Calculator",
     description:
       "Convert hours and minutes into decimal hours instantly for timesheets, payroll, and billing.",
-    url: "https://www.worthulator.com/tools/time-calculators/hours-to-decimal",
+    url: "https://worthulator.com/tools/time-calculators/hours-to-decimal",
   },
   {
     "@context": "https://schema.org",

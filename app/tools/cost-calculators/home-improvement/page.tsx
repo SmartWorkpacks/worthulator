@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Accurate home improvement cost calculators for roofing, concrete, and renovation projects. Get real 2026 estimates based on size, materials, and location.",
   alternates: {
-    canonical: "https://www.worthulator.com/tools/cost-calculators/home-improvement",
+    canonical: "https://worthulator.com/tools/cost-calculators/home-improvement",
   },
   robots: { index: true, follow: true },
 };

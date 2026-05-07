@@ -1,11 +1,11 @@
-ï»¿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "Disclaimer | Worthulator",
   description:
     "Worthulator provides estimates, not financial advice. Results are for informational purposes only. Always verify with a qualified professional.",
-  alternates: { canonical: "https://www.worthulator.com/disclaimer" },
+  alternates: { canonical: "https://worthulator.com/disclaimer" },
   robots: { index: true, follow: true },
 };
 
@@ -50,7 +50,7 @@ export default function DisclaimerPage() {
             <div className="mt-4 space-y-4 text-base leading-relaxed text-gray-500">
               <p>
                 Calculations on this platform are simplified models. They do not account for
-                every variable that affects real-world financial outcomes â€” including individual
+                every variable that affects real-world financial outcomes — including individual
                 tax codes, employer-specific rules, benefit arrangements, pension contributions,
                 student loan plans, and local or regional variations.
               </p>
@@ -85,7 +85,7 @@ export default function DisclaimerPage() {
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">External data sources</h2>
             <div className="mt-4 text-base leading-relaxed text-gray-500">
               <p>
-                Some calculators reference publicly available data â€” such as government tax tables,
+                Some calculators reference publicly available data — such as government tax tables,
                 national averages, or published benchmarks. Worthulator makes no warranty regarding
                 the accuracy, completeness, or currency of this third-party information.
               </p>

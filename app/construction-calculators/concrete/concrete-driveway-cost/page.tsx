@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "stamped concrete driveway cost",
   ],
   alternates: {
-    canonical: "https://www.worthulator.com/construction-calculators/concrete/concrete-driveway-cost",
+    canonical: "https://worthulator.com/construction-calculators/concrete/concrete-driveway-cost",
   },
   robots: { index: true, follow: true },
 };
@@ -30,7 +30,7 @@ const jsonLd = [
     name: "Concrete Driveway Cost Calculator",
     description:
       "Estimate the full installed cost of a concrete driveway — materials, labour, finish, reinforcement, and demolition.",
-    url: "https://www.worthulator.com/construction-calculators/concrete/concrete-driveway-cost",
+    url: "https://worthulator.com/construction-calculators/concrete/concrete-driveway-cost",
   },
   {
     "@context": "https://schema.org",

@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical:
-      "https://www.worthulator.com/tools/cost-calculators/home-improvement/roof-replacement-cost",
+      "https://worthulator.com/tools/cost-calculators/home-improvement/roof-replacement-cost",
   },
   robots: { index: true, follow: true },
 };
@@ -30,7 +30,7 @@ const jsonLd = [
     name: "Roof Replacement Cost Calculator",
     description:
       "Estimate your roof replacement cost based on size, material, condition, and location.",
-    url: "https://www.worthulator.com/tools/cost-calculators/home-improvement/roof-replacement-cost",
+    url: "https://worthulator.com/tools/cost-calculators/home-improvement/roof-replacement-cost",
   },
   {
     "@context": "https://schema.org",

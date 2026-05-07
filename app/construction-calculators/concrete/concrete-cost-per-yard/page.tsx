@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     "how much is a yard of concrete",
   ],
   alternates: {
-    canonical: "https://www.worthulator.com/construction-calculators/concrete/concrete-cost-per-yard",
+    canonical: "https://worthulator.com/construction-calculators/concrete/concrete-cost-per-yard",
   },
   robots: { index: true, follow: true },
 };
@@ -30,7 +30,7 @@ const jsonLd = [
     name: "Concrete Cost Per Yard Calculator",
     description:
       "Calculate the total cost of ready-mix concrete by the cubic yard, including delivery charge and waste factor.",
-    url: "https://www.worthulator.com/construction-calculators/concrete/concrete-cost-per-yard",
+    url: "https://worthulator.com/construction-calculators/concrete/concrete-cost-per-yard",
   },
   {
     "@context": "https://schema.org",

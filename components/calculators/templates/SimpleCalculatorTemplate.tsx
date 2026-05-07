@@ -1,4 +1,4 @@
-﻿/**
+/**
  * SimpleCalculatorTemplate
  *
  * COPY THIS FILE to start a new simple (single-screen) calculator.
@@ -17,22 +17,22 @@ import { useState } from "react";
 import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
 import RelatedTools from "@/components/RelatedTools";
 
-// ─── Replace with your real JSON-LD (move to page.tsx in production) ─────────
+// --- Replace with your real JSON-LD (move to page.tsx in production) ---------
 
 const JSON_LD = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "My Calculator",
-  url: "https://www.worthulator.com/tools/my-calculator",
+  url: "https://worthulator.com/tools/my-calculator",
 };
 
-// ─── Hero preview card (dark, right column, desktop only) ────────────────────
+// --- Hero preview card (dark, right column, desktop only) --------------------
 
 const HERO_CARD = (
   <div className="relative overflow-hidden rounded-2xl border border-white/8 bg-gray-950 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
     <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-emerald-500/15 blur-3xl" />
     <p className="relative text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">
-      Example · replace with real preview
+      Example � replace with real preview
     </p>
     <p className="relative mt-3 text-5xl font-bold tracking-[-0.04em] text-emerald-400 [text-shadow:0_0_20px_rgba(52,211,153,0.28)]">
       $0
@@ -41,7 +41,7 @@ const HERO_CARD = (
   </div>
 );
 
-// ─── Stat chips (3-column row above the calculator) ──────────────────────────
+// --- Stat chips (3-column row above the calculator) --------------------------
 
 const STAT_CHIPS = (
   <>
@@ -63,7 +63,7 @@ const STAT_CHIPS = (
   </>
 );
 
-// ─── Calculator component ─────────────────────────────────────────────────────
+// --- Calculator component -----------------------------------------------------
 
 function MyCalculatorInputs() {
   // Replace with your real state
@@ -107,7 +107,7 @@ function MyCalculatorInputs() {
   );
 }
 
-// ─── Page component (or inline in page.tsx) ───────────────────────────────────
+// --- Page component (or inline in page.tsx) -----------------------------------
 
 export default function MyCalculatorPage() {
   return (
@@ -128,7 +128,7 @@ export default function MyCalculatorPage() {
       }
     >
 
-      {/* EXPLAINER ── replace with real content */}
+      {/* EXPLAINER -- replace with real content */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold tracking-tight text-gray-950">How it works</h2>

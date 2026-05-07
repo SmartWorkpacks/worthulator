@@ -1,10 +1,10 @@
-ï»¿import type { Metadata } from "next";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Privacy Policy | Worthulator",
   description:
     "How Worthulator collects, uses, and protects your data. We keep it simple.",
-  alternates: { canonical: "https://www.worthulator.com/privacy" },
+  alternates: { canonical: "https://worthulator.com/privacy" },
   robots: { index: true, follow: true },
 };
 
@@ -36,7 +36,7 @@ export default function PrivacyPage() {
 
           {/* 1 */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">01 â€” Who we are</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">01 — Who we are</p>
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">Worthulator</h2>
             <div className="mt-4 space-y-4 text-base leading-relaxed text-gray-500">
               <p>
@@ -52,7 +52,7 @@ export default function PrivacyPage() {
 
           {/* 2 */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">02 â€” What we collect</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">02 — What we collect</p>
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">Data we collect and why</h2>
             <div className="mt-6 space-y-6">
               {[
@@ -62,11 +62,11 @@ export default function PrivacyPage() {
                 },
                 {
                   title: "Lead-generation forms",
-                  body: "Where you choose to submit a lead form, we collect your name, email address, location (where provided), and the inputs or query you supply. This data is used to generate your estimate, improve our tools, and â€” where you have explicitly consented â€” connect you with relevant service providers.",
+                  body: "Where you choose to submit a lead form, we collect your name, email address, location (where provided), and the inputs or query you supply. This data is used to generate your estimate, improve our tools, and — where you have explicitly consented — connect you with relevant service providers.",
                 },
                 {
                   title: "Usage analytics",
-                  body: "We use privacy-first analytics to understand how pages are used â€” which tools get used, how often, and from where. This data is aggregated and anonymous. No individual user is tracked.",
+                  body: "We use privacy-first analytics to understand how pages are used — which tools get used, how often, and from where. This data is aggregated and anonymous. No individual user is tracked.",
                 },
                 {
                   title: "Cookies",
@@ -91,15 +91,15 @@ export default function PrivacyPage() {
 
           {/* 3 */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">03 â€” Why we use your data</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">03 — Why we use your data</p>
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">Purposes &amp; legal basis</h2>
             <div className="mt-4 space-y-4 text-base leading-relaxed text-gray-500">
               <p>We process personal data for the following purposes:</p>
               <ul className="ml-5 list-disc space-y-2 text-sm">
-                <li><span className="font-semibold text-gray-700">Generating estimates</span> â€” to process your inputs and return a result. Legal basis: <em>performance of a service / legitimate interest</em>.</li>
-                <li><span className="font-semibold text-gray-700">Improving our tools</span> â€” aggregated, anonymised usage data helps us understand which calculators are most useful and where accuracy can be improved. Legal basis: <em>legitimate interest</em>.</li>
-                <li><span className="font-semibold text-gray-700">Lead generation / connecting with providers</span> â€” where you have submitted a lead form and ticked the optional marketing consent box, we may share your information with selected service providers who may be able to assist you. Legal basis: <em>consent</em> (freely given, specific, and withdrawable at any time).</li>
-                <li><span className="font-semibold text-gray-700">Responding to enquiries</span> â€” to reply to messages or support requests. Legal basis: <em>legitimate interest</em>.</li>
+                <li><span className="font-semibold text-gray-700">Generating estimates</span> — to process your inputs and return a result. Legal basis: <em>performance of a service / legitimate interest</em>.</li>
+                <li><span className="font-semibold text-gray-700">Improving our tools</span> — aggregated, anonymised usage data helps us understand which calculators are most useful and where accuracy can be improved. Legal basis: <em>legitimate interest</em>.</li>
+                <li><span className="font-semibold text-gray-700">Lead generation / connecting with providers</span> — where you have submitted a lead form and ticked the optional marketing consent box, we may share your information with selected service providers who may be able to assist you. Legal basis: <em>consent</em> (freely given, specific, and withdrawable at any time).</li>
+                <li><span className="font-semibold text-gray-700">Responding to enquiries</span> — to reply to messages or support requests. Legal basis: <em>legitimate interest</em>.</li>
               </ul>
               <p>
                 You can withdraw consent for marketing contact at any time by emailing{" "}
@@ -113,12 +113,12 @@ export default function PrivacyPage() {
 
           {/* 4 */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">04 â€” Data sharing with partners</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">04 — Data sharing with partners</p>
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">Who we share your data with</h2>
             <div className="mt-4 space-y-4 text-base leading-relaxed text-gray-500">
               <p>
                 We may share your information with selected partners for service fulfilment
-                â€” for example, to connect you with a relevant professional or provider â€” but
+                — for example, to connect you with a relevant professional or provider — but
                 only where you have explicitly opted in at the point of submission.
               </p>
               <p>
@@ -130,7 +130,7 @@ export default function PrivacyPage() {
 
           {/* 5 */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">05 â€” Third-party services</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">05 — Third-party services</p>
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">External tools we use</h2>
             <div className="mt-4 space-y-4 text-base leading-relaxed text-gray-500">
               <p>
@@ -138,8 +138,8 @@ export default function PrivacyPage() {
                 is bound by its own privacy policy:
               </p>
               <ul className="ml-5 list-disc space-y-2 text-sm">
-                <li><span className="font-semibold text-gray-700">Analytics provider</span> â€” collects aggregated, anonymised page-view data.</li>
-                <li><span className="font-semibold text-gray-700">Hosting provider</span> â€” serves the Platform and may log standard server-request data (IP address, browser type) for security and performance purposes.</li>
+                <li><span className="font-semibold text-gray-700">Analytics provider</span> — collects aggregated, anonymised page-view data.</li>
+                <li><span className="font-semibold text-gray-700">Hosting provider</span> — serves the Platform and may log standard server-request data (IP address, browser type) for security and performance purposes.</li>
               </ul>
               <p>
                 We don&apos;t use Facebook Pixel, Google Ads tracking, or any advertising network
@@ -150,7 +150,7 @@ export default function PrivacyPage() {
 
           {/* 6 */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">06 â€” Your rights</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">06 — Your rights</p>
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">What you can ask us to do</h2>
             <div className="mt-4 space-y-4 text-base leading-relaxed text-gray-500">
               <p>
@@ -175,13 +175,13 @@ export default function PrivacyPage() {
 
           {/* 7 */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">07 â€” Data retention</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">07 — Data retention</p>
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">How long we keep data</h2>
             <div className="mt-4 space-y-4 text-base leading-relaxed text-gray-500">
               <p>
                 Analytics data is retained in aggregated form indefinitely. Contact messages are
                 retained for up to 24 months. Server logs from our hosting provider are typically
-                retained for 30â€“90 days depending on provider policy.
+                retained for 30–90 days depending on provider policy.
               </p>
               <p>
                 Calculator inputs are never stored by us. Any data saved in your browser&apos;s
@@ -192,7 +192,7 @@ export default function PrivacyPage() {
 
           {/* 8 */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">08 â€” Changes</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">08 — Changes</p>
             <h2 className="mt-3 text-xl font-bold tracking-tight text-gray-950">Updates to this policy</h2>
             <div className="mt-4 space-y-4 text-base leading-relaxed text-gray-500">
               <p>

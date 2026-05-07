@@ -1,11 +1,11 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import Link from "next/link";
 import { tools } from "@/src/config/tools";
 
 export const metadata: Metadata = {
   title: "Cost Calculators | Worthulator",
   description:
-    "Free cost calculators for medical procedures, home improvement, energy, and everyday living. Find out what things really cost before you spend — dental implants, roof replacement, solar panels, and more.",
+    "Free cost calculators for medical procedures, home improvement, energy, and everyday living. Find out what things really cost before you spend � dental implants, roof replacement, solar panels, and more.",
   keywords: [
     "cost calculators",
     "how much does it cost",
@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     "solar panel cost calculator",
     "cost of living calculator",
   ],
-  alternates: { canonical: "https://www.worthulator.com/tools/cost" },
+  alternates: { canonical: "https://worthulator.com/tools/cost" },
   robots: { index: true, follow: true },
 };
 
@@ -24,18 +24,18 @@ export default function CostCalculatorsPage() {
   return (
     <div className="min-h-screen bg-white">
 
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
+      {/* -- HERO ------------------------------------------------------------ */}
       <section className="bg-gray-950 px-5 pb-20 pt-16 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/30">
-            🏷️ Cost Calculators
+            ??? Cost Calculators
           </p>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
             Find out what things<br className="hidden sm:block" /> really cost
           </h1>
           <p className="mt-5 max-w-2xl text-base leading-relaxed text-white/50">
             Most websites tell you a range. We tell you a number. Enter your specific
-            situation — size, location, complexity — and get an instant estimate for
+            situation � size, location, complexity � and get an instant estimate for
             dental procedures, home improvements, energy systems, and everyday living
             costs. Free, no sign-up, no nonsense.
           </p>
@@ -43,9 +43,9 @@ export default function CostCalculatorsPage() {
           {/* Stat chips */}
           <div className="mt-8 flex flex-wrap gap-3">
             {[
-              { label: "Dental implants",  detail: "$1,500 – $6,000 per tooth" },
-              { label: "Roof replacement", detail: "$5,000 – $25,000+" },
-              { label: "Solar panels",     detail: "$15,000 – $35,000 installed" },
+              { label: "Dental implants",  detail: "$1,500 � $6,000 per tooth" },
+              { label: "Roof replacement", detail: "$5,000 � $25,000+" },
+              { label: "Solar panels",     detail: "$15,000 � $35,000 installed" },
             ].map(({ label, detail }) => (
               <div
                 key={label}
@@ -59,7 +59,7 @@ export default function CostCalculatorsPage() {
         </div>
       </section>
 
-      {/* ── TOOL GRID ─────────────────────────────────────────────────────── */}
+      {/* -- TOOL GRID ------------------------------------------------------- */}
       <div className="mx-auto max-w-5xl px-5 py-16 sm:px-8 lg:px-16">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {costTools.map((tool) => {
@@ -123,23 +123,23 @@ export default function CostCalculatorsPage() {
           })}
         </div>
 
-        {/* ── WHY COST CALCULATORS ──────────────────────────────────────── */}
+        {/* -- WHY COST CALCULATORS ---------------------------------------- */}
         <section className="mt-16 rounded-2xl border border-gray-100 bg-gray-50 p-8">
           <h2 className="text-xl font-bold text-gray-900">
             Why use a cost calculator before you spend?
           </h2>
           <p className="mt-3 max-w-3xl text-sm leading-relaxed text-gray-500">
             Most contractors and service providers give you a quote only after a
-            consultation — which takes time and creates pressure to commit. A cost
+            consultation � which takes time and creates pressure to commit. A cost
             calculator gives you a realistic budget range before you pick up the phone,
             so you can compare quotes confidently, spot outliers, and avoid being
             overcharged.
           </p>
           <div className="mt-6 grid gap-4 sm:grid-cols-3">
             {[
-              { title: "Know before you call",  body: "Walk into any quote conversation with a realistic number in mind. Avoid the surprise of a quote that's 3× what you expected." },
+              { title: "Know before you call",  body: "Walk into any quote conversation with a realistic number in mind. Avoid the surprise of a quote that's 3� what you expected." },
               { title: "Compare like for like", body: "When you know the market rate for your specific situation, comparing multiple quotes becomes much easier." },
-              { title: "Budget accurately",     body: "Estimates account for size, complexity, and location — giving you a tighter range than generic online averages." },
+              { title: "Budget accurately",     body: "Estimates account for size, complexity, and location � giving you a tighter range than generic online averages." },
             ].map(({ title, body }) => (
               <div key={title}>
                 <p className="text-sm font-bold text-gray-700">{title}</p>
@@ -149,15 +149,15 @@ export default function CostCalculatorsPage() {
           </div>
         </section>
 
-        {/* ── RELATED CATEGORIES ────────────────────────────────────────── */}
+        {/* -- RELATED CATEGORIES ------------------------------------------ */}
         <section className="mt-12">
           <h2 className="text-lg font-bold text-gray-800">Related categories</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {[
-              { label: "💰 Money Calculators",       href: "/tools?category=money",       note: "Salary, tax, savings & investments" },
-              { label: "🏠 Home & Living",            href: "/tools?category=home-living", note: "Mortgages, rent, household costs" },
-              { label: "🏗️ Construction Calculators", href: "/construction-calculators",   note: "Concrete, materials & project costing" },
-              { label: "🌱 Energy & Sustainability",  href: "/tools?category=energy",      note: "Solar, bills & carbon footprint" },
+              { label: "?? Money Calculators",       href: "/tools?category=money",       note: "Salary, tax, savings & investments" },
+              { label: "?? Home & Living",            href: "/tools?category=home-living", note: "Mortgages, rent, household costs" },
+              { label: "??? Construction Calculators", href: "/construction-calculators",   note: "Concrete, materials & project costing" },
+              { label: "?? Energy & Sustainability",  href: "/tools?category=energy",      note: "Solar, bills & carbon footprint" },
             ].map(({ label, href, note }) => (
               <Link
                 key={href}

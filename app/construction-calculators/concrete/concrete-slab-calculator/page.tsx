@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   ],
   alternates: {
     canonical:
-      "https://www.worthulator.com/construction-calculators/concrete/concrete-slab-calculator",
+      "https://worthulator.com/construction-calculators/concrete/concrete-slab-calculator",
   },
   robots: { index: true, follow: true },
 };
@@ -32,7 +32,7 @@ const jsonLd = [
     name: "Concrete Slab Calculator – Volume, Bags & Cost",
     description:
       "Calculate cubic yards, bag count, and installed cost for concrete slabs — driveways, patios, and foundations.",
-    url: "https://www.worthulator.com/construction-calculators/concrete/concrete-slab-calculator",
+    url: "https://worthulator.com/construction-calculators/concrete/concrete-slab-calculator",
   },
   {
     "@context": "https://schema.org",
