@@ -370,7 +370,7 @@ export default function CompoundInterestCalculatorPage() {
           <h2 className="text-xl font-bold text-gray-950 tracking-tight mb-6">
             Related financial calculators
           </h2>
-          <RelatedTools currentSlug="compound-interest-calculator" limit={4} />
+          <RelatedTools currentTool="compound-interest-calculator" />
           <div className="mt-6 flex flex-wrap gap-3">
             <a
               href="/tools/mortgage-calculator"

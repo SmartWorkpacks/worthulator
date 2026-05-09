@@ -333,7 +333,7 @@ export default function LoanCalculatorPage() {
               </a>
             ))}
           </div>
-          <RelatedTools currentSlug="loan-calculator" />
+          <RelatedTools currentTool="loan-calculator" />
         </div>
       </section>
 

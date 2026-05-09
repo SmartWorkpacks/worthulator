@@ -302,16 +302,7 @@ export default function MortgageCalculatorPage() {
       <section className="border-t border-gray-100 bg-white px-5 py-12 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-lg font-bold text-gray-950 mb-5">Related calculators</h2>
-          <RelatedTools
-            tools={[
-              { label: "Take Home Pay Calculator",          href: "/tools/take-home-pay-calculator" },
-              { label: "Salary Breakdown Calculator",       href: "/tools/salary-breakdown-calculator" },
-              { label: "Hourly to Salary Calculator",       href: "/tools/hourly-to-salary-calculator" },
-              { label: "Home Remodel Cost Calculator",      href: "/cost-calculators/remodel/home-remodel-cost" },
-              { label: "Bathroom Remodel Cost Calculator",  href: "/cost-calculators/remodel/bathroom-remodel-cost" },
-              { label: "All Cost Calculators",              href: "/cost-calculators" },
-            ]}
-          />
+          <RelatedTools currentTool="mortgage-calculator" />
         </div>
       </section>
     </main>
