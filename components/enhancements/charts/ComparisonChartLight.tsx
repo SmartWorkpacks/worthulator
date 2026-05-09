@@ -102,7 +102,7 @@ export default function ComparisonChart({
           <Tooltip
             cursor={{ fill: "rgba(0,0,0,0.03)" }}
             contentStyle={TOOLTIP_STYLE}
-            formatter={(v: unknown, name: string | undefined) => [fmtDollar(Number(v)), name ?? ""]}
+            formatter={(v: unknown) => [fmtDollar(Number(v))]}
             labelStyle={{ fontWeight: 600, marginBottom: 4 }}
           />
           {series.length > 1 && (
