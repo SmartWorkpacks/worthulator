@@ -6,9 +6,10 @@ import { useState, useEffect, useRef } from "react";
 import { Slider } from "@/components/ui/slider";
 import { formatCurrency, getLocale, type Locale } from "@/src/lib/locale";
 import DataBreakdown from "@/components/enhancements/insights/DataBreakdown";
-import EarningsChart from "@/components/enhancements/charts/EarningsChart";
+import DarkResultCard from "@/components/ui/DarkResultCard";
+import EarningsChart from "@/components/enhancements/charts/EarningsChartLight";
 import InsightPanel from "@/components/enhancements/insights/InsightPanel";
-import ComparisonChart from "@/components/enhancements/charts/ComparisonChart";
+import ComparisonChart from "@/components/enhancements/charts/ComparisonChartLight";
 
 // -- Component ----------------------------------------------------
 
@@ -257,38 +258,28 @@ export default function HourlyToSalaryCalculator() {
       <div className="flex flex-col gap-6">
 
         {/* Hero result */}
-        <div className={`relative overflow-hidden rounded-2xl border bg-gray-950 p-8 transition-all duration-500 ${flash ? "border-emerald-500/20 shadow-[0_24px_100px_rgba(0,0,0,0.55),0_0_40px_rgba(52,211,153,0.1)]" : "border-white/8 shadow-[0_24px_80px_rgba(0,0,0,0.45)]"}`}>
-          <div className={`pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full blur-3xl transition-all duration-500 ${flash ? "bg-emerald-500/25 scale-110" : "bg-emerald-500/15 scale-100"}`} />
-          <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-emerald-900/40 blur-3xl" />
-
-          <p className="relative text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
-            Annual Salary
-          </p>
-          <p className={`relative mt-3 text-[clamp(3.5rem,8vw,5.5rem)] font-bold leading-none tracking-[-0.04em] transition-all duration-500 ${flash ? "text-emerald-300 [text-shadow:0_0_40px_rgba(52,211,153,0.6)]" : "text-emerald-400 [text-shadow:0_0_20px_rgba(52,211,153,0.28)]"}`}>
-            {formatCurrency(displayAnnual, locale)}
-          </p>
-
+        <DarkResultCard
+          label="Annual Salary"
+          value={formatCurrency(displayAnnual, locale)}
+          sub="gross · before tax"
+          flash={flash}
+        >
           {/* Change delta indicator */}
-          <div className={`relative mt-1 h-6 overflow-hidden transition-all duration-700 ${showChange ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}`}>
+          <div className={`h-6 overflow-hidden transition-all duration-700 ${showChange ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"}`}>
             {changeAmount !== 0 && (
               <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${changeAmount > 0 ? "bg-emerald-500/20 text-emerald-300" : "bg-red-500/20 text-red-300"}`}>
                 {changeAmount > 0 ? "+" : ""}{formatCurrency(Math.abs(changeAmount), locale)}{" / yr"}
               </span>
             )}
           </div>
-
-          <p className="relative mt-2 text-sm font-medium text-gray-400">
-            gross &nbsp;&middot;&nbsp; before tax
-          </p>
-
           {/* Insight text */}
           {hourlyRate > 0 && (
-            <p className="relative mt-3 text-sm font-medium text-emerald-400">
+            <p className="text-sm font-medium text-emerald-400">
               At <span className="font-bold text-emerald-300">{sym}{hourlyRate}/hour</span>, you earn approximately{" "}
               <span className="font-bold text-emerald-300">{formatCurrency(annual, locale)}</span> per year.
             </p>
           )}
-        </div>
+        </DarkResultCard>
 
         {/* Annual / Monthly / Weekly / Daily cards */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -387,13 +378,15 @@ export default function HourlyToSalaryCalculator() {
           </div>
 
           {/* Live preview */}
-          <div className="mt-5 rounded-xl border border-white/7 bg-gray-950 px-5 py-4">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">Live estimate</p>
-            <p className={`mt-1 text-3xl font-bold tracking-[-0.03em] transition-all duration-500 ${flash ? "text-emerald-300 [text-shadow:0_0_20px_rgba(52,211,153,0.5)]" : "text-emerald-400"}`}>
-              {formatCurrency(annual, locale)}<span className="ml-2 text-sm font-normal text-gray-500">/ year</span>
-            </p>
-            <p className="mt-0.5 text-sm text-gray-400">{formatCurrency(monthly, locale)} / mo &nbsp;&middot;&nbsp; {formatCurrency(weekly, locale)} / wk</p>
-          </div>
+          <DarkResultCard
+            label="Live estimate"
+            value={formatCurrency(annual, locale)}
+            valueSuffix="/ year"
+            sub={`${formatCurrency(monthly, locale)} / mo · ${formatCurrency(weekly, locale)} / wk`}
+            flash={flash}
+            compact
+            className="mt-5"
+          />
         </div>
 
         {/* Income CTA */}

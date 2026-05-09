@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DarkResultCard from "@/components/ui/DarkResultCard";
 import RelatedTools from "@/components/RelatedTools";
 import HourlyToSalaryCalculator from "../hourly-to-salary-calculator/HourlyToSalaryCalculatorLoader";
 import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
@@ -78,30 +79,16 @@ const jsonLd = [
 ];
 
 const heroCard = (
-  <div className="relative overflow-hidden rounded-2xl border border-white/8 bg-gray-950 p-6 shadow-[0_20px_60px_rgba(0,0,0,0.35)]">
-    <div className="pointer-events-none absolute -right-12 -top-12 h-48 w-48 rounded-full bg-emerald-500/15 blur-3xl" />
-    <p className="relative text-xs font-semibold uppercase tracking-[0.25em] text-gray-400">
-      Example &middot; £15/hr &middot; 37.5 hrs/wk
-    </p>
-    <p className="relative mt-3 text-5xl font-bold tracking-[-0.04em] text-emerald-400 [text-shadow:0_0_20px_rgba(52,211,153,0.28)]">
-      £29,250
-    </p>
-    <p className="relative mt-1 text-sm text-gray-500">annual salary (gross)</p>
-    <div className="mt-4 grid grid-cols-3 gap-3 text-center">
-      <div>
-        <p className="text-lg font-bold text-emerald-400">£2,438</p>
-        <p className="text-xs text-gray-500">/ month</p>
-      </div>
-      <div>
-        <p className="text-lg font-bold text-emerald-400">£563</p>
-        <p className="text-xs text-gray-500">/ week</p>
-      </div>
-      <div>
-        <p className="text-lg font-bold text-emerald-400">£113</p>
-        <p className="text-xs text-gray-500">/ day</p>
-      </div>
-    </div>
-  </div>
+  <DarkResultCard
+    label="Example · £15/hr · 37.5 HRS/WK"
+    value="£29,250"
+    sub="annual salary (gross)"
+    stats={[
+      { value: "£2,438", label: "/ month" },
+      { value: "£563",   label: "/ week" },
+      { value: "£113",   label: "/ day" },
+    ]}
+  />
 );
 
 const statChips = (

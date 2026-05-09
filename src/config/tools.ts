@@ -348,6 +348,7 @@ export const tools: Tool[] = [
   { name: "Debt Consolidation Calculator",    slug: "debt-consolidation",         tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", popular: true  },
   { name: "Credit Score Impact Tool",         slug: "credit-score-impact",        tier: 1, category: "money", subcategory: "loans",     toolType: "tool"                       },
   { name: "Loan Repayment Calculator",        slug: "loan-repayment",             tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", popular: true  },
+  { name: "Loan Calculator",                  slug: "loan-calculator",            tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", popular: true, status: "live", description: "Calculate monthly payments, total interest, and total cost for car loans, personal loans, student loans, and standard loans." },
   { name: "Personal Loan Comparison Tool",    slug: "personal-loan-comparison",   tier: 1, category: "money", subcategory: "loans",     toolType: "tool"                       },
   { name: "Business Loan Estimator",          slug: "business-loan-estimator",    tier: 1, category: "money", subcategory: "loans",     toolType: "estimator"                  },
   { name: "Credit Card Interest Calculator",  slug: "credit-card-interest",       tier: 2, category: "money", subcategory: "loans",     toolType: "calculator", popular: true  },
@@ -359,6 +360,7 @@ export const tools: Tool[] = [
   // Investing
   {
     name: "Compound Interest Calculator", slug: "compound-interest", tier: 2, category: "money", subcategory: "investing", toolType: "calculator", popular: true, status: "live",
+    href: "/tools/compound-interest-calculator",
     metaTitle: "Compound Interest Calculator – Work Out How Your Money Grows Instantly",
     description: "Work out how your money grows with compound interest. Enter your starting amount, rate, and time period and get instant results for total growth and final value.",
   },
@@ -465,6 +467,7 @@ export const tools: Tool[] = [
   // ══════════════════════════════════════════════════════════════════════════
 
   // Mortgages & Buying
+  { name: "Mortgage Calculator",                      slug: "mortgage-calculator",        tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator", popular: true, status: "live", description: "Calculate your monthly mortgage payment, total interest, amortisation schedule, and affordability. Includes PMI, extra payments, and taxes." },
   { name: "Mortgage Affordability Calculator",       slug: "mortgage-affordability",     tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator", popular: true },
   { name: "Mortgage Refinance Savings Calculator",   slug: "mortgage-refinance-savings", tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator"                 },
   { name: "House Deposit Time Calculator",           slug: "house-deposit-time",         tier: 2, category: "home-living", subcategory: "mortgages", toolType: "calculator"                 },
