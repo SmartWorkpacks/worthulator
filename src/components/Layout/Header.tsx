@@ -63,14 +63,14 @@ function LocaleSwitch() {
 function Logo() {
   return (
     <Link href="/" className="flex shrink-0 items-center gap-2.5 transition-opacity hover:opacity-85">
-      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white text-slate-950">
+      <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-white/5 border border-emerald-400/30">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <path d="M2 3L6 13L8 7L10 13L14 3" stroke="currentColor" strokeWidth="2"
+          <path d="M2 3L6 13L8 7L10 13L14 3" stroke="#34d399" strokeWidth="2"
             strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </span>
-      <span className="text-[17px] font-bold tracking-[-0.03em] text-white">
-        Worth<span className="text-white/50">ulator</span>
+      <span className="text-[17px] font-bold tracking-[-0.03em]">
+        <span className="text-emerald-400">Worth</span><span className="text-white/50">ulator</span>
       </span>
     </Link>
   )

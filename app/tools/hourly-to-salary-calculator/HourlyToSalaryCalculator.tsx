@@ -11,6 +11,64 @@ import EarningsChart from "@/components/enhancements/charts/EarningsChartLight";
 import InsightPanel from "@/components/enhancements/insights/InsightPanel";
 import ComparisonChart from "@/components/enhancements/charts/ComparisonChartLight";
 
+// ─── Calculating loader ─────────────────────────────────────────────────────
+const CALC_STEPS = [
+  "Reading your inputs…",
+  "Calculating annual salary…",
+  "Building your breakdown…",
+  "Finishing up…",
+];
+
+function CalculatingLoader({ progress, step }: { progress: number; step: number }) {
+  return (
+    <div className="relative flex flex-col items-center justify-center py-20 px-6 bg-gray-950 rounded-2xl text-white overflow-hidden">
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at 50% 70%, #10b981 0%, transparent 65%)" }}
+      />
+      <div className="relative mb-7">
+        <div
+          className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-emerald-400 animate-spin"
+          style={{ animationDuration: "0.85s" }}
+        />
+        <div className="w-20 h-20 rounded-full border-2 border-white/10 flex items-center justify-center bg-white/5">
+          <svg width="36" height="36" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 3L6 13L8 7L10 13L14 3" stroke="#34d399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+      </div>
+      <p className="relative text-lg font-bold text-center text-white mb-1">{CALC_STEPS[step] ?? "Calculating…"}</p>
+      <p className="relative text-xs text-white/40 mb-8">Estimating your annual salary</p>
+      <div className="relative w-full max-w-xs">
+        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500 ease-out"
+            style={{ width: progress + "%", background: "linear-gradient(90deg, #10b981, #2dd4bf)" }}
+          />
+        </div>
+        <div className="flex justify-between mt-2">
+          <span className="text-[10px] text-white/30">{Math.round(progress)}% complete</span>
+          <span className="text-[10px] text-white/30">Step {step + 1} / {CALC_STEPS.length}</span>
+        </div>
+      </div>
+      <div className="flex gap-2 mt-6">
+        {CALC_STEPS.map((_, i) => (
+          <div
+            key={i}
+            style={{
+              height: 6,
+              borderRadius: 3,
+              width: i < step ? 20 : i === step ? 32 : 12,
+              backgroundColor: i <= step ? "#34d399" : "rgba(255,255,255,0.15)",
+              transition: "all 0.3s",
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
 // -- Component ----------------------------------------------------
 
 export default function HourlyToSalaryCalculator() {
@@ -27,7 +85,13 @@ export default function HourlyToSalaryCalculator() {
   const animRef                             = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevAnnualRef                       = useRef<number>(0);
   const changeFadeRef                       = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const prevCalculatedRef                   = useRef<boolean>(false);
   const [locale, setLocaleState]            = useState<Locale>("US");
+  // Calculate button state
+  const [calculated,   setCalculated]   = useState<boolean>(false);
+  const [calculating,  setCalculating]  = useState<boolean>(false);
+  const [calcStep,     setCalcStep]     = useState<number>(0);
+  const [calcProgress, setCalcProgress] = useState<number>(0);
 
   const annual  = hourlyRate * hoursPerWeek * weeksPerYear;
   const monthly = annual / 12;
@@ -78,12 +142,52 @@ export default function HourlyToSalaryCalculator() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [annual]);
 
+  // Count-up animation on first reveal after Calculate
+  useEffect(() => {
+    if (!calculated || prevCalculatedRef.current) return;
+    prevCalculatedRef.current = true;
+    const target = annual;
+    const startVal = Math.round(target * 0.72);
+    const diff = target - startVal;
+    if (diff === 0) return;
+    const steps = 30;
+    const c1 = 0.4; const c3 = c1 + 1;
+    const easeOutBack = (t: number) => 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+    let step = 0;
+    const tick = () => {
+      step++;
+      setDisplayAnnual(Math.round(startVal + diff * easeOutBack(step / steps)));
+      if (step < steps) animRef.current = setTimeout(tick, 14);
+      else setDisplayAnnual(target);
+    };
+    animRef.current = setTimeout(tick, 14);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calculated]);
+
   useEffect(() => {
     setLocaleState(getLocale());
     const handler = () => setLocaleState(getLocale());
     window.addEventListener("worthulator:locale", handler);
     return () => window.removeEventListener("worthulator:locale", handler);
   }, []);
+
+  function handleCalculate() {
+    setCalculating(true);
+    setCalcStep(0);
+    setCalcProgress(0);
+    const stepDuration = 350;
+    const steps = CALC_STEPS.length;
+    for (let i = 0; i < steps; i++) {
+      setTimeout(() => {
+        setCalcStep(i);
+        setCalcProgress(Math.round(((i + 1) / steps) * 100));
+      }, i * stepDuration);
+    }
+    setTimeout(() => {
+      setCalculating(false);
+      setCalculated(true);
+    }, steps * stepDuration);
+  }
 
   const quickRates = [15, 20, 25, 35, 50, 75, 100];
   const sym = locale === "US" ? "$" : "£";
@@ -252,13 +356,40 @@ export default function HourlyToSalaryCalculator() {
           </div>
         </div>
 
+        {/* Calculate button — only shown before first calculation */}
+        {!calculated && <button
+          type="button"
+          onClick={handleCalculate}
+          disabled={calculating}
+          className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {calculating ? "Calculating…" : "Calculate my salary →"}
+        </button>}
+
       </div>
 
       {/* OUTPUTS */}
       <div className="flex flex-col gap-6">
 
+        {/* Loader */}
+        {calculating && <CalculatingLoader progress={calcProgress} step={calcStep} />}
+
+        {/* Placeholder before first calculation */}
+        {!calculating && !calculated && (
+          <div className="relative flex flex-col items-center justify-center py-24 px-6 rounded-2xl overflow-hidden bg-gray-950 text-center shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+            <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(ellipse at 50% 80%, #10b981 0%, transparent 60%)" }} />
+            <div className="relative w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-4">
+              <svg width="24" height="24" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 3L6 13L8 7L10 13L14 3" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <p className="relative text-sm font-semibold text-white/70">Enter your hourly rate and hit Calculate</p>
+            <p className="relative mt-1 text-xs text-white/30">Your full breakdown will appear here</p>
+          </div>
+        )}
+
         {/* Hero result */}
-        <DarkResultCard
+        {!calculating && calculated && <DarkResultCard
           label="Annual Salary"
           value={formatCurrency(displayAnnual, locale)}
           sub="gross · before tax"
@@ -279,10 +410,10 @@ export default function HourlyToSalaryCalculator() {
               <span className="font-bold text-emerald-300">{formatCurrency(annual, locale)}</span> per year.
             </p>
           )}
-        </DarkResultCard>
+        </DarkResultCard>}
 
         {/* Annual / Monthly / Weekly / Daily cards */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+        {!calculating && calculated && <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <div className="rounded-2xl border border-white/6 bg-gray-900 p-4 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">Annual Salary</p>
             <p className="mt-2 text-xl font-bold tracking-[-0.03em] text-emerald-400">{formatCurrency(annual, locale)}</p>
@@ -303,10 +434,10 @@ export default function HourlyToSalaryCalculator() {
             <p className="mt-2 text-xl font-bold tracking-[-0.03em] text-emerald-400">{formatCurrency(daily, locale)}</p>
             <p className="mt-0.5 text-xs font-medium text-gray-500">per day</p>
           </div>
-        </div>
+        </div>}
 
         {/* Full breakdown */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
+        {!calculating && calculated && <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
           <p className="mb-5 text-sm font-semibold text-gray-700">Full breakdown</p>
           <dl className="space-y-0">
             <div className="flex items-center justify-between rounded-xl bg-gray-50 px-4 py-3.5">
@@ -344,10 +475,10 @@ export default function HourlyToSalaryCalculator() {
               <dd className="text-xl font-bold tracking-tight text-emerald-600">{formatCurrency(annual, locale)}</dd>
             </div>
           </dl>
-        </div>
+        </div>}
 
         {/* What if */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
+        {!calculating && calculated && <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
           <p className="text-sm font-semibold text-gray-700">What if your rate changed?</p>
           <p className="mt-1 text-xs leading-5 text-gray-400">
             Small hourly changes compound into large annual differences. Try a scenario below.
@@ -387,10 +518,10 @@ export default function HourlyToSalaryCalculator() {
             compact
             className="mt-5"
           />
-        </div>
+        </div>}
 
         {/* Income CTA */}
-        {SHOW_INCOME_CTA && (
+        {!calculating && calculated && SHOW_INCOME_CTA && (
         <div className="flex items-center justify-between gap-4 rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm">
           <p className="text-sm leading-6 text-gray-500">
             Know your rate —{" "}
@@ -406,7 +537,7 @@ export default function HourlyToSalaryCalculator() {
         )}
 
         {/* Trust note */}
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4">
+        {!calculating && calculated && <div className="rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4">
           <p className="text-xs font-medium text-gray-500">
             Gross salary estimate only. Does not include tax, benefits, or deductions. Use our{" "}
             <a href="/tools/take-home-pay-calculator" className="font-semibold text-gray-700 underline underline-offset-2 hover:text-emerald-700">
@@ -414,10 +545,10 @@ export default function HourlyToSalaryCalculator() {
             </a>{" "}
             to see your after-tax income.
           </p>
-        </div>
+        </div>}
 
         {/* ── ENHANCEMENT: EARNINGS ANALYSIS ───────────────────────── */}
-        {hourlyRate > 0 && (
+        {!calculating && calculated && hourlyRate > 0 && (
           <div className="space-y-5 border-t border-gray-100 pt-5">
 
             <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">

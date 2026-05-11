@@ -68,28 +68,12 @@ export default function PassiveIncomeCalculatorUKPage() {
       title="Passive Income Calculator"
       subtitle="See how much passive income your portfolio can generate in pounds — and how long it takes."
       description={
-        <>
-          <p>
-            Enter your starting investment, monthly contributions, and expected return to
-            see your projected portfolio value, monthly passive income in pounds, and time
-            to reach any income target.
-          </p>
-          <ul className="mt-3 space-y-1 text-sm text-gray-400">
-            <li>Compound growth with monthly contributions</li>
-            <li>Inflation-adjusted real portfolio value</li>
-            <li>Conservative, Balanced, and Aggressive scenarios</li>
-            <li>Time-to-goal based on your target monthly income</li>
-          </ul>
-          <p className="mt-3 text-xs text-gray-400">
-            For educational purposes only. Results show pre-tax estimates.
-          </p>
-          <RegionToggle
-            current="uk"
-            usPath="/tools/passive-income-calculator"
-            ukPath="/tools/passive-income-calculator-uk"
-            theme="light"
-          />
-        </>
+        <RegionToggle
+          current="uk"
+          usPath="/tools/passive-income-calculator"
+          ukPath="/tools/passive-income-calculator-uk"
+          theme="light"
+        />
       }
       heroCard={heroCard}
       calculator={<PassiveIncomeCalculatorLoader currency="£" region="UK" />}

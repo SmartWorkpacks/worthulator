@@ -114,35 +114,10 @@ export default function LoanCalculatorPage() {
           </p>
           <h1 className="mt-4 text-[clamp(2.2rem,5vw,3.5rem)] font-bold leading-[1.07] tracking-[-0.04em] text-gray-950">
             Loan Calculator
-            <span className="mt-1 block text-gray-400 font-semibold tracking-normal text-[clamp(1.1rem,2.5vw,1.5rem)]">
+            <span className="mt-1 block text-base font-medium tracking-normal text-gray-400 sm:text-lg">
               Monthly payment, total interest &amp; full cost breakdown — instantly.
             </span>
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-gray-500">
-            Switch between car loan, personal loan, student loan, and standard loan modes.
-            Each mode adapts inputs, defaults, and calculations — including fees, down payments,
-            sales tax, origination fees, depreciation, and student loan grace periods.
-          </p>
-          <p className="mt-3 text-xs text-gray-400">
-            For educational purposes only. Results are estimates and do not constitute
-            financial or lending advice. Always confirm terms directly with your lender.
-          </p>
-        </div>
-      </section>
-
-      {/* ── Stats strip ──────────────────────────────────────────────────── */}
-      <section className="border-b border-gray-100 bg-white px-5 py-8 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
-          {[
-            { stat: "$670/mo",  color: "text-emerald-600", label: "$35k car loan at 6.9% over 60 months" },
-            { stat: "~40%",     color: "text-amber-500",   label: "of a 6-year car loan payment goes to interest" },
-            { stat: "$302/mo",  color: "text-blue-500",    label: "$27k student loan at 6.5% on the standard 10-year plan" },
-          ].map((item) => (
-            <div key={item.stat} className="rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm">
-              <p className={`text-3xl font-bold tracking-tight ${item.color}`}>{item.stat}</p>
-              <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -150,11 +125,22 @@ export default function LoanCalculatorPage() {
       <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <LoanCalculator />
-          <p className="mt-3 text-xs leading-5 text-gray-400">
-            Results are estimates only. Actual loan payments depend on your lender&apos;s exact
-            terms, origination conditions, and any applicable fees not captured above.
-            Always verify with a qualified financial professional before borrowing.
-          </p>
+        </div>
+      </section>
+
+      {/* ── Stats strip ──────────────────────────────────────────────────── */}
+      <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+          {[
+            { stat: "$670/mo",  color: "text-emerald-600", label: "$35k car loan at 6.9% over 60 months" },
+            { stat: "~40%",     color: "text-amber-500",   label: "of a 6-year car loan payment goes to interest" },
+            { stat: "$302/mo",  color: "text-blue-500",    label: "$27k student loan at 6.5% on the standard 10-year plan" },
+          ].map((item) => (
+            <div key={item.stat} className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl">
+              <p className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}>{item.stat}</p>
+              <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
+            </div>
+          ))}
         </div>
       </section>
 

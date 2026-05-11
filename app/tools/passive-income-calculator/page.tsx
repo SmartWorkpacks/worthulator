@@ -150,31 +150,14 @@ export default function PassiveIncomeCalculatorPage() {
       title="Passive Income Calculator"
       subtitle="See how much passive income your portfolio can generate — and how long it takes to get there."
       description={
-        <>
-          <p>
-            Enter your starting investment, monthly contributions, and expected return to
-            see your projected portfolio value, monthly passive income, and time to reach
-            any income target you set.
-          </p>
-          <ul className="mt-3 space-y-1 text-sm text-gray-400">
-            <li>Multiple income streams — investments, property, dividends, business</li>
-            <li>Per-stream income models: compound growth, fixed yield, or hybrid</li>
-            <li>Conservative, Balanced, and Aggressive scenario presets</li>
-            <li>Time to financial freedom based on your target monthly income</li>
-          </ul>
-          <p className="mt-3 text-xs text-gray-400">
-            For educational purposes only. Results show pre-tax estimates.
-          </p>
-          <RegionToggle
-            current="us"
-            usPath="/tools/passive-income-calculator"
-            ukPath="/tools/passive-income-calculator-uk"
-            theme="light"
-          />
-        </>
+        <RegionToggle
+          current="us"
+          usPath="/tools/passive-income-calculator"
+          ukPath="/tools/passive-income-calculator-uk"
+          theme="light"
+        />
       }
       heroCard={heroCard}
-      statChips={statChips}
       calculator={<PassiveIncomeCalculatorLoader currency="$" region="US" />}
       insightText={
         <>
@@ -184,6 +167,13 @@ export default function PassiveIncomeCalculatorPage() {
         </>
       }
     >
+
+      {/* STAT CHIPS */}
+      <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+          {statChips}
+        </div>
+      </section>
 
       {/* ── HOW PASSIVE INCOME WORKS ─────────────────────────────────────── */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">

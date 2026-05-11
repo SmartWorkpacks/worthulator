@@ -475,7 +475,17 @@ export const tools: Tool[] = [
   { name: "Property Tax Calculator",                 slug: "property-tax",               tier: 2, category: "home-living", subcategory: "mortgages", toolType: "calculator"                 },
 
   // Renting
-  { name: "Rent vs Buy Tool",                        slug: "rent-vs-buy",                tier: 2, category: "home-living", subcategory: "renting",   toolType: "tool",       popular: true },
+  {
+    name: "Rent vs Buy Calculator", slug: "rent-vs-buy-calculator", tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator", popular: true, status: "live",
+    description: "Find out whether renting or buying leaves you wealthier. Compare net worth, break-even year, equity growth, and opportunity cost over any time horizon.",
+    keywords: ["rent vs buy calculator", "should I rent or buy", "renting vs buying a home", "buying vs renting calculator", "is it better to rent or buy", "home affordability comparison", "break-even rent vs buy"],
+    intro: "The rent vs buy decision is one of the most consequential financial choices you'll make. This calculator goes beyond monthly payments to show long-term wealth impact, opportunity cost, and exactly when buying starts to make financial sense.",
+    faqs: [
+      { question: "Is it better to rent or buy a home?", answer: "It depends on how long you stay, local home appreciation, and what you'd earn investing the down payment instead. This calculator shows you the exact break-even point for your numbers." },
+      { question: "What is the break-even point for buying vs renting?", answer: "The break-even point is the year when buying's net wealth (equity minus selling costs) overtakes the renter's invested portfolio. Nationally, this is typically 5–7 years but varies widely by market." },
+      { question: "Does renting mean throwing money away?", answer: "Not necessarily. Renters can invest the down payment and monthly savings difference, which may outperform home equity depending on returns. This calculator models both paths honestly." },
+    ],
+  },
 
   // Household Costs
   { name: "Cost of Raising a Child Estimator",       slug: "cost-of-raising-a-child",    tier: 2, category: "home-living", subcategory: "household", toolType: "estimator",  popular: true },

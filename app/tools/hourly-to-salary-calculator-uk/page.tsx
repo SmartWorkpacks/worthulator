@@ -137,25 +137,14 @@ export default function HourlyToSalaryUKPage() {
         title="Hourly to Salary Calculator"
         subtitle="Convert your hourly wage into an annual salary, monthly income, and weekly pay in seconds."
         description={
-          <>
-            <p>
-              Whether you&apos;re comparing job offers, negotiating a rate, or just want to know
-              what your hourly pay adds up to over a year, enter your rate and hours above.
-              The breakdown appears instantly in pounds.
-            </p>
-            <p className="mt-2 text-xs text-gray-400">
-              For educational purposes only. Results show gross income before tax and National Insurance.
-            </p>
-            <RegionToggle
-              current="uk"
-              usPath="/tools/hourly-to-salary-calculator"
-              ukPath="/tools/hourly-to-salary-calculator-uk"
-              theme="light"
-            />
-          </>
+          <RegionToggle
+            current="uk"
+            usPath="/tools/hourly-to-salary-calculator"
+            ukPath="/tools/hourly-to-salary-calculator-uk"
+            theme="light"
+          />
         }
         heroCard={heroCard}
-        statChips={statChips}
         calculator={<HourlyToSalaryCalculator />}
         insightText={
           <>
@@ -165,7 +154,12 @@ export default function HourlyToSalaryUKPage() {
           </>
         }
       >
-        {/* HOW IT WORKS */}
+        {/* STAT CHIPS */}
+        <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+            {statChips}
+          </div>
+        </section>
         <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-5xl">
             <h2 className="text-2xl font-bold tracking-tight text-gray-950">How it works</h2>
@@ -202,7 +196,7 @@ export default function HourlyToSalaryUKPage() {
           </div>
         </section>
 
-        {/* HOW THE CALCULATION WORKS */}
+        {/* HOW IT WORKS */}
         <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-3xl">
             <h2 className="text-2xl font-bold tracking-tight text-gray-950">

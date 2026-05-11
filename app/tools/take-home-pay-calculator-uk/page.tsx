@@ -101,25 +101,18 @@ export default function TakeHomePayUKPage() {
               </p>
               <h1 className="mt-4 text-[clamp(2.4rem,5.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.04em] text-gray-950">
                 Take Home Pay Calculator
-                <span className="mt-1 block tracking-normal font-semibold text-gray-400">
+                <span className="mt-1 block text-base font-medium tracking-normal text-gray-400 sm:text-lg">
                   See your net salary after income tax, National Insurance, and deductions.
                 </span>
               </h1>
-              <p className="mt-2 text-sm font-semibold tracking-tight text-emerald-600">
-                Updated for the 2026–27 tax year.
-              </p>
-              <p className="mt-4 max-w-lg text-lg leading-relaxed text-gray-500">
-                Enter your gross annual salary to see your exact take-home pay after PAYE income
-                tax and National Insurance — broken down annually, monthly, and weekly. No
-                sign-up. Results in seconds.
-              </p>
-
-              <RegionToggle
-                current="uk"
-                usPath="/tools/take-home-pay-calculator"
-                ukPath="/tools/take-home-pay-calculator-uk"
-                theme="light"
-              />
+              <div className="mt-5">
+                <RegionToggle
+                  current="uk"
+                  usPath="/tools/take-home-pay-calculator"
+                  ukPath="/tools/take-home-pay-calculator-uk"
+                  theme="light"
+                />
+              </div>
             </div>
 
             {/* Right — preview stat card */}
@@ -163,40 +156,6 @@ export default function TakeHomePayUKPage() {
         {/* CALCULATOR */}
         <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-5xl">
-            <div className="mb-8 grid gap-3 sm:grid-cols-3">
-              {[
-                {
-                  stat: "£12,570",
-                  color: "text-emerald-600",
-                  label:
-                    "personal allowance for 2025/26 — earnings below this threshold are tax-free",
-                },
-                {
-                  stat: "20%",
-                  color: "text-red-500",
-                  label:
-                    "basic rate income tax on earnings between £12,571 and £50,270 under PAYE",
-                },
-                {
-                  stat: "8%",
-                  color: "text-amber-500",
-                  label:
-                    "National Insurance (Class 1) on earnings between £12,570 and £50,270 per year",
-                },
-              ].map((item) => (
-                <div
-                  key={item.stat}
-                  className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl"
-                >
-                  <p
-                    className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}
-                  >
-                    {item.stat}
-                  </p>
-                  <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
-                </div>
-              ))}
-            </div>
             <TakeHomePayCalculator initialCountry="UK" />
           </div>
         </section>
@@ -210,6 +169,44 @@ export default function TakeHomePayUKPage() {
             the 40% tax band.
           </p>
         </div>
+
+        {/* STAT CHIPS */}
+        <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+            {[
+              {
+                stat: "£12,570",
+                color: "text-emerald-600",
+                label:
+                  "personal allowance for 2025/26 — earnings below this threshold are tax-free",
+              },
+              {
+                stat: "20%",
+                color: "text-red-500",
+                label:
+                  "basic rate income tax on earnings between £12,571 and £50,270 under PAYE",
+              },
+              {
+                stat: "8%",
+                color: "text-amber-500",
+                label:
+                  "National Insurance (Class 1) on earnings between £12,570 and £50,270 per year",
+              },
+            ].map((item) => (
+              <div
+                key={item.stat}
+                className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl"
+              >
+                <p
+                  className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}
+                >
+                  {item.stat}
+                </p>
+                <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* WHAT THIS MEANS */}
         <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">

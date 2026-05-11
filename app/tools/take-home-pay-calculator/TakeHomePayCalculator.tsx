@@ -4,6 +4,64 @@ import { SHOW_INCOME_CTA } from "@/src/lib/featureFlags";
 
 import { useState, useEffect, useRef, Fragment } from "react";
 import { Slider } from "@/components/ui/slider";
+
+// ─── Calculating loader ───────────────────────────────────────────────────────
+const CALC_STEPS = [
+  "Reading your inputs…",
+  "Applying tax brackets…",
+  "Calculating deductions…",
+  "Building your breakdown…",
+];
+
+function CalculatingLoader({ progress, step }: { progress: number; step: number }) {
+  return (
+    <div className="relative flex flex-col items-center justify-center py-20 px-6 bg-gray-950 rounded-2xl text-white overflow-hidden">
+      <div
+        className="absolute inset-0 opacity-20 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse at 50% 70%, #10b981 0%, transparent 65%)" }}
+      />
+      <div className="relative mb-7">
+        <div
+          className="absolute inset-0 rounded-full border-[3px] border-transparent border-t-emerald-400 animate-spin"
+          style={{ animationDuration: "0.85s" }}
+        />
+        <div className="w-20 h-20 rounded-full border-2 border-white/10 flex items-center justify-center bg-white/5">
+          <svg width="36" height="36" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M2 3L6 13L8 7L10 13L14 3" stroke="#34d399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </div>
+      </div>
+      <p className="relative text-lg font-bold text-center text-white mb-1">{CALC_STEPS[step] ?? "Calculating…"}</p>
+      <p className="relative text-xs text-white/40 mb-8">Estimating your take-home pay</p>
+      <div className="relative w-full max-w-xs">
+        <div className="h-1.5 bg-white/10 rounded-full overflow-hidden">
+          <div
+            className="h-full rounded-full transition-all duration-500 ease-out"
+            style={{ width: progress + "%", background: "linear-gradient(90deg, #10b981, #2dd4bf)" }}
+          />
+        </div>
+        <div className="flex justify-between mt-2">
+          <span className="text-[10px] text-white/30">{Math.round(progress)}% complete</span>
+          <span className="text-[10px] text-white/30">Step {step + 1} / {CALC_STEPS.length}</span>
+        </div>
+      </div>
+      <div className="flex gap-2 mt-6">
+        {CALC_STEPS.map((_, i) => (
+          <div
+            key={i}
+            style={{
+              height: 6,
+              borderRadius: 3,
+              width: i < step ? 20 : i === step ? 32 : 12,
+              backgroundColor: i <= step ? "#34d399" : "rgba(255,255,255,0.15)",
+              transition: "all 0.3s",
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 import { formatCurrency, getLocale, setLocale } from "@/src/lib/locale";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 import EarningsChart from "@/components/enhancements/charts/EarningsChart";
@@ -138,10 +196,16 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
   const [displayNet,    setDisplayNet]    = useState<number>(0);
   const [changeAmount,  setChangeAmount]  = useState<number>(0);
   const [showChange,    setShowChange]    = useState<boolean>(false);
+  // Calculate button state — results only reveal after first click
+  const [calculated,    setCalculated]    = useState<boolean>(false);
+  const [calculating,   setCalculating]   = useState<boolean>(false);
+  const [calcStep,      setCalcStep]      = useState<number>(0);
+  const [calcProgress,  setCalcProgress]  = useState<number>(0);
   const animRef                           = useRef<ReturnType<typeof setTimeout> | null>(null);
   const prevNetRef                        = useRef<number>(0);
   const changeFadeRef                     = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isFirstRender                     = useRef<boolean>(true);
+  const prevCalculatedRef                 = useRef<boolean>(false);
   const router = useRouter();
   const params = useParams();
 
@@ -260,6 +324,28 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [net]);
 
+  // Count-up animation on first reveal after Calculate
+  useEffect(() => {
+    if (!calculated || prevCalculatedRef.current) return;
+    prevCalculatedRef.current = true;
+    const target = net;
+    const startVal = Math.round(target * 0.72);
+    const diff = target - startVal;
+    if (diff === 0) return;
+    const steps = 30;
+    const c1 = 0.4; const c3 = c1 + 1;
+    const easeOutBack = (t: number) => 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+    let step = 0;
+    const tick = () => {
+      step++;
+      setDisplayNet(Math.round(startVal + diff * easeOutBack(step / steps)));
+      if (step < steps) animRef.current = setTimeout(tick, 14);
+      else setDisplayNet(target);
+    };
+    animRef.current = setTimeout(tick, 14);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calculated]);
+
   const chartData = [
     { name: "Take-home", value: net > 0 ? net : 0, fill: "#34d399" },
     ...breakdowns
@@ -279,6 +365,47 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
     return () => clearTimeout(t);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [net]);
+
+  // Count-up animation on first reveal after Calculate
+  useEffect(() => {
+    if (!calculated || prevCalculatedRef.current) return;
+    prevCalculatedRef.current = true;
+    const target = net;
+    const startVal = Math.round(target * 0.72);
+    const diff = target - startVal;
+    if (diff === 0) return;
+    const steps = 30;
+    const c1 = 0.4; const c3 = c1 + 1;
+    const easeOutBack = (t: number) => 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+    let step = 0;
+    const tick = () => {
+      step++;
+      setDisplayNet(Math.round(startVal + diff * easeOutBack(step / steps)));
+      if (step < steps) animRef.current = setTimeout(tick, 14);
+      else setDisplayNet(target);
+    };
+    animRef.current = setTimeout(tick, 14);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [calculated]);
+
+  function handleCalculate() {
+    setCalculating(true);
+    setCalcStep(0);
+    setCalcProgress(0);
+    // Step through 4 stages over ~1.4s then reveal results
+    const stepDuration = 350;
+    const steps = CALC_STEPS.length;
+    for (let i = 0; i < steps; i++) {
+      setTimeout(() => {
+        setCalcStep(i);
+        setCalcProgress(Math.round(((i + 1) / steps) * 100));
+      }, i * stepDuration);
+    }
+    setTimeout(() => {
+      setCalculating(false);
+      setCalculated(true);
+    }, steps * stepDuration);
+  }
 
   return (
     <div className="grid gap-8 lg:grid-cols-[2fr_3fr] lg:gap-10">
@@ -444,8 +571,23 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
                 </option>
               ))}
             </select>
-            <div className="mt-4 **:[[role=slider]]:h-5 **:[[role=slider]]:w-5 **:[[role=slider]]:bg-emerald-500 **:[[role=slider]]:border-emerald-400 **:[[role=slider]]:shadow-md **:[[role=slider]]:transition-all **:[[role=slider]]:duration-150 **:[[role=slider]]:cursor-grab **:[[role=slider]]:hover:scale-[1.1] **:[[role=slider]]:active:scale-[1.15] **:[[role=slider]]:active:cursor-grabbing">
-              <Slider min={0} max={13} step={0.5} value={stateTaxRate} onValueChange={(v) => { setStateTaxRate(v); setSelectedState(""); router.push("/tools/take-home-pay-calculator"); }} />
+            <div className="mt-4">
+              {/* Gradient-fill range slider */}
+              <div className="relative h-3 rounded-full bg-gray-100">
+                <div
+                  className="pointer-events-none absolute left-0 top-0 h-full rounded-full"
+                  style={{ width: ((stateTaxRate[0] / 13) * 100) + "%", background: "linear-gradient(90deg, #10b981, #34d399)" }}
+                />
+                <input
+                  type="range"
+                  min={0}
+                  max={13}
+                  step={0.5}
+                  value={stateTaxRate[0]}
+                  onChange={(e) => { setStateTaxRate([Number(e.target.value)]); setSelectedState(""); router.push("/tools/take-home-pay-calculator"); }}
+                  className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                />
+              </div>
               <div className="mt-1.5 flex justify-between text-xs text-gray-400">
                 <span>0% (no state tax)</span>
                 <span>13% (CA)</span>
@@ -468,13 +610,42 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
           </div>
         )}
 
+        {/* Calculate button — only shown before first calculation */}
+        {!calculated && <button
+          type="button"
+          onClick={handleCalculate}
+          disabled={calculating}
+          className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          {calculating ? "Calculating…" : "Calculate my take-home pay →"}
+        </button>}
+
       </div>
 
       {/* RESULTS */}
       <div className="flex flex-col gap-4">
 
+        {/* Loader */}
+        {calculating && (
+          <CalculatingLoader progress={calcProgress} step={calcStep} />
+        )}
+
+        {/* Results — only show after first calculation */}
+        {!calculating && !calculated && (
+          <div className="relative flex flex-col items-center justify-center py-24 px-6 rounded-2xl overflow-hidden bg-gray-950 text-center shadow-[0_24px_80px_rgba(0,0,0,0.45)]">
+            <div className="pointer-events-none absolute inset-0 opacity-20" style={{ background: "radial-gradient(ellipse at 50% 80%, #10b981 0%, transparent 60%)" }} />
+            <div className="relative w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center mb-4">
+              <svg width="24" height="24" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M2 3L6 13L8 7L10 13L14 3" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </div>
+            <p className="relative text-sm font-semibold text-white/70">Enter your salary and hit Calculate</p>
+            <p className="relative mt-1 text-xs text-white/30">Your full breakdown will appear here</p>
+          </div>
+        )}
+
         {/* Hero result */}
-        <div className={`relative overflow-hidden rounded-2xl border bg-gray-950 p-8 transition-all duration-500 ${flash ? "border-emerald-500/20 shadow-[0_24px_100px_rgba(0,0,0,0.55),0_0_40px_rgba(52,211,153,0.1)]" : "border-white/8 shadow-[0_24px_80px_rgba(0,0,0,0.45)]"}`}>
+        {!calculating && calculated && <div className={`relative overflow-hidden rounded-2xl border bg-gray-950 p-8 transition-all duration-500 ${flash ? "border-emerald-500/20 shadow-[0_24px_100px_rgba(0,0,0,0.55),0_0_40px_rgba(52,211,153,0.1)]" : "border-white/8 shadow-[0_24px_80px_rgba(0,0,0,0.45)]"}`}>
           <div className={`pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full blur-3xl transition-all duration-500 ${flash ? "bg-emerald-500/25 scale-110" : "bg-emerald-500/15 scale-100"}`} />
           <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-emerald-900/40 blur-3xl" />
 
@@ -529,10 +700,10 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
               </span>
             ))}
           </div>
-        </div>
+        </div>}
 
         {/* Income CTA */}
-        {SHOW_INCOME_CTA && (
+        {!calculating && calculated && SHOW_INCOME_CTA && (
         <div className="flex items-center justify-between gap-4 rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm">
           <p className="text-sm leading-6 text-gray-500">
             You can&apos;t change tax rates —{" "}
@@ -550,7 +721,7 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
         )}
 
         {/* Donut Chart */}
-        {salary > 0 && (
+        {!calculating && calculated && salary > 0 && (
           <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-xl">
             <p className="mb-5 text-xs font-semibold uppercase tracking-[0.2em] text-gray-400">Salary breakdown</p>
             <div className="flex items-center gap-8">
@@ -600,7 +771,7 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
         )}
 
         {/* Breakdown */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
+        {!calculating && calculated && <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
           <p className="mb-5 text-sm font-semibold text-gray-700">Full breakdown</p>
           <dl className="space-y-0">
 
@@ -648,10 +819,10 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
             </div>
 
           </dl>
-        </div>
+        </div>}
 
         {/* Monthly / Weekly / Hourly */}
-        <div className="grid grid-cols-3 gap-3">
+        {!calculating && calculated && <div className="grid grid-cols-3 gap-3">
           <div className="rounded-2xl border border-white/6 bg-gray-900 p-4 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gray-500">Monthly</p>
             <p className="mt-2 text-2xl font-bold tracking-[-0.03em] text-emerald-400">{formatCurrency(monthly, country)}</p>
@@ -667,19 +838,19 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
             <p className="mt-2 text-2xl font-bold tracking-[-0.03em] text-emerald-400">{formatCurrency(hourly, country)}</p>
             <p className="mt-0.5 text-xs font-medium text-gray-500">est. per hour</p>
           </div>
-        </div>
+        </div>}
 
         {/* Trust note */}
-        <div className="rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4">
+        {!calculating && calculated && <div className="rounded-2xl border border-gray-200 bg-gray-50 px-5 py-4">
           <p className="text-xs font-medium text-gray-500">
             {country === "US"
               ? "Estimate only. Does not account for deductions, credits, AMT, or state-specific rules. Not tax advice."
               : "Estimate only. Based on 2024/25 rates. Does not account for pension, student loans, or personal circumstances. Not tax advice."}
           </p>
-        </div>
+        </div>}
 
         {/* ── ENHANCEMENT: INSIGHTS ──────────────────────────────────── */}
-        {salary > 0 && (
+        {!calculating && calculated && salary > 0 && (
           <>
             {/* Insight panel */}
             <InsightPanel
@@ -702,7 +873,7 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
         )}
 
         {/* WHAT IF */}
-        <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
+        {!calculating && calculated && <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl">
           <p className="text-sm font-semibold text-gray-700">What if your salary changed?</p>
           <p className="mt-1 text-xs leading-5 text-gray-400">
             Try changing your salary -- small changes add up quickly. Hit a scenario below to see the impact instantly.
@@ -745,10 +916,10 @@ export default function TakeHomePayCalculator({ initialState, initialCountry }: 
               </p>
             )}
           </div>
-        </div>
+        </div>}
 
         {/* ── SOFT CTA ──────────────────────────────────────────────────── */}
-        {salary > 0 && (
+        {!calculating && calculated && salary > 0 && (
           <div className="rounded-2xl border border-emerald-100 bg-emerald-50 px-6 py-5">
             <p className="text-sm font-semibold text-emerald-900">Want to improve your take-home pay?</p>
             <p className="mt-1 text-xs leading-5 text-emerald-700">

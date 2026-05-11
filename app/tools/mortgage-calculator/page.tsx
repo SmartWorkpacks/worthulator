@@ -111,35 +111,10 @@ export default function MortgageCalculatorPage() {
           </p>
           <h1 className="mt-4 text-[clamp(2.2rem,5vw,3.5rem)] font-bold leading-[1.07] tracking-[-0.04em] text-gray-950">
             Mortgage Calculator
-            <span className="mt-1 block text-gray-400 font-semibold tracking-normal text-[clamp(1.1rem,2.5vw,1.5rem)]">
+            <span className="mt-1 block text-base font-medium tracking-normal text-gray-400 sm:text-lg">
               Monthly payment, amortisation &amp; affordability — instantly.
             </span>
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-gray-500">
-            Enter your home price, down payment, loan term, and interest rate to see your full
-            mortgage breakdown — including total interest, payoff date, and how extra payments
-            can save you tens of thousands of dollars.
-          </p>
-          <p className="mt-3 text-xs text-gray-400">
-            For educational purposes only. Results are estimates based on the inputs provided
-            and do not constitute mortgage advice or a loan offer.
-          </p>
-        </div>
-      </section>
-
-      {/* ── Stats strip ───────────────────────────────────────────────────── */}
-      <section className="border-b border-gray-100 bg-white px-5 py-8 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
-          {[
-            { stat: "$2,200+",  color: "text-emerald-600", label: "typical monthly payment on a $350k home at 7% (30yr)" },
-            { stat: "$180k+",   color: "text-amber-500",   label: "total interest paid on a 30-year $320k mortgage at 7%" },
-            { stat: "5 years",  color: "text-blue-500",    label: "earlier payoff by adding $200/month to a 30-year loan" },
-          ].map((item) => (
-            <div key={item.stat} className="rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm">
-              <p className={`text-3xl font-bold tracking-tight ${item.color}`}>{item.stat}</p>
-              <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -147,11 +122,22 @@ export default function MortgageCalculatorPage() {
       <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <MortgageCalculator />
-          <p className="mt-3 text-xs leading-5 text-gray-400">
-            Results are estimates only. Actual payments depend on your lender&apos;s terms, exact
-            closing date, escrow requirements, and other loan conditions. Always verify with a
-            qualified mortgage professional before making financial decisions.
-          </p>
+        </div>
+      </section>
+
+      {/* ── Stats strip ───────────────────────────────────────────────────── */}
+      <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+          {[
+            { stat: "$2,200+",  color: "text-emerald-600", label: "typical monthly payment on a $350k home at 7% (30yr)" },
+            { stat: "$180k+",   color: "text-amber-500",   label: "total interest paid on a 30-year $320k mortgage at 7%" },
+            { stat: "5 years",  color: "text-blue-500",    label: "earlier payoff by adding $200/month to a 30-year loan" },
+          ].map((item) => (
+            <div key={item.stat} className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl">
+              <p className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}>{item.stat}</p>
+              <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
+            </div>
+          ))}
         </div>
       </section>
 

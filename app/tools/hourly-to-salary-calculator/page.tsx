@@ -104,33 +104,16 @@ export default function HourlyToSalaryPage() {
       jsonLd={jsonLd}
       category="United States · Income Tools"
       title="Hourly to Salary Calculator"
-      subtitle="Convert your hourly wage into an annual salary, monthly income, and weekly pay in seconds."
+      subtitle="See what your hourly pay adds up to annually, monthly, and weekly."
       description={
-        <>
-          <p>
-            Enter your hourly rate and hours per week to instantly see your equivalent
-            annual salary, monthly pay, and weekly earnings. Useful for comparing job
-            offers, negotiating a raise, or understanding what a contract role pays
-            on a salaried basis.
-          </p>
-          <ul className="mt-3 space-y-1 text-sm text-gray-400">
-            <li>Adjustable hours per week and weeks worked per year</li>
-            <li>Annual, monthly, weekly, and daily breakdowns</li>
-            <li>Gross figures — use the Take Home Pay Calculator for after-tax</li>
-          </ul>
-          <p className="mt-3 text-xs text-gray-400">
-            For planning purposes only. Results show gross income before tax.
-          </p>
-          <RegionToggle
-            current="us"
-            usPath="/tools/hourly-to-salary-calculator"
-            ukPath="/tools/hourly-to-salary-calculator-uk"
-            theme="light"
-          />
-        </>
+        <RegionToggle
+          current="us"
+          usPath="/tools/hourly-to-salary-calculator"
+          ukPath="/tools/hourly-to-salary-calculator-uk"
+          theme="light"
+        />
       }
       heroCard={heroCard}
-      statChips={statChips}
       calculator={<HourlyToSalaryCalculator />}
       insightText={
         <>
@@ -140,6 +123,13 @@ export default function HourlyToSalaryPage() {
         </>
       }
     >
+
+      {/* STAT CHIPS — shown after calculator so they don't block the tool */}
+      <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+          {statChips}
+        </div>
+      </section>
 
       {/* HOW THE CALCULATION WORKS */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">

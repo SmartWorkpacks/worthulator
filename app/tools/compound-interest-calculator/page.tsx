@@ -125,35 +125,10 @@ export default function CompoundInterestCalculatorPage() {
           </p>
           <h1 className="mt-4 text-[clamp(2.2rem,5vw,3.5rem)] font-bold leading-[1.07] tracking-[-0.04em] text-gray-950">
             Compound Interest Calculator
-            <span className="mt-1 block text-gray-400 font-semibold tracking-normal text-[clamp(1.1rem,2.5vw,1.5rem)]">
+            <span className="mt-1 block text-base font-medium tracking-normal text-gray-400 sm:text-lg">
               See exactly how your money grows — month by month, year by year.
             </span>
           </h1>
-          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-gray-500">
-            Enter your initial investment, monthly contributions, and interest rate to see your
-            projected balance over time — with inflation adjustment, contribution growth, and
-            tax impact simulation built in.
-          </p>
-          <p className="mt-3 text-xs text-gray-400">
-            For educational purposes only. Results are estimates and do not constitute
-            financial advice.
-          </p>
-        </div>
-      </section>
-
-      {/* ── Stats strip ──────────────────────────────────────────────────── */}
-      <section className="border-b border-gray-100 bg-white px-5 py-8 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
-          {[
-            { stat: "$263k+", color: "text-emerald-600", label: "$200/month at 7% for 30 years — from just $2,400/year" },
-            { stat: "10.5×",  color: "text-amber-500",   label: "return multiplier — $10k grows to $105k at 7% over 30 years" },
-            { stat: "~7%",    color: "text-blue-500",    label: "S&P 500 inflation-adjusted average annual return (historical)" },
-          ].map((item) => (
-            <div key={item.stat} className="rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm">
-              <p className={`text-3xl font-bold tracking-tight ${item.color}`}>{item.stat}</p>
-              <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
-            </div>
-          ))}
         </div>
       </section>
 
@@ -161,11 +136,22 @@ export default function CompoundInterestCalculatorPage() {
       <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <CompoundInterestCalculator />
-          <p className="mt-3 text-xs leading-5 text-gray-400">
-            Results are estimates only. Actual investment returns fluctuate and are not
-            guaranteed. Past performance of market indices does not guarantee future results.
-            Always consult a qualified financial adviser before making investment decisions.
-          </p>
+        </div>
+      </section>
+
+      {/* ── Stats strip ──────────────────────────────────────────────────── */}
+      <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+          {[
+            { stat: "$263k+", color: "text-emerald-600", label: "$200/month at 7% for 30 years — from just $2,400/year" },
+            { stat: "10.5×",  color: "text-amber-500",   label: "return multiplier — $10k grows to $105k at 7% over 30 years" },
+            { stat: "~7%",    color: "text-blue-500",    label: "S&P 500 inflation-adjusted average annual return (historical)" },
+          ].map((item) => (
+            <div key={item.stat} className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl">
+              <p className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}>{item.stat}</p>
+              <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
+            </div>
+          ))}
         </div>
       </section>
 

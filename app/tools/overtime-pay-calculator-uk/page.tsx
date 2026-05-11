@@ -180,40 +180,6 @@ export default function OvertimePayCalculatorUKPage() {
         {/* CALCULATOR */}
         <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-5xl">
-            <div className="mb-8 grid gap-3 sm:grid-cols-3">
-              {[
-                {
-                  stat: "1.5×",
-                  color: "text-emerald-600",
-                  label:
-                    "is the common overtime rate in the UK, though there is no statutory minimum for overtime pay above NMW",
-                },
-                {
-                  stat: "37.5h",
-                  color: "text-amber-500",
-                  label:
-                    "is the UK standard full-time working week — overtime typically starts beyond your contracted hours",
-                },
-                {
-                  stat: "20%+",
-                  color: "text-blue-500",
-                  label:
-                    "increase in weekly pay possible just by working a few extra hours each week",
-                },
-              ].map((item) => (
-                <div
-                  key={item.stat}
-                  className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl"
-                >
-                  <p
-                    className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}
-                  >
-                    {item.stat}
-                  </p>
-                  <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
-                </div>
-              ))}
-            </div>
             <OvertimePayCalculator />
           </div>
         </section>
@@ -226,6 +192,44 @@ export default function OvertimePayCalculatorUKPage() {
             income. See exactly how much with this tool.
           </p>
         </div>
+
+        {/* STAT CHIPS */}
+        <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+            {[
+              {
+                stat: "1.5×",
+                color: "text-emerald-600",
+                label:
+                  "is the common overtime rate in the UK, though there is no statutory minimum for overtime pay above NMW",
+              },
+              {
+                stat: "37.5h",
+                color: "text-amber-500",
+                label:
+                  "is the UK standard full-time working week — overtime typically starts beyond your contracted hours",
+              },
+              {
+                stat: "20%+",
+                color: "text-blue-500",
+                label:
+                  "increase in weekly pay possible just by working a few extra hours each week",
+              },
+            ].map((item) => (
+              <div
+                key={item.stat}
+                className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl"
+              >
+                <p
+                  className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}
+                >
+                  {item.stat}
+                </p>
+                <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
         {/* WHAT THIS MEANS */}
         <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">

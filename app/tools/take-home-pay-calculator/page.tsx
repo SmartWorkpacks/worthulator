@@ -93,23 +93,16 @@ export default function TakeHomePayPage() {
             </p>
             <h1 className="mt-4 text-[clamp(2.4rem,5.5vw,3.75rem)] font-bold leading-[1.05] tracking-[-0.04em] text-gray-950">
               Take Home Pay Calculator
-              <span className="block mt-1 tracking-normal text-gray-400 font-semibold">See your net salary after federal tax, state tax, and Social Security.</span>
+              <span className="block mt-2 text-base font-medium tracking-normal text-gray-400 sm:text-lg">See your exact net salary after federal tax, state tax, and Social Security.</span>
             </h1>
-            <p className="mt-3 text-base font-medium text-gray-600">
-              Enter your salary and see exactly how much you take home after tax instantly.
-            </p>
-            <p className="mt-5 max-w-lg text-lg leading-relaxed text-gray-500">
-              Enter your gross salary to see your net income after federal tax, state income tax, Social Security, and Medicare — broken down annually, monthly, and weekly.
-            </p>
-            <p className="mt-3 text-xs text-gray-400">
-              For educational purposes only. Estimates are based on general tax assumptions and may not reflect your exact situation.
-            </p>
-            <RegionToggle
-              current="us"
-              usPath="/tools/take-home-pay-calculator"
-              ukPath="/tools/take-home-pay-calculator-uk"
-              theme="light"
-            />
+            <div className="mt-5">
+              <RegionToggle
+                current="us"
+                usPath="/tools/take-home-pay-calculator"
+                ukPath="/tools/take-home-pay-calculator-uk"
+                theme="light"
+              />
+            </div>
           </div>
 
           {/* Right — preview stat card */}
@@ -139,22 +132,7 @@ export default function TakeHomePayPage() {
       {/* CALCULATOR */}
       <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
-          <div className="mb-8 grid gap-3 sm:grid-cols-3">
-            {[
-              { stat: "60–70%",     color: "text-emerald-600", label: "is what most people actually take home from their salary" },
-              { stat: "$4,000+",    color: "text-red-500",     label: "lost to federal and state taxes on an average US salary every year" },
-              { stat: "25 secs",    color: "text-blue-500",    label: "to see your exact breakdown with this tool"               },
-            ].map((item) => (
-              <div key={item.stat} className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl">
-                <p className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}>{item.stat}</p>
-                <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
-              </div>
-            ))}
-          </div>
           <TakeHomePayCalculator initialCountry="US" />
-          <p className="mt-4 text-xs leading-5 text-gray-400">
-            This estimate is based on general federal and state tax rules and does not account for all deductions, credits, or personal circumstances. It is not financial or tax advice.
-          </p>
         </div>
       </section>
 
@@ -166,6 +144,22 @@ export default function TakeHomePayPage() {
           depending on their tax rate and deductions. See exactly where yours sits.
         </p>
       </div>
+
+      {/* STAT CHIPS — moved below the calculator */}
+      <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+          {[
+            { stat: "60–70%",  color: "text-emerald-600", label: "is what most people actually take home from their salary" },
+            { stat: "$4,000+", color: "text-red-500",     label: "lost to federal and state taxes on an average US salary every year" },
+            { stat: "25 secs", color: "text-blue-500",    label: "to see your exact breakdown with this tool" },
+          ].map((item) => (
+            <div key={item.stat} className="group rounded-2xl border border-gray-200 bg-white px-6 py-5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:border-gray-300 hover:shadow-xl">
+              <p className={`text-3xl font-bold tracking-tight transition-transform duration-200 group-hover:scale-105 ${item.color}`}>{item.stat}</p>
+              <p className="mt-1.5 text-xs leading-5 text-gray-500">{item.label}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* WHAT THIS MEANS */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">

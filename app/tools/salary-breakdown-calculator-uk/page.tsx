@@ -155,18 +155,8 @@ export default function SalaryBreakdownCalculatorUKPage() {
       category="United Kingdom · Tax"
       title="Salary Breakdown Calculator"
       subtitle="See exactly where your money goes — income tax, National Insurance, pension, and your real take-home pay."
-      description={
-        <>
-          Enter your annual salary, add a pension contribution, and get an instant
-          breakdown of income tax, National Insurance, and your monthly take-home
-          pay. Uses real 2024/25 HMRC bands.{" "}
-          <span className="mt-2 block text-sm text-gray-400">
-            For planning purposes only. Scotland has separate rates not covered here.
-            Verify with a tax adviser for personal advice.
-          </span>
-        </>
-      }
-      statChips={statChips}
+      description={null}
+      statChips={undefined}
       heroCard={heroCard}
       calculator={<SalaryBreakdownCalculatorLoader defaultRegion="UK" />}
       insightText={
@@ -178,7 +168,12 @@ export default function SalaryBreakdownCalculatorUKPage() {
       }
     >
 
-      {/* ── HOW IT'S CALCULATED ─────────────────────────────────────── */}
+      {/* STAT CHIPS */}
+      <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+          {statChips}
+        </div>
+      </section>
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <h2 className="text-2xl font-bold text-gray-900">
