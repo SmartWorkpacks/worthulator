@@ -18,7 +18,7 @@ import {
 
 // ─── Shared chart style ───────────────────────────────────────────────────────
 
-const TICK = { fill: "#9ca3af", fontSize: 11 };
+const TICK = { fill: "#6b7280", fontSize: 11 };
 const TT_STYLE = {
   backgroundColor: "#111827",
   border: "1px solid rgba(255,255,255,0.08)",
@@ -137,16 +137,16 @@ interface ResultCardProps {
 
 function ResultCard({ label, value, sub, accent = "emerald", large = false }: ResultCardProps) {
   const accents: Record<string, string> = {
-    emerald: "text-emerald-400",
-    cyan:    "text-cyan-400",
-    amber:   "text-amber-400",
-    rose:    "text-rose-400",
-    violet:  "text-violet-400",
-    orange:  "text-orange-400",
+    emerald: "text-emerald-600",
+    cyan:    "text-cyan-600",
+    amber:   "text-amber-600",
+    rose:    "text-rose-600",
+    violet:  "text-violet-600",
+    orange:  "text-orange-600",
   };
   return (
-    <div className={`rounded-2xl border border-white/6 bg-gray-900 p-5 shadow-lg transition-all duration-200 hover:-translate-y-0.5 hover:shadow-xl ${large ? "col-span-2 sm:col-span-1" : ""}`}>
-      <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-gray-500">{label}</p>
+    <div className={`rounded-2xl border border-gray-100 bg-white p-5 shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md ${large ? "col-span-2 sm:col-span-1" : ""}`}>
+      <p className="text-[10px] font-semibold uppercase tracking-[0.25em] text-gray-400">{label}</p>
       <p className={`mt-2 font-bold tabular-nums tracking-tight ${large ? "text-3xl" : "text-xl"} ${accents[accent]}`}>{value}</p>
       {sub && <p className="mt-1 text-[11px] text-gray-500">{sub}</p>}
     </div>
@@ -517,7 +517,7 @@ export default function RetirementCalculator() {
           RESULTS
       ═══════════════════════════════════════════════════════════════════ */}
       {calculated && !calculating && result && (
-        <>
+        <div className="p-4 sm:p-6 space-y-4 bg-gray-50/70 border-t border-gray-100">
           {/* ── HERO CARD ──────────────────────────────────────────────────── */}
           <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gray-950 p-6 sm:p-8 shadow-2xl">
             <div
@@ -592,15 +592,15 @@ export default function RetirementCalculator() {
           </div>
 
           {/* ── INCOME COVERAGE VISUAL ────────────────────────────────────── */}
-          <div className="rounded-2xl border border-white/6 bg-gray-900 p-6 shadow-lg">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
+          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-500">
               Monthly Retirement Income Coverage
             </p>
             <p className="mb-5 text-[11px] text-gray-500">
               How much of your {fmtRetCurrency(result.monthlyRetirementNeed)}/mo goal is covered (in retirement-day dollars)
             </p>
 
-            <div className="relative h-9 w-full rounded-xl bg-white/5 overflow-hidden">
+            <div className="relative h-9 w-full rounded-xl bg-gray-100 overflow-hidden">
               {/* Portfolio bar */}
               <div
                 className="absolute top-0 left-0 h-full bg-emerald-500/80 transition-all duration-1000 flex items-center justify-end pr-2"
@@ -625,26 +625,26 @@ export default function RetirementCalculator() {
             </div>
 
             <div className="flex flex-wrap gap-4 mt-4">
-              <span className="flex items-center gap-1.5 text-[11px] text-gray-300">
-                <span className="h-2 w-3 rounded-sm bg-emerald-500/80" />
-                Portfolio: <strong className="text-emerald-400">{fmtRetCurrency(result.portfolioMonthlyIncome)}/mo</strong>
+              <span className="flex items-center gap-1.5 text-[11px] text-gray-600">
+                <span className="h-2 w-3 rounded-sm bg-emerald-500" />
+                Portfolio: <strong className="text-emerald-700">{fmtRetCurrency(result.portfolioMonthlyIncome)}/mo</strong>
               </span>
               {result.socialSecurityAdjusted > 0 && (
-                <span className="flex items-center gap-1.5 text-[11px] text-gray-300">
-                  <span className="h-2 w-3 rounded-sm bg-cyan-500/70" />
-                  Social Security: <strong className="text-cyan-400">{fmtRetCurrency(result.socialSecurityAdjusted)}/mo</strong>
+                <span className="flex items-center gap-1.5 text-[11px] text-gray-600">
+                  <span className="h-2 w-3 rounded-sm bg-cyan-500" />
+                  Social Security: <strong className="text-cyan-700">{fmtRetCurrency(result.socialSecurityAdjusted)}/mo</strong>
                 </span>
               )}
               {result.monthlyIncomeGap > 0 ? (
-                <span className="flex items-center gap-1.5 text-[11px] text-rose-400">
+                <span className="flex items-center gap-1.5 text-[11px] text-rose-600">
                   ⚠ Shortfall: <strong>{fmtRetCurrency(result.monthlyIncomeGap)}/mo</strong>
                 </span>
               ) : (
-                <span className="flex items-center gap-1.5 text-[11px] text-emerald-400">
+                <span className="flex items-center gap-1.5 text-[11px] text-emerald-600">
                   ✓ Surplus: <strong>{fmtRetCurrency(Math.abs(result.monthlyIncomeGap))}/mo</strong>
                 </span>
               )}
-              <span className="ml-auto flex items-center gap-1.5 text-[11px] text-amber-400">
+              <span className="ml-auto flex items-center gap-1.5 text-[11px] text-amber-600">
                 Goal: <strong>{fmtRetCurrency(result.monthlyRetirementNeed)}/mo</strong>
               </span>
             </div>
@@ -691,8 +691,8 @@ export default function RetirementCalculator() {
           </div>
 
           {/* ── CHART 1: FULL LIFETIME PORTFOLIO CURVE ─────────────────────── */}
-          <div className="hidden sm:block rounded-2xl border border-white/6 bg-gray-900 p-5 shadow-lg">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
+          <div className="hidden sm:block rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-600">
               Full Lifetime Portfolio Curve
             </p>
             <p className="mb-5 text-[11px] text-gray-500">
@@ -716,8 +716,8 @@ export default function RetirementCalculator() {
                 <YAxis tickFormatter={fmtY} tick={TICK} axisLine={false} tickLine={false} width={52} />
                 <Tooltip
                   contentStyle={TT_STYLE}
-                  formatter={(v: number, name: string) => [
-                    fmtRetCurrency(v),
+                  formatter={(v: unknown, name: string) => [
+                    fmtRetCurrency(Number(v)),
                     name === "portfolio" ? "Portfolio Value" : name === "inflAdj" ? "Inflation-Adjusted" : name,
                   ]}
                   labelFormatter={(label) => `Age ${label}`}
@@ -749,8 +749,8 @@ export default function RetirementCalculator() {
 
           {/* ── CHART 2: CONTRIBUTIONS VS GROWTH ─────────────────────────── */}
           {accumData.length > 0 && (
-            <div className="hidden sm:block rounded-2xl border border-white/6 bg-gray-900 p-5 shadow-lg">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
+          <div className="hidden sm:block rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-600">
                 Contributions vs Compound Growth
               </p>
               <p className="mb-5 text-[11px] text-gray-500">
@@ -774,8 +774,8 @@ export default function RetirementCalculator() {
                   <YAxis tickFormatter={fmtY} tick={TICK} axisLine={false} tickLine={false} width={52} />
                   <Tooltip
                     contentStyle={TT_STYLE}
-                    formatter={(v: number, name: string) => [
-                      fmtRetCurrency(v),
+                    formatter={(v: unknown, name: string) => [
+                      fmtRetCurrency(Number(v)),
                       name === "contributions" ? "Total Contributions" : "Compound Growth",
                     ]}
                     labelFormatter={(label) => `Age ${label}`}
@@ -794,8 +794,8 @@ export default function RetirementCalculator() {
 
           {/* ── CHART 3: DRAWDOWN SUSTAINABILITY ─────────────────────────── */}
           {drawdownData.length > 0 && (
-            <div className="hidden sm:block rounded-2xl border border-white/6 bg-gray-900 p-5 shadow-lg">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
+          <div className="hidden sm:block rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-600">
                 Retirement Drawdown Projection
               </p>
               <p className="mb-5 text-[11px] text-gray-500">
@@ -815,8 +815,8 @@ export default function RetirementCalculator() {
                   <YAxis tickFormatter={fmtY} tick={TICK} axisLine={false} tickLine={false} width={52} />
                   <Tooltip
                     contentStyle={TT_STYLE}
-                    formatter={(v: number, name: string) => [
-                      fmtRetCurrency(v),
+                    formatter={(v: unknown, name: string) => [
+                      fmtRetCurrency(Number(v)),
                       name === "portfolio" ? "Portfolio Balance" : "Inflation-Adjusted",
                     ]}
                   />
@@ -837,8 +837,8 @@ export default function RetirementCalculator() {
 
           {/* ── CHART 4: ANNUAL GROWTH BARS ───────────────────────────────── */}
           {accumData.length > 0 && (
-            <div className="hidden sm:block rounded-2xl border border-white/6 bg-gray-900 p-5 shadow-lg">
-              <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">
+          <div className="hidden sm:block rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-600">
                 Annual Portfolio Value During Saving Phase
               </p>
               <p className="mb-5 text-[11px] text-gray-500">
@@ -851,7 +851,7 @@ export default function RetirementCalculator() {
                     interval={Math.max(0, Math.floor(accumData.length / 8) - 1)} />
                   <YAxis tickFormatter={fmtY} tick={TICK} axisLine={false} tickLine={false} width={52} />
                   <Tooltip contentStyle={TT_STYLE}
-                    formatter={(v: number) => [fmtRetCurrency(v), "Portfolio Value"]}
+                    formatter={(v: unknown) => [fmtRetCurrency(Number(v)), "Portfolio Value"]}
                     labelFormatter={(label) => `Age ${label}`}
                   />
                   <Bar dataKey="total" name="Portfolio Value" radius={[3, 3, 0, 0]}>
@@ -869,8 +869,8 @@ export default function RetirementCalculator() {
           )}
 
           {/* ── MILESTONES ───────────────────────────────────────────────────── */}
-          <div className="rounded-2xl border border-white/6 bg-gray-900 p-6 shadow-lg">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Wealth Milestones</p>
+          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-600">Wealth Milestones</p>
             <p className="mb-4 text-[11px] text-gray-500">Ages when your portfolio crosses key thresholds during the saving phase</p>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {result.milestones.map((m) => {
@@ -880,15 +880,15 @@ export default function RetirementCalculator() {
                     key={m.amount}
                     className={`rounded-xl border p-3.5 text-center transition-all duration-300 ${
                       reached
-                        ? "border-emerald-500/25 bg-emerald-900/10"
-                        : "border-white/5 bg-white/2 opacity-35"
+                        ? "border-emerald-200 bg-emerald-50"
+                        : "border-gray-100 bg-gray-50 opacity-50"
                     }`}
                   >
-                    <p className={`text-sm font-bold ${reached ? "text-emerald-400" : "text-gray-600"}`}>
+                    <p className={`text-sm font-bold ${reached ? "text-emerald-700" : "text-gray-400"}`}>
                       {m.label === "Millionaire" ? "🏆" : m.label === "$2M" ? "💎" : "✦"}{" "}
                       {m.label === "Millionaire" ? "Millionaire!" : m.label}
                     </p>
-                    <p className={`mt-0.5 text-[11px] ${reached ? "text-gray-300" : "text-gray-600"}`}>
+                    <p className={`mt-0.5 text-[11px] ${reached ? "text-gray-600" : "text-gray-400"}`}>
                       {reached ? `Age ${m.ageToReach}` : "Not reached"}
                     </p>
                   </div>
@@ -898,8 +898,8 @@ export default function RetirementCalculator() {
           </div>
 
           {/* ── WHAT-IF SCENARIOS ─────────────────────────────────────────── */}
-          <div className="rounded-2xl border border-white/6 bg-gray-900 p-6 shadow-lg">
-            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">What-if Scenarios</p>
+          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-[0.22em] text-gray-600">What-if Scenarios</p>
             <p className="mb-4 text-[11px] text-gray-500">Instantly see how small changes dramatically affect your retirement</p>
             <div className="flex flex-wrap gap-2">
               {RETIREMENT_SCENARIOS.map((s, i) => (
@@ -908,8 +908,8 @@ export default function RetirementCalculator() {
                   onClick={() => activeScenario === i ? resetScenario() : applyScenario(i)}
                   className={`rounded-xl border px-3.5 py-2 text-xs font-semibold transition-all duration-200 ${
                     activeScenario === i
-                      ? "border-emerald-500/50 bg-emerald-900/30 text-emerald-300"
-                      : "border-white/10 bg-white/5 text-gray-300 hover:border-white/20 hover:bg-white/8"
+                      ? "border-emerald-300 bg-emerald-50 text-emerald-700"
+                      : "border-gray-200 bg-gray-50 text-gray-600 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-700"
                   }`}
                 >
                   {s.emoji} {s.label}
@@ -918,7 +918,7 @@ export default function RetirementCalculator() {
               {activeScenario !== null && (
                 <button
                   onClick={resetScenario}
-                  className="rounded-xl border border-white/10 bg-white/5 px-3.5 py-2 text-xs font-semibold text-gray-400 transition-all hover:border-white/20"
+                  className="rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2 text-xs font-semibold text-gray-500 transition-all hover:border-gray-300 hover:bg-gray-100"
                 >
                   ↺ Reset
                 </button>
@@ -927,8 +927,8 @@ export default function RetirementCalculator() {
           </div>
 
           {/* ── INSIGHTS ─────────────────────────────────────────────────────── */}
-          <div className="rounded-2xl border border-white/6 bg-gray-900 p-6 shadow-lg">
-            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-400">Key Insights</p>
+          <div className="rounded-2xl border border-gray-100 bg-white p-6 shadow-sm">
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.22em] text-gray-600">Key Insights</p>
             <div className="flex flex-col gap-3">
               {[
                 result.totalGrowth > result.totalContributions
@@ -967,14 +967,14 @@ export default function RetirementCalculator() {
                   text: `The last ${Math.ceil(result.accumulationYears / 4)} years of your ${result.accumulationYears}-year saving phase generate more compound growth than the first ${result.accumulationYears - Math.ceil(result.accumulationYears / 4)} years combined. Starting early is the single most powerful retirement decision.`,
                 },
               ].map((insight, i) => (
-                <div key={i} className="flex items-start gap-3 rounded-xl bg-white/3 px-4 py-3">
+                <div key={i} className="flex items-start gap-3 rounded-xl bg-gray-50 border border-gray-100 px-4 py-3">
                   <span className="mt-0.5 text-lg">{insight.icon}</span>
-                  <p className="text-xs leading-5 text-gray-300">{insight.text}</p>
+                  <p className="text-xs leading-5 text-gray-700">{insight.text}</p>
                 </div>
               ))}
             </div>
           </div>
-        </>
+        </div>
       )}
     </div>
   );
