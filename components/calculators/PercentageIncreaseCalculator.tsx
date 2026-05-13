@@ -730,7 +730,7 @@ export default function PercentageIncreaseCalculator() {
                           <YAxis tickFormatter={fmtY} tick={TICK_STYLE} axisLine={false} tickLine={false} width={40} />
                           <Tooltip
                             contentStyle={TOOLTIP_STYLE}
-                            formatter={(v: number) => [v.toLocaleString(), ""]}
+                            formatter={(v: unknown) => [Number(v).toLocaleString(), ""]}
                           />
                           <ReferenceLine
                             x={`${bRounded}%`}
@@ -772,7 +772,7 @@ export default function PercentageIncreaseCalculator() {
                           <YAxis tickFormatter={fmtY} tick={TICK_STYLE} axisLine={false} tickLine={false} width={40} />
                           <Tooltip
                             contentStyle={TOOLTIP_STYLE}
-                            formatter={(v: number) => [v.toLocaleString(), "Value"]}
+                            formatter={(v: unknown) => [Number(v).toLocaleString(), "Value"]}
                           />
                           <ReferenceLine x="0×" stroke="#d1d5db" strokeDasharray="4 3" label={{ value: "Start", fill: "#9ca3af", fontSize: 10, position: "insideTopLeft" }} />
                           <Area
@@ -808,7 +808,7 @@ export default function PercentageIncreaseCalculator() {
                         <YAxis tickFormatter={fmtY} tick={TICK_STYLE} axisLine={false} tickLine={false} width={40} />
                         <Tooltip
                           contentStyle={TOOLTIP_STYLE}
-                          formatter={(v: number) => [v.toLocaleString(), "Value"]}
+                          formatter={(v: unknown) => [Number(v).toLocaleString(), "Value"]}
                         />
                         <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                           <Cell fill="#3b82f6" />
@@ -833,7 +833,7 @@ export default function PercentageIncreaseCalculator() {
                         <YAxis tickFormatter={fmtY} tick={TICK_STYLE} axisLine={false} tickLine={false} width={40} />
                         <Tooltip
                           contentStyle={TOOLTIP_STYLE}
-                          formatter={(v: number) => [v.toLocaleString(), ""]}
+                          formatter={(v: unknown) => [Number(v).toLocaleString(), ""]}
                         />
                         <Bar dataKey="value" radius={[6, 6, 0, 0]}>
                           <Cell fill="#8b5cf6" />
