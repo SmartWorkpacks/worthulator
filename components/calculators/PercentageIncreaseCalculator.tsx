@@ -720,7 +720,7 @@ export default function PercentageIncreaseCalculator() {
                           <XAxis dataKey="label" tick={(props) => {
                             const entry = sweepData.find((d) => d.label === props.payload.value);
                             return (
-                              <text x={props.x} y={props.y + 10} textAnchor="middle" fontSize={11}
+                              <text x={Number(props.x)} y={Number(props.y) + 10} textAnchor="middle" fontSize={11}
                                 fontWeight={entry?.isActive ? 700 : 400}
                                 fill={entry?.isActive ? (mode === "increase" ? "#10b981" : "#f43f5e") : "#9ca3af"}>
                                 {props.payload.value}
