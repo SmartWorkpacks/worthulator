@@ -96,14 +96,18 @@ function CalculatingLoader({ progress, step }: { progress: number; step: number 
 // ─── Animated number hook ─────────────────────────────────────────────────────
 
 function useCountUp(target: number, active: boolean, duration = 1000): number {
-  const [display, setDisplay] = useState(target * 0.72);
-  const rafRef = useRef<number | null>(null);
+  const [display, setDisplay] = useState(0);
+  const liveRef  = useRef(0);   // always holds the latest rendered value
+  const rafRef   = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
-  const startValRef = useRef(target * 0.72);
 
   useEffect(() => {
-    if (!active) { setDisplay(0); return; }
-    startValRef.current = display;
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    if (!active) { liveRef.current = 0; setDisplay(0); return; }
+
+    // First activation: jump to 72% so roll-up feels fast and dramatic
+    const from = liveRef.current === 0 ? target * 0.72 : liveRef.current;
+    liveRef.current = from;
     startRef.current = null;
 
     const c1 = 0.4; const c3 = c1 + 1;
@@ -111,11 +115,12 @@ function useCountUp(target: number, active: boolean, duration = 1000): number {
 
     const tick = (now: number) => {
       if (!startRef.current) startRef.current = now;
-      const elapsed = now - startRef.current;
-      const t = Math.min(elapsed / duration, 1);
-      setDisplay(startValRef.current + (target - startValRef.current) * ease(t));
+      const t = Math.min((now - startRef.current) / duration, 1);
+      const val = from + (target - from) * ease(t);
+      liveRef.current = val;
+      setDisplay(val);
       if (t < 1) rafRef.current = requestAnimationFrame(tick);
-      else setDisplay(target);
+      else { liveRef.current = target; setDisplay(target); }
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
