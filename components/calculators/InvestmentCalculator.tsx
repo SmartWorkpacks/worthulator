@@ -484,7 +484,7 @@ export default function InvestmentCalculator() {
                     interval={Math.max(0, Math.floor(chartData.length / 8) - 1)} />
                   <YAxis tickFormatter={cptFmtY} tick={TICK} axisLine={false} tickLine={false} width={48} />
                   <Tooltip contentStyle={TT_STYLE}
-                    formatter={(v: unknown, name: string) => [fmtCurrency(Number(v)), name === "portfolio" ? "Portfolio" : "Inflation adjusted"]} />
+                    formatter={(v: unknown, name: unknown) => [fmtCurrency(Number(v)), String(name) === "portfolio" ? "Portfolio" : "Inflation adjusted"]} />
                   <Line type="monotone" dataKey="portfolio"  stroke="#10b981" strokeWidth={2.5} dot={false} activeDot={{ r: 4, strokeWidth: 0, fill: "#10b981" }} />
                   <Line type="monotone" dataKey="inflation"  stroke="#f59e0b" strokeWidth={1.5} dot={false} strokeDasharray="5 3" activeDot={{ r: 3, strokeWidth: 0, fill: "#f59e0b" }} />
                 </LineChart>
