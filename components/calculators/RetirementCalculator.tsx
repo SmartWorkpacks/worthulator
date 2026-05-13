@@ -55,9 +55,9 @@ function CalculatingLoader({ progress, step }: { progress: number; step: number 
           style={{ animationDuration: "0.85s" }}
         />
         <div className="w-20 h-20 rounded-full border-2 border-white/10 flex items-center justify-center bg-white/5">
-          <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-            <polyline points="9 22 9 12 15 12 15 22" stroke="#34d399" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          <svg width="36" height="36" viewBox="0 0 16 16" fill="none" aria-hidden="true"
+            className="animate-pulse" style={{ filter: "drop-shadow(0 0 8px #34d399)" }}>
+            <path d="M2 3L6 13L8 7L10 13L14 3" stroke="#34d399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
           </svg>
         </div>
       </div>
@@ -96,10 +96,10 @@ function CalculatingLoader({ progress, step }: { progress: number; step: number 
 // ─── Animated number hook ─────────────────────────────────────────────────────
 
 function useCountUp(target: number, active: boolean, duration = 1000): number {
-  const [display, setDisplay] = useState(0);
+  const [display, setDisplay] = useState(target * 0.72);
   const rafRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
-  const startValRef = useRef(0);
+  const startValRef = useRef(target * 0.72);
 
   useEffect(() => {
     if (!active) { setDisplay(0); return; }
@@ -281,6 +281,10 @@ export default function RetirementCalculator() {
   const [activeScenario, setActiveScenario] = useState<number | null>(null);
   const [gaugeScore, setGaugeScore]       = useState(0);
   const [showAdvanced, setShowAdvanced]   = useState(false);
+  const [flash,        setFlash]          = useState(false);
+  const [showChange,   setShowChange]     = useState(false);
+  const [changeAmount, setChangeAmount]   = useState(0);
+  const prevBalanceRef                    = useRef(0);
 
   const set = useCallback(<K extends keyof RetirementInputs>(key: K, val: RetirementInputs[K]) => {
     setInputs((prev) => ({ ...prev, [key]: val }));
@@ -315,9 +319,16 @@ export default function RetirementCalculator() {
       }, i * stepDuration);
     }
     setTimeout(() => {
-      setResult(calculateRetirement(inp));
+      const r = calculateRetirement(inp);
+      const delta = r.projectedBalance - prevBalanceRef.current;
+      prevBalanceRef.current = r.projectedBalance;
+      setResult(r);
       setCalculating(false);
       setCalculated(true);
+      setFlash(true);
+      if (delta !== 0) { setChangeAmount(delta); setShowChange(true); }
+      setTimeout(() => setFlash(false), 500);
+      setTimeout(() => setShowChange(false), 2200);
     }, steps * stepDuration);
   }
 
@@ -519,14 +530,15 @@ export default function RetirementCalculator() {
       {calculated && !calculating && result && (
         <div className="p-4 sm:p-6 space-y-4 bg-gray-50/70 border-t border-gray-100">
           {/* ── HERO CARD ──────────────────────────────────────────────────── */}
-          <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gray-950 p-6 sm:p-8 shadow-2xl">
-            <div
-              className="absolute -bottom-20 -right-20 h-64 w-64 rounded-full blur-3xl opacity-20 pointer-events-none"
-              style={{ background: "radial-gradient(ellipse, #10b981, transparent)" }}
-            />
-            <div className="absolute -top-16 -left-16 h-48 w-48 rounded-full blur-3xl opacity-10 pointer-events-none"
-              style={{ background: "radial-gradient(ellipse, #818cf8, transparent)" }}
-            />
+          <div className={`relative overflow-hidden rounded-2xl border bg-gray-950 p-6 sm:p-8 transition-all duration-500 ${
+            flash
+              ? "border-emerald-500/20 shadow-[0_24px_100px_rgba(0,0,0,0.55),0_0_40px_rgba(52,211,153,0.1)]"
+              : "border-white/8 shadow-[0_24px_80px_rgba(0,0,0,0.45)]"
+          }`}>
+            <div className={`pointer-events-none absolute -right-16 -top-16 h-72 w-72 rounded-full blur-3xl transition-all duration-500 ${
+              flash ? "bg-emerald-500/25 scale-110" : "bg-emerald-500/15 scale-100"
+            }`} />
+            <div className="pointer-events-none absolute -bottom-20 -left-20 h-64 w-64 rounded-full bg-violet-900/30 blur-3xl" />
 
             <div className="relative flex flex-col sm:flex-row items-center gap-6 sm:gap-8">
               {/* Gauge */}
@@ -541,9 +553,24 @@ export default function RetirementCalculator() {
                 <p className="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">
                   Projected Retirement Balance
                 </p>
-                <p className="mt-2 text-[clamp(2.5rem,7vw,4rem)] font-bold leading-none tracking-[-0.04em] text-emerald-400">
+                <p className={`mt-2 text-[clamp(2.5rem,7vw,4rem)] font-bold leading-none tracking-[-0.04em] transition-all duration-500 ${
+                  flash
+                    ? "text-emerald-300 [text-shadow:0_0_40px_rgba(52,211,153,0.65)]"
+                    : "text-emerald-400 [text-shadow:0_0_20px_rgba(52,211,153,0.3)]"
+                }`}>
                   {fmtRetCurrency(Math.round(animBalance))}
                 </p>
+                <div className={`mt-1 h-6 overflow-hidden transition-all duration-700 ${
+                  showChange ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
+                }`}>
+                  {changeAmount !== 0 && (
+                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-semibold ${
+                      changeAmount > 0 ? "bg-emerald-500/20 text-emerald-300" : "bg-rose-500/20 text-rose-300"
+                    }`}>
+                      {changeAmount > 0 ? "+" : ""}{fmtRetCurrency(Math.abs(changeAmount), true)}
+                    </span>
+                  )}
+                </div>
                 <p className="mt-2 text-sm text-gray-400">
                   At age <span className="font-semibold text-gray-200">{inputs.retirementAge}</span> ·{" "}
                   <span className="font-semibold text-emerald-400">{inputs.annualReturnRate}%</span> annual return ·{" "}
