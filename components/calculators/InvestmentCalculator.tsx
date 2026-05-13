@@ -460,7 +460,7 @@ export default function InvestmentCalculator() {
                     interval={Math.max(0, Math.floor(chartData.length / 8) - 1)} />
                   <YAxis tickFormatter={cptFmtY} tick={TICK} axisLine={false} tickLine={false} width={48} />
                   <Tooltip contentStyle={TT_STYLE}
-                    formatter={(v: number, name: string) => [fmtCurrency(v), name === "contributions" ? "Contributions" : "Interest earned"]} />
+                    formatter={(v: unknown, name: string) => [fmtCurrency(Number(v)), name === "contributions" ? "Contributions" : "Interest earned"]} />
                   <Area type="monotone" dataKey="contributions" stroke="#3b82f6" strokeWidth={1.5} fill="url(#gContrib)" dot={false} />
                   <Area type="monotone" dataKey="interest"      stroke="#10b981" strokeWidth={2}   fill="url(#gInterest)" dot={false} />
                 </AreaChart>
@@ -484,7 +484,7 @@ export default function InvestmentCalculator() {
                     interval={Math.max(0, Math.floor(chartData.length / 8) - 1)} />
                   <YAxis tickFormatter={cptFmtY} tick={TICK} axisLine={false} tickLine={false} width={48} />
                   <Tooltip contentStyle={TT_STYLE}
-                    formatter={(v: number, name: string) => [fmtCurrency(v), name === "portfolio" ? "Portfolio" : "Inflation adjusted"]} />
+                    formatter={(v: unknown, name: string) => [fmtCurrency(Number(v)), name === "portfolio" ? "Portfolio" : "Inflation adjusted"]} />
                   <Line type="monotone" dataKey="portfolio"  stroke="#10b981" strokeWidth={2.5} dot={false} activeDot={{ r: 4, strokeWidth: 0, fill: "#10b981" }} />
                   <Line type="monotone" dataKey="inflation"  stroke="#f59e0b" strokeWidth={1.5} dot={false} strokeDasharray="5 3" activeDot={{ r: 3, strokeWidth: 0, fill: "#f59e0b" }} />
                 </LineChart>
@@ -501,7 +501,7 @@ export default function InvestmentCalculator() {
                   <XAxis dataKey="year" tick={TICK} axisLine={false} tickLine={false}
                     interval={Math.max(0, Math.floor(chartData.length / 8) - 1)} />
                   <YAxis tickFormatter={cptFmtY} tick={TICK} axisLine={false} tickLine={false} width={48} />
-                  <Tooltip contentStyle={TT_STYLE} formatter={(v: number) => [fmtCurrency(v), "Annual growth"]} />
+                  <Tooltip contentStyle={TT_STYLE} formatter={(v: unknown) => [fmtCurrency(Number(v)), "Annual growth"]} />
                   <Bar dataKey="growth" name="Annual growth" radius={[3, 3, 0, 0]}>
                     {chartData.map((_, i) => (
                       <Cell key={i}
