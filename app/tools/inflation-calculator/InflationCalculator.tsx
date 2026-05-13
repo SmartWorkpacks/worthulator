@@ -148,9 +148,10 @@ function buildInsights(
   startYear: number,
   endYear: number,
   inflationRate: number,
+  amount: number,
 ): Insight[] {
   const insights: Insight[] = [];
-  const { purchasingPowerPct, yearsToDouble, equivalentNeeded, realValue, annualImpact, amount } = result;
+  const { purchasingPowerPct, yearsToDouble, equivalentNeeded, realValue, annualImpact } = result;
 
   if (purchasingPowerPct < 30) {
     insights.push({
@@ -238,8 +239,8 @@ export default function InflationCalculator() {
   );
 
   const insights = useMemo(
-    () => buildInsights(result, startYear, endYear, inflationRate),
-    [result, startYear, endYear, inflationRate],
+    () => buildInsights(result, startYear, endYear, inflationRate, amount),
+    [result, startYear, endYear, inflationRate, amount],
   );
 
   const displayPct = amount > 0 ? (displayValue / amount) * 100 : 0;
