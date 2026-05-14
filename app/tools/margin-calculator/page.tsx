@@ -88,9 +88,10 @@ export default function MarginCalculatorPage() {
 
           {/* Left — copy */}
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
-              Business Tools · Pricing
-            </p>
+            <div className="flex items-center justify-center gap-2">
+              <span className="inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded bg-emerald-500/10 text-[9px] font-bold text-emerald-600">%</span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-400">Business Tools · Pricing</span>
+            </div>
             <h1 className="mt-4 text-[clamp(2rem,4.5vw,3rem)] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950">
               Margin Calculator
               <span className="block mt-2 text-base font-medium tracking-normal text-gray-400 sm:text-lg">
@@ -100,18 +101,23 @@ export default function MarginCalculatorPage() {
             <p className="mt-4 mx-auto max-w-lg text-sm leading-7 text-gray-500">
               Enter your cost and selling price to instantly see your profit margin, markup percentage, and revenue breakdown. Work backwards from a target margin to find the right price.
             </p>
-            <ul className="mt-6 inline-flex flex-col items-start gap-2 text-left mx-auto">
+            <div className="mt-4 flex flex-wrap justify-center gap-1.5">
               {[
                 "Calculate margin % from cost + price",
                 "Work backwards from a target margin or markup",
                 "See how price changes affect your profitability",
               ].map((item) => (
-                <li key={item} className="flex items-center gap-2.5 text-sm text-gray-500">
-                  <span className="h-4 w-4 shrink-0 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">✓</span>
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700"
+                >
+                  <svg className="h-2.5 w-2.5 shrink-0 text-emerald-500" viewBox="0 0 10 10" fill="none">
+                    <path d="M2 5.5L4 7.5L8 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                   {item}
-                </li>
+                </span>
               ))}
-            </ul>
+            </div>
           </div>
 
         </div>
@@ -121,6 +127,9 @@ export default function MarginCalculatorPage() {
       <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">
           <MarginCalculator />
+          <p className="mt-5 text-xs leading-relaxed text-gray-400">
+            Figures are estimates for planning purposes only — not financial or accounting advice. Margins vary by industry, volume, and overhead. Consult an accountant for business-critical pricing decisions.
+          </p>
         </div>
       </section>
 

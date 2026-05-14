@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import RelatedTools from "@/components/RelatedTools";
 import HourlyToSalaryCalculator from "./HourlyToSalaryCalculatorLoader";
-import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
+import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import RegionToggle from "@/components/RegionToggle";
 
 export const metadata: Metadata = {
@@ -87,47 +87,43 @@ const statChips = (
 
 export default function HourlyToSalaryPage() {
   return (
-    <SimpleCalculatorShell
-      jsonLd={jsonLd}
-      category="United States · Income Tools"
-      title="Hourly to Salary Calculator"
-      subtitle="See what your hourly pay adds up to annually, monthly, and weekly."
-      description={
-        <>
-          <p className="mx-auto max-w-lg text-sm leading-7 text-gray-500">
-            Enter your hourly rate and weekly hours to see your annual, monthly, and weekly salary. Adjust weeks worked to account for holidays or part-time schedules.
-          </p>
-          <ul className="mt-6 inline-flex flex-col items-start gap-2 text-left mx-auto">
-            {[
-              "Works for any hourly rate and hours per week",
-              "Adjust weeks worked for holidays or part-time",
-              "Shows gross salary — pair with Take Home Pay for net",
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2.5 text-sm text-gray-500">
-                <span className="h-4 w-4 shrink-0 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-6 flex justify-center">
-            <RegionToggle
-              current="us"
-              usPath="/tools/hourly-to-salary-calculator"
-              ukPath="/tools/hourly-to-salary-calculator-uk"
-              theme="light"
-            />
-          </div>
-        </>
-      }
-      calculator={<HourlyToSalaryCalculator />}
-      insightText={
-        <>
+    <main className="bg-white text-gray-900">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <SimpleCalculatorHero
+        eyebrowIcon="$"
+        eyebrowText="United States · Income Tools"
+        title="Hourly to Salary Calculator"
+        description="Enter your hourly rate and weekly hours to see your annual, monthly, and weekly salary."
+        chips={[
+          "Works for any hourly rate and hours per week",
+          "Adjust weeks worked for holidays or part-time",
+          "Shows gross salary — pair with Take Home Pay for net",
+        ]}
+      >
+        <HourlyToSalaryCalculator />
+        <div className="mt-6 flex justify-center">
+          <RegionToggle
+            current="us"
+            usPath="/tools/hourly-to-salary-calculator"
+            ukPath="/tools/hourly-to-salary-calculator-uk"
+            theme="light"
+          />
+        </div>
+        <p className="mt-4 text-center text-xs leading-relaxed text-gray-400">
+          Gross salary only — not financial or tax advice. Figures are before federal, state, and payroll taxes. Use the{" "}
+          <a href="/tools/take-home-pay-calculator" className="underline underline-offset-2 hover:text-gray-600">Take Home Pay Calculator</a>{" "}
+          to see your net income.
+        </p>
+      </SimpleCalculatorHero>
+
+      <div className="bg-gray-50 px-5 py-5 sm:px-8 lg:px-16">
+        <p className="mx-auto max-w-5xl text-sm font-medium text-gray-500">
           A standard full-time year is{" "}
           <span className="font-semibold text-gray-800">2,080 hours</span>{" "}
           (40 hrs × 52 weeks). Adjust weeks worked below to account for vacation or part-time schedules.
-        </>
-      }
-    >
+        </p>
+      </div>
 
       {/* STAT CHIPS — shown after calculator so they don't block the tool */}
       <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
@@ -290,6 +286,6 @@ export default function HourlyToSalaryPage() {
       {/* RELATED TOOLS */}
       <RelatedTools currentTool="hourly-to-salary-calculator" />
 
-    </SimpleCalculatorShell>
+    </main>
   );
 }

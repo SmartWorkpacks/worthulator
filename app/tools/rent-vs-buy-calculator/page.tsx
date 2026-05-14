@@ -102,56 +102,75 @@ export default function RentVsBuyCalculatorPage() {
         />
       ))}
 
-      {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-gray-100 bg-white px-5 py-14 sm:px-8 sm:py-24 lg:px-16">
-        <div className="pointer-events-none absolute -top-32 left-1/2 h-125 w-125 -translate-x-1/2 rounded-full bg-emerald-50/80 blur-[80px]" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-gray-100/60 blur-3xl" />
-        <div className="relative mx-auto max-w-2xl text-center">
+      {/* ── Hero + Calculator ─────────────────────────────────────────────── */}
+      <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
+        {/* Blur blobs */}
+        <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-200/25 blur-[72px]" />
+        <div className="pointer-events-none absolute top-1/2 right-0 h-72 w-72 -translate-y-1/2 rounded-full bg-cyan-100/20 blur-[56px]" />
+        {/* Subtle grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.028]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right,#6b7280 1px,transparent 1px),linear-gradient(to bottom,#6b7280 1px,transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
 
-          {/* Left — copy */}
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
-              Finance Tools · Home &amp; Living · US Market
-            </p>
-            <h1 className="mt-4 text-[clamp(2rem,4.5vw,3rem)] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950">
+        {/* Hero */}
+        <section className="relative px-5 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl pt-7 pb-6 sm:pt-9 sm:pb-7">
+            {/* Eyebrow */}
+            <div className="mb-2.5 flex items-center gap-2">
+              <span className="inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded bg-emerald-500/10 text-[9px] font-bold text-emerald-600">
+                🏠
+              </span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-400">
+                United States · Home &amp; Living
+              </span>
+            </div>
+            <h1 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950">
               Rent vs Buy Calculator
               <span className="block mt-2 text-base font-medium tracking-normal text-gray-400 sm:text-lg">
                 See whether renting or buying leaves you wealthier — based on your real numbers.
               </span>
             </h1>
-            <p className="mt-4 mx-auto max-w-lg text-sm leading-7 text-gray-500">
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-500">
               Compare the full financial outcome of renting vs buying over any time horizon. See net worth, break-even year, equity growth, and opportunity cost side by side.
             </p>
-            <ul className="mt-6 inline-flex flex-col items-start gap-2 text-left mx-auto">
+            {/* Chip pills */}
+            <div className="mt-4 flex flex-wrap gap-2">
               {[
                 "Net worth comparison for renter vs buyer over time",
                 "Break-even year calculated from your real numbers",
                 "Includes property tax, maintenance, PMI, and selling costs",
               ].map((item) => (
-                <li key={item} className="flex items-center gap-2.5 text-sm text-gray-500">
-                  <span className="h-4 w-4 shrink-0 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">✓</span>
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700"
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="shrink-0">
+                    <path d="M2 5.5L4 7.5L8 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                   {item}
-                </li>
+                </span>
               ))}
-            </ul>
+            </div>
           </div>
+        </section>
 
-        </div>
-      </section>
-
-      {/* ── Calculator ────────────────────────────────────────────────────── */}
-      <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-5xl">
-          <div className="rounded-2xl border-2 border-gray-400 overflow-hidden">
-            <RentVsBuyCalculator />
+        {/* Calculator */}
+        <section className="relative px-5 pt-2 pb-12 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <div className="rounded-2xl border-2 border-gray-400 overflow-hidden">
+              <RentVsBuyCalculator />
+            </div>
+            <p className="mt-5 text-xs leading-relaxed text-gray-400">
+              Results are projections based on the assumptions you enter. Real outcomes depend on actual market conditions, tax laws, interest rates, and individual circumstances. This is not financial advice.
+            </p>
           </div>
-          <p className="mt-3 text-xs leading-5 text-gray-400 px-1">
-            Results are projections based on the assumptions you enter. Real outcomes depend on
-            actual market conditions, tax laws, interest rates, and individual circumstances.
-            This is not financial advice.
-          </p>
-        </div>
-      </section>
+        </section>
+      </div>
 
       {/* ── SEO Content ───────────────────────────────────────────────────── */}
       <section className="border-t border-gray-100 bg-white px-5 py-16 sm:px-8 lg:px-16">

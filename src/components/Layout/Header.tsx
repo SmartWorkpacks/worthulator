@@ -134,24 +134,34 @@ function ToolsMegaMenu() {
         </p>
         {categories.map((cat) => {
           const count = toolsByCategory(cat.slug).length
+          const isActive = activeSlug === cat.slug
           return (
             <button
               key={cat.slug}
               onMouseEnter={() => setActiveSlug(cat.slug)}
               onClick={() => setActiveSlug(cat.slug)}
               className={`flex w-full items-center gap-3 border-l-2 px-5 py-3.5 text-left text-sm transition-all duration-150 ${
-                activeSlug === cat.slug
-                  ? "border-l-white/40 bg-white/10 text-white"
-                  : "border-l-transparent text-white/50 hover:bg-white/5 hover:text-white/80"
+                isActive
+                  ? cat.primary
+                    ? "border-l-emerald-400 bg-emerald-500/12 text-emerald-300"
+                    : "border-l-white/40 bg-white/10 text-white"
+                  : cat.primary
+                    ? "border-l-emerald-500/30 text-emerald-400/70 hover:bg-emerald-500/8 hover:text-emerald-300"
+                    : "border-l-transparent text-white/50 hover:bg-white/5 hover:text-white/80"
               }`}
             >
               <span className="w-5 text-center text-base leading-none">{cat.emoji}</span>
               <span className="flex-1 text-[13px] leading-snug">{cat.name}</span>
               {count > 0
-                ? <span className="text-[10px] text-white/20">{count}</span>
+                ? <span className={`text-[10px] ${isActive && cat.primary ? "text-emerald-400/50" : "text-white/20"}`}>{count}</span>
                 : <span className="text-[9px] font-medium text-white/15 tracking-wide">Soon</span>
               }
-              {cat.popular && (
+              {cat.primary && (
+                <span className="rounded-full bg-emerald-500/20 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-emerald-400">
+                  #1
+                </span>
+              )}
+              {!cat.primary && cat.popular && (
                 <span className="rounded-full bg-violet-500/20 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-violet-400">
                   Hot
                 </span>
@@ -173,8 +183,13 @@ function ToolsMegaMenu() {
         {/* Header row */}
         <div className="mb-6 flex items-start justify-between">
           <div>
-            <p className="text-lg font-semibold text-white">
+            <p className={`text-lg font-semibold ${activeCat.primary ? "text-emerald-300" : "text-white"}`}>
               {activeCat.emoji} {activeCat.name}
+              {activeCat.primary && (
+                <span className="ml-2 rounded-full bg-emerald-500/20 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-emerald-400 align-middle">
+                  Primary
+                </span>
+              )}
             </p>
             <p className="mt-1 text-xs text-white/40">{activeCat.tagline}</p>
           </div>
@@ -198,13 +213,17 @@ function ToolsMegaMenu() {
           {activeCat.subcategories.map((sub, i) => {
             const subTools = toolsBySubcategory(activeSlug, sub.slug)
             if (subTools.length === 0) return null
+            // Show up to 5, popular tools first
+            const featured = [...subTools]
+              .sort((a, b) => (b.popular ? 1 : 0) - (a.popular ? 1 : 0))
+              .slice(0, 5)
             return (
               <div key={sub.slug} className={i !== 0 ? "border-t border-white/5 pt-5 mt-5" : ""}>
                 <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-widest text-white/25">
                   {sub.name}
                 </p>
                 <div className="grid grid-cols-2 gap-1">
-                  {subTools.map((tool) => (
+                  {featured.map((tool) => (
                     <Link
                       key={tool.slug}
                       href={tool.href ?? `/tools/${tool.slug}`}
@@ -224,6 +243,14 @@ function ToolsMegaMenu() {
                     </Link>
                   ))}
                 </div>
+                {subTools.length > 5 && (
+                  <Link
+                    href={`/tools?category=${activeSlug}`}
+                    className="mt-1.5 block px-4 text-[11px] text-white/25 transition-colors hover:text-white/50"
+                  >
+                    +{subTools.length - 5} more →
+                  </Link>
+                )}
               </div>
             )
           })}

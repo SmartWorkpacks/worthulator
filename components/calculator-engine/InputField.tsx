@@ -21,20 +21,18 @@ export default function InputField({ input, value, onChange }: InputFieldProps) 
 
   // ── Select (button group) ─────────────────────────────────────────────────
   if (input.type === "select") {
-    const cols = input.options?.length ?? 3;
     return (
       <div>
         <label className="text-sm font-semibold text-gray-700">{input.label}</label>
         <div
-          className="mt-2 grid gap-2"
-          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))` }}
+          className="mt-2 grid grid-cols-2 gap-2"
         >
           {input.options?.map((opt) => (
             <button
               key={String(opt.value)}
               type="button"
               onClick={() => onChange(opt.value)}
-              className={`rounded-xl border py-2 text-sm font-semibold transition-colors ${
+              className={`min-h-11 rounded-xl border py-2 text-sm font-semibold transition-colors ${
                 String(value) === String(opt.value)
                   ? "border-emerald-500 bg-emerald-50 text-emerald-700"
                   : "border-gray-200 text-gray-500 hover:border-emerald-300 hover:text-emerald-600"

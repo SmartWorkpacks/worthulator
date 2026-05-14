@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import DarkResultCard from "@/components/ui/DarkResultCard";
 import RelatedTools from "@/components/RelatedTools";
 import HourlyToSalaryCalculator from "../hourly-to-salary-calculator/HourlyToSalaryCalculatorLoader";
-import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
+import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import LocaleSetter from "@/components/LocaleSetter";
 import RegionToggle from "@/components/RegionToggle";
 
@@ -118,13 +118,22 @@ export default function HourlyToSalaryUKPage() {
       {/* Forces locale to UK so the calculator displays £ */}
       <LocaleSetter locale="UK" />
 
-      <SimpleCalculatorShell
-        jsonLd={jsonLd}
-        category="United Kingdom · Income Tools"
-        title="Hourly to Salary Calculator"
-        subtitle="Convert your hourly wage into an annual salary, monthly income, and weekly pay in seconds."
-        description={
-          <div className="flex justify-center">
+      <main className="bg-white text-gray-900">
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+        <SimpleCalculatorHero
+          eyebrowIcon="£"
+          eyebrowText="United Kingdom · Income Tools"
+          title="Hourly to Salary Calculator"
+          description="Convert your hourly wage into an annual salary, monthly income, and weekly pay."
+          chips={[
+            "Supports any UK hourly rate and contracted hours",
+            "Adjust weeks for holidays or part-time schedules",
+            "Shows gross salary before income tax",
+          ]}
+        >
+          <HourlyToSalaryCalculator />
+          <div className="mt-6 flex justify-center">
             <RegionToggle
               current="uk"
               usPath="/tools/hourly-to-salary-calculator"
@@ -132,16 +141,15 @@ export default function HourlyToSalaryUKPage() {
               theme="light"
             />
           </div>
-        }
-        calculator={<HourlyToSalaryCalculator />}
-        insightText={
-          <>
+        </SimpleCalculatorHero>
+
+        <div className="bg-gray-50 px-5 py-5 sm:px-8 lg:px-16">
+          <p className="mx-auto max-w-5xl text-sm font-medium text-gray-500">
             A standard full-time UK working year is{" "}
             <span className="font-semibold text-gray-800">1,950 hours</span>{" "}
             (37.5 hrs × 52 weeks). Adjust hours and weeks to match your contract.
-          </>
-        }
-      >
+          </p>
+        </div>
         {/* STAT CHIPS */}
         <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
           <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
@@ -420,7 +428,7 @@ export default function HourlyToSalaryUKPage() {
         {/* RELATED TOOLS */}
         <RelatedTools currentTool="hourly-to-salary-calculator" />
 
-      </SimpleCalculatorShell>
+      </main>
     </>
   );
 }

@@ -2,6 +2,7 @@ import { tools, pageTitle } from "@/src/config/tools";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import ToolInputs from "./ToolInputs";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 
 export function generateStaticParams() {
   return tools
@@ -64,8 +65,14 @@ export default async function ToolPage({ params }: Props) {
         <p className="mt-4 text-lg text-gray-600">{tool.description}</p>
 
         <section className="mt-10">
-          <h2 className="text-2xl font-semibold text-gray-800">Tool UI</h2>
-          <ToolInputs />
+          {tool.engineId ? (
+            <CalculatorEngineLoader slug={tool.engineId!} />
+          ) : (
+            <>
+              <h2 className="text-2xl font-semibold text-gray-800">Tool UI</h2>
+              <ToolInputs />
+            </>
+          )}
         </section>
 
         <section className="mt-10">

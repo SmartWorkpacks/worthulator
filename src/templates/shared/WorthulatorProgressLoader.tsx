@@ -65,7 +65,7 @@ export default function WorthulatorProgressLoader({
             viewBox="0 0 16 16"
             fill="none"
             aria-hidden="true"
-            style={{ filter: "drop-shadow(0 0 8px #34d399)" }}
+            style={{ animation: "w-flash 1.1s ease-in-out infinite" }}
           >
             <path
               d="M2 3L6 13L8 7L10 13L14 3"

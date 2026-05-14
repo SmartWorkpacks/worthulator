@@ -166,15 +166,15 @@ export function SliderInputCard({
 }: SliderInputCardProps) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg">
-      <div className="flex items-start justify-between">
-        <div>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0 flex-1">
           <label htmlFor={id} className="block text-sm font-semibold text-gray-700">
             {label}
           </label>
           {hint && <p className="mt-0.5 text-xs text-gray-400">{hint}</p>}
         </div>
         {/* Editable number badge */}
-        <div className="relative">
+        <div className="relative shrink-0">
           {symbol && (
             <span className="pointer-events-none absolute inset-y-0 left-3 flex items-center text-sm font-bold text-gray-400">
               {symbol}
@@ -189,7 +189,7 @@ export function SliderInputCard({
             value={inputValue}
             onChange={(e) => onInputChange(e.target.value)}
             onBlur={onInputBlur}
-            className={`w-32 rounded-xl border border-gray-200 bg-gray-50 py-2 pr-3 text-sm font-bold text-gray-900 focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-100 ${symbol ? "pl-7" : "pl-3"}`}
+            className={`w-28 rounded-xl border border-gray-200 bg-gray-50 py-2 pr-3 text-sm font-bold text-gray-900 focus:border-emerald-300 focus:outline-none focus:ring-2 focus:ring-emerald-100 sm:w-32 ${symbol ? "pl-7" : "pl-3"}`}
           />
         </div>
       </div>
@@ -206,8 +206,8 @@ export function SliderInputCard({
         />
         {marks && (
           <div className="mt-2 flex justify-between text-xs text-gray-400">
-            {marks.map((m) => (
-              <span key={m}>{m}</span>
+            {marks.map((m, i) => (
+              <span key={i}>{m}</span>
             ))}
           </div>
         )}
@@ -243,7 +243,7 @@ export function QuickChips({ symbol = "", values, active, labels, onSelect }: Qu
               : "border-gray-200 bg-gray-50 text-gray-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-600"
           }`}
         >
-          {labels ? labels[i] : `${symbol}${(v / 1000).toFixed(0)}k`}
+          {labels ? labels[i] : v >= 1000 ? `${symbol}${(v / 1000).toFixed(0)}k` : `${symbol}${v}`}
         </button>
       ))}
     </div>

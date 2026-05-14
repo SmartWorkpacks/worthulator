@@ -96,40 +96,78 @@ export default function RetirementCalculatorPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      <main className="mx-auto max-w-3xl px-4 pb-24 pt-10 sm:px-6">
+      <main className="bg-white text-gray-900">
 
-        {/* ── HERO ──────────────────────────────────────────────────────── */}
-        <section className="mb-10 text-center">
-          <div className="relative mx-auto max-w-2xl">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
-              Money · Retirement Planning
-            </p>
-            <h1 className="mt-4 text-[clamp(2rem,4.5vw,3rem)] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950">
-              Retirement Calculator
-            </h1>
-            <p className="mt-4 mx-auto max-w-lg text-base leading-7 text-gray-500">
-              Project your retirement balance, monthly income, and readiness score — with inflation-adjusted
-              drawdown modelling and what-if scenarios.
-            </p>
-            <ul className="mt-6 inline-flex flex-col items-start gap-2 text-left mx-auto">
-              {[
-                "Retirement readiness score (0–100)",
-                "Inflation-adjusted income & drawdown projections",
-                "Portfolio sustainability — does it outlast your life expectancy?",
-              ].map((point) => (
-                <li key={point} className="flex items-center gap-2 text-sm text-gray-600">
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 text-xs font-bold">✓</span>
-                  {point}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </section>
+        {/* ── Hero + Calculator ─────────────────────────────────────────── */}
+        <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
+          {/* Blur blobs */}
+          <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-200/25 blur-[72px]" />
+          <div className="pointer-events-none absolute top-1/2 right-0 h-72 w-72 -translate-y-1/2 rounded-full bg-cyan-100/20 blur-[56px]" />
+          {/* Subtle grid */}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.028]"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right,#6b7280 1px,transparent 1px),linear-gradient(to bottom,#6b7280 1px,transparent 1px)",
+              backgroundSize: "48px 48px",
+            }}
+          />
 
-        {/* ── CALCULATOR ─────────────────────────────────────────────────── */}
-        <section className="mb-10">
-          <RetirementCalculatorLoader />
-        </section>
+          {/* Hero */}
+          <section className="relative px-5 sm:px-8 lg:px-16">
+            <div className="mx-auto max-w-5xl pt-7 pb-6 sm:pt-9 sm:pb-7">
+              {/* Eyebrow */}
+              <div className="mb-2.5 flex items-center gap-2">
+                <span className="inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded bg-emerald-500/10 text-[9px] font-bold text-emerald-600">
+                  📊
+                </span>
+                <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-400">
+                  United States · Retirement Planning
+                </span>
+              </div>
+              <h1 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950">
+                Retirement Calculator
+                <span className="block mt-2 text-base font-medium tracking-normal text-gray-400 sm:text-lg">
+                  Project your savings, income, and readiness score — with inflation-adjusted drawdown.
+                </span>
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-500">
+                Project your retirement balance, monthly income, and readiness score — with inflation-adjusted drawdown modelling and what-if scenarios.
+              </p>
+              {/* Chip pills */}
+              <div className="mt-4 flex flex-wrap gap-2">
+                {[
+                  "Retirement readiness score (0–100)",
+                  "Inflation-adjusted income & drawdown projections",
+                  "Portfolio sustainability — does it outlast your life expectancy?",
+                ].map((item) => (
+                  <span
+                    key={item}
+                    className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700"
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="shrink-0">
+                      <path d="M2 5.5L4 7.5L8 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    {item}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Calculator */}
+          <section className="relative px-5 pt-2 pb-12 sm:px-8 lg:px-16">
+            <div className="mx-auto max-w-5xl">
+              <RetirementCalculatorLoader />
+              <p className="mt-5 text-xs leading-relaxed text-gray-400">
+                Estimates only — not financial advice. Projections are based on the assumptions you enter and do not account for actual market performance, tax changes, or individual circumstances.
+              </p>
+            </div>
+          </section>
+        </div>
+
+        {/* ── Remaining content ─────────────────────────────────────────── */}
+        <div className="mx-auto max-w-3xl px-4 pb-24 sm:px-6 pt-10">
 
         {/* ── INSIGHT STRIP ──────────────────────────────────────────────── */}
         <section className="mb-10">
@@ -423,6 +461,7 @@ export default function RetirementCalculatorPage() {
             ))}
           </div>
         </section>
+        </div>
       </main>
     </>
   );

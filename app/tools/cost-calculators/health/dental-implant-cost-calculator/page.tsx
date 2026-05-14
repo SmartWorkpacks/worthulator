@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
+import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import DentalImplantCalculator from "./DentalImplantCalculatorLoader";
 
 export const metadata: Metadata = {
@@ -130,22 +130,35 @@ const FAQ_ITEMS = [
 
 export default function DentalImplantCostPage() {
   return (
-    <SimpleCalculatorShell
-      jsonLd={jsonLd}
-      category="Health · Cost Calculators"
-      title="Dental Implant Cost Calculator"
-      subtitle="2026 Estimates + Real Costs"
-      description="Get an accurate dental implant cost estimate based on treatment type, implant quality, clinic, and your country. Covers single tooth, multiple, full mouth, and All-on-4."
-      heroCard={heroCard}
-      statChips={<>{statChips}</>}
-      calculator={<DentalImplantCalculator />}
-      insightText={
-        <>
+    <main className="bg-white text-gray-900">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <SimpleCalculatorHero
+        eyebrowIcon="$"
+        eyebrowText="Health · Cost Calculators"
+        title="Dental Implant Cost Calculator"
+        description="Get an accurate dental implant cost estimate based on treatment type, implant quality, clinic, and your country."
+        chips={[
+          "Single, multiple, full mouth, and All-on-4",
+          "2026 US and UK price estimates",
+          "Compare budget vs premium options",
+        ]}
+      >
+        <DentalImplantCalculator />
+      </SimpleCalculatorHero>
+
+      <div className="bg-gray-50 px-5 py-5 sm:px-8 lg:px-16">
+        <p className="mx-auto max-w-5xl text-sm font-medium text-gray-500">
           Estimates based on typical 2026 market prices. Individual clinic quotes may vary.{" "}
           <strong>Always get at least 3 quotes</strong> before committing to treatment.
-        </>
-      }
-    >
+        </p>
+      </div>
+
+      <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-5xl grid gap-3 sm:grid-cols-3">
+          {statChips}
+        </div>
+      </section>
 
       {/* ── EDUCATIONAL CONTENT ──────────────────────────────────── */}
       <section className="bg-white px-5 py-16 sm:px-8 lg:px-16">
@@ -237,6 +250,6 @@ export default function DentalImplantCostPage() {
         </div>
       </section>
 
-    </SimpleCalculatorShell>
+    </main>
   );
 }

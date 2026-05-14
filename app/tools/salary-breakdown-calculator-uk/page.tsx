@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
+import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import SalaryBreakdownCalculatorLoader from "../salary-breakdown-calculator/SalaryBreakdownCalculatorLoader";
 
 export const metadata: Metadata = {
@@ -124,22 +124,30 @@ const statChips = (
 
 export default function SalaryBreakdownCalculatorUKPage() {
   return (
-    <SimpleCalculatorShell
-      jsonLd={jsonLd}
-      category="United Kingdom · Tax"
-      title="Salary Breakdown Calculator"
-      subtitle="See exactly where your money goes — income tax, National Insurance, pension, and your real take-home pay."
-      description={null}
-      statChips={undefined}
-      calculator={<SalaryBreakdownCalculatorLoader defaultRegion="UK" />}
-      insightText={
-        <>
+    <main className="bg-white text-gray-900">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <SimpleCalculatorHero
+        eyebrowIcon="£"
+        eyebrowText="United Kingdom · Tax"
+        title="Salary Breakdown Calculator"
+        description="See exactly where your UK salary goes — income tax, National Insurance, pension, and your real take-home pay."
+        chips={[
+          "UK PAYE tax brackets applied correctly",
+          "Shows National Insurance separately",
+          "Includes pension contribution impact",
+        ]}
+      >
+        <SalaryBreakdownCalculatorLoader defaultRegion="UK" />
+      </SimpleCalculatorHero>
+
+      <div className="bg-gray-50 px-5 py-5 sm:px-8 lg:px-16">
+        <p className="mx-auto max-w-5xl text-sm font-medium text-gray-500">
           On a <strong>£50,000 UK salary</strong> you take home approximately{" "}
           <strong>£3,091/month</strong> after income tax and National Insurance
           — an effective rate of 21%.
-        </>
-      }
-    >
+        </p>
+      </div>
 
       {/* STAT CHIPS */}
       <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
@@ -520,6 +528,6 @@ export default function SalaryBreakdownCalculatorUKPage() {
         </div>
       </section>
 
-    </SimpleCalculatorShell>
+    </main>
   );
 }

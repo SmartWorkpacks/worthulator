@@ -1,14 +1,24 @@
 /**
- * ─── Worthulator Calculator Page Template ────────────────────────────────────
+ * ─── Worthulator Simple Calculator Page Template ─────────────────────────────
  *
- * Standard page layout for all calculator/tool pages.
- * Sections: Hero → Calculator → Lead Gen → FAQ/SEO Content
+ * This is the CANONICAL template for all simple Worthulator calculators.
+ * Based on the approved Future Value Calculator reference implementation.
+ *
+ * Page structure (top → bottom):
+ *   1. HERO       — gradient+grid bg, $ eyebrow, H1, description, feature chips
+ *   2. CALCULATOR — CalculatorLoader component (handles loading + result reveal)
+ *   3. INSIGHT    — InsightStrip: single bold callout sentence
+ *   4. STATS      — StatChipsRow: 3 big stat cards with colored accent bars
+ *   5. INSIGHTS   — ContentCardGrid: 3 icon+title+body insight cards
+ *   6. EXPLAINER  — SEOTextBlock: formula block + numbered steps + prose
+ *   7. FAQ        — StandardFAQSection: accordion Q&A
+ *   8. RELATED    — RelatedCalcCards: 4-up curated internal link cards
  *
  * To use:
- *   1. Copy this file to app/tools/[your-calculator]/page.tsx
- *   2. Replace all [PLACEHOLDERS] with real values
- *   3. Import your calculator and lead gen components
- *   4. Fill in FAQS and jsonLd
+ *   1. Copy this file to app/tools/[slug]/page.tsx
+ *   2. Replace all [PLACEHOLDER] values with real content
+ *   3. Import your [CalculatorName]Loader component
+ *   4. Fill in FAQS, STATS, CONTENT_CARDS, RELATED_CALCS, SEOTextBlock props
  *
  * ─────────────────────────────────────────────────────────────────────────────
  */

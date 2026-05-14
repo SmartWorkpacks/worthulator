@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
+import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import PassiveIncomeCalculatorLoader from "./PassiveIncomeCalculatorLoader";
 import RegionToggle from "@/components/RegionToggle";
 
@@ -115,47 +115,38 @@ const statChips = (
 
 export default function PassiveIncomeCalculatorPage() {
   return (
-    <SimpleCalculatorShell
-      jsonLd={jsonLd}
-      category="United States · Finance Tools"
-      title="Passive Income Calculator"
-      subtitle="See how much passive income your portfolio can generate — and how long it takes to get there."
-      description={
-        <>
-          <p className="mx-auto max-w-lg text-sm leading-7 text-gray-500">
-            Enter your portfolio size, monthly contributions, and expected return to see how much passive income you could generate — and how long it takes to reach your target.
-          </p>
-          <ul className="mt-6 inline-flex flex-col items-start gap-2 text-left mx-auto">
-            {[
-              "Model up to 5 income streams simultaneously",
-              "Uses the 4% rule and compound growth projections",
-              "Shows monthly and annual income at any time horizon",
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2.5 text-sm text-gray-500">
-                <span className="h-4 w-4 shrink-0 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-          <div className="mt-6 flex justify-center">
-            <RegionToggle
-              current="us"
-              usPath="/tools/passive-income-calculator"
-              ukPath="/tools/passive-income-calculator-uk"
-              theme="light"
-            />
-          </div>
-        </>
-      }
-      calculator={<PassiveIncomeCalculatorLoader currency="$" region="US" />}
-      insightText={
-        <>
+    <main className="bg-white text-gray-900">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <SimpleCalculatorHero
+        eyebrowIcon="$"
+        eyebrowText="United States · Finance Tools"
+        title="Passive Income Calculator"
+        description="Enter your portfolio size, monthly contributions, and expected return to see how much passive income you could generate."
+        chips={[
+          "Model up to 5 income streams simultaneously",
+          "Uses the 4% rule and compound growth projections",
+          "Shows monthly and annual income at any time horizon",
+        ]}
+      >
+        <PassiveIncomeCalculatorLoader currency="$" region="US" />
+        <div className="mt-6 flex justify-center">
+          <RegionToggle
+            current="us"
+            usPath="/tools/passive-income-calculator"
+            ukPath="/tools/passive-income-calculator-uk"
+            theme="light"
+          />
+        </div>
+      </SimpleCalculatorHero>
+
+      <div className="bg-gray-50 px-5 py-5 sm:px-8 lg:px-16">
+        <p className="mx-auto max-w-5xl text-sm font-medium text-gray-500">
           Combine an investment portfolio with dividend income or rental property to build{" "}
           <strong>diversified passive income</strong> — the calculator models each stream
           independently and shows your total monthly income across all sources.
-        </>
-      }
-    >
+        </p>
+      </div>
 
       {/* STAT CHIPS */}
       <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
@@ -488,6 +479,6 @@ export default function PassiveIncomeCalculatorPage() {
         </div>
       </section>
 
-    </SimpleCalculatorShell>
+    </main>
   );
 }

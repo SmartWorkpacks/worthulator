@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
+import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import PassiveIncomeCalculatorLoader from "../passive-income-calculator/PassiveIncomeCalculatorLoader";
 import RegionToggle from "@/components/RegionToggle";
 
@@ -33,13 +33,22 @@ const jsonLd = {
 
 export default function PassiveIncomeCalculatorUKPage() {
   return (
-    <SimpleCalculatorShell
-      jsonLd={jsonLd}
-      category="United Kingdom · Finance Tools"
-      title="Passive Income Calculator"
-      subtitle="See how much passive income your portfolio can generate in pounds — and how long it takes."
-      description={
-        <div className="flex justify-center">
+    <main className="bg-white text-gray-900">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <SimpleCalculatorHero
+        eyebrowIcon="£"
+        eyebrowText="United Kingdom · Finance Tools"
+        title="Passive Income Calculator"
+        description="See how much passive income your UK portfolio can generate in pounds — and how long it takes."
+        chips={[
+          "ISA, pension, and GIA compatible",
+          "4% rule and compound growth projections",
+          "Shows monthly and annual income in pounds",
+        ]}
+      >
+        <PassiveIncomeCalculatorLoader currency="£" region="UK" />
+        <div className="mt-6 flex justify-center">
           <RegionToggle
             current="uk"
             usPath="/tools/passive-income-calculator"
@@ -47,16 +56,15 @@ export default function PassiveIncomeCalculatorUKPage() {
             theme="light"
           />
         </div>
-      }
-      calculator={<PassiveIncomeCalculatorLoader currency="£" region="UK" />}
-      insightText={
-        <>
+      </SimpleCalculatorHero>
+
+      <div className="bg-gray-50 px-5 py-5 sm:px-8 lg:px-16">
+        <p className="mx-auto max-w-5xl text-sm font-medium text-gray-500">
           Starting with £10,000 and contributing £400/month at 7% for 20 years grows to{" "}
           <strong>£634,000</strong> — generating{" "}
           <strong>£2,113/month</strong> in passive income at the 4% rule.
-        </>
-      }
-    >
+        </p>
+      </div>
 
       {/* ── UK-SPECIFIC CONTEXT ──────────────────────────────────────────── */}
       <section className="border-t border-gray-100 px-5 py-14 sm:px-8 lg:px-16">
@@ -152,6 +160,6 @@ export default function PassiveIncomeCalculatorUKPage() {
         </div>
       </section>
 
-    </SimpleCalculatorShell>
+    </main>
   );
 }

@@ -10,8 +10,8 @@ import type { CalculatorEngineProps } from "./CalculatorEngine";
  *
  *   import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
  *
- *   <CalculatorEngineLoader type="concrete-bag" />
- *   <CalculatorEngineLoader type="concrete-bag" region="UK" />
+ *   <CalculatorEngineLoader slug="concrete-bag" />
+ *   <CalculatorEngineLoader slug="concrete-bag" region="UK" />
  *
  * The engine loads client-side only (ssr: false), keeping the
  * surrounding page fully server-rendered for SEO.
@@ -42,3 +42,4 @@ const CalculatorEngineDynamic = dynamic<CalculatorEngineProps>(
 export default function CalculatorEngineLoader(props: CalculatorEngineProps) {
   return <CalculatorEngineDynamic {...props} />;
 }
+

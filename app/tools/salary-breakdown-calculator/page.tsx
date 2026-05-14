@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import SimpleCalculatorShell from "@/components/calculators/SimpleCalculatorShell";
+import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import SalaryBreakdownCalculatorLoader from "./SalaryBreakdownCalculatorLoader";
 
 export const metadata: Metadata = {
@@ -125,40 +125,30 @@ const statChips = (
 
 export default function SalaryBreakdownCalculatorPage() {
   return (
-    <SimpleCalculatorShell
-      jsonLd={jsonLd}
-      category="Money · Tax"
-      title="Salary Breakdown Calculator"
-      subtitle="See exactly where your money goes — federal income tax, FICA, and your real take-home pay."
-      description={
-        <>
-          <p className="mx-auto max-w-lg text-sm leading-7 text-gray-500">
-            Enter your salary to see a full breakdown of federal income tax, FICA, and your real take-home pay. Supports single and married filing statuses.
-          </p>
-          <ul className="mt-6 inline-flex flex-col items-start gap-2 text-left mx-auto">
-            {[
-              "Progressive federal tax brackets applied correctly",
-              "Shows FICA (Social Security + Medicare) separately",
-              "See effective vs marginal tax rate side by side",
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2.5 text-sm text-gray-500">
-                <span className="h-4 w-4 shrink-0 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </>
-      }
-      statChips={undefined}
-      calculator={<SalaryBreakdownCalculatorLoader defaultRegion="US" />}
-      insightText={
-        <>
+    <main className="bg-white text-gray-900">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+
+      <SimpleCalculatorHero
+        eyebrowIcon="$"
+        eyebrowText="Money · Tax"
+        title="Salary Breakdown Calculator"
+        description="Enter your salary to see a full breakdown of federal income tax, FICA, and your real take-home pay."
+        chips={[
+          "Progressive federal tax brackets applied correctly",
+          "Shows FICA (Social Security + Medicare) separately",
+          "See effective vs marginal tax rate side by side",
+        ]}
+      >
+        <SalaryBreakdownCalculatorLoader defaultRegion="US" />
+      </SimpleCalculatorHero>
+
+      <div className="bg-gray-50 px-5 py-5 sm:px-8 lg:px-16">
+        <p className="mx-auto max-w-5xl text-sm font-medium text-gray-500">
           On an <strong>$80,000 US salary</strong> (single filer) you take home
           approximately <strong>$5,102/month</strong> after federal income tax
           and FICA — an effective rate of 23.5%.
-        </>
-      }
-    >
+        </p>
+      </div>
 
       {/* STAT CHIPS */}
       <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">
@@ -495,6 +485,6 @@ export default function SalaryBreakdownCalculatorPage() {
           </div>
         </div>
       </section>
-    </SimpleCalculatorShell>
+    </main>
   );
 }

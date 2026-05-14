@@ -15,7 +15,7 @@
  *   src/templates/shared/WorthulatorResultReveal.tsx  — pre-calc idle card
  *
  * TAKE-HOME-PAY TEMPLATE (page skeleton):
- *   TakeHomePayTemplateLayout.tsx  — Full page.tsx to copy + customise
+ *   SimpleCalculatorTemplateLayout.tsx  — Full page.tsx to copy + customise
  *
  * INPUT CARDS (left column of calculator):
  *   BinaryToggleCard   — US / UK style two-way country toggle
@@ -57,6 +57,7 @@ export {
   BreakdownTable,
   FrequencyCards,
   WhatIfButtons,
+  CalcDisclaimer,
 } from "./StandardResultSection";
 
 // ── Charts ────────────────────────────────────────────────────────────────────

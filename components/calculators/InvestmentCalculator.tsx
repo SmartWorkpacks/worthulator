@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { CalcDisclaimer } from "@/src/templates/take-home-pay";
 import {
   AreaChart, Area, BarChart, Bar, LineChart, Line,
   XAxis, YAxis, CartesianGrid, Tooltip, Legend,
@@ -90,10 +91,12 @@ function useCountUp(target: number, active: boolean, duration = 900): number {
   const rafRef = useRef<number | null>(null);
   const startRef = useRef<number | null>(null);
   const startValRef = useRef(target * 0.72);
+  const liveRef = useRef(target * 0.72);
 
   useEffect(() => {
-    if (!active) { setDisplay(0); return; }
-    startValRef.current = display;
+    if (!active) { setDisplay(0); liveRef.current = 0; return; }
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    startValRef.current = liveRef.current;
     startRef.current = null;
 
     const c1 = 0.4; const c3 = c1 + 1;
@@ -103,9 +106,10 @@ function useCountUp(target: number, active: boolean, duration = 900): number {
       if (!startRef.current) startRef.current = now;
       const elapsed = now - startRef.current;
       const t = Math.min(elapsed / duration, 1);
-      setDisplay(startValRef.current + (target - startValRef.current) * ease(t));
+      liveRef.current = startValRef.current + (target - startValRef.current) * ease(t);
+      setDisplay(liveRef.current);
       if (t < 1) rafRef.current = requestAnimationFrame(tick);
-      else setDisplay(target);
+      else { liveRef.current = target; setDisplay(target); }
     };
     rafRef.current = requestAnimationFrame(tick);
     return () => { if (rafRef.current) cancelAnimationFrame(rafRef.current); };
@@ -563,6 +567,10 @@ export default function InvestmentCalculator() {
 
           </>
         )}
+
+        {/* Disclaimer */}
+        <CalcDisclaimer text="Results are projections based on a constant annual return compounded at your chosen frequency. They do not account for inflation (unless toggled), taxes, fund fees, or market volatility. Past performance does not guarantee future results. This tool is for illustrative purposes only and should not be relied upon as financial, investment, or tax advice. Consult a qualified financial adviser before making investment decisions." />
+
       </div>
     </div>
   );

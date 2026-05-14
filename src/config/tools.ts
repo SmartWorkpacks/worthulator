@@ -46,6 +46,12 @@ export interface Tool {
   faqs?: FAQ[];               // 2–3 Q&A for FAQ schema + content
   /** Override the default /tools/<slug> link — used for tools outside /tools/ */
   href?: string;
+  /**
+   * When set, the dynamic [slug] page renders CalculatorEngineLoader with this
+   * ID instead of the generic ToolInputs placeholder.
+   * Must match a key in CALCULATOR_CONFIGS.
+   */
+  engineId?: string;
 }
 
 export interface Subcategory {
@@ -60,41 +66,92 @@ export interface Category {
   tagline: string;
   subcategories: Subcategory[];
   popular?: boolean;
+  /** Marks this as the primary/featured category — shown with elevated styling in nav */
+  primary?: boolean;
 }
 
 // ─── CATEGORIES ─────────────────────────────────────────────────────────────
 export const categories: Category[] = [
+
+  // ── 1. Financial Tools (PRIMARY) ──────────────────────────────────────────
   {
-    name: "Money",
+    name: "Financial Tools",
     slug: "money",
-    emoji: "💰",
-    tagline: "Income, spending, loans, investing & savings",
+    emoji: "📊",
+    tagline: "Debt, loans, investment, savings & affordability",
     popular: true,
+    primary: true,
     subcategories: [
-      { name: "Income & Earnings",  slug: "income"     },
-      { name: "Spending & Budgets", slug: "spending"   },
-      { name: "Loans & Debt",       slug: "loans"      },
-      { name: "Investing",          slug: "investing"  },
-      { name: "Savings",            slug: "savings"    },
+      { name: "Income & Earnings",       slug: "income"   },
+      { name: "Budgets & Affordability", slug: "spending" },
+      { name: "Debt & Loans",            slug: "loans"    },
+      { name: "Investment & Growth",     slug: "investing"},
+      { name: "Savings & Goals",         slug: "savings"  },
     ],
   },
+
+  // ── 2. Home & Property ────────────────────────────────────────────────────
   {
-    name: "Time",
-    slug: "time",
-    emoji: "⏱️",
-    tagline: "Screen time, work hours, commute & life tools",
+    name: "Home & Property",
+    slug: "home-living",
+    emoji: "🏠",
+    tagline: "Mortgages, rent vs buy, running costs & ROI",
     popular: true,
     subcategories: [
-      { name: "Screen & Apps",    slug: "screen"    },
-      { name: "Work Hours",       slug: "work-hours"},
-      { name: "Life Milestones",  slug: "milestones"},
+      { name: "Buying Costs",  slug: "mortgages" },
+      { name: "Rent vs Buy",   slug: "renting"   },
+      { name: "Running Costs", slug: "household" },
+      { name: "Family",        slug: "family"    },
     ],
   },
+
+  // ── 3. Work & Freelance ───────────────────────────────────────────────────
   {
-    name: "Lifestyle",
+    name: "Work & Freelance",
+    slug: "work-career",
+    emoji: "🧑‍💻",
+    tagline: "Salary, freelance rate, contractor tools & career decisions",
+    popular: true,
+    subcategories: [
+      { name: "Salary & Pay",        slug: "salary"    },
+      { name: "Freelance Rate",      slug: "freelance" },
+      { name: "Career & Contractor", slug: "career"    },
+      { name: "Wellbeing at Work",   slug: "wellbeing" },
+    ],
+  },
+
+  // ── 4. DIY & Building ────────────────────────────────────────────────────
+  {
+    name: "DIY & Building",
+    slug: "construction",
+    emoji: "🔨",
+    tagline: "Concrete, materials, layout tools & project planning",
+    subcategories: [
+      { name: "Materials",        slug: "concrete" },
+      { name: "Project Planning", slug: "costing"  },
+      { name: "Layout Tools",     slug: "planning" },
+    ],
+  },
+
+  // ── 5. Energy & Sustainability ────────────────────────────────────────────
+  {
+    name: "Energy & Sustainability",
+    slug: "energy",
+    emoji: "🌍",
+    tagline: "Solar, carbon footprint, energy usage & green savings",
+    subcategories: [
+      { name: "Solar & Renewables", slug: "solar"  },
+      { name: "Energy Bills",       slug: "bills"  },
+      { name: "Carbon & Footprint", slug: "carbon" },
+    ],
+  },
+
+  // ── 6. Lifestyle & Habits ─────────────────────────────────────────────────
+  {
+    name: "Lifestyle & Habits",
     slug: "lifestyle",
-    emoji: "🧠",
-    tagline: "Habits, routines, spending behaviours",
+    emoji: "☕",
+    tagline: "Habits, spending, food, travel & entertainment costs",
     popular: true,
     subcategories: [
       { name: "Daily Habits",    slug: "habits"        },
@@ -103,75 +160,57 @@ export const categories: Category[] = [
       { name: "Travel & Leisure",slug: "travel"        },
     ],
   },
-  {
-    name: "Work & Career",
-    slug: "work-career",
-    emoji: "💼",
-    tagline: "Salary, freelance, productivity & career decisions",
-    popular: true,
-    subcategories: [
-      { name: "Salary & Pay",    slug: "salary"       },
-      { name: "Freelance",       slug: "freelance"    },
-      { name: "Career Decisions",slug: "career"       },
-      { name: "Wellbeing at Work",slug: "wellbeing"   },
-    ],
-  },
-  {
-    name: "Home & Living",
-    slug: "home-living",
-    emoji: "🏠",
-    tagline: "Rent, mortgages, utilities & household costs",
-    popular: true,
-    subcategories: [
-      { name: "Mortgages & Buying", slug: "mortgages"  },
-      { name: "Renting",            slug: "renting"    },
-      { name: "Household Costs",    slug: "household"  },
-      { name: "Family Costs",       slug: "family"     },
-    ],
-  },
-  {
-    name: "Construction",
-    slug: "construction",
-    emoji: "🏗️",
-    tagline: "Concrete, materials, costing & project planning",
-    subcategories: [
-      { name: "Concrete & Materials", slug: "concrete" },
-      { name: "Project Costing",      slug: "costing"  },
-      { name: "Site Planning",        slug: "planning" },
-    ],
-  },
-  {
-    name: "Energy & Sustainability",
-    slug: "energy",
-    emoji: "🌱",
-    tagline: "Solar, carbon footprint, energy usage & green savings",
-    subcategories: [
-      { name: "Solar & Renewables",  slug: "solar"   },
-      { name: "Energy Bills",        slug: "bills"   },
-      { name: "Carbon & Footprint",  slug: "carbon"  },
-    ],
-  },
-  {
-    name: "Transport",
-    slug: "transport",
-    emoji: "🚗",
-    tagline: "EV vs petrol, fuel costs & commute tools",
-    subcategories: [
-      { name: "Car & Finance",    slug: "car"     },
-      { name: "Commuting",        slug: "commute" },
-      { name: "Travel Costs",     slug: "travel"  },
-    ],
-  },
+
+  // ── 7. Health & Fitness ───────────────────────────────────────────────────
   {
     name: "Health & Fitness",
     slug: "health",
     emoji: "🧪",
     tagline: "Calories, sleep, fitness & wellbeing costs",
     subcategories: [
-      { name: "Sleep & Recovery", slug: "sleep"   },
-      { name: "Fitness Costs",    slug: "fitness" },
+      { name: "Sleep & Recovery", slug: "sleep"    },
+      { name: "Fitness Costs",    slug: "fitness"  },
       { name: "Health Insurance", slug: "insurance"},
-      { name: "Habits & Vices",   slug: "vices"   },
+      { name: "Habits & Vices",   slug: "vices"    },
+    ],
+  },
+
+  // ── 8. Time & Planning ───────────────────────────────────────────────────
+  {
+    name: "Time & Planning",
+    slug: "time",
+    emoji: "📅",
+    tagline: "Screen time, work hours, life milestones & planning",
+    popular: true,
+    subcategories: [
+      { name: "Screen & Apps",   slug: "screen"    },
+      { name: "Work Hours",      slug: "work-hours"},
+      { name: "Life Milestones", slug: "milestones"},
+    ],
+  },
+
+  // ── 9. Everyday Decisions ────────────────────────────────────────────────
+  {
+    name: "Everyday Decisions",
+    slug: "everyday",
+    emoji: "🧰",
+    tagline: "Percentages, discounts & quick everyday calculators",
+    subcategories: [
+      { name: "Quick Calculators", slug: "quick"      },
+      { name: "Converters",        slug: "converters" },
+    ],
+  },
+
+  // ── Supporting categories ─────────────────────────────────────────────────
+  {
+    name: "Transport",
+    slug: "transport",
+    emoji: "⛽",
+    tagline: "EV vs petrol, fuel costs & commute tools",
+    subcategories: [
+      { name: "Car & Finance", slug: "car"     },
+      { name: "Commuting",     slug: "commute" },
+      { name: "Travel Costs",  slug: "travel"  },
     ],
   },
   {
@@ -180,24 +219,14 @@ export const categories: Category[] = [
     emoji: "🎓",
     tagline: "University costs, student finance & study tools",
     subcategories: [
-      { name: "University & Tuition", slug: "university" },
+      { name: "University & Tuition", slug: "university"      },
       { name: "Student Finance",      slug: "student-finance" },
-    ],
-  },
-  {
-    name: "Everyday Tools",
-    slug: "everyday",
-    emoji: "🧰",
-    tagline: "Percentages, converters & quick calculators",
-    subcategories: [
-      { name: "Quick Calculators", slug: "quick"      },
-      { name: "Converters",        slug: "converters" },
     ],
   },
   {
     name: "Cost Calculators",
     slug: "cost",
-    emoji: "🏷️",
+    emoji: "💸",
     tagline: "Find out what things really cost before you spend",
     popular: true,
     subcategories: [
@@ -207,17 +236,32 @@ export const categories: Category[] = [
       { name: "General",          slug: "general"          },
     ],
   },
+
+  // ── 10. What If (viral) ───────────────────────────────────────────────────
   {
-    name: "Decisions",
+    name: "What If",
     slug: "decisions",
-    emoji: "🎯",
-    tagline: "Opportunity cost, life choices & what-if tools",
+    emoji: "💭",
+    tagline: "Opportunity cost, life choices & what-if scenarios",
     popular: true,
     subcategories: [
-      { name: "Life Choices",       slug: "life-choices"  },
-      { name: "Opportunity Cost",   slug: "opp-cost"      },
+      { name: "Life Choices",        slug: "life-choices" },
+      { name: "Opportunity Cost",    slug: "opp-cost"     },
       { name: "Financial Trade-offs",slug: "tradeoffs"    },
-      { name: "What-if Scenarios",  slug: "what-if"       },
+      { name: "What-if Scenarios",   slug: "what-if"      },
+    ],
+  },
+
+  // ── Gaming & Odds (low priority) ─────────────────────────────────────────
+  {
+    name: "Gaming & Odds",
+    slug: "gaming",
+    emoji: "🎲",
+    tagline: "Poker odds, bet calculators & probability tools",
+    subcategories: [
+      { name: "Poker & Cards",  slug: "poker"   },
+      { name: "Sports Betting", slug: "betting" },
+      { name: "Probability",    slug: "odds"    },
     ],
   },
 ];
@@ -261,6 +305,11 @@ export const tools: Tool[] = [
       { question: "What is time and a half?", answer: "Time and a half means you're paid 1.5 times your regular hourly rate for every overtime hour — the federal minimum for eligible US workers." },
       { question: "Is double time required by law?", answer: "Double time (2×) is not federally mandated in the US, but some states (like California) and employers do offer it for specific circumstances." },
     ],
+  },
+  {
+    name: "Salary Increase Calculator", slug: "salary-increase-calculator", tier: 2, category: "money", subcategory: "income", toolType: "calculator", popular: true, status: "live",
+    description: "Find out exactly what your raise is worth — after tax, after inflation, and over your entire career. Calculate monthly take-home increase and lifetime earnings impact.",
+    keywords: ["salary increase calculator", "raise calculator", "pay raise calculator", "salary negotiation calculator", "lifetime earnings calculator"],
   },
   {
     name: "Hourly to Salary Calculator", slug: "hourly-to-salary-calculator", tier: 2, category: "money", subcategory: "income", toolType: "calculator", status: "live",
@@ -337,7 +386,11 @@ export const tools: Tool[] = [
   // Spending & Budgets
   { name: "Budget Planner",                  slug: "budget-planner",             tier: 2, category: "money", subcategory: "spending",  toolType: "planner",    popular: true  },
   { name: "Monthly Expense Tracker",         slug: "monthly-expense",            tier: 2, category: "money", subcategory: "spending",  toolType: "tracker"                    },
-  { name: "Net Worth Calculator",            slug: "net-worth",                  tier: 2, category: "money", subcategory: "spending",  toolType: "calculator", popular: true  },
+  {
+    name: "Net Worth Calculator", slug: "net-worth-calculator", tier: 2, category: "money", subcategory: "savings", toolType: "calculator", popular: true, status: "live",
+    description: "Calculate your total net worth — assets minus liabilities. Track what you own vs. what you owe, see your debt-to-asset ratio, and project your wealth over time.",
+    keywords: ["net worth calculator", "how to calculate net worth", "assets minus liabilities", "personal net worth tracker", "wealth calculator"],
+  },
   { name: "Cost of Living Calculator",       slug: "cost-of-living",             tier: 2, category: "money", subcategory: "spending",  toolType: "calculator", popular: true  },
   { name: "Inflation Impact Calculator",     slug: "inflation-impact",           tier: 2, category: "money", subcategory: "spending",  toolType: "calculator"                 },
   { name: "Hidden Fees Tool",                slug: "hidden-fees",                tier: 3, category: "money", subcategory: "spending",  toolType: "tool"                       },
@@ -345,13 +398,18 @@ export const tools: Tool[] = [
   { name: "Lifestyle Inflation Calculator",  slug: "lifestyle-inflation",        tier: 3, category: "money", subcategory: "spending",  toolType: "calculator", popular: true  },
 
   // Loans & Debt
+  {
+    name: "Debt Payoff Calculator", slug: "debt-payoff-calculator", tier: 2, category: "money", subcategory: "loans", toolType: "calculator", popular: true, status: "live",
+    description: "Calculate your debt-free date using the avalanche or snowball method. Compare strategies, see interest saved, and visualise your burn-down timeline across multiple debts.",
+    keywords: ["debt payoff calculator", "avalanche vs snowball", "debt snowball calculator", "debt free date calculator", "credit card payoff calculator"],
+  },
   { name: "Debt Consolidation Calculator",    slug: "debt-consolidation",         tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", popular: true  },
   { name: "Credit Score Impact Tool",         slug: "credit-score-impact",        tier: 1, category: "money", subcategory: "loans",     toolType: "tool"                       },
   { name: "Loan Repayment Calculator",        slug: "loan-repayment",             tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", popular: true  },
   { name: "Loan Calculator",                  slug: "loan-calculator",            tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", popular: true, status: "live", description: "Calculate monthly payments, total interest, and total cost for car loans, personal loans, student loans, and standard loans." },
   { name: "Personal Loan Comparison Tool",    slug: "personal-loan-comparison",   tier: 1, category: "money", subcategory: "loans",     toolType: "tool"                       },
   { name: "Business Loan Estimator",          slug: "business-loan-estimator",    tier: 1, category: "money", subcategory: "loans",     toolType: "estimator"                  },
-  { name: "Credit Card Interest Calculator",  slug: "credit-card-interest",       tier: 2, category: "money", subcategory: "loans",     toolType: "calculator", popular: true  },
+  { name: "Credit Card Interest Calculator",  slug: "credit-card-interest",       tier: 2, category: "money", subcategory: "loans",     toolType: "calculator", popular: true, status: "live", engineId: "credit-card-interest", description: "See how long it takes to pay off your credit card balance and how much interest you'll pay with fixed monthly payments." },
   { name: "Minimum Payment Trap Tool",        slug: "minimum-payment-trap",       tier: 2, category: "money", subcategory: "loans",     toolType: "tool"                       },
   { name: "Overdraft Cost Calculator",        slug: "overdraft-cost",             tier: 2, category: "money", subcategory: "loans",     toolType: "calculator"                 },
   { name: "Insurance Cost Comparison Tool",   slug: "insurance-cost-comparison",  tier: 1, category: "money", subcategory: "loans",     toolType: "tool"                       },
@@ -374,6 +432,11 @@ export const tools: Tool[] = [
     metaTitle: "Compound Interest Calculator – Work Out How Your Money Grows Instantly",
     description: "Work out how your money grows with compound interest. Enter your starting amount, rate, and time period and get instant results for total growth and final value.",
   },
+  {
+    name: "ROI Calculator", slug: "roi-calculator", tier: 2, category: "money", subcategory: "investing", toolType: "calculator", popular: true, status: "live",
+    description: "Calculate gross ROI, real returns after inflation, fee drag impact, and how your investment compares to the benchmark. Investor-grade analysis in seconds.",
+    keywords: ["ROI calculator", "return on investment calculator", "inflation adjusted ROI", "investment return calculator", "CAGR calculator"],
+  },
   { name: "Investment Return Calculator",          slug: "investment-return",          tier: 2, category: "money", subcategory: "investing", toolType: "calculator", popular: true  },
   { name: "ETF Growth Calculator",                 slug: "etf-growth",                 tier: 2, category: "money", subcategory: "investing", toolType: "calculator"                 },
   { name: "Dividend Income Calculator",            slug: "dividend-income",            tier: 2, category: "money", subcategory: "investing", toolType: "calculator"                 },
@@ -384,12 +447,22 @@ export const tools: Tool[] = [
   { name: "Property Flip Profit Calculator",       slug: "property-flip-profit",       tier: 1, category: "money", subcategory: "investing", toolType: "calculator"                 },
 
   // Savings
+  {
+    name: "Savings Calculator", slug: "savings-calculator", tier: 2, category: "money", subcategory: "savings", toolType: "calculator", popular: true, status: "live",
+    description: "Calculate how much your savings will grow over time with compound interest. Enter your starting balance, monthly contributions, and interest rate for an instant projection.",
+    keywords: ["savings calculator", "savings growth calculator", "compound savings", "how much will my savings grow", "monthly savings calculator"],
+  },
   { name: "Savings Growth Calculator",  slug: "savings-growth",             tier: 2, category: "money", subcategory: "savings",   toolType: "calculator", popular: true  },
-  { name: "Emergency Fund Calculator",  slug: "emergency-fund",             tier: 2, category: "money", subcategory: "savings",   toolType: "calculator"                 },
+  {
+    name: "Emergency Fund Calculator", slug: "emergency-fund-calculator", tier: 2, category: "money", subcategory: "savings", toolType: "calculator", popular: true, status: "live",
+    description: "Calculate your emergency fund target based on your actual monthly expenses. See how many months you're covered, how much you still need, and when you'll be fully funded.",
+    keywords: ["emergency fund calculator", "how much emergency fund", "emergency savings calculator", "3 month emergency fund", "6 month emergency fund"],
+  },
   { name: "FIRE Number Calculator",     slug: "fire-number",                tier: 2, category: "money", subcategory: "savings",   toolType: "calculator", popular: true  },
   { name: "Pension Gap Calculator",     slug: "pension-gap",                tier: 1, category: "money", subcategory: "savings",   toolType: "calculator", popular: true  },
   { name: "Retirement Income Estimator",slug: "retirement-income",          tier: 1, category: "money", subcategory: "savings",   toolType: "estimator",  popular: true  },
   { name: "Startup Cost Estimator",     slug: "startup-cost",               tier: 1, category: "money", subcategory: "savings",   toolType: "estimator",  popular: true  },
+  { name: "Savings Goal Calculator",    slug: "savings-goal-calculator",    tier: 2, category: "money", subcategory: "savings",   toolType: "calculator", popular: true, status: "live", engineId: "savings-goal-calculator", description: "Calculate how much you need to save each month to reach a financial goal by a target date." },
 
   // ══════════════════════════════════════════════════════════════════════════
   // ⏱️ TIME
@@ -400,6 +473,7 @@ export const tools: Tool[] = [
     name: "Screen Time Impact Calculator", slug: "screen-time-impact", tier: 3, category: "time", subcategory: "screen", toolType: "calculator", popular: true, status: "live",
     metaTitle: "Screen Time Impact Calculator – Work Out Your Screen Time Cost Instantly",
     description: "Work out the real cost of your daily screen habits. Enter your usage and get instant results for weekly time lost and lifetime opportunity cost.",
+    engineId: "screen-time-impact",
   },
   { name: "Social Media Time Value Calculator", slug: "social-media-time-value",    tier: 3, category: "time", subcategory: "screen",    toolType: "calculator", popular: true  },
   { name: "Time Wasted on Apps Tracker",        slug: "time-wasted-on-apps",        tier: 3, category: "time", subcategory: "screen",    toolType: "tracker",    popular: true  },
@@ -460,7 +534,11 @@ export const tools: Tool[] = [
   { name: "Promotion Impact Calculator",  slug: "promotion-impact",           tier: 3, category: "work-career", subcategory: "salary",    toolType: "calculator"                 },
 
   // Freelance
-  { name: "Freelance Rate Calculator",    slug: "freelance-rate",             tier: 1, category: "work-career", subcategory: "freelance", toolType: "calculator", popular: true },
+  {
+    name: "Freelance Rate Calculator", slug: "freelance-rate-calculator", tier: 1, category: "work-career", subcategory: "freelance", toolType: "calculator", popular: true, status: "live",
+    description: "Calculate the minimum hourly rate you need to charge as a freelancer to hit your income goal after tax, expenses, and profit margin. See income scenarios and check if you're undercharging.",
+    keywords: ["freelance rate calculator", "how much to charge freelance", "freelancer hourly rate", "consulting rate calculator", "freelance pricing calculator"],
+  },
   { name: "Freelance Income Calculator",  slug: "freelance-income",           tier: 2, category: "work-career", subcategory: "freelance", toolType: "calculator"                 },
 
   // Career Decisions
@@ -518,7 +596,9 @@ export const tools: Tool[] = [
 
   { name: "Car Finance Cost Calculator",  slug: "car-finance-cost",           tier: 1, category: "transport", subcategory: "car",     toolType: "calculator", popular: true },
   { name: "Travel Cost Calculator",       slug: "travel-cost",                tier: 2, category: "transport", subcategory: "travel",  toolType: "calculator", popular: true },
-  { name: "Commute Time Value Calculator",slug: "commute-time-value",         tier: 3, category: "transport", subcategory: "commute", toolType: "calculator", popular: true },
+  { name: "Commute Time Value Calculator",slug: "commute-time-value",         tier: 3, category: "transport", subcategory: "commute", toolType: "calculator", popular: true, status: "live", engineId: "commute-time-value", description: "Calculate the real cost of your daily commute in hours lost and salary equivalent per year." },
+  { name: "Car Loan Calculator",          slug: "car-loan-calculator",         tier: 2, category: "transport", subcategory: "car",     toolType: "calculator", popular: true, status: "live", engineId: "car-loan-calculator",     description: "Calculate your monthly car payment, total interest, and true cost of any vehicle loan." },
+  { name: "Road Trip Cost Calculator",    slug: "road-trip-cost",              tier: 3, category: "transport", subcategory: "travel",  toolType: "calculator", popular: true, status: "live", engineId: "road-trip-cost",          description: "Calculate total fuel cost for any road trip based on distance, your car's MPG, and local gas prices." },
 
   // ══════════════════════════════════════════════════════════════════════════
   // 🧪 HEALTH & FITNESS
@@ -530,6 +610,9 @@ export const tools: Tool[] = [
     description: "Estimate your dental implant cost based on treatment type, quality, clinic, and location. Single tooth, full mouth, and All-on-4 options covered.",
     keywords: ["dental implant cost", "how much do dental implants cost", "dental implant calculator", "all-on-4 cost", "full mouth implants cost"],
   },
+  { name: "BMI Calculator",                  slug: "bmi-calculator",             tier: 2, category: "health", subcategory: "fitness",  toolType: "calculator", popular: true, status: "live", engineId: "bmi-calculator",              description: "Calculate your Body Mass Index (BMI) from your height and weight, and see your healthy weight range." },
+  { name: "Running Pace Calculator",         slug: "running-pace-calculator",    tier: 2, category: "health", subcategory: "fitness",  toolType: "calculator", popular: true, status: "live", engineId: "running-pace-calculator",     description: "Calculate your running pace per mile and per km, plus projected finish times for common race distances." },
+  { name: "Sleep Cycle Optimizer",           slug: "sleep-cycle-optimizer",      tier: 3, category: "health", subcategory: "sleep",    toolType: "calculator", popular: true, status: "live", engineId: "sleep-cycle-optimizer",       description: "Find the perfect bedtime for 4, 5, or 6 full 90-minute sleep cycles based on your wake-up time." },
   { name: "Sleep Value Calculator",          slug: "sleep-value",                tier: 3, category: "health", subcategory: "sleep",    toolType: "calculator"                 },
   { name: "Gym Cost vs Usage Tool",          slug: "gym-cost-vs-usage",          tier: 3, category: "health", subcategory: "fitness",  toolType: "tool"                       },
   { name: "Health Insurance Cost Estimator", slug: "health-insurance-cost",      tier: 1, category: "health", subcategory: "insurance",toolType: "estimator"                  },
@@ -555,9 +638,33 @@ export const tools: Tool[] = [
     metaTitle: "Percentage Increase Calculator – Calculate % Change Instantly",
     description: "Calculate percentage increase, decrease, difference, and reverse percentages instantly. Useful for salary raises, price changes, and investment returns.",
   },
-  { name: "Tip Calculator",          slug: "tip-calculator",             tier: 3, category: "everyday", subcategory: "quick",     toolType: "calculator"                 },
-  { name: "Currency Converter",      slug: "currency-converter",         tier: 3, category: "everyday", subcategory: "converters",toolType: "tool",       popular: true  },
-  { name: "Unit Converter",          slug: "unit-converter",             tier: 3, category: "everyday", subcategory: "converters",toolType: "tool"                       },
+  {
+    name: "Discount Calculator", slug: "discount-calculator", tier: 2, category: "everyday", subcategory: "quick", toolType: "calculator", popular: true, status: "live",
+    description: "Calculate your final price after any discount — percentage off, fixed amount, or buy-X-get-Y. Add sales tax for the exact checkout total.",
+    keywords: ["discount calculator", "percentage off calculator", "sale price calculator", "how much will I save", "shopping discount calculator"],
+  },
+  { name: "Tip Calculator",              slug: "tip-calculator",             tier: 3, category: "everyday", subcategory: "quick",     toolType: "calculator", status: "live", popular: true, engineId: "tip-calculator",             description: "Calculate how much to tip and split the bill evenly. Enter your bill, tip percentage, and number of people." },
+  { name: "Percentage Calculator",       slug: "percentage-of-calculator",   tier: 3, category: "everyday", subcategory: "quick",     toolType: "calculator", status: "live", popular: true, engineId: "percentage-of-calculator",   description: "Instantly calculate what X% of a number is, the percentage one number is of another, and percentage change." },
+  { name: "Grocery Unit Price",          slug: "grocery-unit-price",         tier: 3, category: "everyday", subcategory: "quick",     toolType: "calculator", status: "live", popular: true, engineId: "grocery-unit-price",         description: "Compare the price per unit of two grocery items to instantly find which is the better deal." },
+  { name: "Laundry Cost Calculator",     slug: "laundry-cost-calculator",    tier: 3, category: "everyday", subcategory: "quick",     toolType: "calculator", status: "live",               engineId: "laundry-cost-calculator",    description: "Calculate the true cost per laundry load including electricity, water, and detergent." },
+  { name: "Currency Converter",              slug: "currency-converter",         tier: 3, category: "everyday",     subcategory: "converters", toolType: "tool",       popular: true },
+  { name: "Unit Converter",                  slug: "unit-converter",             tier: 3, category: "everyday",     subcategory: "converters", toolType: "tool" },
+
+  // ── New engine calculators ────────────────────────────────────────────────
+  { name: "Pay Raise Calculator",            slug: "pay-raise-calculator",       tier: 2, category: "money",        subcategory: "income",     toolType: "calculator", status: "live", popular: true,  engineId: "pay-raise",              description: "Calculate your new salary, annual increase, and monthly boost after a pay raise." },
+  { name: "Sales Tax Calculator",            slug: "sales-tax-calculator",       tier: 2, category: "everyday",     subcategory: "quick",      toolType: "calculator", status: "live", popular: true,  engineId: "sales-tax",              description: "Calculate the sales tax amount and total price for any purchase instantly." },
+  { name: "Profit Margin Calculator",        slug: "profit-margin-calculator",   tier: 2, category: "money",        subcategory: "business",   toolType: "calculator", status: "live", popular: true,  engineId: "profit-margin",          description: "Calculate gross profit, margin percentage, and markup from revenue and cost." },
+  { name: "Markup Calculator",               slug: "markup-calculator",          tier: 2, category: "money",        subcategory: "business",   toolType: "calculator", status: "live",                 engineId: "markup-calculator",      description: "Calculate your selling price, profit, and gross margin from cost and markup percentage." },
+  { name: "FIRE Calculator",                 slug: "fire-calculator",            tier: 1, category: "money",        subcategory: "investing",  toolType: "calculator", status: "live", popular: true,  engineId: "fire-calculator",        description: "Calculate your FIRE number and how many years until you reach financial independence using the 4% rule." },
+  { name: "Millionaire Calculator",          slug: "millionaire-calculator",     tier: 1, category: "money",        subcategory: "investing",  toolType: "calculator", status: "live", popular: true,  engineId: "millionaire-calculator",  description: "See exactly how many years until your investments reach $1,000,000." },
+  { name: "Car Affordability Calculator",    slug: "car-affordability-calculator", tier: 2, category: "money",      subcategory: "loans",      toolType: "calculator", status: "live", popular: true,  engineId: "car-affordability",      description: "Find the maximum car price and monthly payment you can afford based on your income and the 15% rule." },
+  { name: "Salary to Hourly Calculator",     slug: "salary-to-hourly-calculator", tier: 2, category: "money",       subcategory: "income",     toolType: "calculator", status: "live", popular: true,  engineId: "salary-to-hourly",       description: "Convert an annual salary to hourly, daily, weekly, and monthly rates instantly." },
+  { name: "Meeting Cost Calculator",         slug: "meeting-cost-calculator",    tier: 3, category: "productivity", subcategory: "work",       toolType: "calculator", status: "live", popular: true,  engineId: "meeting-cost",           description: "See the true dollar cost of any meeting based on attendees, average salary, and duration." },
+  { name: "Commute Cost Calculator",         slug: "commute-cost-calculator",    tier: 3, category: "productivity", subcategory: "work",       toolType: "calculator", status: "live", popular: true,  engineId: "commute-cost",           description: "Calculate the true annual fuel cost of your daily commute based on miles, MPG, and gas price." },
+  { name: "PTO Calculator",                  slug: "pto-calculator",             tier: 3, category: "productivity", subcategory: "work",       toolType: "calculator", status: "live",                 engineId: "pto-calculator",         description: "Calculate the cash value of your unused PTO or vacation days at your current hourly rate." },
+  { name: "Quit Smoking Calculator",         slug: "quit-smoking-calculator",    tier: 3, category: "lifestyle",    subcategory: "habits",     toolType: "calculator", status: "live", popular: true,  engineId: "quit-smoking",           description: "See how much money you've saved and life you've regained since quitting smoking." },
+  { name: "Water Intake Calculator",         slug: "water-intake-calculator",    tier: 3, category: "health",       subcategory: "fitness",    toolType: "calculator", status: "live",                 engineId: "water-intake",           description: "Calculate your ideal daily water intake in ounces, glasses, and litres based on body weight and exercise." },
+  { name: "Calorie Deficit Calculator",      slug: "calorie-deficit-calculator", tier: 2, category: "health",       subcategory: "fitness",    toolType: "calculator", status: "live", popular: true,  engineId: "calorie-deficit",        description: "Calculate your daily calorie target and deficit to reach your weight loss goal safely." },
 
   // ══════════════════════════════════════════════════════════════════════════
   // 🎯 DECISIONS
@@ -582,7 +689,8 @@ export const tools: Tool[] = [
 
   // Opportunity Cost
   { name: "Opportunity Cost Calculator",      slug: "opportunity-cost",           tier: 3, category: "decisions", subcategory: "opp-cost",     toolType: "calculator", popular: true  },
-  { name: "Missed Investment Calculator",     slug: "missed-investment",          tier: 3, category: "decisions", subcategory: "opp-cost",     toolType: "calculator", popular: true  },
+  { name: "Missed Investment Calculator",     slug: "missed-investment",          tier: 3, category: "decisions", subcategory: "opp-cost",     toolType: "calculator", popular: true, status: "live", engineId: "missed-investment",       description: "See what a past purchase would be worth today if you had invested it instead. Enter the amount, years ago, and expected return." },
+  { name: "Subscription Auditor",             slug: "subscription-auditor",       tier: 3, category: "decisions", subcategory: "tradeoffs",    toolType: "calculator", popular: true, status: "live", engineId: "subscription-auditor",    description: "Add up all your monthly subscriptions and see your annual spend — and what it would be worth if invested." },
   { name: "Break-even Time Calculator",       slug: "break-even-time",            tier: 3, category: "decisions", subcategory: "opp-cost",     toolType: "calculator"                 },
 
   // Financial Trade-offs
@@ -609,6 +717,7 @@ export const tools: Tool[] = [
   { name: "Veneers Cost",                       slug: "veneers-cost",                   tier: 2, category: "cost", subcategory: "health",           toolType: "estimator", status: "preview", href: "/tools/cost-calculators/health/veneers-cost",                       description: "Estimate the cost of porcelain or composite veneers based on how many teeth you want treated and the type of veneer." },
 
   // Energy
+  { name: "Paint Coverage Calculator",          slug: "paint-coverage-calculator",  tier: 3, category: "construction", subcategory: "concrete", toolType: "calculator", status: "live",               engineId: "paint-coverage-calculator", description: "Calculate how many gallons of paint you need for a room based on wall area, doors, windows, and coats." },
   { name: "Solar Panel Cost",                   slug: "solar-panel-cost",               tier: 2, category: "cost", subcategory: "energy",           toolType: "estimator", status: "preview", href: "/tools/cost-calculators/energy/solar-panel-cost",                   description: "Estimate the upfront and net cost of a residential solar panel system based on system size, location, and available incentives." },
 
   // General

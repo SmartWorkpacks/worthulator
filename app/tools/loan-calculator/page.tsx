@@ -105,49 +105,58 @@ export default function LoanCalculatorPage() {
         />
       ))}
 
-      {/* ── Hero ─────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-gray-100 bg-white px-5 py-14 sm:px-8 sm:py-24 lg:px-16">
-        <div className="pointer-events-none absolute -top-32 left-1/2 h-125 w-125 -translate-x-1/2 rounded-full bg-emerald-50/80 blur-[80px]" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-gray-100/60 blur-3xl" />
-        <div className="relative mx-auto max-w-2xl text-center">
-
-          {/* Left — copy */}
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
-              Finance Tools · Loan Calculators
-            </p>
-            <h1 className="mt-4 text-[clamp(2rem,4.5vw,3rem)] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950">
+      {/* ── Hero + Calculator ────────────────────────────────────────────── */}
+      <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
+        <div className="pointer-events-none absolute -top-10 left-1/4 h-64 w-64 rounded-full bg-emerald-200/25 blur-[72px]" />
+        <div className="pointer-events-none absolute top-0 right-1/4 h-48 w-48 rounded-full bg-cyan-100/20 blur-[56px]" />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.028]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(0,0,0,1) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,1) 1px, transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
+        <section className="relative px-5 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl pt-7 pb-6 sm:pt-9 sm:pb-7">
+            <div className="mb-2.5 flex items-center gap-2">
+              <span className="inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded bg-emerald-500/10 text-[9px] font-bold text-emerald-600">$</span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-400">Finance Tools · Loan Calculators</span>
+            </div>
+            <h1 className="text-[2.25rem] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950 sm:text-[3rem]">
               Loan Calculator
-              <span className="block mt-2 text-base font-medium tracking-normal text-gray-400 sm:text-lg">
-                Monthly payment, total interest &amp; full cost breakdown — instantly.
-              </span>
             </h1>
-            <p className="mt-4 mx-auto max-w-lg text-sm leading-7 text-gray-500">
+            <p className="mt-2 max-w-lg text-sm leading-[1.65] text-gray-500">
               Enter your loan amount, interest rate, and term to see your monthly payment, total interest, and full amortization schedule. Supports car, personal, student, and standard loans.
             </p>
-            <ul className="mt-6 inline-flex flex-col items-start gap-2 text-left mx-auto">
+            <div className="mt-3 flex flex-wrap gap-1.5">
               {[
                 "Car, personal, student, and standard loan modes",
                 "Full amortization schedule month by month",
                 "See how extra payments cut interest and time",
               ].map((item) => (
-                <li key={item} className="flex items-center gap-2.5 text-sm text-gray-500">
-                  <span className="h-4 w-4 shrink-0 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">✓</span>
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700"
+                >
+                  <svg className="h-2.5 w-2.5 shrink-0 text-emerald-500" viewBox="0 0 10 10" fill="none">
+                    <path d="M2 5.5L4 7.5L8 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
                   {item}
-                </li>
+                </span>
               ))}
-            </ul>
+            </div>
           </div>
-
-        </div>
-      </section>
-
-      {/* ── Calculator ───────────────────────────────────────────────────── */}
-      <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-5xl">
-          <LoanCalculator />
-        </div>
-      </section>
+        </section>
+        <section className="relative px-5 pt-2 pb-12 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <LoanCalculator />
+            <p className="mt-5 text-xs leading-relaxed text-gray-400">
+              Estimates only — not financial advice. Results are based on the inputs provided and do not account for fees, insurance, taxes, or lender-specific terms. Always confirm figures with your lender before signing.
+            </p>
+          </div>
+        </section>
+      </div>
 
       {/* ── Stats strip ──────────────────────────────────────────────────── */}
       <section className="border-t border-gray-100 bg-white px-5 py-10 sm:px-8 lg:px-16">

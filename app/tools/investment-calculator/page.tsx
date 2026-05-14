@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import Link from "next/link";
 import RelatedTools from "@/components/RelatedTools";
 import InvestmentCalculator from "@/components/calculators/InvestmentCalculatorLoader";
@@ -152,41 +152,73 @@ export default function InvestmentCalculatorPage() {
         />
       ))}
 
-      {/* ── HERO ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-gray-100 bg-white px-5 py-16 sm:px-8 sm:py-20 lg:px-16">
-        <div className="pointer-events-none absolute -top-24 left-1/2 h-96 w-96 -translate-x-1/2 rounded-full bg-emerald-50/70 blur-[90px]" />
-        <div className="pointer-events-none absolute bottom-0 right-0 h-64 w-64 rounded-full bg-cyan-50/40 blur-3xl" />
-        <div className="relative mx-auto max-w-2xl text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-gray-400">
-            Investing · Future Wealth
-          </p>
-          <h1 className="mt-4 text-[clamp(2rem,4.5vw,3rem)] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950">
-            Investment Calculator
-          </h1>
-          <p className="mt-4 text-base leading-7 text-gray-500">
-            See exactly how your money grows over time. Enter your starting amount, monthly contributions, and expected return to visualise your future wealth — including compound growth, inflation adjustments, and milestone projections.
-          </p>
-          <ul className="mt-6 inline-flex flex-col items-start gap-2 text-left">
-            {[
-              "Compound interest with monthly, quarterly, or annual frequency",
-              "Inflation-adjusted real value alongside nominal projections",
-              "Wealth milestones, insights, and what-if scenario explorer",
-            ].map((item) => (
-              <li key={item} className="flex items-center gap-2.5 text-sm text-gray-500">
-                <span className="h-4 w-4 shrink-0 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-[10px] font-bold">✓</span>
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
+      {/* ── Hero + Calculator ─────────────────────────────────────────────── */}
+      <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
+        {/* Blur blobs */}
+        <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-200/25 blur-[72px]" />
+        <div className="pointer-events-none absolute top-1/2 right-0 h-72 w-72 -translate-y-1/2 rounded-full bg-cyan-100/20 blur-[56px]" />
+        {/* Subtle grid */}
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.028]"
+          style={{
+            backgroundImage:
+              "linear-gradient(to right,#6b7280 1px,transparent 1px),linear-gradient(to bottom,#6b7280 1px,transparent 1px)",
+            backgroundSize: "48px 48px",
+          }}
+        />
 
-      {/* ── CALCULATOR ────────────────────────────────────────────────────── */}
-      <section className="bg-white px-5 py-12 sm:px-8 lg:px-16">
-        <div className="mx-auto max-w-5xl">
-          <InvestmentCalculator />
-        </div>
-      </section>
+        {/* Hero */}
+        <section className="relative px-5 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl pt-7 pb-6 sm:pt-9 sm:pb-7">
+            {/* Eyebrow */}
+            <div className="mb-2.5 flex items-center gap-2">
+              <span className="inline-flex h-4.5 w-4.5 shrink-0 items-center justify-center rounded bg-emerald-500/10 text-[9px] font-bold text-emerald-600">
+                📈
+              </span>
+              <span className="text-[11px] font-semibold uppercase tracking-[0.22em] text-gray-400">
+                Finance · Investing
+              </span>
+            </div>
+            <h1 className="text-[clamp(1.75rem,4vw,2.75rem)] font-bold leading-[1.1] tracking-[-0.03em] text-gray-950">
+              Investment Calculator
+              <span className="block mt-2 text-base font-medium tracking-normal text-gray-400 sm:text-lg">
+                See exactly how your money grows over time.
+              </span>
+            </h1>
+            <p className="mt-3 max-w-2xl text-sm leading-7 text-gray-500">
+              Enter your starting amount, monthly contributions, and expected return to visualise your future wealth — including compound growth, inflation adjustments, and milestone projections.
+            </p>
+            {/* Chip pills */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {[
+                "Compound interest with monthly, quarterly, or annual frequency",
+                "Inflation-adjusted real value alongside nominal projections",
+                "Wealth milestones, insights, and what-if scenario explorer",
+              ].map((item) => (
+                <span
+                  key={item}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-emerald-100 bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-700"
+                >
+                  <svg width="10" height="10" viewBox="0 0 10 10" fill="none" className="shrink-0">
+                    <path d="M2 5.5L4 7.5L8 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Calculator */}
+        <section className="relative px-5 pt-2 pb-12 sm:px-8 lg:px-16">
+          <div className="mx-auto max-w-5xl">
+            <InvestmentCalculator />
+            <p className="mt-5 text-xs leading-relaxed text-gray-400">
+              Estimates only — not financial advice. Projections are based on the return rate you enter and do not guarantee future results. Past market performance is not indicative of future returns.
+            </p>
+          </div>
+        </section>
+      </div>
 
       {/* ── INSIGHT STRIP ─────────────────────────────────────────────────── */}
       <div className="bg-gray-50 px-5 py-5 sm:px-8 lg:px-16">

@@ -143,7 +143,7 @@ export function HeroResultCard({
 
       {/* Main number */}
       <p
-        className={`relative mt-3 text-[clamp(3.5rem,8vw,5.5rem)] font-bold leading-none tracking-[-0.04em] transition-all duration-500 ${
+        className={`relative mt-3 text-[clamp(2rem,8vw,5.5rem)] font-bold leading-none tracking-[-0.04em] transition-all duration-500 ${
           flash
             ? "text-emerald-300 [text-shadow:0_0_40px_rgba(52,211,153,0.6)]"
             : "text-emerald-400 [text-shadow:0_0_20px_rgba(52,211,153,0.28)]"
@@ -333,7 +333,7 @@ interface FrequencyCardsProps {
 
 export function FrequencyCards({ cards }: FrequencyCardsProps) {
   return (
-    <div className={`grid gap-2 sm:gap-3 grid-cols-${Math.min(cards.length, 4)}`}>
+    <div className="grid grid-cols-2 gap-2 sm:gap-3">
       {cards.map((card) => (
         <div
           key={card.label}
@@ -348,6 +348,36 @@ export function FrequencyCards({ cards }: FrequencyCardsProps) {
           <p className="mt-0.5 text-xs font-medium text-gray-500">{card.sub}</p>
         </div>
       ))}
+    </div>
+  );
+}
+
+// ─── CalcDisclaimer ────────────────────────────────────────────────────────────
+
+interface CalcDisclaimerProps {
+  /**
+   * The disclaimer body copy.  Defaults to a generic financial-estimates disclaimer.
+   * Pass a custom string to tailor it to the specific calculator.
+   */
+  text?: string;
+}
+
+export function CalcDisclaimer({
+  text = "Results are projections based on the inputs provided and standard formulas. They are estimates only and do not account for inflation, taxes, fees, or other real-world variables. Past performance does not guarantee future results. This tool is for illustrative purposes only and should not be relied upon as financial, investment, legal, or professional advice. Consult a qualified adviser before making any decisions.",
+}: CalcDisclaimerProps) {
+  return (
+    <div className="rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3.5 flex gap-3 items-start">
+      <svg className="mt-0.5 h-3.5 w-3.5 shrink-0 text-amber-500" viewBox="0 0 16 16" fill="none">
+        <path d="M8 1.5L14.5 13.5H1.5L8 1.5Z" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+        <path d="M8 6V9" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/>
+        <circle cx="8" cy="11.5" r="0.6" fill="currentColor"/>
+      </svg>
+      <div>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.15em] text-amber-600 mb-1">
+          Estimates only — not professional advice
+        </p>
+        <p className="text-[11px] leading-[1.6] text-amber-800/80">{text}</p>
+      </div>
     </div>
   );
 }

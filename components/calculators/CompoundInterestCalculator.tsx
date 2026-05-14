@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo, useId, lazy, Suspense } from "react";
+import { CalcDisclaimer } from "@/src/templates/take-home-pay";
 import {
   compoundInterestConfig,
   buildCompoundSchedule,
@@ -737,6 +738,9 @@ export default function CompoundInterestCalculator() {
           </button>
           {showSchedule && <div className="mt-4"><GrowthTable rows={result.schedule} /></div>}
         </div>
+
+        {/* Disclaimer */}
+        <CalcDisclaimer text="Results are projections based on a constant annual return compounded at your chosen frequency. They do not account for inflation (unless toggled), taxes on gains (unless toggled), fund fees, contribution timing, or market volatility. Past market performance does not guarantee future results. This tool is for illustrative purposes only and should not be relied upon as financial, investment, or tax advice. Consult a qualified financial adviser before making investment decisions." />
 
       </div>
     </div>
