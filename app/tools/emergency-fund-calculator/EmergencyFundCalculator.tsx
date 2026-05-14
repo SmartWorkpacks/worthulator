@@ -259,7 +259,7 @@ export default function EmergencyFundCalculator() {
                     <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
                     <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#9ca3af" }} tickFormatter={(v) => `M${v}`} />
                     <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} width={44} />
-                    <Tooltip formatter={(v: unknown, name: string) => [fmt(Number(v)), name === "balance" ? "Savings" : "Target"]} labelFormatter={(l) => `Month ${l}`} />
+                    <Tooltip formatter={(v: unknown, name: string | undefined) => [fmt(Number(v)), name === "balance" ? "Savings" : "Target"]} labelFormatter={(l) => `Month ${l}`} />
                     <ReferenceLine y={result.targetAmount} stroke="#34d399" strokeDasharray="4 2" label={{ value: "Goal", position: "right", fontSize: 10, fill: "#34d399" }} />
                     <Area type="monotone" dataKey="balance" name="balance" stroke="#60a5fa" fill="url(#gradEF)" strokeWidth={2} />
                   </AreaChart>

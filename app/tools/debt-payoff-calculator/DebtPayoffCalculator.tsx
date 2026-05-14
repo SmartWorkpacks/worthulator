@@ -316,7 +316,7 @@ export default function DebtPayoffCalculator() {
                   <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#9ca3af" }} tickFormatter={(v) => `M${v}`} />
                   <YAxis tick={{ fontSize: 10, fill: "#9ca3af" }} tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} width={44} />
                   <Tooltip
-                    formatter={(v: unknown, name: string) => [fmt(Number(v)), name === "balance" ? "Remaining balance" : "Cumulative interest"]}
+                    formatter={(v: unknown, name: string | undefined) => [fmt(Number(v)), name === "balance" ? "Remaining balance" : "Cumulative interest"]}
                     labelFormatter={(l) => `Month ${l}`}
                   />
                   <Area type="monotone" dataKey="balance" name="Remaining balance" stroke="#34d399" fill="url(#gradBalance)" strokeWidth={2} />
