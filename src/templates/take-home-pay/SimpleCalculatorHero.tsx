@@ -35,7 +35,7 @@ interface SimpleCalculatorHeroProps {
   /** 2–3 feature/benefit chips */
   chips: string[];
   /** The calculator loader component */
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 export default function SimpleCalculatorHero({
