@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Study Time Calculator",     description: "How many hours do you need per week?",          href: "/tools/pomodoro-timer" },
-  { title: "Work Hours Calculator",     description: "Balance work and study hours.",                  href: "/tools/work-hours-calculator" },
-  { title: "Life in Weeks",             description: "Visualise time left at college age.",             href: "/tools/life-in-weeks-calculator" },
-  { title: "Burnout Calculator",        description: "Is your schedule sustainable?",                  href: "/tools/burnout-calculator" },
+  { icon: "⏱️", accent: "bg-blue-500/10",    title: "Study Time Calculator",     description: "How many hours do you need per week?",          href: "/tools/pomodoro-timer" },
+  { icon: "⏰", accent: "bg-amber-500/10",   title: "Work Hours Calculator",     description: "Balance work and study hours.",                  href: "/tools/work-hours-calculator" },
+  { icon: "📅", accent: "bg-purple-500/10",  title: "Life in Weeks",             description: "Visualise time left at college age.",             href: "/tools/life-in-weeks-calculator" },
+  { icon: "🔥", accent: "bg-rose-500/10",    title: "Burnout Calculator",        description: "Is your schedule sustainable?",                  href: "/tools/burnout-calculator" },
 ];
 
 export default function GPACalculator() {

@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Take-Home Pay Calculator",   description: "See what your current salary nets you.",          href: "/tools/take-home-pay-calculator" },
-  { title: "Budget Calculator",          description: "Map your full monthly expenses.",                  href: "/tools/budget-calculator" },
-  { title: "Salary Breakdown",           description: "Where does your income actually go?",             href: "/tools/salary-breakdown-calculator" },
-  { title: "Freelance Rate Calculator",  description: "What should you charge as your own boss?",        href: "/tools/freelance-rate-calculator" },
+  { icon: "💵", accent: "bg-emerald-500/10", title: "Take-Home Pay Calculator",   description: "See what your current salary nets you.",          href: "/tools/take-home-pay-calculator" },
+  { icon: "📊", accent: "bg-blue-500/10",    title: "Budget Calculator",          description: "Map your full monthly expenses.",                  href: "/tools/budget-calculator" },
+  { icon: "📈", accent: "bg-amber-500/10",   title: "Salary Breakdown",           description: "Where does your income actually go?",             href: "/tools/salary-breakdown-calculator" },
+  { icon: "💼", accent: "bg-purple-500/10",  title: "Freelance Rate Calculator",  description: "What should you charge as your own boss?",        href: "/tools/freelance-rate-calculator" },
 ];
 
 export default function DreamSalaryCalculator() {

@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "FIRE Calculator",          description: "Find your 'enough' number and retirement date.",  href: "/tools/fire-calculator" },
-  { title: "Compound Interest",        description: "See the math of growing slowly but surely.",       href: "/tools/compound-interest-calculator" },
-  { title: "Coast FIRE Calculator",    description: "When can you stop contributing and coast?",        href: "/tools/coast-fire-calculator" },
-  { title: "Net Worth Calculator",     description: "Your full financial scorecard.",                   href: "/tools/net-worth-calculator" },
+  { icon: "🔥", accent: "bg-orange-500/10",  title: "FIRE Calculator",          description: "Find your 'enough' number and retirement date.",  href: "/tools/fire-calculator" },
+  { icon: "📈", accent: "bg-emerald-500/10", title: "Compound Interest",        description: "See the math of growing slowly but surely.",       href: "/tools/compound-interest-calculator" },
+  { icon: "🏄", accent: "bg-blue-500/10",    title: "Coast FIRE Calculator",    description: "When can you stop contributing and coast?",        href: "/tools/coast-fire-calculator" },
+  { icon: "📊", accent: "bg-purple-500/10",  title: "Net Worth Calculator",     description: "Your full financial scorecard.",                   href: "/tools/net-worth-calculator" },
 ];
 
 export default function FourOhOneKCalculator() {

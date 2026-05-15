@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Screen Time Impact",          description: "Health and wellbeing impact of screen time.",    href: "/tools/screen-time-impact-calculator" },
-  { title: "Streaming Time Calculator",   description: "Years spent on Netflix and video streaming.",     href: "/tools/streaming-time-calculator" },
-  { title: "Social Media Time",           description: "Where does all your social media time go?",      href: "/tools/social-media-time-calculator" },
-  { title: "Life in Weeks",               description: "Visualise your remaining weeks.",                 href: "/tools/life-in-weeks-calculator" },
+  { icon: "📺", accent: "bg-blue-500/10",    title: "Screen Time Impact",          description: "Health and wellbeing impact of screen time.",    href: "/tools/screen-time-impact-calculator" },
+  { icon: "🎬", accent: "bg-rose-500/10",    title: "Streaming Time Calculator",   description: "Years spent on Netflix and video streaming.",     href: "/tools/streaming-time-calculator" },
+  { icon: "📲", accent: "bg-amber-500/10",   title: "Social Media Time",           description: "Where does all your social media time go?",      href: "/tools/social-media-time-calculator" },
+  { icon: "📅", accent: "bg-purple-500/10",  title: "Life in Weeks",               description: "Visualise your remaining weeks.",                 href: "/tools/life-in-weeks-calculator" },
 ];
 
 export default function PhoneAddictionCalculator() {

@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Mortgage Calculator",       description: "See full P&I, PMI, and amortisation.",        href: "/tools/mortgage-calculator" },
-  { title: "Home Equity Calculator",    description: "How much of your home do you own?",            href: "/tools/home-equity-calculator" },
-  { title: "House Affordability",       description: "Find a payment that fits your real budget.",   href: "/tools/house-affordability-calculator" },
-  { title: "Closing Cost Calculator",   description: "Estimate cash needed at the signing table.",   href: "/tools/closing-cost-calculator" },
+  { icon: "🏦", accent: "bg-blue-500/10",    title: "Mortgage Calculator",       description: "See full P&I, PMI, and amortisation.",        href: "/tools/mortgage-calculator" },
+  { icon: "🏠", accent: "bg-emerald-500/10", title: "Home Equity Calculator",    description: "How much of your home do you own?",            href: "/tools/home-equity-calculator" },
+  { icon: "💰", accent: "bg-amber-500/10",   title: "House Affordability",       description: "Find a payment that fits your real budget.",   href: "/tools/house-affordability-calculator" },
+  { icon: "🧾", accent: "bg-purple-500/10",  title: "Closing Cost Calculator",   description: "Estimate cash needed at the signing table.",   href: "/tools/closing-cost-calculator" },
 ];
 
 export default function MortgageRefinanceCalculator() {

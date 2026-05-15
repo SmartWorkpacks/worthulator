@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Freelance Rate Calculator",  description: "What should your time actually be worth?",      href: "/tools/freelance-rate-calculator" },
-  { title: "Work Hours Calculator",      description: "Track your actual billable time.",                href: "/tools/work-hours-calculator" },
-  { title: "Burnout Calculator",         description: "Is your pace sustainable?",                      href: "/tools/burnout-calculator" },
-  { title: "Life in Weeks",              description: "A weekly view of your remaining time.",           href: "/tools/life-in-weeks-calculator" },
+  { icon: "💼", accent: "bg-blue-500/10",    title: "Freelance Rate Calculator",  description: "What should your time actually be worth?",      href: "/tools/freelance-rate-calculator" },
+  { icon: "⏰", accent: "bg-amber-500/10",   title: "Work Hours Calculator",      description: "Track your actual billable time.",                href: "/tools/work-hours-calculator" },
+  { icon: "🔥", accent: "bg-rose-500/10",    title: "Burnout Calculator",         description: "Is your pace sustainable?",                      href: "/tools/burnout-calculator" },
+  { icon: "📅", accent: "bg-purple-500/10",  title: "Life in Weeks",              description: "A weekly view of your remaining time.",           href: "/tools/life-in-weeks-calculator" },
 ];
 
 export default function ProcrastinationCostCalculator() {

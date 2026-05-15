@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "House Affordability",       description: "Can you afford the place you're moving to?",    href: "/tools/house-affordability-calculator" },
-  { title: "Rent vs Buy Calculator",    description: "Is it time to stop renting?",                   href: "/tools/rent-vs-buy-calculator" },
-  { title: "Budget Calculator",         description: "Build your post-move monthly budget.",           href: "/tools/budget-calculator" },
-  { title: "Closing Cost Calculator",   description: "If you're buying: all the fees at signing.",    href: "/tools/closing-cost-calculator" },
+  { icon: "🏠", accent: "bg-emerald-500/10", title: "House Affordability",       description: "Can you afford the place you're moving to?",    href: "/tools/house-affordability-calculator" },
+  { icon: "⚖️", accent: "bg-blue-500/10",    title: "Rent vs Buy Calculator",    description: "Is it time to stop renting?",                   href: "/tools/rent-vs-buy-calculator" },
+  { icon: "📊", accent: "bg-amber-500/10",   title: "Budget Calculator",         description: "Build your post-move monthly budget.",           href: "/tools/budget-calculator" },
+  { icon: "🧾", accent: "bg-purple-500/10",  title: "Closing Cost Calculator",   description: "If you're buying: all the fees at signing.",    href: "/tools/closing-cost-calculator" },
 ];
 
 export default function MovingCostCalculator() {

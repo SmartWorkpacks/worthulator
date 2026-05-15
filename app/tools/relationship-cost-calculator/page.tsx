@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Budget Calculator",          description: "Build a budget that includes your relationship.",  href: "/tools/budget-calculator" },
-  { title: "Latte Factor Calculator",    description: "Small recurring expenses add up fast.",            href: "/tools/latte-factor-calculator" },
-  { title: "Missed Investment Cost",     description: "What could that money have grown to?",             href: "/tools/missed-investment-calculator" },
-  { title: "Dream Salary Calculator",    description: "What salary supports the life you both want?",    href: "/tools/dream-salary-calculator" },
+  { icon: "📊", accent: "bg-blue-500/10",    title: "Budget Calculator",          description: "Build a budget that includes your relationship.",  href: "/tools/budget-calculator" },
+  { icon: "☕", accent: "bg-amber-500/10",   title: "Latte Factor Calculator",    description: "Small recurring expenses add up fast.",            href: "/tools/latte-factor-calculator" },
+  { icon: "💸", accent: "bg-rose-500/10",    title: "Missed Investment Cost",     description: "What could that money have grown to?",             href: "/tools/missed-investment-calculator" },
+  { icon: "💭", accent: "bg-purple-500/10",  title: "Dream Salary Calculator",    description: "What salary supports the life you both want?",    href: "/tools/dream-salary-calculator" },
 ];
 
 export default function RelationshipCostCalculator() {

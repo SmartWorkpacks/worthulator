@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Compound Interest",          description: "See what regular investing actually grows to.",   href: "/tools/compound-interest-calculator" },
-  { title: "Latte Factor Calculator",    description: "What do daily habits cost over time?",            href: "/tools/latte-factor-calculator" },
-  { title: "Missed Investment Cost",     description: "The cost of not investing over the years.",       href: "/tools/missed-investment-calculator" },
-  { title: "Inflation Impact",           description: "Even savings lose value without returns.",        href: "/tools/inflation-impact-calculator" },
+  { icon: "📈", accent: "bg-emerald-500/10", title: "Compound Interest",          description: "See what regular investing actually grows to.",   href: "/tools/compound-interest-calculator" },
+  { icon: "☕", accent: "bg-amber-500/10",   title: "Latte Factor Calculator",    description: "What do daily habits cost over time?",            href: "/tools/latte-factor-calculator" },
+  { icon: "💸", accent: "bg-rose-500/10",    title: "Missed Investment Cost",     description: "The cost of not investing over the years.",       href: "/tools/missed-investment-calculator" },
+  { icon: "👁️", accent: "bg-blue-500/10",    title: "Inflation Impact",           description: "Even savings lose value without returns.",        href: "/tools/inflation-impact-calculator" },
 ];
 
 export default function LotteryVsInvesting() {

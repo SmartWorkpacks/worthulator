@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Screen Time Impact",          description: "The hidden costs of time on screens.",            href: "/tools/screen-time-impact-calculator" },
-  { title: "Phone Addiction Calculator",  description: "How many years on your phone?",                  href: "/tools/phone-addiction-calculator" },
-  { title: "Social Media Time",           description: "Your social media usage in hours and years.",     href: "/tools/social-media-time-calculator" },
-  { title: "Subscription Auditor",        description: "What are you actually paying each month?",       href: "/tools/subscription-auditor" },
+  { icon: "📺", accent: "bg-blue-500/10",    title: "Screen Time Impact",          description: "The hidden costs of time on screens.",            href: "/tools/screen-time-impact-calculator" },
+  { icon: "📱", accent: "bg-rose-500/10",    title: "Phone Addiction Calculator",  description: "How many years on your phone?",                  href: "/tools/phone-addiction-calculator" },
+  { icon: "📲", accent: "bg-amber-500/10",   title: "Social Media Time",           description: "Your social media usage in hours and years.",     href: "/tools/social-media-time-calculator" },
+  { icon: "🔍", accent: "bg-purple-500/10",  title: "Subscription Auditor",        description: "What are you actually paying each month?",       href: "/tools/subscription-auditor" },
 ];
 
 export default function DataWorthCalculator() {

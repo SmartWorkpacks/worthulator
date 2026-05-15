@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Screen Time Impact",         description: "The full health and productivity picture.",       href: "/tools/screen-time-impact-calculator" },
-  { title: "Phone Addiction Calculator", description: "Your phone screen time vs your life in years.",   href: "/tools/phone-addiction-calculator" },
-  { title: "Life in Weeks",              description: "Visualise all your remaining weeks.",              href: "/tools/life-in-weeks-calculator" },
-  { title: "Social Media Time",          description: "Same math, different screens.",                   href: "/tools/social-media-time-calculator" },
+  { icon: "📺", accent: "bg-blue-500/10",    title: "Screen Time Impact",         description: "The full health and productivity picture.",       href: "/tools/screen-time-impact-calculator" },
+  { icon: "📱", accent: "bg-rose-500/10",    title: "Phone Addiction Calculator", description: "Your phone screen time vs your life in years.",   href: "/tools/phone-addiction-calculator" },
+  { icon: "📅", accent: "bg-purple-500/10",  title: "Life in Weeks",              description: "Visualise all your remaining weeks.",              href: "/tools/life-in-weeks-calculator" },
+  { icon: "📲", accent: "bg-amber-500/10",   title: "Social Media Time",          description: "Same math, different screens.",                   href: "/tools/social-media-time-calculator" },
 ];
 
 export default function StreamingTimeCalculator() {

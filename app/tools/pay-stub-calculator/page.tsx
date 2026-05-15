@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Take-Home Pay Calculator",   description: "Full salary-to-pocket breakdown.",                href: "/tools/take-home-pay-calculator" },
-  { title: "Tax Bracket Calculator",     description: "Your effective rate vs your marginal rate.",      href: "/tools/tax-bracket-calculator" },
-  { title: "Salary Breakdown",           description: "How your income is actually spent.",              href: "/tools/salary-breakdown-calculator" },
-  { title: "Self-Employed Tax",          description: "SE tax, quarterly estimates, and deductions.",    href: "/tools/self-employed-tax-calculator" },
+  { icon: "💵", accent: "bg-emerald-500/10", title: "Take-Home Pay Calculator",   description: "Full salary-to-pocket breakdown.",                href: "/tools/take-home-pay-calculator" },
+  { icon: "📊", accent: "bg-blue-500/10",    title: "Tax Bracket Calculator",     description: "Your effective rate vs your marginal rate.",      href: "/tools/tax-bracket-calculator" },
+  { icon: "📈", accent: "bg-amber-500/10",   title: "Salary Breakdown",           description: "How your income is actually spent.",              href: "/tools/salary-breakdown-calculator" },
+  { icon: "💼", accent: "bg-purple-500/10",  title: "Self-Employed Tax",          description: "SE tax, quarterly estimates, and deductions.",    href: "/tools/self-employed-tax-calculator" },
 ];
 
 export default function PayStubCalculator() {

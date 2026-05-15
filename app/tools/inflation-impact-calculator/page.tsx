@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Compound Interest",         description: "Beat inflation with compound growth.",             href: "/tools/compound-interest-calculator" },
-  { title: "Savings Goal Calculator",   description: "How long to reach your target in real terms.",    href: "/tools/savings-goal-calculator" },
-  { title: "FIRE Calculator",           description: "Inflation-adjusted financial independence math.",  href: "/tools/fire-calculator" },
-  { title: "Net Worth Calculator",      description: "Track the real, inflation-adjusted picture.",      href: "/tools/net-worth-calculator" },
+  { icon: "📈", accent: "bg-emerald-500/10", title: "Compound Interest",         description: "Beat inflation with compound growth.",             href: "/tools/compound-interest-calculator" },
+  { icon: "🎯", accent: "bg-blue-500/10",    title: "Savings Goal Calculator",   description: "How long to reach your target in real terms.",    href: "/tools/savings-goal-calculator" },
+  { icon: "🔥", accent: "bg-orange-500/10",  title: "FIRE Calculator",           description: "Inflation-adjusted financial independence math.",  href: "/tools/fire-calculator" },
+  { icon: "📊", accent: "bg-purple-500/10",  title: "Net Worth Calculator",      description: "Track the real, inflation-adjusted picture.",      href: "/tools/net-worth-calculator" },
 ];
 
 export default function InflationImpactCalculator() {

@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Credit Card Payoff",   description: "Find your fastest path to $0 balance.",         href: "/tools/credit-card-payoff-calculator" },
-  { title: "Debt Payoff Planner",  description: "Avalanche vs snowball — which saves more?",      href: "/tools/debt-payoff-calculator" },
-  { title: "Budget Calculator",    description: "Map your money so payments don't hurt.",          href: "/tools/budget-calculator" },
-  { title: "Net Worth Calculator", description: "Track your progress from debt to positive.",      href: "/tools/net-worth-calculator" },
+  { icon: "💳", accent: "bg-rose-500/10",    title: "Credit Card Payoff",   description: "Find your fastest path to $0 balance.",         href: "/tools/credit-card-payoff-calculator" },
+  { icon: "🏔️", accent: "bg-orange-500/10",  title: "Debt Payoff Planner",  description: "Avalanche vs snowball — which saves more?",      href: "/tools/debt-payoff-calculator" },
+  { icon: "📊", accent: "bg-blue-500/10",    title: "Budget Calculator",    description: "Map your money so payments don't hurt.",          href: "/tools/budget-calculator" },
+  { icon: "📈", accent: "bg-emerald-500/10", title: "Net Worth Calculator", description: "Track your progress from debt to positive.",      href: "/tools/net-worth-calculator" },
 ];
 
 export default function StudentLoanCalculator() {

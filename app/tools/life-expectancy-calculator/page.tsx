@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Life in Weeks",              description: "Visualise your remaining weeks in a grid.",       href: "/tools/life-in-weeks-calculator" },
-  { title: "FIRE Calculator",            description: "Retire as early as possible.",                    href: "/tools/fire-calculator" },
-  { title: "Water Intake Calculator",    description: "Small habits, big long-term impact.",              href: "/tools/water-intake-calculator" },
-  { title: "Time to Retirement",         description: "Years, months, and days to financial freedom.",   href: "/tools/time-to-retirement-calculator" },
+  { icon: "📅", accent: "bg-purple-500/10",  title: "Life in Weeks",              description: "Visualise your remaining weeks in a grid.",       href: "/tools/life-in-weeks-calculator" },
+  { icon: "🔥", accent: "bg-orange-500/10",  title: "FIRE Calculator",            description: "Retire as early as possible.",                    href: "/tools/fire-calculator" },
+  { icon: "💧", accent: "bg-blue-500/10",    title: "Water Intake Calculator",    description: "Small habits, big long-term impact.",              href: "/tools/water-intake-calculator" },
+  { icon: "⏳", accent: "bg-emerald-500/10", title: "Time to Retirement",         description: "Years, months, and days to financial freedom.",   href: "/tools/time-to-retirement-calculator" },
 ];
 
 export default function LifeExpectancyCalculator() {

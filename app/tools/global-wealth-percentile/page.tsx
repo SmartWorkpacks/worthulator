@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Net Worth Calculator",       description: "Calculate your exact net worth figure.",           href: "/tools/net-worth-calculator" },
-  { title: "FIRE Calculator",            description: "Find your financial independence number.",          href: "/tools/fire-calculator" },
-  { title: "Millionaire Calculator",     description: "When will you hit your first million?",            href: "/tools/millionaire-calculator" },
-  { title: "Compound Interest",          description: "See how wealth compounds over decades.",            href: "/tools/compound-interest-calculator" },
+  { icon: "📊", accent: "bg-blue-500/10",    title: "Net Worth Calculator",       description: "Calculate your exact net worth figure.",           href: "/tools/net-worth-calculator" },
+  { icon: "🔥", accent: "bg-orange-500/10",  title: "FIRE Calculator",            description: "Find your financial independence number.",          href: "/tools/fire-calculator" },
+  { icon: "💎", accent: "bg-amber-500/10",   title: "Millionaire Calculator",     description: "When will you hit your first million?",            href: "/tools/millionaire-calculator" },
+  { icon: "📈", accent: "bg-emerald-500/10", title: "Compound Interest",          description: "See how wealth compounds over decades.",            href: "/tools/compound-interest-calculator" },
 ];
 
 export default function GlobalWealthPercentile() {

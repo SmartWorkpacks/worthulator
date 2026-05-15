@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Take-Home Pay Calculator",   description: "See exactly what lands in your account.",        href: "/tools/take-home-pay-calculator" },
-  { title: "Pay Stub Calculator",        description: "Decode every line of your paycheck.",             href: "/tools/pay-stub-calculator" },
-  { title: "Self-Employed Tax",          description: "SE tax, quarterly estimates, deductions.",        href: "/tools/self-employed-tax-calculator" },
-  { title: "Dream Salary Calculator",    description: "Work backwards from the life you want.",          href: "/tools/dream-salary-calculator" },
+  { icon: "💵", accent: "bg-emerald-500/10", title: "Take-Home Pay Calculator",   description: "See exactly what lands in your account.",        href: "/tools/take-home-pay-calculator" },
+  { icon: "🧾", accent: "bg-blue-500/10",    title: "Pay Stub Calculator",        description: "Decode every line of your paycheck.",             href: "/tools/pay-stub-calculator" },
+  { icon: "💼", accent: "bg-amber-500/10",   title: "Self-Employed Tax",          description: "SE tax, quarterly estimates, deductions.",        href: "/tools/self-employed-tax-calculator" },
+  { icon: "💭", accent: "bg-purple-500/10",  title: "Dream Salary Calculator",    description: "Work backwards from the life you want.",          href: "/tools/dream-salary-calculator" },
 ];
 
 export default function TaxBracketCalculator() {

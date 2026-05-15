@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Mortgage Calculator",            description: "See full amortisation and total interest.",        href: "/tools/mortgage-calculator" },
-  { title: "House Affordability",            description: "What home price fits your budget?",               href: "/tools/house-affordability-calculator" },
-  { title: "Mortgage Refinance Calculator",  description: "Is it worth refinancing your current loan?",     href: "/tools/mortgage-refinance-calculator" },
-  { title: "Down Payment Countdown",         description: "How long until you hit your target deposit?",     href: "/tools/down-payment-countdown" },
+  { icon: "🏦", accent: "bg-blue-500/10",    title: "Mortgage Calculator",            description: "See full amortisation and total interest.",        href: "/tools/mortgage-calculator" },
+  { icon: "🏠", accent: "bg-emerald-500/10", title: "House Affordability",            description: "What home price fits your budget?",               href: "/tools/house-affordability-calculator" },
+  { icon: "🔄", accent: "bg-amber-500/10",   title: "Mortgage Refinance Calculator",  description: "Is it worth refinancing your current loan?",     href: "/tools/mortgage-refinance-calculator" },
+  { icon: "⏳", accent: "bg-purple-500/10",  title: "Down Payment Countdown",         description: "How long until you hit your target deposit?",     href: "/tools/down-payment-countdown" },
 ];
 
 export default function HomeEquityCalculator() {

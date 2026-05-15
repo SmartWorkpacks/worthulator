@@ -38,10 +38,10 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Investment Return Calculator", description: "Compare returns across different assets.",       href: "/tools/investment-return-calculator" },
-  { title: "Missed Investment Cost",       description: "The cost of not being in the market.",           href: "/tools/missed-investment-calculator" },
-  { title: "Compound Interest",            description: "The power of boring, consistent returns.",       href: "/tools/compound-interest-calculator" },
-  { title: "Lottery vs Investing",         description: "Another perspective on speculative bets.",       href: "/tools/lottery-vs-investing" },
+  { icon: "📈", accent: "bg-emerald-500/10", title: "Investment Return Calculator", description: "Compare returns across different assets.",       href: "/tools/investment-return-calculator" },
+  { icon: "💸", accent: "bg-rose-500/10",    title: "Missed Investment Cost",       description: "The cost of not being in the market.",           href: "/tools/missed-investment-calculator" },
+  { icon: "📊", accent: "bg-blue-500/10",    title: "Compound Interest",            description: "The power of boring, consistent returns.",       href: "/tools/compound-interest-calculator" },
+  { icon: "🎰", accent: "bg-amber-500/10",   title: "Lottery vs Investing",         description: "Another perspective on speculative bets.",       href: "/tools/lottery-vs-investing" },
 ];
 
 export default function CryptoLossCalculator() {
