@@ -2715,9 +2715,9 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "daysWorked", label: "Days worked this week", unit: "days",type: "slider", min: 1,  max: 7,   step: 1,    default: 5,   hint: "Number of days worked in the week",         quickPicks: [1, 2, 3, 4, 5, 6] },
     ],
     outputs: [
-      { key: "dailyHours",    label: "Daily hours",   format: "number",                  sublabel: () => "Net hours worked per day" },
-      { key: "weeklyHours",   label: "Weekly hours",  format: "number", highlight: true, sublabel: () => "Total hours worked this week" },
-      { key: "overtimeHours", label: "Overtime hours",format: "number",                  sublabel: () => "Hours over 40 this week" },
+      { key: "dailyHours",    label: "Daily hours",   format: "integer",                  sublabel: () => "Net hours worked per day" },
+      { key: "weeklyHours",   label: "Weekly hours",  format: "integer", highlight: true, sublabel: () => "Total hours worked this week" },
+      { key: "overtimeHours", label: "Overtime hours",format: "integer",                  sublabel: () => "Hours over 40 this week" },
     ],
     calculate: (inputs) => {
       const dailyHours = Math.max(0, (Number(inputs.clockOut) - Number(inputs.clockIn)) - Number(inputs.breakHours));
@@ -2743,8 +2743,8 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "days",        label: "Days worked",   unit: "days", type: "slider", min: 1,  max: 31, step: 1,    default: 5, hint: "Number of days in the period",  quickPicks: [1, 5, 10, 14, 20, 30] },
     ],
     outputs: [
-      { key: "totalHours", label: "Total hours",     format: "number", highlight: true, sublabel: () => "Hours worked over the full period" },
-      { key: "avgPerDay",  label: "Average per day", format: "number",                  sublabel: () => "Hours per working day" },
+      { key: "totalHours", label: "Total hours",     format: "integer", highlight: true, sublabel: () => "Hours worked over the full period" },
+      { key: "avgPerDay",  label: "Average per day", format: "integer",                  sublabel: () => "Hours per working day" },
     ],
     calculate: (inputs) => {
       const total = Number(inputs.hoursPerDay) * Number(inputs.days);
@@ -2768,8 +2768,8 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "holidays",  label: "Public holidays",        unit: "days", type: "slider", min: 0,  max: 20,  step: 1, default: 2,  hint: "Bank/public holidays falling in this range",    quickPicks: [0, 1, 2, 3, 5, 8] },
     ],
     outputs: [
-      { key: "workingDays", label: "Working days",  format: "number", highlight: true, sublabel: () => "Business days excluding weekends and holidays" },
-      { key: "totalDays",   label: "Calendar days", format: "number",                  sublabel: () => "Total days in the range" },
+      { key: "workingDays", label: "Working days",  format: "integer", highlight: true, sublabel: () => "Business days excluding weekends and holidays" },
+      { key: "totalDays",   label: "Calendar days", format: "integer",                  sublabel: () => "Total days in the range" },
     ],
     calculate: (inputs) => {
       const total = Number(inputs.totalDays);
@@ -2793,9 +2793,9 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "days", label: "Number of days", unit: "days", type: "slider", min: 1, max: 3650, step: 1, default: 90, hint: "Total days between the two dates", quickPicks: [7, 14, 30, 60, 90, 180, 365, 730] },
     ],
     outputs: [
-      { key: "days",   label: "Days",   format: "number",                  sublabel: () => "Total days in the period" },
-      { key: "weeks",  label: "Weeks",  format: "number",                  sublabel: () => "Days ÷ 7" },
-      { key: "months", label: "Months", format: "number", highlight: true, sublabel: () => "Days ÷ 30.44 (average month)" },
+      { key: "days",   label: "Days",   format: "integer",                  sublabel: () => "Total days in the period" },
+      { key: "weeks",  label: "Weeks",  format: "integer",                  sublabel: () => "Days ÷ 7" },
+      { key: "months", label: "Months", format: "integer", highlight: true, sublabel: () => "Days ÷ 30.44 (average month)" },
     ],
     calculate: (inputs) => {
       const d = Number(inputs.days);
@@ -2823,9 +2823,9 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "daysPerWeek",    label: "Days per week",           unit: "days", type: "slider", min: 1,  max: 7,  step: 1,   default: 5,  hint: "Number of days you work per week",           quickPicks: [3, 4, 5, 6, 7] },
     ],
     outputs: [
-      { key: "sessions",      label: "Sessions per day",  format: "number",                  sublabel: () => "Deep work sessions in one day" },
-      { key: "deepWorkHours", label: "Deep work hours",   format: "number", highlight: true, sublabel: () => "Focused hours per day" },
-      { key: "weeklyOutput",  label: "Weekly deep hours", format: "number",                  sublabel: () => "Total focused hours per week" },
+      { key: "sessions",      label: "Sessions per day",  format: "integer",                  sublabel: () => "Deep work sessions in one day" },
+      { key: "deepWorkHours", label: "Deep work hours",   format: "integer", highlight: true, sublabel: () => "Focused hours per day" },
+      { key: "weeklyOutput",  label: "Weekly deep hours", format: "integer",                  sublabel: () => "Total focused hours per week" },
     ],
     calculate: (inputs) => {
       const sessions = Math.floor(Number(inputs.hoursAvailable) / (Number(inputs.sessionLength) / 60));
@@ -2855,10 +2855,10 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "age",    label: "Age",    unit: "yr", type: "slider", min: 15,  max: 80,  step: 1,   default: 30,  hint: "Your current age in years",             quickPicks: [18, 25, 30, 40, 50, 60] },
     ],
     outputs: [
-      { key: "bmr",      label: "BMR",              format: "number",                  sublabel: () => "Calories burned at complete rest" },
-      { key: "sedentary",label: "Sedentary (×1.2)", format: "number",                  sublabel: () => "Little or no exercise" },
-      { key: "moderate", label: "Moderate (×1.55)", format: "number", highlight: true, sublabel: () => "Exercise 3–5 days/week" },
-      { key: "active",   label: "Active (×1.725)",  format: "number",                  sublabel: () => "Hard exercise 6–7 days/week" },
+      { key: "bmr",      label: "BMR",              format: "integer",                  sublabel: () => "Calories burned at complete rest" },
+      { key: "sedentary",label: "Sedentary (×1.2)", format: "integer",                  sublabel: () => "Little or no exercise" },
+      { key: "moderate", label: "Moderate (×1.55)", format: "integer", highlight: true, sublabel: () => "Exercise 3–5 days/week" },
+      { key: "active",   label: "Active (×1.725)",  format: "integer",                  sublabel: () => "Hard exercise 6–7 days/week" },
     ],
     calculate: (inputs) => {
       const bmr = inputs.gender === "male"
@@ -2894,8 +2894,8 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
         hint: "Higher intensity training requires more protein for recovery" },
     ],
     outputs: [
-      { key: "proteinGrams",        label: "Daily protein target",  format: "number", highlight: true, sublabel: () => "Grams of protein per day" },
-      { key: "caloriesFromProtein", label: "Calories from protein", format: "number",                  sublabel: () => "Protein calories (4 kcal/g)" },
+      { key: "proteinGrams",        label: "Daily protein target",  format: "integer", highlight: true, sublabel: () => "Grams of protein per day" },
+      { key: "caloriesFromProtein", label: "Calories from protein", format: "integer",                  sublabel: () => "Protein calories (4 kcal/g)" },
     ],
     calculate: (inputs) => {
       const grams = Number(inputs.weight) * Number(inputs.multiplier);
@@ -2918,12 +2918,12 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "age", label: "Age", unit: "yr", type: "slider", min: 15, max: 80, step: 1, default: 30, hint: "Your current age — used in the 220 − age formula", quickPicks: [20, 25, 30, 35, 40, 50] },
     ],
     outputs: [
-      { key: "maxHR",       label: "Max heart rate",  format: "number", highlight: true, sublabel: () => "220 − age (bpm)" },
-      { key: "fatBurnLow",  label: "Fat burn low",    format: "number",                  sublabel: () => "60% of max HR (bpm)" },
-      { key: "fatBurnHigh", label: "Fat burn high",   format: "number",                  sublabel: () => "70% of max HR (bpm)" },
-      { key: "cardioLow",   label: "Cardio low",      format: "number",                  sublabel: () => "70% of max HR (bpm)" },
-      { key: "cardioHigh",  label: "Cardio high",     format: "number",                  sublabel: () => "85% of max HR (bpm)" },
-      { key: "peakLow",     label: "Peak zone low",   format: "number",                  sublabel: () => "85% of max HR (bpm)" },
+      { key: "maxHR",       label: "Max heart rate",  format: "integer", highlight: true, sublabel: () => "220 − age (bpm)" },
+      { key: "fatBurnLow",  label: "Fat burn low",    format: "integer",                  sublabel: () => "60% of max HR (bpm)" },
+      { key: "fatBurnHigh", label: "Fat burn high",   format: "integer",                  sublabel: () => "70% of max HR (bpm)" },
+      { key: "cardioLow",   label: "Cardio low",      format: "integer",                  sublabel: () => "70% of max HR (bpm)" },
+      { key: "cardioHigh",  label: "Cardio high",     format: "integer",                  sublabel: () => "85% of max HR (bpm)" },
+      { key: "peakLow",     label: "Peak zone low",   format: "integer",                  sublabel: () => "85% of max HR (bpm)" },
     ],
     calculate: (inputs) => {
       const maxHR = 220 - Number(inputs.age);
@@ -2980,9 +2980,9 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "years",      label: "Years to project",       unit: "yr", type: "slider", min: 1,    max: 50,  step: 1,    default: 10,  hint: "How many years to calculate over",              quickPicks: [1, 5, 10, 20, 30, 50] },
     ],
     outputs: [
-      { key: "yearlyHours",   label: "Hours per year",  format: "number",                  sublabel: () => "Hours spent on social media per year" },
-      { key: "lifetimeHours", label: "Lifetime hours",  format: "number", highlight: true, sublabel: () => "Total hours over the projection period" },
-      { key: "yearsLost",     label: "Years of life",   format: "number",                  sublabel: () => "Equivalent years spent scrolling" },
+      { key: "yearlyHours",   label: "Hours per year",  format: "integer",                  sublabel: () => "Hours spent on social media per year" },
+      { key: "lifetimeHours", label: "Lifetime hours",  format: "integer", highlight: true, sublabel: () => "Total hours over the projection period" },
+      { key: "yearsLost",     label: "Years of life",   format: "integer",                  sublabel: () => "Equivalent years spent scrolling" },
     ],
     calculate: (inputs) => {
       const yearly = Number(inputs.dailyHours) * 365;
@@ -3010,7 +3010,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "returnRate",     label: "Annual return rate",    unit: "%", type: "slider", min: 1,    max: 15,      step: 0.25, default: 7,     hint: "Expected annual investment return (7% is a common S&P estimate)", quickPicks: [3, 5, 6, 7, 8, 10] },
     ],
     outputs: [
-      { key: "yearsToRetire",    label: "Years to retire",   format: "number",   highlight: true, sublabel: () => "Time to reach your retirement target" },
+      { key: "yearsToRetire",    label: "Years to retire",   format: "integer",   highlight: true, sublabel: () => "Time to reach your retirement target" },
       { key: "retirementTarget", label: "Retirement target", format: "currency",                  sublabel: () => "25× annual expenses (4% safe withdrawal rule)" },
     ],
     calculate: (inputs) => {
@@ -3074,8 +3074,8 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "tileWidth",  label: "Tile width",   unit: "ft", type: "slider", min: 0.25, max: 4,   step: 0.25, default: 1,   hint: "Width of one tile",               quickPicks: [0.5, 1, 1.25, 1.5, 2] },
     ],
     outputs: [
-      { key: "tilesNeeded", label: "Tiles needed", format: "number", highlight: true, sublabel: () => "Including 10% wastage allowance" },
-      { key: "area",        label: "Total area",   format: "number",                  sublabel: () => "Square footage of the space" },
+      { key: "tilesNeeded", label: "Tiles needed", format: "integer", highlight: true, sublabel: () => "Including 10% wastage allowance" },
+      { key: "area",        label: "Total area",   format: "integer",                  sublabel: () => "Square footage of the space" },
     ],
     calculate: (inputs) => {
       const area = Number(inputs.length) * Number(inputs.width);
@@ -3103,7 +3103,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     outputs: [
       { key: "totalCost",      label: "Total cost",        format: "currency", highlight: true, sublabel: () => "Materials + labour (labour est. at 40% of materials)" },
       { key: "costPerSqFtAll", label: "All-in cost/sq ft", format: "currency",                  sublabel: () => "Materials and labour per square foot" },
-      { key: "area",           label: "Total area",        format: "number",                    sublabel: () => "Room area in square feet" },
+      { key: "area",           label: "Total area",        format: "integer",                    sublabel: () => "Room area in square feet" },
     ],
     calculate: (inputs) => {
       const area = Number(inputs.length) * Number(inputs.width);
