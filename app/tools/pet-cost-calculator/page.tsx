@@ -66,7 +66,6 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
-  { title: "Baby Cost Calculator", description: "The true annual cost of having a baby.", href: "/tools/baby-cost-calculator", icon: "👶", accent: "bg-pink-500/10" },
   { title: "Emergency Fund Calculator", description: "Build a safety net for unexpected costs.", href: "/tools/emergency-fund-calculator", icon: "🛡️", accent: "bg-emerald-500/10" },
   { title: "Budget Calculator", description: "Plan your monthly budget with all expenses.", href: "/tools/savings-calculator", icon: "📊", accent: "bg-blue-500/10" },
   { title: "Savings Goal Calculator", description: "Save up for a pet emergency fund.", href: "/tools/savings-goal-calculator", icon: "🎯", accent: "bg-amber-500/10" },
