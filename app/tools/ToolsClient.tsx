@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { liveTools, liveCategories, popularTools } from "@/src/config/tools";
 
 // ── Category emoji lookup ────────────────────────────────────────────────────
@@ -23,14 +23,14 @@ const QUICK_ACTIONS = [
 ];
 
 // ── Framer-motion variants ───────────────────────────────────────────────────
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: {},
   show:   { transition: { staggerChildren: 0.055 } },
 };
 
-const cardVariants = {
+const cardVariants: Variants = {
   hidden: { opacity: 0, y: 14 },
-  show:   { opacity: 1, y: 0, transition: { type: "spring" as const, stiffness: 340, damping: 26 } },
+  show:   { opacity: 1, y: 0, transition: { type: "spring", stiffness: 340, damping: 26 } },
 };
 
 // ── Tool Card ────────────────────────────────────────────────────────────────
