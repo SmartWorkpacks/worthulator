@@ -3243,7 +3243,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   // ── GPA Calculator ─────────────────────────────────────────────────────────
   "gpa-calculator": {
     id: "gpa-calculator",
-    category: "education",
+    category: "other",
     description: "Find out what grade average you need to hit your target GPA.",
     label: "GPA Calculator",
     inputs: [
@@ -3271,7 +3271,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   // ── Moving Cost Calculator ─────────────────────────────────────────────────
   "moving-cost-calculator": {
     id: "moving-cost-calculator",
-    category: "lifestyle",
+    category: "other",
     description: "Estimate the true total cost of moving home, including every line item people forget.",
     label: "Moving Cost Calculator",
     inputs: [
@@ -3477,7 +3477,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   // ── Procrastination Cost Calculator ──────────────────────────────────────
   "procrastination-cost": {
     id: "procrastination-cost",
-    category: "productivity",
+    category: "work",
     description: "Convert wasted hours into real lost earnings — and see the annual cost of putting things off.",
     label: "Procrastination Cost Calculator",
     inputs: [
@@ -3504,7 +3504,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   // ── Streaming Time Calculator ─────────────────────────────────────────────
   "streaming-time-calculator": {
     id: "streaming-time-calculator",
-    category: "lifestyle",
+    category: "other",
     description: "See how many hours — and years — of your life you've spent watching streaming content.",
     label: "Streaming Time Calculator",
     inputs: [
@@ -3571,7 +3571,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   // ── Relationship Cost Calculator ──────────────────────────────────────────
   "relationship-cost-calculator": {
     id: "relationship-cost-calculator",
-    category: "lifestyle",
+    category: "other",
     description: "Calculate the total financial investment of a relationship over time.",
     label: "Relationship Cost Calculator",
     inputs: [
@@ -3624,7 +3624,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   // ── Phone Addiction Calculator ────────────────────────────────────────────
   "phone-addiction-calculator": {
     id: "phone-addiction-calculator",
-    category: "lifestyle",
+    category: "other",
     description: "Convert daily phone screen time into lifetime hours, years, and lost productivity.",
     label: "Phone Addiction Calculator",
     inputs: [
@@ -3650,7 +3650,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   // ── Data Worth Calculator ─────────────────────────────────────────────────
   "data-worth-calculator": {
     id: "data-worth-calculator",
-    category: "lifestyle",
+    category: "other",
     description: "Estimate how much tech companies earn annually from your personal data.",
     label: "Data Worth Calculator",
     inputs: [
