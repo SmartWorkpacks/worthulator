@@ -232,8 +232,8 @@ export function transformExpatistanToBenchmarks(
 
     if (!Number.isFinite(rounded) || rounded <= 0) continue;
 
-    // @ts-expect-error — key is validated to be a valid CostBenchmarks key
-    result[key] = rounded;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (result as any)[key] = rounded;
   }
 
   return result;

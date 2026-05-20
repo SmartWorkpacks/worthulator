@@ -34,7 +34,15 @@ interface InsightCardProps {
 }
 
 export default function InsightCard({ insight }: InsightCardProps) {
-  const dot = SEVERITY_DOT[insight.severity];
+  // Support both new-format (severity) and legacy-format (type) generators
+  const severityKey: InsightSeverity =
+    insight.severity ??
+    (insight.type === "warning" || insight.type === "critical"
+      ? (insight.type as InsightSeverity)
+      : "neutral");
+  const dot = SEVERITY_DOT[severityKey] ?? "bg-gray-400";
+  const title = insight.title ?? insight.message;
+  const body  = insight.body  ?? insight.detail;
 
   return (
     <div className="rounded-2xl border border-gray-100 bg-white shadow-sm overflow-hidden">
@@ -57,10 +65,10 @@ export default function InsightCard({ insight }: InsightCardProps) {
           />
           <div className="min-w-0 space-y-1.5">
             <p className="text-sm font-semibold leading-snug text-gray-900">
-              {insight.title}
+              {title}
             </p>
             <p className="text-sm leading-relaxed text-gray-500">
-              {insight.body}
+              {body}
             </p>
           </div>
         </div>

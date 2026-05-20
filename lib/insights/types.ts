@@ -45,7 +45,17 @@ export type InsightCategory =
   | "opportunity-cost"
   | "comparison"
   | "warning"
-  | "projection";
+  | "projection"
+  // extended categories used by generators
+  | "hidden-cost"
+  | "benchmark-comparison"
+  | "investment-opportunity"
+  | "affordability-pressure"
+  | "financial-stress"
+  | "debt-burden"
+  | "time-loss"
+  | "impact"
+  | "neutral";
 
 // ─── Supporting Structures ───────────────────────────────────────────────────
 
@@ -91,14 +101,23 @@ export interface Insight {
    */
   id: string;
 
-  category: InsightCategory;
-  severity: InsightSeverity;
+  // ── New-format fields ────────────────────────────────────────────────────
+  category?: InsightCategory;
+  severity?: InsightSeverity;
 
   /** One short headline displayed at the top of the insight card */
-  title: string;
+  title?: string;
 
   /** Full explanation — 1-3 sentences with specific numbers */
-  body: string;
+  body?: string;
+
+  // ── Legacy-format fields (older generators) ──────────────────────────────
+  /** @deprecated use severity instead */
+  type?: string;
+  /** @deprecated use title instead */
+  message?: string;
+  /** @deprecated use body instead */
+  detail?: string;
 
   /**
    * Optional highlighted metric shown in the card corner.
@@ -111,6 +130,9 @@ export interface Insight {
    * When present, the insight renders as: [visual] → [title + body].
    */
   visualization?: InsightVisualization;
+
+  /** Higher number = shown first. Used to sort insights within a generator. */
+  priority?: number;
 }
 
 // ─── Visualization Data ────────────────────────────────────────────────────────

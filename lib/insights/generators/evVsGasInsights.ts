@@ -66,6 +66,8 @@ export interface EvVsGasOutputs {
   breakEvenYears?:  number;
   /** Phase 6C intelligence output — gas cost per mile driven */
   gasCostPerMile?:  number;
+  /** Phase 6C intelligence output — EV cost per mile driven */
+  evCostPerMile?:   number;
   /** Phase 7D — fuel inflation savings over 10 years at 4%/yr gas price rise */
   fuelInflationSavings10yr?: number;
   /** Phase 7D — EV maintenance savings over 10 years (~$800/yr vs ICE) */
