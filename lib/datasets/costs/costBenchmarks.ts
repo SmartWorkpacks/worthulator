@@ -171,15 +171,15 @@ export interface CostBenchmarks {
 export const costBenchmarks: CostBenchmarks = {
   // ── Monthly household costs ───────────────────────────────────────────
   groceriesMonthlyUs:      770,    // USDA moderate-cost plan, 2-adult, 2025
-  utilitiesMonthlyUs:      268,    // BLS CES / EIA composite — electricity + gas + water
+  utilitiesMonthlyUs:      221.5,   // Expatistan 8-city US avg — May 2026
   childcareMonthlyUs:     1650,    // Care.com 2025 — center-based infant, national avg
   subscriptionsMonthlyUs:   91,    // Forbes/Chase 2025 — avg household, all digital subs
 
   // ── Per-unit costs ────────────────────────────────────────────────────
-  fuelPerGallonUs:          3.52,  // EIA EMD_EPD2D_PTE_NUS_DPG — week of May 12, 2026
-  coffeePerCupUs:           4.90,  // NCA / Numbeo US — café drip/latte composite, 2025
-  cigarettesPerPackUs:      9.80,  // CDC STATE System — weighted national avg incl. taxes, 2025
-  restaurantMealUs:        19.50,  // BLS CES CXUFOODAWAYLB / Numbeo — per-person, casual dining
+  fuelPerGallonUs:          3.65,   // Expatistan 8-city US avg — May 2026
+  coffeePerCupUs:           6.57,   // Expatistan 8-city US avg — May 2026
+  cigarettesPerPackUs:      12.13,   // Expatistan 8-city US avg — May 2026
+  restaurantMealUs:        35.25,   // Expatistan 8-city US avg — May 2026
 
   // ── Derived annual values (recalculated by updateCostBenchmarks.ts) ───
   coffeeAnnualIfDaily:      Math.round(4.90 * 365),       // 1,789
@@ -188,21 +188,21 @@ export const costBenchmarks: CostBenchmarks = {
 
   // ── Expatistan 8-city US averages (Nashville, Atlanta, Dallas, Denver, ─────
   //    Chicago, Seattle, Boston, Los Angeles — May 2026)                   ─────
-  gymMonthlyUs:            55,    // Expatistan — "1 month gym membership in business district"
-  rentNormalMonthlyUs:   1820,    // Expatistan — 900 sqft furnished, normal area, 8-city avg
-  rentExpensiveMonthlyUs: 2750,   // Expatistan — 900 sqft furnished, expensive area, 8-city avg
-  businessLunchUs:          17,   // Expatistan — lunchtime menu incl. drink, business district
-  publicTransitMonthlyUs:   90,   // Expatistan — monthly public transport pass, 8-city avg
+  gymMonthlyUs:            85.25,   // Expatistan 8-city US avg — May 2026
+  rentNormalMonthlyUs:   2408.88,   // Expatistan 8-city US avg — May 2026
+  rentExpensiveMonthlyUs: 3404.25,   // Expatistan 8-city US avg — May 2026
+  businessLunchUs:          23.13,   // Expatistan 8-city US avg — May 2026
+  publicTransitMonthlyUs:   95.63,   // Expatistan 8-city US avg — May 2026
   // ── Food & dining behavior benchmarks (Expatistan 8-city avg + derived) ────
-  fastFoodComboUs:             10.50,  // Expatistan — "Combo meal at McDonalds or similar", 8-city avg
-  inexpensiveRestaurantMealUs: 16.00,  // Expatistan — "Inexpensive restaurant, 1 person", 8-city avg
-  deliveryAppMealUs:           22.00,  // derived: inexpensiveRestaurantMealUs × 1.38 (delivery markup + tip)
+  fastFoodComboUs:             13,   // Expatistan 8-city US avg — May 2026
+  inexpensiveRestaurantMealUs: 20.75,   // Numbeo 8-city US avg — May 2026
+  deliveryAppMealUs:           28.64,   // derived: inexpensive restaurant × 1.38 delivery markup
   // ── Context benchmarks ────────────────────────────────────────────────
   groceriesThriftyAdultUs:   320,  // USDA Thrifty Food Plan — single adult, 2025
   streamingOnlyMonthlyUs:     47,  // Antenna/Forbes — avg household streaming-only spend
 
   // ── Metadata ──────────────────────────────────────────────────────────
-  lastUpdated:        "2026-05-19T00:00:00.000Z",
+  lastUpdated:        "2026-05-22T17:25:47.088Z",
   currentPeriodLabel: "May 2026",
   version:            2,
 };

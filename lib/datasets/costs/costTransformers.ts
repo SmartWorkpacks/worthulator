@@ -137,7 +137,7 @@ export const EXPATISTAN_PATTERN_MAP: PatternEntry[] = [
     pattern: "basic lunchtime menu (including a drink) in the business district",
   },  {
     key:     "fastFoodComboUs",
-    pattern: "combo meal at mcdonalds or similar",
+    pattern: "combo meal in fast food restaurant",
   },
   {
     key:     "inexpensiveRestaurantMealUs",

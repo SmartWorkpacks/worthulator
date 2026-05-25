@@ -55,6 +55,7 @@ export type InsightCategory =
   | "debt-burden"
   | "time-loss"
   | "impact"
+  | "habit"
   | "neutral";
 
 // ─── Supporting Structures ───────────────────────────────────────────────────

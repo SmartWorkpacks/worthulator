@@ -88,6 +88,7 @@ import {
   petCostInsights,
   weddingCostInsights,
   mealPrepInsights,
+  generateSalesTaxInsights,
 } from "@/lib/insights";
 import type { Insight, InsightContext } from "@/lib/insights/types";
 import type { CalculatorValues, CalculatorOutputs } from "@/components/calculator-engine/types";
@@ -1038,13 +1039,33 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         takeoutCost:  n(outputs.takeoutCostDerived,    15),
         diningStyle:  String(values.diningStyle  ?? "takeout"),
         diningRegion: String(values.diningRegion ?? "National"),
+        extraMeals:   n(values.extraMeals, 1),
       },
       {
-        costPerMeal:        outputs.costPerMeal        as number | undefined,
-        weeklySavings:      outputs.weeklySavings      as number | undefined,
-        yearlySavings:      outputs.yearlySavings      as number | undefined,
-        tenYearIfInvested:  outputs.tenYearIfInvested  as number | undefined,
-        monthlyFoodCost:    outputs.monthlyFoodCost    as number | undefined,
+        costPerMeal:         outputs.costPerMeal        as number | undefined,
+        weeklySavings:       outputs.weeklySavings      as number | undefined,
+        yearlySavings:       outputs.yearlySavings      as number | undefined,
+        tenYearIfInvested:   outputs.tenYearIfInvested  as number | undefined,
+        monthlyFoodCost:     outputs.monthlyFoodCost    as number | undefined,
+        mealsOutsourced:     outputs.mealsOutsourced    as number | undefined,
+        extraWeeklySavings:  outputs.extraWeeklySavings as number | undefined,
+        extraYearlySavings:  outputs.extraYearlySavings as number | undefined,
+      },
+    ),
+
+  // ── sales-tax ─────────────────────────────────────────────────────────────
+  "sales-tax": (values, outputs) =>
+    generateSalesTaxInsights(
+      {
+        price:        n(values.price,        100),
+        taxRate:      outputs.resolvedRate   ?? n(values.taxRate, 7.12),
+        monthlySpend: n(values.monthlySpend, 800),
+      },
+      {
+        totalPrice:       outputs.totalPrice       ?? 0,
+        taxAmount:        outputs.taxAmount        ?? 0,
+        monthlyTaxBurden: outputs.monthlyTaxBurden ?? 0,
+        annualTaxBurden:  outputs.annualTaxBurden  ?? 0,
       },
     ),
 };

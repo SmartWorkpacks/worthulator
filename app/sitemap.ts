@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { tools } from "@/src/config/tools";
 import { stateTaxRates, type StateCode } from "@/src/lib/stateTax";
 import { sqftSlugs } from "@/lib/calculators/sqftConfigs";
+import { getSitemapEntities, toSitemapEntry } from "@/lib/value-engine/seo/gates";
 
 const BASE_URL = "https://worthulator.com";
 
@@ -68,6 +69,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.7,
   }));
 
+  // ── VALUE ENGINE ENTITY PAGES (quality-gated) ────────────────────────────
+  // Only entities that pass computeQuality() indexEligible threshold are included.
+  // Priority and changeFrequency are driven by entity seo.priority.
+  const veEntityPages: MetadataRoute.Sitemap = getSitemapEntities().map(
+    ({ entity }) => toSitemapEntry(entity, BASE_URL),
+  );
+
   return [
     ...corePages,
     ...costHubPages,
@@ -75,6 +83,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     ...constructionPages,
     ...toolPages,
     ...statePages,
+    ...veEntityPages,
   ];
 }
 

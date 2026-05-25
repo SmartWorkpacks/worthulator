@@ -40,6 +40,11 @@ export interface InputConfig {
   hint?: string;
   /** Quick-pick chip values rendered below the slider */
   quickPicks?: number[];
+  /**
+   * Dynamic upper bound — called with the current values on every render.
+   * Takes precedence over `max` when provided.
+   */
+  maxFn?: (values: CalculatorValues) => number;
 }
 
 // ─── Output ───────────────────────────────────────────────────────────────────

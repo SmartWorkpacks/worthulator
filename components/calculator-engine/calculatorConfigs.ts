@@ -28,6 +28,9 @@ import { WCD } from "@/lib/worthcoreDefaults";
 // ─── Regional benchmarks (contextual intelligence) ───────────────────────────
 import { getRegionalBenchmarks, US_STATE_OPTIONS } from "@/lib/datasets/regional/usRegionalBenchmarks";
 
+// ─── Sales tax dataset ────────────────────────────────────────────────────────
+import { SALES_TAX_STATE_OPTIONS, SALES_TAX_RATE_BY_NAME, NATIONAL_AVG_SALES_TAX } from "@/lib/datasets/tax/salesTaxRates";
+
 // ─── Shared formatting helpers ───────────────────────────────────────────────
 
 /** Converts decimal hours (e.g. 22.75) to "10:45 pm" */
@@ -1130,37 +1133,54 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "sales-tax": {
     id: "sales-tax",
     category: "finance",
-    description: "Calculate the sales tax amount and total price for any purchase.",
+    description: "Calculate the sales tax amount, total price, and annual tax burden for any purchase or monthly budget.",
     label: "Sales Tax Calculator",
     inputs: [
       {
-        name: "price", label: "Price before tax", unit: "$", type: "slider",
-        min: 1, max: 5000, step: 5, default: 100,
-        hint: "The listed price before tax",
-        quickPicks: [25, 50, 100, 250, 500],
+        name: "state", label: "Your state", type: "dropdown",
+        default: "US Average",
+        hint: "Your combined rate is set automatically",
+        options: SALES_TAX_STATE_OPTIONS,
       },
       {
-        name: "taxRate", label: "Tax rate", unit: "%", type: "slider",
-        min: 0, max: 15, step: 0.25, default: 8.5,
-        hint: "US average is 7.12%. Check your state rate.",
-        quickPicks: [0, 5, 7, 8.5, 10],
+        name: "price", label: "Purchase price", unit: "$", type: "slider",
+        min: 1, max: 10000, step: 5, default: 100,
+        hint: "The listed price before tax",
+        quickPicks: [25, 100, 250, 500, 1000],
+      },
+      {
+        name: "monthlySpend", label: "Monthly taxable spend", unit: "$", type: "slider",
+        min: 0, max: 5000, step: 25, default: 800,
+        hint: "Typical monthly spend on taxable goods (clothing, electronics, etc.)",
+        quickPicks: [200, 400, 800, 1500, 3000],
       },
     ],
     outputs: [
-      { key: "totalPrice", label: "Total price", format: "currency", highlight: true, sublabel: (i) => `Including ${i.taxRate}% tax` },
-      { key: "taxAmount",  label: "Tax amount",  format: "currency", sublabel: () => "Added to your bill" },
+      { key: "totalPrice",       label: "Total price",        format: "currency", highlight: true,
+        sublabel: (_i, o) => `Including ${(o.resolvedRate ?? NATIONAL_AVG_SALES_TAX).toFixed(2)}% tax` },
+      { key: "taxAmount",        label: "Tax on purchase",    format: "currency", sublabel: () => "Added to your bill" },
+      { key: "monthlyTaxBurden", label: "Monthly tax burden", format: "currency", sublabel: () => "Tax on your monthly spend" },
+      { key: "annualTaxBurden",  label: "Annual tax burden",  format: "currency", sublabel: () => "Total sales tax you pay per year" },
     ],
     calculate: (inputs) => {
-      const price   = Number(inputs.price);
-      const taxRate = Number(inputs.taxRate);
-      const tax = price * (taxRate / 100);
+      const stateName    = String(inputs.state ?? "US Average");
+      const resolvedRate = SALES_TAX_RATE_BY_NAME[stateName] ?? NATIONAL_AVG_SALES_TAX;
+      const price        = Number(inputs.price);
+      const monthlySpend = Number(inputs.monthlySpend);
+      const tax          = price * (resolvedRate / 100);
+      const monthly      = monthlySpend * (resolvedRate / 100);
       return {
-        totalPrice: Math.round((price + tax) * 100) / 100,
-        taxAmount:  Math.round(tax * 100) / 100,
+        resolvedRate,
+        totalPrice:       Math.round((price + tax) * 100) / 100,
+        taxAmount:        Math.round(tax * 100) / 100,
+        monthlyTaxBurden: Math.round(monthly * 100) / 100,
+        annualTaxBurden:  Math.round(monthly * 12 * 100) / 100,
       };
     },
-    insight: (i, o) =>
-      `$${i.price} at ${i.taxRate}% tax = $${(o.taxAmount ?? 0).toFixed(2)} in tax — $${(o.totalPrice ?? 0).toFixed(2)} total.`,
+    insight: (i, o) => {
+      const rate = (o.resolvedRate ?? NATIONAL_AVG_SALES_TAX).toFixed(2);
+      return `$${i.price} at ${rate}% = $${(o.taxAmount ?? 0).toFixed(2)} tax. On $${i.monthlySpend}/month you pay ~$${(o.annualTaxBurden ?? 0).toFixed(0)} in sales tax per year.`;
+    },
   },
 
   // -- Profit Margin Calculator ------------------------------------------------
@@ -2867,7 +2887,7 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     id: "meal-prep-calculator",
     category: "other",
     description: "Calculate how much you save by meal prepping versus buying takeout or eating out.",
-    label: "Meal Prep Savings Calculator",
+    label: "Meal Prep Savings",
     inputs: [
       {
         name: "diningRegion",
@@ -2892,12 +2912,13 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
           { label: "🥗 Mixed lifestyle",                     value: "mixed" },
         ],
       },
-      { name: "meals",        label: "Meals you plan to cook per week",  unit: "", type: "slider", min: 1, max: 21, step: 1, default: 10, hint: "Home-cooked or prepped meals each week",         quickPicks: [3, 5, 7, 10, 14, 21] },
+      { name: "meals",        label: "How many meals do you currently cook per week?",               unit: "", type: "slider", min: 1, max: 21, step: 1, default: 10, hint: "Home-cooked or prepped meals each week",                              quickPicks: [3, 5, 7, 10, 14, 21] },
+      { name: "extraMeals",   label: "How many more meals could you realistically cook per week?", unit: "", type: "slider", min: 0, max: 21, step: 1, default: 1,  hint: "See the impact of one small habit change — no overhaul required", quickPicks: [1, 2, 3, 5], maxFn: (v) => Math.max(0, 21 - Number(v.meals ?? 10)) },
     ],
     outputs: [
-      { key: "costPerMeal",   label: "Cost per home meal",  format: "currency", decimalPlaces: 2, highlight: true, sublabel: () => "Your prep cost per meal" },
-      { key: "weeklySavings", label: "Weekly savings",      format: "currency", decimalPlaces: 2,                  sublabel: () => "vs your selected dining baseline" },
-      { key: "yearlySavings", label: "Annual savings",      format: "currency", decimalPlaces: 2,                  sublabel: () => "Weekly savings × 52" },
+      { key: "extraYearlySavings", label: "Extra savings per year",  format: "currency", decimalPlaces: 2, highlight: true, sublabel: (i, o) => { const e = Number((o as Record<string,unknown>).extraMeals ?? i.extraMeals ?? 1); return `Cook ${e} more meal${e !== 1 ? "s" : ""}/week`; } },
+      { key: "yearlySavings",      label: "Already saving per year",  format: "currency", decimalPlaces: 2,                  sublabel: (i)    => `Cooking ${i.meals} meals/week currently` },
+      { key: "costPerMeal",        label: "Cost per home meal",       format: "currency", decimalPlaces: 2,                  sublabel: ()     => "vs eating out" },
     ],
     calculate: (inputs) => {
       // Regional benchmark lookup — falls back to national if unset
@@ -2919,12 +2940,19 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       // $300/mo ÷ 60 meals = $5.00/meal nationally; scales with state food index via groceryMonthly
       const homeMealCost    = Math.round(regional.groceryMonthly / 60 * 100) / 100;
       const meals           = Number(inputs.meals ?? 10);
-      const weeklySavings   = meals * (takeoutCostDerived - homeMealCost);
+      const savingPerMeal   = takeoutCostDerived - homeMealCost;
+      const weeklySavings   = meals * savingPerMeal;
       const yearlySavings   = Math.round(weeklySavings * 52 * 100) / 100;
       // FV annuity @ 7% / 10 yr: ((1.07^10 - 1) / 0.07) ≈ 13.8164
       const tenYearIfInvested   = Math.round(yearlySavings * 13.8164 * 100) / 100;
       const weeklyEatingOutCost = Math.round(meals * takeoutCostDerived * 100) / 100;
       const monthlyFoodCost     = Math.round(meals * homeMealCost * (52 / 12) * 100) / 100;
+      // Behavior substitution model: 21 total meals/week (3/day × 7 days)
+      const TOTAL_WEEKLY_MEALS  = 21;
+      const mealsOutsourced     = Math.max(0, TOTAL_WEEKLY_MEALS - meals);
+      const extraMeals          = Math.min(Number(inputs.extraMeals ?? 1), mealsOutsourced);
+      const extraWeeklySavings  = Math.round(extraMeals * savingPerMeal * 100) / 100;
+      const extraYearlySavings  = Math.round(extraWeeklySavings * 52 * 100) / 100;
       return {
         costPerMeal:          homeMealCost,
         weeklySavings:        Math.round(weeklySavings * 100) / 100,
@@ -2933,16 +2961,15 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
         weeklyEatingOutCost,
         monthlyFoodCost,
         takeoutCostDerived,   // exposed for WorthCore insight generator — not shown as output card
+        mealsOutsourced,
+        extraMeals,
+        extraWeeklySavings,
+        extraYearlySavings,
       };
     },
     insight: (i, o) => {
-      const STYLE_LABEL: Record<string, string> = {
-        fastfood: "fast food", delivery: "delivery app", restaurant: "restaurant",
-        takeout: "takeout", convenience: "convenience meals", mixed: "dining out",
-      };
-      const styles = String(i.diningStyle ?? "takeout").split(",").filter(Boolean);
-      const label = styles.map((s) => STYLE_LABEL[s] ?? "takeout").join(" & ");
-      return `Cooking ${i.meals} meals/week saves $${o.weeklySavings}/week — $${o.yearlySavings.toLocaleString()}/year vs your ${label} habit.`;
+      const extra = Number(i.extraMeals ?? 1);
+      return `You're already saving $${(o.yearlySavings ?? 0).toLocaleString()}/year cooking ${i.meals} meals/week. Cook ${extra} more meal${extra !== 1 ? "s" : ""}/week and that's another $${(o.extraYearlySavings ?? 0).toLocaleString()}/year.`;
     },
   },
 

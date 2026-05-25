@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { CALCULATOR_CONFIGS } from "./calculatorConfigs";
 import { useCalculator } from "./useCalculator";
 import type { CalculatorConfig, OutputConfig, CalculatorValues, CalculatorOutputs } from "./types";
@@ -19,31 +19,12 @@ export interface CalculatorEngineProps {
   /** Config registry key — e.g. "future-value", "car-loan-calculator" */
   slug: string;
   region?: "US" | "UK";
-  /**
-   * WorthCore contextual overrides — applied as initial default values for
-   * specific inputs. Consumed once in the useState lazy initializer.
-   * Safe to pass from a client component; never touches server rendering.
-   *
-   * @example
-   *   defaults={{ gasPrice: 2.95 }}  // Texas fuel price
-   */
+  /** Initial value overrides — e.g. from regional data */
   defaults?: Record<string, number>;
   /**
-   * Content rendered below the results panel, only after the user has
-   * clicked Calculate at least once.
-   *
-   * Accepts either:
-   *   - Static ReactNode  (Phase 6A pattern)
-   *   - Render prop function (Phase 6B pattern — receives live outputs + values
-   *     on every input change for live insight synchronization)
-   *
-   * The render prop is called synchronously in the render path — no async,
-   * no useEffect, no state lifting required.
-   *
-   * @example
-   *   afterResults={(outputs, values) => (
-   *     <LiveInsightBlock slug="commute-cost" outputs={outputs} values={values} />
-   *   )}
+   * Rendered below results after first calculation.
+   * Accepts static ReactNode or render prop (outputs, values) → ReactNode
+   * for live-synced insights.
    */
   afterResults?:
     | React.ReactNode
@@ -57,12 +38,6 @@ function formatOutput(value: number, output: OutputConfig): string {
   const sym = output.currencySymbol ?? "$";
   switch (output.format) {
     case "currency":
-      if (output.decimalPlaces != null) {
-        return `${sym}${value.toLocaleString("en-US", {
-          minimumFractionDigits: output.decimalPlaces,
-          maximumFractionDigits: output.decimalPlaces,
-        })}`;
-      }
       return `${sym}${Math.round(value).toLocaleString()}`;
     case "integer":
       return Math.ceil(value).toLocaleString();
@@ -93,15 +68,13 @@ const CALC_STEPS = [
 function CalculatorEngineInner({
   config,
   region,
-  afterResults,
   defaults,
+  afterResults,
 }: {
   config: CalculatorConfig;
   region: "US" | "UK";
-  afterResults?:
-    | React.ReactNode
-    | ((outputs: CalculatorOutputs, values: CalculatorValues) => React.ReactNode);
   defaults?: Record<string, number>;
+  afterResults?: CalculatorEngineProps["afterResults"];
 }) {
   const { values, setValue, outputs } = useCalculator(config, defaults);
 
@@ -190,78 +163,13 @@ function CalculatorEngineInner({
     <div className="grid gap-8 lg:grid-cols-[2fr_3fr] lg:gap-10">
 
       {/* â”€â”€ INPUTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <div className="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start lg:max-h-[calc(100vh-3rem)] lg:overflow-y-auto [scrollbar-color:#e5e7eb_transparent] [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-200/60 [&::-webkit-scrollbar-track]:bg-transparent">
+      <div className="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start">
 
         {config.inputs.map((input) => {
           const sym  = currencySymbol(input.unit);
           const numV = Number(values[input.name]);
 
           // â”€â”€ Select (button group card) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-          if (input.type === "dropdown") {
-            return (
-              <div
-                key={input.name}
-                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg"
-              >
-                <p className="text-sm font-semibold text-gray-700">{input.label}</p>
-                {input.hint && (
-                  <p className="mt-0.5 text-xs text-gray-400">{input.hint}</p>
-                )}
-                <select
-                  value={String(values[input.name] ?? "")}
-                  onChange={(e) => setValue(input.name, e.target.value)}
-                  className="mt-3 w-full rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 shadow-sm focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
-                >
-                  {input.options?.map((opt) => (
-                    <option key={String(opt.value)} value={String(opt.value)}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            );
-          }
-
-          if (input.type === "multiselect") {
-            const selected = String(values[input.name] ?? "").split(",").filter(Boolean);
-            return (
-              <div
-                key={input.name}
-                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg"
-              >
-                <p className="text-sm font-semibold text-gray-700">{input.label}</p>
-                {input.hint && (
-                  <p className="mt-0.5 text-xs text-gray-400">{input.hint}</p>
-                )}
-                <div className="mt-3 grid grid-cols-2 gap-2">
-                  {input.options?.map((opt) => {
-                    const isOn = selected.includes(String(opt.value));
-                    return (
-                      <button
-                        key={String(opt.value)}
-                        type="button"
-                        onClick={() => {
-                          const next = isOn
-                            ? selected.filter((v) => v !== String(opt.value))
-                            : [...selected, String(opt.value)];
-                          // Always keep at least one selected
-                          if (next.length > 0) setValue(input.name, next.join(","));
-                        }}
-                        className={`min-h-11 rounded-xl border py-2.5 text-sm font-semibold transition-all duration-150 active:scale-[0.97] ${
-                          isOn
-                            ? "border-emerald-400 bg-emerald-50 text-emerald-700"
-                            : "border-gray-200 bg-gray-50 text-gray-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-600"
-                        }`}
-                      >
-                        {opt.label}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            );
-          }
-
           if (input.type === "select") {
             return (
               <div
@@ -381,11 +289,14 @@ function CalculatorEngineInner({
               <FrequencyCards cards={freqCards} />
             )}
 
-            {typeof afterResults === "function"
-              ? afterResults(outputs, values)
-              : afterResults}
-
             <CalcDisclaimer />
+            {afterResults != null && (
+              <>
+                {typeof afterResults === "function"
+                  ? afterResults(outputs, values)
+                  : afterResults}
+              </>
+            )}
           </>
         )}
       </div>
@@ -395,7 +306,7 @@ function CalculatorEngineInner({
 
 // â”€â”€ Public export â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
-export default function CalculatorEngine({ slug, region = "US", afterResults, defaults }: CalculatorEngineProps) {
+export default function CalculatorEngine({ slug, region = "US", defaults, afterResults }: CalculatorEngineProps) {
   const key    = region === "UK" ? `${slug}-uk` : slug;
   const config = CALCULATOR_CONFIGS[key] ?? CALCULATOR_CONFIGS[slug];
 
@@ -408,7 +319,7 @@ export default function CalculatorEngine({ slug, region = "US", afterResults, de
     );
   }
 
-  return <CalculatorEngineInner config={config} region={region} afterResults={afterResults} defaults={defaults} />;
+  return <CalculatorEngineInner config={config} region={region} defaults={defaults} afterResults={afterResults} />;
 }
 
 

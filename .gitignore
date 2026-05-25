@@ -38,4 +38,9 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# recon sub-project
+recon/node_modules
+recon/dist
+recon/.env
 next-env.d.ts

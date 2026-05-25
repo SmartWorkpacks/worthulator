@@ -11,12 +11,14 @@ import {
 } from "@/src/templates/take-home-pay/StandardSEOSection";
 import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
+import SalesTaxCharts from "./SalesTaxCharts";
+import { NATIONAL_AVG_SALES_TAX } from "@/lib/datasets/tax/salesTaxRates";
 
 export const metadata: Metadata = {
   title: "Sales Tax Calculator 2026 – Instant Tax & Total Price",
   description:
-    "Calculate the exact sales tax amount and total price for any purchase. Enter the price and your state tax rate for an instant breakdown.",
-  keywords: ["sales tax calculator", "tax calculator", "how much is sales tax", "state sales tax", "total price with tax"],
+    "Calculate the exact sales tax amount, total price, and annual tax burden for any purchase. Enter the price and your state tax rate for an instant breakdown.",
+  keywords: ["sales tax calculator", "tax calculator", "how much is sales tax", "state sales tax", "total price with tax", "sales tax by state"],
   alternates: { canonical: "https://worthulator.com/tools/sales-tax-calculator" },
   robots: { index: true, follow: true },
 };
@@ -45,7 +47,7 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "7.12%", color: "text-emerald-600", accent: "bg-emerald-500", label: "Average combined US sales tax rate in 2026" },
+  { stat: `${NATIONAL_AVG_SALES_TAX}%`, color: "text-emerald-600", accent: "bg-emerald-500", label: "Average combined US sales tax rate in 2026" },
   { stat: "5",     color: "text-blue-600",    accent: "bg-blue-500",    label: "US states with zero statewide sales tax" },
   { stat: "10%+",  color: "text-amber-600",   accent: "bg-amber-500",   label: "Combined rate in some US cities — significantly above the national average" },
 ];
@@ -107,8 +109,8 @@ export default function SalesTaxCalculatorPage() {
         eyebrowIcon="🧾"
         eyebrowText="Everyday · Quick Math"
         title="Sales Tax Calculator"
-        description="Enter the price and your state tax rate to instantly see the tax amount and total price."
-        chips={["Tax amount", "Total with tax", "State rate presets"]}
+        description="Select your state and enter the purchase price to instantly see the tax amount and total price."
+        chips={["Tax amount", "Total with tax", "Annual tax burden"]}
       >
         <CalculatorEngineLoader slug="sales-tax" afterResults={<InsightsSection slug="sales-tax" />} />
       </SimpleCalculatorHero>
@@ -118,6 +120,7 @@ export default function SalesTaxCalculatorPage() {
       />
 
       <InsightTable slug="sales-tax" />
+      <SalesTaxCharts />
       <SEOTextBlock
         title="How the Sales Tax Calculator Works"
         formula={`Tax Amount  = Price × (Tax Rate ÷ 100)

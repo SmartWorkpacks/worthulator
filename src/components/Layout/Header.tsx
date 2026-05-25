@@ -361,6 +361,7 @@ function MobileNav({ open, onClose }: { open: boolean; onClose: () => void }) {
     { label: "Tools",       href: "/tools" },
     { label: "Categories",  href: "/tools#categories" },
     { label: "Popular",     href: "/tools?sort=popular" },
+    { label: "Estimator (Coming Soon)", href: "/value-engine" },
     { label: "About",       href: "/about" },
   ];
 
@@ -479,6 +480,16 @@ export default function Header() {
             <NavDropdown label="Popular">
               <PopularMenu />
             </NavDropdown>
+
+            <Link
+              href="/value-engine"
+              className="flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10 hover:text-emerald-300"
+            >
+              Estimator
+              <span className="rounded-full bg-emerald-500/15 px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-emerald-400">
+                Soon
+              </span>
+            </Link>
 
             <Link
               href="/about"

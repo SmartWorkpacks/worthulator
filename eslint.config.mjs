@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Recon sub-project — isolated Node.js/TS project, not part of Next.js
+    "recon/**",
   ]),
 ]);
 
