@@ -170,6 +170,71 @@ function CalculatorEngineInner({
           const numV = Number(values[input.name]);
 
           // â”€â”€ Select (button group card) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+          // -- Dropdown (native <select> for long option lists) ---------------------
+          if (input.type === "dropdown") {
+            return (
+              <div
+                key={input.name}
+                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg"
+              >
+                <p className="text-sm font-semibold text-gray-700">{input.label}</p>
+                {input.hint && (
+                  <p className="mt-0.5 text-xs text-gray-400">{input.hint}</p>
+                )}
+                <select
+                  value={String(values[input.name] ?? input.default ?? "")}
+                  onChange={(e) => setValue(input.name, e.target.value)}
+                  className="mt-3 w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-3 text-sm font-medium text-gray-700 focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
+                >
+                  {input.options?.map((opt) => (
+                    <option key={String(opt.value)} value={String(opt.value)}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            );
+          }
+
+          // -- Multiselect (toggle-button group, stores comma-separated values) -----
+          if (input.type === "multiselect") {
+            const selected = String(values[input.name] ?? input.default ?? "").split(",").filter(Boolean);
+            return (
+              <div
+                key={input.name}
+                className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-lg"
+              >
+                <p className="text-sm font-semibold text-gray-700">{input.label}</p>
+                {input.hint && (
+                  <p className="mt-0.5 text-xs text-gray-400">{input.hint}</p>
+                )}
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {input.options?.map((opt) => {
+                    const isOn = selected.includes(String(opt.value));
+                    return (
+                      <button
+                        key={String(opt.value)}
+                        type="button"
+                        onClick={() => {
+                          const next = isOn
+                            ? selected.filter((v) => v !== String(opt.value))
+                            : [...selected, String(opt.value)];
+                          setValue(input.name, (next.length > 0 ? next : [String(opt.value)]).join(","));
+                        }}
+                        className={`rounded-xl border px-4 py-2.5 text-sm font-semibold transition-all duration-150 active:scale-[0.97] ${
+                          isOn
+                            ? "border-emerald-400 bg-emerald-50 text-emerald-700"
+                            : "border-gray-200 bg-gray-50 text-gray-500 hover:border-emerald-200 hover:bg-emerald-50 hover:text-emerald-600"
+                        }`}
+                      >
+                        {opt.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            );
+          }
           if (input.type === "select") {
             return (
               <div
@@ -203,6 +268,8 @@ function CalculatorEngineInner({
           }
 
           // â”€â”€ Slider â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+          const dynamicMax = input.maxFn ? input.maxFn(values) : (input.max ?? 100);
+          const clampedVal = Math.min(numV, dynamicMax);
           return (
             <SliderInputCard
               key={input.name}
@@ -210,21 +277,21 @@ function CalculatorEngineInner({
               label={sym ? input.label : `${input.label}${input.unit ? ` (${input.unit})` : ""}`}
               hint={input.hint}
               symbol={sym}
-              value={numV}
-              inputValue={rawValues[input.name] ?? String(numV)}
+              value={clampedVal}
+              inputValue={rawValues[input.name] ?? String(clampedVal)}
               min={input.min ?? 0}
-              max={input.max ?? 100}
+              max={dynamicMax}
               step={input.step ?? 1}
               onChange={(v) => handleInputChange(input.name, v, String(v))}
               onInputChange={(raw) => {
                 setRawValues((prev) => ({ ...prev, [input.name]: raw }));
                 const n = parseFloat(raw);
                 const lo = input.min ?? 0;
-                const hi = input.max ?? Infinity;
+                const hi = dynamicMax;
                 if (!isNaN(n) && n >= lo && n <= hi) setValue(input.name, n);
               }}
               onInputBlur={() =>
-                setRawValues((prev) => ({ ...prev, [input.name]: String(numV) }))
+                setRawValues((prev) => ({ ...prev, [input.name]: String(clampedVal) }))
               }
             >
               {input.quickPicks && input.quickPicks.length > 0 && (
