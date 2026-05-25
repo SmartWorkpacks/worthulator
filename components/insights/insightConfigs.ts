@@ -103,11 +103,12 @@ function fmtMo(months: number): string {
 
 // ── Configs ───────────────────────────────────────────────────────────────────
 
-export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
+export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
 
   // ── 401k Calculator ─────────────────────────────────────────────────────────
   "401k-calculator": (() => {
     const c = CALCULATOR_CONFIGS["401k-calculator"];
+    if (!c) return null;
 
     // Cost of waiting: start at 25 (40yr) vs start at 35 (30yr)
     const r_early = c.calculate({ current: 0, contribution: 500, match: 50, rate: 7, years: 40 });
@@ -180,6 +181,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Student Loan Calculator ──────────────────────────────────────────────────
   "student-loan-calculator": (() => {
     const c = CALCULATOR_CONFIGS["student-loan-calculator"];
+    if (!c) return null;
 
     const r10 = c.calculate({ loan: 35000, rate: 5.5, term: 120 });
     const r20 = c.calculate({ loan: 35000, rate: 5.5, term: 240 });
@@ -221,6 +223,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Credit Card Payoff Calculator ────────────────────────────────────────────
   "credit-card-payoff-calculator": (() => {
     const c = CALCULATOR_CONFIGS["credit-card-payoff-calculator"];
+    if (!c) return null;
 
     const r_min = c.calculate({ balance: 5000, apr: 22, payment: 150 });
     const r_opt = c.calculate({ balance: 5000, apr: 22, payment: 300 });
@@ -261,6 +264,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Latte Factor Calculator ───────────────────────────────────────────────────
   "latte-factor": (() => {
     const c = CALCULATOR_CONFIGS["latte-factor"];
+    if (!c) return null;
 
     const r6 = c.calculate({ dailySpend: 6, annualReturn: 7, years: 30 });
 
@@ -323,6 +327,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Car Loan Calculator ───────────────────────────────────────────────────────
   "car-loan-calculator": (() => {
     const c = CALCULATOR_CONFIGS["car-loan-calculator"];
+    if (!c) return null;
 
     // $28k car, $3k down, $0 trade-in — compare 48 vs 84 months at 7%
     const r48 = c.calculate({ vehiclePrice: 28000, downPayment: 3000, tradeIn: 0, interestRate: 7, termMonths: 48 });
@@ -402,6 +407,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Budget Calculator ─────────────────────────────────────────────────────────
   "budget-calculator": (() => {
     const c = CALCULATOR_CONFIGS["budget-calculator"];
+    if (!c) return null;
 
     // Default $5k take-home budget
     const r = c.calculate({ income: 5000, housing: 1500, food: 600, transport: 400, debt: 300, other: 500 });
@@ -488,6 +494,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── BMR Calculator ─────────────────────────────────────────────────────────────
   "bmr-calculator": (() => {
     const c = CALCULATOR_CONFIGS["bmr-calculator"];
+    if (!c) return null;
 
     const male30   = c.calculate({ gender: "male",   weight: 75, height: 175, age: 30 });
     const female30 = c.calculate({ gender: "female", weight: 65, height: 165, age: 30 });
@@ -557,6 +564,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Calorie Deficit Calculator ────────────────────────────────────────────────
   "calorie-deficit": (() => {
     const c = CALCULATOR_CONFIGS["calorie-deficit"];
+    if (!c) return null;
 
     const r05 = c.calculate({ currentWeight: 185, weeklyLossGoal: 0.5 });
     const r1  = c.calculate({ currentWeight: 185, weeklyLossGoal: 1.0 });
@@ -647,6 +655,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Subscription Auditor ──────────────────────────────────────────────────────
   "subscription-auditor": (() => {
     const c = CALCULATOR_CONFIGS["subscription-auditor"];
+    if (!c) return null;
 
     // Default $150/mo total (streaming 45 + software 30 + fitness 40 + news 15 + other 20)
     const rDefault = c.calculate({ streaming: 45, software: 30, fitness: 40, newsMedia: 15, other: 20 });
@@ -727,6 +736,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Quit Smoking Calculator ───────────────────────────────────────────────────
   "quit-smoking": (() => {
     const c = CALCULATOR_CONFIGS["quit-smoking"];
+    if (!c) return null;
 
     const r1_1yr  = c.calculate({ packsPerDay: 1,   packCost: 10, daysSinceQuit: 365  });
     const r2_1yr  = c.calculate({ packsPerDay: 2,   packCost: 10, daysSinceQuit: 365  });
@@ -794,6 +804,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Savings Calculator ────────────────────────────────────────────────────────
   "savings-calculator": (() => {
     const c = CALCULATOR_CONFIGS["savings-calculator"];
+    if (!c) return null;
 
     const r3   = c.calculate({ initial: 5000, monthly: 300, rate: 3,   years: 10 });
     const r45  = c.calculate({ initial: 5000, monthly: 300, rate: 4.5, years: 10 });
@@ -858,6 +869,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Savings Goal Calculator ───────────────────────────────────────────────────
   "savings-goal-calculator": (() => {
     const c = CALCULATOR_CONFIGS["savings-goal-calculator"];
+    if (!c) return null;
 
     const r0  = c.calculate({ goalAmount: 20000, currentSavings: 2000, years: 3, annualReturn: 0   });
     const r4  = c.calculate({ goalAmount: 20000, currentSavings: 2000, years: 3, annualReturn: 4   });
@@ -916,6 +928,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Inflation Impact Calculator ───────────────────────────────────────────────
   "inflation-impact-calculator": (() => {
     const c = CALCULATOR_CONFIGS["inflation-impact-calculator"];
+    if (!c) return null;
 
     const r20_2  = c.calculate({ amount: 10000, rate: 2,   years: 20 });
     const r20_35 = c.calculate({ amount: 10000, rate: 3.5, years: 20 });
@@ -981,6 +994,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Millionaire Calculator ────────────────────────────────────────────────────
   "millionaire-calculator": (() => {
     const c = CALCULATOR_CONFIGS["millionaire-calculator"];
+    if (!c) return null;
 
     const r500  = c.calculate({ currentSavings: 10000, monthlySavings: 500,  annualReturn: 7 });
     const r1000 = c.calculate({ currentSavings: 10000, monthlySavings: 1000, annualReturn: 7 });
@@ -1043,6 +1057,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── FIRE Calculator ───────────────────────────────────────────────────────────
   "fire-calculator": (() => {
     const c = CALCULATOR_CONFIGS["fire-calculator"];
+    if (!c) return null;
 
     const r2k = c.calculate({ monthlyExpenses: 4000, currentSavings: 50000, monthlySavings: 2000, annualReturn: 7 });
     const r3k = c.calculate({ monthlyExpenses: 4000, currentSavings: 50000, monthlySavings: 3000, annualReturn: 7 });
@@ -1101,6 +1116,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── WFH Savings Calculator ────────────────────────────────────────────────────
   "wfh-savings-calculator": (() => {
     const c = CALCULATOR_CONFIGS["wfh-savings-calculator"];
+    if (!c) return null;
 
     const r3day = c.calculate({ dailyCommuteCost: 15, officeDays: 3, dailyFood: 18, commuteMinutes: 45 });
     const r5day = c.calculate({ dailyCommuteCost: 15, officeDays: 5, dailyFood: 18, commuteMinutes: 45 });
@@ -1163,6 +1179,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── EV vs Gas Calculator ──────────────────────────────────────────────────────
   "ev-vs-gas": (() => {
     const c = CALCULATOR_CONFIGS["ev-vs-gas"];
+    if (!c) return null;
 
     const rLow  = c.calculate({ milesPerYear: 12000, mpg: 20, gasPrice: 3.5, kwhPer100mi: 30, electricRate: 0.15 });
     const rMid  = c.calculate({ milesPerYear: 12000, mpg: 28, gasPrice: 3.5, kwhPer100mi: 30, electricRate: 0.15 });
@@ -1229,6 +1246,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Side Hustle Calculator ────────────────────────────────────────────────────
   "side-hustle-calculator": (() => {
     const c = CALCULATOR_CONFIGS["side-hustle-calculator"];
+    if (!c) return null;
 
     // Rate lever: $50/hr at 10hr vs $25/hr at 10hr
     const r_50_10 = c.calculate({ hoursPerWeek: 10, rate: 50, expensePct: 15, taxRate: 25 });
@@ -1274,6 +1292,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Tip Calculator ────────────────────────────────────────────────────────
   "tip-calculator": (() => {
     const c = CALCULATOR_CONFIGS["tip-calculator"];
+    if (!c) return null;
     const r = c.calculate({ billAmount: 120, tipPct: 18, people: 4 });
     const tipData = [10, 15, 18, 20, 25].map((pct) => {
       const row = c.calculate({ billAmount: 120, tipPct: pct, people: 4 });
@@ -1322,6 +1341,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Credit Card Interest Calculator ──────────────────────────────────────
   "credit-card-interest": (() => {
     const c = CALCULATOR_CONFIGS["credit-card-interest"];
+    if (!c) return null;
     const r = c.calculate({ balance: 3000, apr: 22, monthlyPayment: 100 });
     const payData = [75, 100, 150, 200, 300, 500].map((pmt) => {
       const row = c.calculate({ balance: 3000, apr: 22, monthlyPayment: pmt });
@@ -1367,6 +1387,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Missed Investment Calculator ──────────────────────────────────────────
   "missed-investment": (() => {
     const c = CALCULATOR_CONFIGS["missed-investment"];
+    if (!c) return null;
     const r = c.calculate({ amount: 10000, yearsAgo: 10, annualReturn: 10 });
     const chartData = [5, 10, 15, 20].map((yrs) => {
       const r1 = c.calculate({ amount: 1000,  yearsAgo: yrs, annualReturn: 10 });
@@ -1420,6 +1441,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Commute Time Value ─────────────────────────────────────────────────────
   "commute-time-value": (() => {
     const c = CALCULATOR_CONFIGS["commute-time-value"];
+    if (!c) return null;
     const r = c.calculate({ dailyMins: 45, hourlyWage: 30, workDays: 235 });
     const chartData = [15, 30, 45, 60, 90].map((mins) => {
       const row = c.calculate({ dailyMins: mins, hourlyWage: 30, workDays: 235 });
@@ -1501,6 +1523,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Paint Coverage Calculator ─────────────────────────────────────────────
   "paint-coverage-calculator": (() => {
     const c = CALCULATOR_CONFIGS["paint-coverage-calculator"];
+    if (!c) return null;
     const r = c.calculate({ length: 14, width: 12, height: 9, doors: 1, windows: 2, coats: 2, wasteFactor: 10 });
     const chartData = [1, 2, 3].map((coats) => {
       const row = c.calculate({ length: 14, width: 12, height: 9, doors: 1, windows: 2, coats, wasteFactor: 10 });
@@ -1548,6 +1571,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Percentage Of Calculator ──────────────────────────────────────────────
   "percentage-of-calculator": (() => {
     const c = CALCULATOR_CONFIGS["percentage-of-calculator"];
+    if (!c) return null;
     const r = c.calculate({ percentage: 20, baseValue: 500 });
     const tableRows = [5, 10, 15, 20, 25, 30].map((pct) => {
       const row = c.calculate({ percentage: pct, baseValue: 500 });
@@ -1578,6 +1602,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Running Pace Calculator ───────────────────────────────────────────────
   "running-pace-calculator": (() => {
     const c = CALCULATOR_CONFIGS["running-pace-calculator"];
+    if (!c) return null;
     const r = c.calculate({ distanceMiles: 3.1, targetMinutes: 30 });
     const tableRows = [
       { dist: 3.1,  name: "5K",        times: [25, 30, 35, 40] },
@@ -1621,6 +1646,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Road Trip Cost ─────────────────────────────────────────────────────────
   "road-trip-cost": (() => {
     const c = CALCULATOR_CONFIGS["road-trip-cost"];
+    if (!c) return null;
     const r = c.calculate({ distanceMiles: 300, mpg: 30, fuelPrice: 3.5, tolls: 0, passengers: 1 });
     const mpgData = [20, 28, 35, 45].map((mpg) => {
       const row = c.calculate({ distanceMiles: 300, mpg, fuelPrice: 3.5, tolls: 0, passengers: 1 });
@@ -1666,6 +1692,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Laundry Cost Calculator ───────────────────────────────────────────────
   "laundry-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["laundry-cost-calculator"];
+    if (!c) return null;
     const r = c.calculate({ loadsPerWeek: 4, electricityRate: 0.16, detergentCost: 0.30, machineType: 3.8 });
     const chartData = [2, 4, 6, 8, 10].map((loads) => {
       const row = c.calculate({ loadsPerWeek: loads, electricityRate: 0.16, detergentCost: 0.30, machineType: 3.8 });
@@ -1711,6 +1738,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Grocery Unit Price ────────────────────────────────────────────────────
   "grocery-unit-price": (() => {
     const c = CALCULATOR_CONFIGS["grocery-unit-price"];
+    if (!c) return null;
     const r = c.calculate({ item1Price: 3.50, item1Size: 16, item2Price: 8.00, item2Size: 48 });
     const tableRows = [
       ["Peanut butter",  "$3.49 / 16oz", "$6.49 / 40oz",  "Large jar",     "~31% cheaper/oz"],
@@ -1749,6 +1777,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Future Value Calculator ────────────────────────────────────────────────
   "future-value": (() => {
     const c = CALCULATOR_CONFIGS["future-value"];
+    if (!c) return null;
     const r = c.calculate({ initial: 10000, monthly: 500, rate: 7, years: 20 });
     const rateData = [4, 6, 7, 10, 12].map((rate) => {
       const row = c.calculate({ initial: 10000, monthly: 500, rate, years: 20 });
@@ -1800,6 +1829,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Pay Raise Calculator ──────────────────────────────────────────────────
   "pay-raise": (() => {
     const c = CALCULATOR_CONFIGS["pay-raise"];
+    if (!c) return null;
     const r = c.calculate({ currentSalary: 65000, raisePercent: 5 });
     const chartData = [2, 3, 5, 8, 10, 15].map((pct) => {
       const row = c.calculate({ currentSalary: 65000, raisePercent: pct });
@@ -1847,6 +1877,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Sales Tax Calculator ──────────────────────────────────────────────────
   "sales-tax": (() => {
     const c = CALCULATOR_CONFIGS["sales-tax"];
+    if (!c) return null;
     const r = c.calculate({ price: 100, taxRate: 8.5 });
     const tableRows = [0, 5, 6, 7, 8.5, 9.5, 10].map((rate) => {
       const row = c.calculate({ price: 100, taxRate: rate });
@@ -1877,6 +1908,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Profit Margin Calculator ──────────────────────────────────────────────
   "profit-margin": (() => {
     const c = CALCULATOR_CONFIGS["profit-margin"];
+    if (!c) return null;
     const r = c.calculate({ revenue: 10000, cost: 7000 });
     const tableRows = [50, 60, 70, 75, 80, 90].map((costPct) => {
       const cost = 10000 * (costPct / 100);
@@ -1914,6 +1946,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Markup Calculator ─────────────────────────────────────────────────────
   "markup-calculator": (() => {
     const c = CALCULATOR_CONFIGS["markup-calculator"];
+    if (!c) return null;
     const r = c.calculate({ costPrice: 50, markupPercent: 50 });
     const chartData = [20, 33, 50, 75, 100, 150].map((pct) => {
       const row = c.calculate({ costPrice: 50, markupPercent: pct });
@@ -1963,6 +1996,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Car Affordability Calculator ──────────────────────────────────────────
   "car-affordability": (() => {
     const c = CALCULATOR_CONFIGS["car-affordability"];
+    if (!c) return null;
     const r = c.calculate({ monthlyIncome: 6000, loanTermMonths: 60, annualRate: 7 });
     const incomeData = [3000, 4000, 5000, 6000, 8000, 10000].map((inc) => {
       const row = c.calculate({ monthlyIncome: inc, loanTermMonths: 60, annualRate: 7 });
@@ -2008,6 +2042,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Salary to Hourly ──────────────────────────────────────────────────────
   "salary-to-hourly": (() => {
     const c = CALCULATOR_CONFIGS["salary-to-hourly"];
+    if (!c) return null;
     const r = c.calculate({ annualSalary: 65000, hoursPerWeek: 40, weeksPerYear: 52 });
     const chartData = [40000, 55000, 65000, 85000, 120000, 200000].map((sal) => {
       const row = c.calculate({ annualSalary: sal, hoursPerWeek: 40, weeksPerYear: 52 });
@@ -2053,6 +2088,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Meeting Cost Calculator ───────────────────────────────────────────────
   "meeting-cost": (() => {
     const c = CALCULATOR_CONFIGS["meeting-cost"];
+    if (!c) return null;
     const r = c.calculate({ attendees: 8, avgHourlyWage: 50, durationMinutes: 60 });
     const attendeeData = [4, 6, 8, 10, 12, 16].map((att) => {
       const row = c.calculate({ attendees: att, avgHourlyWage: 50, durationMinutes: 60 });
@@ -2100,6 +2136,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Commute Cost Calculator ───────────────────────────────────────────────
   "commute-cost": (() => {
     const c = CALCULATOR_CONFIGS["commute-cost"];
+    if (!c) return null;
     const r = c.calculate({ milesOneWay: 15, mpg: 28, gasPrice: 3.5, workDaysPerYear: 250 });
     const distData = [5, 10, 15, 25, 40].map((miles) => {
       const row = c.calculate({ milesOneWay: miles, mpg: 28, gasPrice: 3.5, workDaysPerYear: 250 });
@@ -2145,6 +2182,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── PTO Calculator ────────────────────────────────────────────────────────
   "pto-calculator": (() => {
     const c = CALCULATOR_CONFIGS["pto-calculator"];
+    if (!c) return null;
     const r = c.calculate({ hourlyRate: 35, ptoHoursRemaining: 80, hoursPerDay: 8 });
     const rateData = [15, 25, 35, 50, 75, 100].map((rate) => {
       const row = c.calculate({ hourlyRate: rate, ptoHoursRemaining: 80, hoursPerDay: 8 });
@@ -2192,6 +2230,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Water Intake Calculator ────────────────────────────────────────────────
   "water-intake": (() => {
     const c = CALCULATOR_CONFIGS["water-intake"];
+    if (!c) return null;
     const r = c.calculate({ bodyWeight: 165, exerciseMinutes: 30 });
     const weightData = [120, 150, 165, 185, 220, 250].map((w) => {
       const row = c.calculate({ bodyWeight: w, exerciseMinutes: 30 });
@@ -2239,6 +2278,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Screen Time Impact Calculator ─────────────────────────────────────────
   "screen-time-impact": (() => {
     const c = CALCULATOR_CONFIGS["screen-time-impact"];
+    if (!c) return null;
     const r = c.calculate({ hoursPerDay: 4, hourlyRate: 30, yearsAhead: 10 });
     const chartData = [2, 3, 4, 6, 8].map((hrs) => {
       const row = c.calculate({ hoursPerDay: hrs, hourlyRate: 30, yearsAhead: 10 });
@@ -2285,6 +2325,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── True Hourly Wage ──────────────────────────────────────────────────────
   "true-hourly-wage": (() => {
     const c = CALCULATOR_CONFIGS["true-hourly-wage"];
+    if (!c) return null;
     const r = c.calculate({ salary: 65000, hoursPerWeek: 40, commuteHrsDay: 0.5, decompressHrs: 0.5 });
     const commuteData = [0, 0.25, 0.5, 1, 1.5].map((comm) => {
       const row = c.calculate({ salary: 65000, hoursPerWeek: 40, commuteHrsDay: comm, decompressHrs: 0.5 });
@@ -2333,6 +2374,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Airbnb Profit Calculator ──────────────────────────────────────────────
   "airbnb-profit": (() => {
     const c = CALCULATOR_CONFIGS["airbnb-profit"];
+    if (!c) return null;
     const r = c.calculate({ nightlyRate: 150, occupancyPct: 70, platformFeePct: 15, monthlyExpenses: 800 });
     const chartData = [40, 50, 60, 70, 80, 90].map((occ) => {
       const row = c.calculate({ nightlyRate: 150, occupancyPct: occ, platformFeePct: 15, monthlyExpenses: 800 });
@@ -2378,6 +2420,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Self-Employed Tax Calculator ──────────────────────────────────────────
   "self-employed-tax": (() => {
     const c = CALCULATOR_CONFIGS["self-employed-tax"];
+    if (!c) return null;
     const r = c.calculate({ grossIncome: 80000, businessExpenses: 8000, federalRate: 22 });
     const chartData = [40000, 60000, 80000, 100000, 120000].map((inc) => {
       const row = c.calculate({ grossIncome: inc, businessExpenses: inc * 0.1, federalRate: 22 });
@@ -2423,6 +2466,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Job Offer Comparison Calculator ──────────────────────────────────────
   "job-offer-comparison": (() => {
     const c = CALCULATOR_CONFIGS["job-offer-comparison"];
+    if (!c) return null;
     const r = c.calculate({ salaryA: 85000, salaryB: 95000, commuteCostA: 3000, commuteCostB: 500, benefitsValueA: 12000, benefitsValueB: 8000 });
     return {
       blocks: [
@@ -2461,6 +2505,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Caffeine Half-Life Calculator ─────────────────────────────────────────
   "caffeine-half-life": (() => {
     const c = CALCULATOR_CONFIGS["caffeine-half-life"];
+    if (!c) return null;
     const r = c.calculate({ cups: 2, lastCupHour: 14, bedtimeHour: 23 });
     const tableRows = [
       ["6:00 AM", "2 cups coffee", "190 mg", "~190 mg"],
@@ -2494,6 +2539,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Solar ROI Calculator ──────────────────────────────────────────────────
   "solar-roi": (() => {
     const c = CALCULATOR_CONFIGS["solar-roi"];
+    if (!c) return null;
     const r = c.calculate({ systemCost: 20000, monthlyBill: 150, solarOffset: 85, utilityInflation: 3 });
     const chartData = [10000, 15000, 20000, 25000, 30000].map((cost) => {
       const row = c.calculate({ systemCost: cost, monthlyBill: 150, solarOffset: 85, utilityInflation: 3 });
@@ -2539,6 +2585,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Appliance Energy Cost Calculator ─────────────────────────────────────
   "appliance-energy-cost": (() => {
     const c = CALCULATOR_CONFIGS["appliance-energy-cost"];
+    if (!c) return null;
     const r = c.calculate({ watts: 200, hoursPerDay: 8, electricRate: 0.15 });
     const chartData = [100, 500, 1000, 1500, 2000, 3000].map((w) => {
       const row = c.calculate({ watts: w, hoursPerDay: 8, electricRate: 0.15 });
@@ -2590,6 +2637,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── TDEE Calculator ───────────────────────────────────────────────────────
   "tdee-calculator": (() => {
     const c = CALCULATOR_CONFIGS["tdee-calculator"];
+    if (!c) return null;
     const r = c.calculate({ weightLbs: 175, heightIn: 70, age: 30, activityLevel: 1.55 });
     const levels = [
       { label: "Sedentary", factor: 1.2 },
@@ -2642,6 +2690,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Macro Calculator ──────────────────────────────────────────────────────
   "macro-calculator": (() => {
     const c = CALCULATOR_CONFIGS["macro-calculator"];
+    if (!c) return null;
     const r = c.calculate({ dailyCalories: 2200, bodyWeightLbs: 175, goal: 1 });
     const goals = [
       { label: "Cut (lose fat)", goal: 0 },
@@ -2677,6 +2726,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Drip (DRIP) Calculator ────────────────────────────────────────────────
   "drip-calculator": (() => {
     const c = CALCULATOR_CONFIGS["drip-calculator"];
+    if (!c) return null;
     const r = c.calculate({ initial: 10000, monthlyAdd: 200, dividendYield: 4, priceGrowth: 5, years: 20 });
     const chartData = [5, 10, 15, 20, 25].map((yrs) => {
       const row = c.calculate({ initial: 10000, monthlyAdd: 200, dividendYield: 4, priceGrowth: 5, years: yrs });
@@ -2725,6 +2775,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Down Payment Countdown Calculator ────────────────────────────────────
   "down-payment-countdown": (() => {
     const c = CALCULATOR_CONFIGS["down-payment-countdown"];
+    if (!c) return null;
     const r = c.calculate({ homePrice: 400000, downPct: 20, currentSaved: 5000, months: 36 });
     const chartData = [12, 24, 36, 48, 60].map((mo) => {
       const row = c.calculate({ homePrice: 400000, downPct: 20, currentSaved: 5000, months: mo });
@@ -2770,6 +2821,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Bill Split Calculator ─────────────────────────────────────────────────
   "bill-split-calculator": (() => {
     const c = CALCULATOR_CONFIGS["bill-split-calculator"];
+    if (!c) return null;
     const r = c.calculate({ billAmount: 120, tipPct: 18, people: 4 });
     const tableRows = [2, 3, 4, 5, 6, 8].map((ppl) => {
       const row = c.calculate({ billAmount: 120, tipPct: 18, people: ppl });
@@ -2800,6 +2852,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Body Fat Calculator ───────────────────────────────────────────────────
   "body-fat-calculator": (() => {
     const c = CALCULATOR_CONFIGS["body-fat-calculator"];
+    if (!c) return null;
     const r = c.calculate({ weightLbs: 175, heightIn: 70, waistIn: 34, neckIn: 15 });
     const tableRows = [
       ["Essential fat",     "2–5%",   "10–13%",  "Minimum for organ function"],
@@ -2833,6 +2886,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Salary Negotiation Calculator ─────────────────────────────────────────
   "salary-negotiation-calculator": (() => {
     const c = CALCULATOR_CONFIGS["salary-negotiation-calculator"];
+    if (!c) return null;
     const r = c.calculate({ currentOffer: 65000, marketLow: 60000, marketHigh: 85000, experienceYears: 5, skillMatch: 75, offerUrgency: "low" });
     return {
       blocks: [
@@ -2871,6 +2925,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Alcohol Cost Calculator ───────────────────────────────────────────────
   "alcohol-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["alcohol-cost-calculator"];
+    if (!c) return null;
     const r = c.calculate({ drinksPerWeek: 10, costPerDrink: 8 });
     const tableRows = [3, 5, 7, 10, 14, 21].map((dpw) => {
       const row = c.calculate({ drinksPerWeek: dpw, costPerDrink: 8 });
@@ -2907,6 +2962,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Biological Age Calculator ─────────────────────────────────────────────
   "biological-age-calculator": (() => {
     const c = CALCULATOR_CONFIGS["biological-age-calculator"];
+    if (!c) return null;
     const r = c.calculate({ age: 35, sleep: 7, exercise: 3, bmi: 24, smoker: 0 });
     const tableRows = [
       ["Sleep < 6h/night",     "+2–3 years", "Chronic sleep deprivation accelerates cellular aging"],
@@ -2941,6 +2997,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Steps to Calories Calculator ─────────────────────────────────────────
   "steps-to-calories-calculator": (() => {
     const c = CALCULATOR_CONFIGS["steps-to-calories-calculator"];
+    if (!c) return null;
     const r = c.calculate({ steps: 8000 });
     const chartData = [2000, 5000, 8000, 10000, 12000, 15000].map((steps) => {
       const row = c.calculate({ steps });
@@ -2986,6 +3043,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Pet Cost Calculator ───────────────────────────────────────────────────
   "pet-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["pet-cost-calculator"];
+    if (!c) return null;
     const r = c.calculate({ food: 800, vet: 600, insurance: 400, misc: 300, years: 12 });
     const tableRows = [
       ["Small dog (12yr)",   "$600–$800", "$800–$1,200", "$300–$500",  "$15k–$25k"],
@@ -3019,6 +3077,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Coast FIRE Calculator ─────────────────────────────────────────────────
   "coast-fire-calculator": (() => {
     const c = CALCULATOR_CONFIGS["coast-fire-calculator"];
+    if (!c) return null;
     const r = c.calculate({ current: 100000, target: 1500000, rate: 7, years: 25 });
     const chartData = [15, 20, 25, 30, 35].map((yrs) => {
       const row = c.calculate({ current: 100000, target: 1500000, rate: 7, years: yrs });
@@ -3064,6 +3123,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Burnout Calculator ────────────────────────────────────────────────────
   "burnout-calculator": (() => {
     const c = CALCULATOR_CONFIGS["burnout-calculator"];
+    if (!c) return null;
     const r = c.calculate({ hours: 45, stress: 6, sleep: 6.5 });
     const tableRows = [
       ["0–25",  "Low risk",      "Sustainable pace — monitor as circumstances change"],
@@ -3096,6 +3156,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Vaping Cost Calculator ────────────────────────────────────────────────
   "vaping-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["vaping-cost-calculator"];
+    if (!c) return null;
     const r = c.calculate({ dailyCost: 6 });
     const tableRows = [2, 4, 6, 8, 10, 15].map((daily) => {
       const row = c.calculate({ dailyCost: daily });
@@ -3132,6 +3193,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Child Support Calculator ──────────────────────────────────────────────
   "child-support-calculator": (() => {
     const c = CALCULATOR_CONFIGS["child-support-calculator"];
+    if (!c) return null;
 
     const r50 = c.calculate({ payerIncome: 5000, receiverIncome: 3000, children: 2, custodySplit: 50 });
     const r20 = c.calculate({ payerIncome: 5000, receiverIncome: 3000, children: 2, custodySplit: 20 });
@@ -3179,6 +3241,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Closing Cost Calculator ───────────────────────────────────────────────
   "closing-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["closing-cost-calculator"];
+    if (!c) return null;
 
     const r400 = c.calculate({ homePrice: 400000, percent: 3 });
 
@@ -3225,6 +3288,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Crypto Loss Calculator ────────────────────────────────────────────────
   "crypto-loss-calculator": (() => {
     const c = CALCULATOR_CONFIGS["crypto-loss-calculator"];
+    if (!c) return null;
 
     const r = c.calculate({ invested: 10000, currentValue: 4000, yearsHeld: 2 });
 
@@ -3269,6 +3333,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Data Worth Calculator ─────────────────────────────────────────────────
   "data-worth-calculator": (() => {
     const c = CALCULATOR_CONFIGS["data-worth-calculator"];
+    if (!c) return null;
 
     const r = c.calculate({ platforms: 5, dailyMinutes: 90, engagement: 3 });
 
@@ -3315,6 +3380,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Dream Salary Calculator ───────────────────────────────────────────────
   "dream-salary-calculator": (() => {
     const c = CALCULATOR_CONFIGS["dream-salary-calculator"];
+    if (!c) return null;
 
     const rComf = c.calculate({ housing: 1800, transport: 500, food: 600, lifestyle: 500, savings: 800, other: 300 });
     const rLean = c.calculate({ housing: 1200, transport: 300, food: 400, lifestyle: 300, savings: 500, other: 200 });
@@ -3360,6 +3426,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Expense Split Calculator ──────────────────────────────────────────────
   "expense-split-calculator": (() => {
     const c = CALCULATOR_CONFIGS["expense-split-calculator"];
+    if (!c) return null;
 
     const r = c.calculate({ total: 120, people: 4, tip: 18 });
 
@@ -3406,6 +3473,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Flooring Cost Calculator ──────────────────────────────────────────────
   "flooring-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["flooring-cost-calculator"];
+    if (!c) return null;
 
     const r = c.calculate({ length: 20, width: 15, costPerSqFt: 4.5 });
 
@@ -3452,6 +3520,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Gambling Loss Calculator ──────────────────────────────────────────────
   "gambling-loss-calculator": (() => {
     const c = CALCULATOR_CONFIGS["gambling-loss-calculator"];
+    if (!c) return null;
 
     const r = c.calculate({ weeklySpend: 50, years: 10 });
 
@@ -3497,6 +3566,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Global Wealth Percentile ──────────────────────────────────────────────
   "global-wealth-percentile": (() => {
     const c = CALCULATOR_CONFIGS["global-wealth-percentile"];
+    if (!c) return null;
 
     const r = c.calculate({ netWorth: 100000, annualIncome: 60000 });
 
@@ -3546,6 +3616,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── GPA Calculator ────────────────────────────────────────────────────────
   "gpa-calculator": (() => {
     const c = CALCULATOR_CONFIGS["gpa-calculator"];
+    if (!c) return null;
 
     const r = c.calculate({ currentGPA: 3.2, totalCredits: 60, remainingCredits: 30, targetGPA: 3.5 });
 
@@ -3593,6 +3664,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Heart Rate Zone Calculator ────────────────────────────────────────────
   "heart-rate-zone-calculator": (() => {
     const c = CALCULATOR_CONFIGS["heart-rate-zone-calculator"];
+    if (!c) return null;
 
     const r40 = c.calculate({ age: 40 });
 
@@ -3638,6 +3710,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Home Equity Calculator ────────────────────────────────────────────────
   "home-equity-calculator": (() => {
     const c = CALCULATOR_CONFIGS["home-equity-calculator"];
+    if (!c) return null;
 
     const r = c.calculate({ homeValue: 450000, mortgage: 280000 });
 
@@ -3684,6 +3757,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── House Affordability Calculator ───────────────────────────────────────
   "house-affordability-calculator": (() => {
     const c = CALCULATOR_CONFIGS["house-affordability-calculator"];
+    if (!c) return null;
 
     // income is monthly
     const r = c.calculate({ income: 7000, downPayment: 60000, rate: 6.5, term: 360 });
@@ -3731,6 +3805,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Life Expectancy Calculator ────────────────────────────────────────────
   "life-expectancy-calculator": (() => {
     const c = CALCULATOR_CONFIGS["life-expectancy-calculator"];
+    if (!c) return null;
 
     const rGood = c.calculate({ age: 35, smoker: 0, exercise: 3, bmi: 22 });
     const rPoor = c.calculate({ age: 35, smoker: 1, exercise: 0, bmi: 30 });
@@ -3776,6 +3851,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Life in Weeks Calculator ──────────────────────────────────────────────
   "life-in-weeks-calculator": (() => {
     const c = CALCULATOR_CONFIGS["life-in-weeks-calculator"];
+    if (!c) return null;
 
     const r35 = c.calculate({ age: 35, lifeExpectancy: 80 });
 
@@ -3820,6 +3896,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Lottery vs Investing ──────────────────────────────────────────────────
   "lottery-vs-investing": (() => {
     const c = CALCULATOR_CONFIGS["lottery-vs-investing"];
+    if (!c) return null;
 
     const r = c.calculate({ weekly: 20, years: 20, return: 7 });
 
@@ -3866,6 +3943,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Meal Prep Calculator ──────────────────────────────────────────────────
   "meal-prep-calculator": (() => {
     const c = CALCULATOR_CONFIGS["meal-prep-calculator"];
+    if (!c) return null;
 
     // Hero: restaurant habit, 10 meals/week cooked, national baseline
     const r = c.calculate({ timesPerWeek: 10, meals: 10, diningStyle: "restaurant", diningRegion: "National" });
@@ -3920,6 +3998,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Mortgage Refinance Calculator ─────────────────────────────────────────
   "mortgage-refinance-calculator": (() => {
     const c = CALCULATOR_CONFIGS["mortgage-refinance-calculator"];
+    if (!c) return null;
 
     const r = c.calculate({ oldPayment: 2200, newPayment: 1900, closingCosts: 5000, years: 10 });
 
@@ -3969,6 +4048,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Moving Cost Calculator ────────────────────────────────────────────────
   "moving-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["moving-cost-calculator"];
+    if (!c) return null;
 
     const rMid = c.calculate({ truck: 800, fuel: 200, packing: 300, storage: 200, misc: 200 });
 
@@ -4013,6 +4093,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Payroll Calculator ────────────────────────────────────────────────────
   "payroll-calculator": (() => {
     const c = CALCULATOR_CONFIGS["payroll-calculator"];
+    if (!c) return null;
     const r = c.calculate({ employeeCount: 10, avgSalary: 60000, taxRate: 15, benefitsPerEmployee: 8000 });
 
     const tableRows = [1, 5, 10, 25].map((employeeCount) => {
@@ -4051,6 +4132,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Pay Stub Calculator ───────────────────────────────────────────────────
   "pay-stub-calculator": (() => {
     const c = CALCULATOR_CONFIGS["pay-stub-calculator"];
+    if (!c) return null;
     const r = c.calculate({ gross: 3500, federalTax: 525, stateTax: 175, fica: 268, benefits: 200 });
 
     const tableRows = [2000, 3500, 5000, 8000].map((gross) => {
@@ -4095,6 +4177,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Phone Addiction Calculator ────────────────────────────────────────────
   "phone-addiction-calculator": (() => {
     const c = CALCULATOR_CONFIGS["phone-addiction-calculator"];
+    if (!c) return null;
     const r = c.calculate({ dailyHours: 4, yearsAhead: 30, hourlyValue: 35 });
 
     const tableRows = [2, 4, 6, 8].map((dailyHours) => {
@@ -4133,6 +4216,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Pomodoro Calculator ───────────────────────────────────────────────────
   "pomodoro-calculator": (() => {
     const c = CALCULATOR_CONFIGS["pomodoro-calculator"];
+    if (!c) return null;
     const r = c.calculate({ hoursAvailable: 6, sessionLength: 25, daysPerWeek: 5 });
 
     const tableRows = [
@@ -4176,6 +4260,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Procrastination Cost Calculator ──────────────────────────────────────
   "procrastination-cost": (() => {
     const c = CALCULATOR_CONFIGS["procrastination-cost"];
+    if (!c) return null;
     const r = c.calculate({ hoursPerDay: 2, hourlyRate: 40, daysPerYear: 250 });
 
     const tableRows = [1, 2, 3, 4].map((hoursPerDay) => {
@@ -4214,6 +4299,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Protein Intake Calculator ─────────────────────────────────────────────
   "protein-intake-calculator": (() => {
     const c = CALCULATOR_CONFIGS["protein-intake-calculator"];
+    if (!c) return null;
     const r = c.calculate({ weight: 75, multiplier: 1.6 });
 
     const tableRows = [60, 75, 90, 100].map((weight) => {
@@ -4254,6 +4340,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Relationship Cost Calculator ──────────────────────────────────────────
   "relationship-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["relationship-cost-calculator"];
+    if (!c) return null;
     const r = c.calculate({ datesPerMonth: 4, dateAvgCost: 80, giftsPerYear: 500, tripsPerYear: 1500, years: 3 });
 
     const tableRows = [1, 3, 5, 10].map((years) => {
@@ -4292,6 +4379,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Social Media Time Calculator ──────────────────────────────────────────
   "social-media-time-calculator": (() => {
     const c = CALCULATOR_CONFIGS["social-media-time-calculator"];
+    if (!c) return null;
     const r = c.calculate({ dailyHours: 2.5, years: 10 });
 
     const tableRows = [1, 2, 3, 5].map((dailyHours) => {
@@ -4330,6 +4418,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Streaming Time Calculator ─────────────────────────────────────────────
   "streaming-time-calculator": (() => {
     const c = CALCULATOR_CONFIGS["streaming-time-calculator"];
+    if (!c) return null;
     const r = c.calculate({ dailyHours: 3, years: 10, costPerMonth: 35 });
 
     const tableRows = [1, 2, 3, 5].map((dailyHours) => {
@@ -4368,6 +4457,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Tax Bracket Calculator ────────────────────────────────────────────────
   "tax-bracket-calculator": (() => {
     const c = CALCULATOR_CONFIGS["tax-bracket-calculator"];
+    if (!c) return null;
     const r = c.calculate({ income: 75000, taxPaid: 12500, bracket: 22 });
 
     const tableRows = [
@@ -4411,6 +4501,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Tile Calculator ───────────────────────────────────────────────────────
   "tile-calculator": (() => {
     const c = CALCULATOR_CONFIGS["tile-calculator"];
+    if (!c) return null;
     const r = c.calculate({ length: 12, width: 10, tileLength: 1, tileWidth: 1 });
 
     const tableRows = [
@@ -4455,6 +4546,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Time Between Dates Calculator ─────────────────────────────────────────
   "time-between-dates-calculator": (() => {
     const c = CALCULATOR_CONFIGS["time-between-dates-calculator"];
+    if (!c) return null;
     const r = c.calculate({ days: 90 });
 
     const tableRows = [30, 90, 180, 365].map((days) => {
@@ -4494,6 +4586,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Time Clock Calculator ─────────────────────────────────────────────────
   "time-clock-calculator": (() => {
     const c = CALCULATOR_CONFIGS["time-clock-calculator"];
+    if (!c) return null;
     const r = c.calculate({ clockIn: 9, clockOut: 17, breakHours: 0.5, daysWorked: 5 });
 
     const tableRows = [
@@ -4537,6 +4630,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Time to Retirement Calculator ─────────────────────────────────────────
   "time-to-retirement-calculator": (() => {
     const c = CALCULATOR_CONFIGS["time-to-retirement-calculator"];
+    if (!c) return null;
     const r = c.calculate({ expenses: 4000, current: 50000, monthlySavings: 1000, returnRate: 7 });
 
     const tableRows = [
@@ -4585,6 +4679,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Wedding Cost Calculator ───────────────────────────────────────────────
   "wedding-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["wedding-cost-calculator"];
+    if (!c) return null;
     const r = c.calculate({ guests: 100, costPerGuest: 100, venue: 5000, photography: 3000, misc: 3000 });
 
     const tableRows = [
@@ -4628,6 +4723,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Work Hours Calculator ─────────────────────────────────────────────────
   "work-hours-calculator": (() => {
     const c = CALCULATOR_CONFIGS["work-hours-calculator"];
+    if (!c) return null;
     const r = c.calculate({ hoursPerDay: 8, days: 260 });
 
     const tableRows = [
@@ -4671,6 +4767,7 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig> = {
   // ── Working Days Calculator ───────────────────────────────────────────────
   "working-days-calculator": (() => {
     const c = CALCULATOR_CONFIGS["working-days-calculator"];
+    if (!c) return null;
     const r = c.calculate({ totalDays: 30, holidays: 2 });
 
     const tableRows = [7, 14, 30, 90].map((totalDays) => {

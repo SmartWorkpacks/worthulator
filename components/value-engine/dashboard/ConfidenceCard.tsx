@@ -14,7 +14,7 @@ function ConfidenceBar({ pct }: { pct: number }) {
     : "bg-amber-400";
 
   return (
-    <div className="relative h-1 w-full overflow-hidden rounded-full bg-black/[0.08]">
+    <div className="relative h-1 w-full overflow-hidden rounded-full bg-black/8">
       <motion.div
         className={`h-full rounded-full ${color}`}
         initial={{ width: 0 }}

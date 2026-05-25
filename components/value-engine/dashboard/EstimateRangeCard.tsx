@@ -77,7 +77,7 @@ export default function EstimateRangeCard({
           <p className="text-[10px] font-semibold uppercase tracking-[0.22em] text-emerald-400">
             {label}
           </p>
-          <p className="mt-0.5 text-sm font-medium text-gray-300 truncate max-w-[240px]">
+          <p className="mt-0.5 text-sm font-medium text-gray-300 truncate max-w-60">
             {entityName}
           </p>
         </div>

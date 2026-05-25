@@ -32,7 +32,7 @@ const ProjectionChart = dynamic(
   {
     ssr:     false,
     loading: () => (
-      <div className="h-56 animate-pulse rounded-xl bg-white/[0.03]" />
+      <div className="h-56 animate-pulse rounded-xl bg-white/3" />
     ),
   },
 );
@@ -87,7 +87,7 @@ function DashboardError({ onRetry }: { onRetry: () => void }) {
       </p>
       <button
         onClick={onRetry}
-        className="mt-6 flex items-center gap-2 rounded-xl border border-black/[0.08] bg-black/[0.04] px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-black/[0.07] mx-auto"
+        className="mt-6 flex items-center gap-2 rounded-xl border border-black/8 bg-black/4 px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-black/[0.07] mx-auto"
       >
         <RefreshCw className="h-3.5 w-3.5" />
         Retry
@@ -239,7 +239,7 @@ export default function EstimationDashboard({
     <div className="min-h-screen bg-[#fafaf9] text-[#111111]">
 
       {/* ── Top bar: breadcrumb + region selector ─────────────────── */}
-      <div className="border-b border-black/[0.06]">
+      <div className="border-b border-black/6">
         <div className="mx-auto max-w-5xl px-5 sm:px-8">
 
           {/* Breadcrumb + region row */}
@@ -368,14 +368,14 @@ export default function EstimationDashboard({
               </div>
 
               {showLead && (
-                <div className="mt-14 border-t border-black/[0.06] pt-10">
+                <div className="mt-14 border-t border-black/6 pt-10">
                   <ContextualLead type={type} estimateAmount={average} />
                 </div>
               )}
 
               {/* SECTION 5 — Market Trust
                   Single-row market data signal — replaces 2 SaaS dashboard panels */}
-              <div className="mt-14 border-t border-black/[0.06] pt-8">
+              <div className="mt-14 border-t border-black/6 pt-8">
                 <MarketTrustRow
                   confidenceRange={confRange}
                   dataSource={dataSource}

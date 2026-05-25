@@ -126,7 +126,7 @@ export default function ComparableItems({ type, serviceType }: ComparableItemsPr
         {items.slice(0, 4).map((item) => (
           <div
             key={item.name}
-            className="flex items-center justify-between rounded-xl border border-black/[0.06] bg-white px-4 py-3.5"
+            className="flex items-center justify-between rounded-xl border border-black/6 bg-white px-4 py-3.5"
           >
             <span className="text-[14px] text-[#111111]">{item.name}</span>
             <span className="ml-4 shrink-0 rounded-md bg-zinc-50 px-2 py-0.5 text-[12px] font-medium text-zinc-500">

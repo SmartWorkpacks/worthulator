@@ -125,7 +125,7 @@ export default function ValueEngineLanding() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="mb-10 font-[family-name:var(--font-geist-sans)] text-[clamp(3.2rem,9vw,5.5rem)] font-bold leading-none tracking-[-0.04em] text-[#111111]"
+            className="mb-10 font-(family-name:--font-geist-sans) text-[clamp(3.2rem,9vw,5.5rem)] font-bold leading-none tracking-[-0.04em] text-[#111111]"
           >
             Estimator
           </motion.h1>

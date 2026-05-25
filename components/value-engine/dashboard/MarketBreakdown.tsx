@@ -94,7 +94,7 @@ export default function MarketBreakdown({
       </p>
 
       {/* Factor rows — KBB / Carfax-style structured data */}
-      <div className="divide-y divide-black/[0.05] border-y border-black/[0.05]">
+      <div className="divide-y divide-black/5 border-y border-black/5">
         {factors.map((f) => (
           <div key={f.label} className="flex items-baseline gap-4 py-3">
             <span className="w-28 shrink-0 text-[12px] font-medium text-zinc-400">

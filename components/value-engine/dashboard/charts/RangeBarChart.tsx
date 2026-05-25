@@ -31,7 +31,7 @@ function Bar({
   return (
     <div className="flex items-center gap-3">
       <p className="w-16 shrink-0 text-right text-[11px] font-medium text-gray-400">{label}</p>
-      <div className="relative h-5 flex-1 overflow-hidden rounded-md bg-white/[0.05]">
+      <div className="relative h-5 flex-1 overflow-hidden rounded-md bg-white/5">
         <motion.div
           className={`h-full rounded-md ${color}`}
           initial={{ width: 0 }}
@@ -67,7 +67,7 @@ export default function RangeBarChart({
       </div>
 
       {/* Confidence range callout */}
-      <div className="mt-5 rounded-xl border border-white/6 bg-white/[0.03] px-4 py-3">
+      <div className="mt-5 rounded-xl border border-white/6 bg-white/3 px-4 py-3">
         <p className="text-[10px] text-gray-500 mb-1">80% confidence interval</p>
         <p className="text-sm font-semibold text-white">
           ${confidenceRange[0].toLocaleString()} – ${confidenceRange[1].toLocaleString()}

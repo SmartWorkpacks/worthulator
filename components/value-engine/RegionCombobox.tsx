@@ -164,7 +164,7 @@ export default function RegionCombobox({
             ? "border-emerald-400 shadow-[0_0_0_2px_rgba(5,150,105,0.10)] text-emerald-700"
             : isLg
               ? "border-gray-200 text-gray-500 hover:border-gray-400"
-              : "border-black/[0.08] bg-black/[0.04] text-gray-500 hover:border-black/[0.14] hover:text-gray-900",
+              : "border-black/8 bg-black/4 text-gray-500 hover:border-black/[0.14] hover:text-gray-900",
         ].join(" ")}
       >
         <MapPin className={`shrink-0 ${isSm ? "h-3 w-3" : isLg ? "h-4 w-4" : "h-3.5 w-3.5"} ${open ? "text-emerald-500" : "text-gray-400"}`} />
@@ -185,10 +185,10 @@ export default function RegionCombobox({
             exit={{   opacity: 0, y: -6, scale: 0.97 }}
             transition={{ duration: 0.13, ease: "easeOut" }}
             style={dropdownStyle}
-            className="rounded-2xl border border-black/[0.08] bg-white shadow-[0_8px_32px_rgba(0,0,0,0.12)] overflow-hidden"
+            className="rounded-2xl border border-black/8 bg-white shadow-[0_8px_32px_rgba(0,0,0,0.12)] overflow-hidden"
           >
             {/* Search */}
-            <div className="relative border-b border-black/[0.06] px-3 py-2.5">
+            <div className="relative border-b border-black/6 px-3 py-2.5">
               <Search className="pointer-events-none absolute left-3.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400" />
               <input
                 ref={searchRef}
@@ -224,7 +224,7 @@ export default function RegionCombobox({
                       className={[
                         "flex w-full items-center gap-2.5 px-4 py-2 text-left text-sm transition-colors",
                         isSelected ? "text-emerald-700" : "text-gray-700",
-                        isActive   ? "bg-black/[0.04]"  : "hover:bg-black/[0.025]",
+                        isActive   ? "bg-black/4"  : "hover:bg-black/2.5",
                       ].join(" ")}
                     >
                       <span className="h-3.5 w-3.5 shrink-0 flex items-center justify-center">

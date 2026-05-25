@@ -129,13 +129,13 @@ export default function EstimateHero({
         className="flex flex-wrap gap-3"
       >
         {/* Budget */}
-        <div className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 min-w-[110px]">
+        <div className="rounded-xl border border-sky-200 bg-sky-50 px-4 py-3 min-w-27.5">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-sky-500 mb-1">{tiers[0]}</p>
           <p className="text-[1.25rem] font-bold leading-none text-sky-700">${low.toLocaleString()}</p>
         </div>
 
         {/* Standard — featured */}
-        <div className="rounded-xl border-2 border-emerald-400 bg-emerald-50 px-4 py-3 min-w-[110px] shadow-sm">
+        <div className="rounded-xl border-2 border-emerald-400 bg-emerald-50 px-4 py-3 min-w-27.5 shadow-sm">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-emerald-600 mb-1 flex items-center gap-1">
             {tiers[1]} <span className="text-emerald-500">✓</span>
           </p>
@@ -143,7 +143,7 @@ export default function EstimateHero({
         </div>
 
         {/* Premium */}
-        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 min-w-[110px]">
+        <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 min-w-27.5">
           <p className="text-[10px] font-semibold uppercase tracking-wide text-amber-500 mb-1">{tiers[2]}</p>
           <p className="text-[1.25rem] font-bold leading-none text-amber-700">${premium.toLocaleString()}</p>
         </div>
