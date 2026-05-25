@@ -12,21 +12,21 @@ import {
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
-  title: "Meal Prep Calculator 2026 – How Much Do You Save Meal Prepping?",
+  title: "Cooking at Home Savings Calculator 2026 – How Much Do You Actually Save?",
   description:
-    "Calculate your cost per home-cooked meal, weekly savings, and annual savings compared to eating out or ordering takeout. See the real value of meal prepping.",
-  keywords: ["meal prep calculator", "meal prep savings calculator", "cost per meal calculator", "cooking vs takeout calculator", "how much do you save meal prepping"],
+    "Find out exactly how much you save cooking at home versus delivery, takeout, or restaurant meals. Uses real regional food costs for all 50 states.",
+  keywords: ["cooking at home savings calculator", "meal prep savings calculator", "cook at home vs eating out calculator", "how much do you save cooking at home", "cost per home cooked meal"],
   alternates: { canonical: "https://worthulator.com/tools/meal-prep-calculator" },
 };
 
 const FAQS = [
   {
-    q: "How much can you really save by meal prepping?",
-    a: "The average American spends $13–$15 per meal when eating out or ordering takeout. A home-cooked meal typically costs $3–$5 in ingredients. For someone eating 10 meals per week from home instead of restaurants, that's a saving of $80–$120 per week — $4,000–$6,000 per year.",
+    q: "How much can you really save cooking at home?",
+    a: "It depends on what you're replacing. Fast food runs about $13 a meal nationally. An inexpensive sit-down restaurant is closer to $23. Delivery averages $31 once the platform fee, service charge, and tip are added. A home-cooked meal using national grocery benchmarks comes out to around $5.93. Cook 10 meals a week instead of ordering takeout and you're saving roughly $5,000 a year. Replace delivery specifically and that figure climbs past $13,000.",
   },
   {
-    q: "What is a realistic cost per meal when prepping at home?",
-    a: "A realistic grocery budget for 10 meals per week runs $50–$80, giving a cost per meal of $5–$8. Budget shoppers sticking to staples (rice, beans, eggs, seasonal vegetables, chicken thighs) can get below $3/meal. Organic, specialty, or high-protein meals typically run $7–$12/meal.",
+    q: "What is a realistic cost per meal when cooking at home?",
+    a: "National grocery benchmarks put a home-cooked meal at about $5.93. The USDA thrifty food plan — the budget-conscious baseline — puts a single adult at $320 a month, which works out to roughly $5.33 per meal across 60 meals. Build your meals around eggs, dried lentils, frozen chicken thighs, or canned fish and you can get below $4 without sacrificing much on the plate. Higher-protein or more complex recipes naturally run $6–$8, but most batch-cooked meals land comfortably between $4 and $6.",
   },
   {
     q: "Does meal prepping save time as well as money?",
@@ -43,26 +43,26 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "$3,500", color: "text-emerald-600", accent: "bg-emerald-500", label: "average annual savings switching from daily takeout to home-cooked meals" },
-  { stat: "$14",    color: "text-amber-600",   accent: "bg-amber-500",   label: "average cost of a restaurant meal in the US vs $4–$6 home-cooked" },
-  { stat: "72%",    color: "text-blue-600",    accent: "bg-blue-500",    label: "of Americans who meal prep report it significantly reduces food spending" },
+  { stat: "$5.93",  color: "text-emerald-600", accent: "bg-emerald-500", label: "national cost per home-cooked meal based on current grocery benchmarks" },
+  { stat: "$31",    color: "text-amber-600",   accent: "bg-amber-500",   label: "average delivery app order once platform fees and tip are included" },
+  { stat: "$5,000", color: "text-blue-600",    accent: "bg-blue-500",    label: "typical annual savings cooking 10 meals a week instead of ordering takeout" },
 ];
 
 const CONTENT_CARDS = [
   {
-    icon: "🥗",
-    title: "Your cost per meal reveals the real picture",
-    body: "Most people underestimate how cheap home cooking is per serving. A $60 weekly grocery shop producing 10 meals is $6/meal — less than half the cost of a fast-food combo. Once you know your real cost per meal, comparing it to takeout makes the savings impossible to ignore.",
+    icon: "🚚",
+    title: "Delivery doesn't just cost more — it costs a lot more",
+    body: "Once platform fees, service charges, and tip are rolled in, the average delivery order runs $31. That's more than five times the cost of the same meal cooked at home. Most people already know delivery is expensive — they just don't confront how expensive until the annual number is sitting in front of them.",
   },
   {
     icon: "📅",
-    title: "Consistency turns small savings into big ones",
-    body: "Saving $10 per meal sounds modest, but 10 meals per week is $100 saved weekly — $5,200 per year. Over five years that is $26,000, invested at a modest 7% return. Meal prepping is one of the highest-ROI habits you can build precisely because it compounds over time.",
+    title: "The savings stack quietly, then all at once",
+    body: "Ten home-cooked meals a week versus ordering takeout adds up to around $5,000 a year at national prices. Swap delivery for those same meals and you're past $13,000. Neither number requires a dramatic life change — just the same meals you'd eat anyway, made one step earlier in the day.",
   },
   {
-    icon: "🏪",
-    title: "Grocery strategy amplifies the savings",
-    body: "Shopping with a list based on your meal plan, buying in bulk for staples (rice, oats, lentils, canned goods), choosing frozen vegetables over fresh, and using cheaper protein sources (eggs, tinned fish, chicken thighs) can reduce your weekly grocery spend by 20–35% with minimal quality compromise.",
+    icon: "🛒",
+    title: "Your actual cost per meal will surprise you",
+    body: "At national grocery benchmarks, a home-cooked meal works out to just under $6. Build around cheaper staples — eggs, dried lentils, frozen veg, chicken thighs — and you can comfortably get below $4. The USDA thrifty food plan puts a budget-conscious single adult at $320 a month all-in, which works out to about $5.33 per meal across 60 meals.",
   },
 ];
 
@@ -78,10 +78,10 @@ const jsonLd = {
   "@graph": [
     {
       "@type": "WebApplication",
-      name: "Meal Prep Calculator",
+      name: "Cooking at Home Savings Calculator",
       url: "https://worthulator.com/tools/meal-prep-calculator",
       applicationCategory: "FinanceApplication",
-      description: "Calculate weekly and annual savings from meal prepping compared to eating out or ordering takeout.",
+      description: "Calculate your cost per home-cooked meal, weekly savings, and annual savings versus delivery, takeout, or restaurant meals — calibrated to your state.",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
     {
@@ -100,28 +100,24 @@ export default function MealPrepCalculator() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SimpleCalculatorHero
-        eyebrowIcon="🥗"
+        eyebrowIcon="🍳"
         eyebrowText="Food · Savings"
-        title="How Much Do You Save Meal Prepping?"
-        description="Select your dining habits, choose your state, and enter how many meals you plan to cook per week. Worthulator calibrates local food costs to show your real cost per home meal, weekly savings, and yearly total."
+        title="How Much Do You Save Cooking at Home?"
+        description="Pick your state, describe your eating habits, and set how many meals you plan to cook each week. We pull real regional food-cost data to show your cost per home meal, weekly savings, and what it adds up to by year's end."
         chips={["Cost per meal", "Weekly savings", "Annual savings"]}
       >
         <MealPrepWithInsights />
       </SimpleCalculatorHero>
-      <InsightStrip text="The average American spends $14 per restaurant meal — home-cooked meals average $4–$6. That gap adds up to thousands per year." />
+      <InsightStrip text="Fast food costs $13 a meal. Delivery averages $31 with fees and tip. Cook the same meal at home for under $6 — and the gap becomes one of the easiest wins in personal finance." />
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="Why meal prepping is one of the best financial habits" cards={CONTENT_CARDS} />
+      <ContentCardGrid title="Why cooking at home is one of the most reliable savings habits" cards={CONTENT_CARDS} />
       <InsightTable slug="meal-prep-calculator" />
       <SEOTextBlock
-        title="How the Meal Prep Calculator Works"
-        formula={`Dining Baseline  = Regional avg cost for your selected eating style(s)
-Cost per Home Meal = Regional grocery benchmark ÷ 60 meals/month
-Saving per Meal    = Dining Baseline − Cost per Home Meal
-Weekly Savings     = Saving per Meal × Meals Planned per Week
-Annual Savings     = Weekly Savings × 52`}
+        title="How the Cooking at Home Savings Calculator Works"
+        formula={`Dining Baseline    = State-adjusted cost for your selected eating style(s)\nCost per Home Meal = State grocery benchmark ÷ 60 meals / month\nSaving per Meal    = Dining Baseline − Cost per Home Meal\nWeekly Savings     = Saving per Meal × Meals Cooked per Week\nAnnual Savings     = Weekly Savings × 52`}
         paragraphs={[
-          "Select your state and one or more dining habits — delivery, restaurant, fast food, or a mix. Worthulator looks up real regional food-cost data to set your dining baseline and your local home-meal cost, so the numbers reflect what eating actually costs where you live.",
-          "Tell the calculator how many meals you plan to cook per week. Every meal cooked instead of ordered saves you the gap between the baseline and your home-meal cost. Annual savings is simply that weekly gap multiplied by 52.",
+          "Select your state and one or more dining habits — delivery, restaurant, fast food, or a mix. Each state has its own food-cost index derived from BLS Regional Price Parities and Numbeo city data, so your dining baseline and home-meal cost both reflect what food actually costs where you live. Nationally, delivery averages $31 a meal, inexpensive restaurants run $22.66, and fast food sits at $13.",
+          "Set how many meals you plan to cook each week. Every home-cooked meal replaces an outsourced one and saves you the gap between the two costs. At national averages, that gap is around $9.60 versus takeout, $16.70 versus a sit-down restaurant, and $25 versus delivery. Annual savings is simply that weekly total multiplied by 52.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

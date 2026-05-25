@@ -224,3 +224,8 @@ export { wfhSavingsInsights } from "./generators/wfhSavingsInsights";
 export { petCostInsights } from "./generators/petCostInsights";
 export { weddingCostInsights } from "./generators/weddingCostInsights";
 export { mealPrepInsights } from "./generators/mealPrepInsights";
+export { generateSalesTaxInsights } from "./generators/salesTaxInsights";
+export type {
+  SalesTaxInputs,
+  SalesTaxOutputs,
+} from "./generators/salesTaxInsights";
