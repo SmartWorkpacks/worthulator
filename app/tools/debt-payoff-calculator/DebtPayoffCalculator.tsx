@@ -107,7 +107,7 @@ export default function DebtPayoffCalculator() {
     <div className="grid gap-8 lg:grid-cols-[2fr_3fr] lg:gap-10">
 
       {/* ── INPUTS ── */}
-      <div className="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start max-h-[90vh] overflow-y-auto pr-1 [scrollbar-width:thin] [scrollbar-color:#e5e7eb_transparent] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-thumb]:bg-gray-200/60 [&::-webkit-scrollbar-track]:bg-transparent">
+      <div className="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start max-h-[90vh] overflow-y-auto pr-1">
 
         {/* Debt entries */}
         <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
@@ -339,7 +339,6 @@ export default function DebtPayoffCalculator() {
             <CalcDisclaimer text="Debt payoff projections are estimates based on your inputs and assume fixed interest rates and consistent payments. Actual payoff times may vary due to variable rates, missed payments, or other factors. This tool is for illustrative purposes only and does not constitute financial or debt advice." />
           </>
         )}
-
       </div>
     </div>
   );

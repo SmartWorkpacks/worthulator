@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ScreenTimeWithInsights from "@/components/worthcore/ScreenTimeWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Screen Time Impact Calculator 2026 – The Real Cost of Your Screen Habits",
@@ -109,14 +108,11 @@ export default function ScreenTimeImpactPage() {
         description="Find out the true annual cost of your daily screen habits — in money, weekly hours, and days of your life consumed over time."
         chips={["Annual opportunity cost", "Weekly hours on screens", "Days consumed over your lifetime"]}
       >
-        <ScreenTimeWithInsights />
+        <CalculatorEngineLoader slug="screen-time-impact" />
       </SimpleCalculatorHero>
       <InsightStrip text='4 hours of screen time per day is <span class="font-semibold text-gray-900">60 full days per year — more than 2 months of waking hours — gone to passive consumption.</span>' />
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="What your screen time is really costing you" subtitle="Time, money, sleep, and mental bandwidth — all being quietly drained." cards={CONTENT_CARDS}
-      />
-
-      <InsightTable slug="screen-time-impact" />
+      <ContentCardGrid title="What your screen time is really costing you" subtitle="Time, money, sleep, and mental bandwidth — all being quietly drained." cards={CONTENT_CARDS} />
       <SEOTextBlock
         title="How the Screen Time Impact Calculator Works"
         formula={`Annual Cost ($)    = Hours/Day × 365 × Hourly Rate

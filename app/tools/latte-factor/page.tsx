@@ -9,8 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Latte Factor Calculator 2026 – See What Your Daily Habit Is Worth",
@@ -112,18 +110,13 @@ export default function LatteFactor() {
         description="See how much your daily coffee, snack, or subscription would grow if invested instead — with compound interest working in your favour."
         chips={["Daily spend → invested", "30-year projection", "Compound gain shown"]}
       >
-        <CalculatorEngineLoader slug="latte-factor" afterResults={<InsightsSection slug="latte-factor" />} />
+        <CalculatorEngineLoader slug="latte-factor" />
       </SimpleCalculatorHero>
       <InsightStrip text="Small daily habits have an outsized long-term cost — or opportunity." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The real cost of small habits"  cards={CONTENT_CARDS} />
-      <InsightTable slug="latte-factor" />
       <SEOTextBlock
         title="How the Latte Factor Calculator Works"
-        formula={`Annual Spend    = Daily Spend × 365
-FV (invested)   = Annual Spend × ((1 + r)^n − 1) ÷ r
-r = Annual Return Rate,  n = Years
-Total Spent     = Annual Spend × Years`}
         paragraphs={[
           "Enter your daily spend amount, expected annual investment return, and number of years. The calculator shows you the future value of investing that money instead, your total actual spending over the period, and the compound growth you would have earned.",
           "The calculation uses the future value of an annuity formula: FV = PMT × ((1 + r)^n − 1) / r, where PMT is annual spending, r is annual return, and n is years.",

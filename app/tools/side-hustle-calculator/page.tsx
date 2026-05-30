@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SideHustleWithInsights from "@/components/worthcore/SideHustleWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Side Hustle Calculator 2026 – Find Your Real Take-Home Pay",
@@ -106,18 +105,13 @@ export default function SideHustleCalculator() {
         description="Enter your hours, rate, expenses, and tax rate to see your real net monthly income and true effective hourly rate — not just gross revenue."
         chips={["After tax", "After expenses", "True hourly rate"]}
       >
-        <SideHustleWithInsights />
+        <CalculatorEngineLoader slug="side-hustle-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Your gross rate and your effective rate can differ by 40% or more." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Make your side hustle work harder" cards={CONTENT_CARDS} />
-      <InsightTable slug="side-hustle-calculator" />
       <SEOTextBlock
         title="How the Side Hustle Calculator Works"
-        formula={`Gross Monthly    = Hours/Week × Hourly Rate × 4.33
-After Expenses   = Gross Monthly × (1 − Expense%)
-Net Monthly      = After Expenses × (1 − Tax Rate%)
-True Hourly Rate = Net Monthly ÷ (Hours/Week × 4.33)`}
         paragraphs={[
           "Enter your weekly hours, hourly rate, expense percentage, and estimated tax rate. The calculator multiplies weekly hours by 4.33 to get a monthly figure, deducts your expense ratio, then applies self-employment tax to give you a true net monthly income.",
           "Dividing net monthly income by total hours worked reveals your effective hourly rate — the number that actually reflects what you earn from the gig after all costs.",

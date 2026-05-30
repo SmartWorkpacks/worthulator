@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import BiologicalAgeWithInsights from "@/components/worthcore/BiologicalAgeWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Biological Age Calculator 2026 – Find Your Real Age",
@@ -112,21 +105,13 @@ export default function BiologicalAgeCalculator() {
         description="Answer a few lifestyle questions about sleep, exercise, BMI, and smoking to get an estimate of your biological age — and an ageing risk score you can actually improve."
         chips={["Lifestyle-based", "Biological age estimate", "Risk score"]}
       >
-        <BiologicalAgeWithInsights />
+        <CalculatorEngineLoader slug="biological-age-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Your biological age is not fixed — lifestyle changes can measurably reverse it." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What drives biological ageing" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="biological-age-calculator" />
       <SEOTextBlock
         title="How the Biological Age Calculator Works"
-        formula={`Biological Age = Chronological Age
-               + penalty: sleep < 6hrs/night
-               + penalty: exercise < 2×/week
-               + penalty: smoking
-               + penalty: BMI > 30
-Ageing Risk Score = weighted sum of risk factors (0–100)`}
         paragraphs={[
           "This calculator uses an evidence-based lifestyle adjustment model. Starting from your chronological age, it adds years for known risk factors: sleeping under 6 hours per night, exercising fewer than 2 days per week, smoking, and having a BMI above 30. Each factor is supported by peer-reviewed longevity research.",
           "The ageing risk score (0–100) reflects the total lifestyle burden. A score of zero means all factors are in the optimal range. Improving any single factor — particularly sleep and smoking — produces the largest reductions.",

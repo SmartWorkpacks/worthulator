@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import VapingCostWithInsights from "@/components/worthcore/VapingCostWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Vaping Cost Calculator 2026 – What Does Vaping Really Cost?",
@@ -112,18 +105,13 @@ export default function VapingCostCalculator() {
         description="Enter your daily vaping spend to see your annual cost, 5-year total, and what that money would grow to if invested at 7% instead."
         chips={["Annual cost", "5-year total", "Investment opportunity cost"]}
       >
-        <VapingCostWithInsights />
+        <CalculatorEngineLoader slug="vaping-cost-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="A $5/day vaping habit costs $9,125 over 5 years — or $10,600+ if invested." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The real cost of vaping" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="vaping-cost-calculator" />
       <SEOTextBlock
         title="How the Vaping Cost Calculator Works"
-        formula={`Annual Cost      = Daily Spend × 365
-5-Year Cost      = Annual Cost × 5
-If Invested (5y) = Annual Cost × ((1.07^5 − 1) ÷ 0.07)`}
         paragraphs={[
           "Enter your average daily spend on vaping — including pods, liquid, disposables, and a share of device costs. The calculator multiplies by 365 for the annual figure and by 5 for the 5-year total.",
           "The invested value uses the future value of an annuity formula at 7% per year over 5 years — showing what your annual vaping budget would grow to in a broad market index fund.",

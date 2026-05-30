@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { WfhSavingsWithInsights } from "@/components/worthcore/WfhSavingsWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,8 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "WFH Savings Calculator 2026 – How Much Does Working From Home Save?",
@@ -107,18 +105,13 @@ export default function WfhSavingsCalculator() {
         description="Enter your commute cost, food spend, and office days to see your annual savings in money and the hours you reclaim by working remotely."
         chips={["Annual savings", "Monthly savings", "Hours reclaimed"]}
       >
-        <WfhSavingsWithInsights />
+        <CalculatorEngineLoader slug="wfh-savings-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Remote workers save an average of $4,000/year in commuting and food costs alone." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The real value of working from home" cards={CONTENT_CARDS} />
-      <InsightTable slug="wfh-savings-calculator" />
       <SEOTextBlock
         title="How the WFH Savings Calculator Works"
-        formula={`Daily Savings    = Commute Cost + Food Savings
-Weekly Savings   = Daily Savings × WFH Days per Week
-Annual Savings   = Weekly Savings × 52
-Time Saved/Year  = (One-Way Commute × 2 ÷ 60) × WFH Days × 52 (hours)`}
         paragraphs={[
           "Enter your daily commute cost (fuel, parking, or transit), the number of days you would commute to the office, your daily food spend (coffee, lunch, snacks), and your one-way commute time. The calculator multiplies daily savings by office days and 52 weeks to give an annual figure.",
           "Time saved is calculated as a two-way commute (doubled one-way time) across all office days per year — showing the total hours you reclaim by working from home.",

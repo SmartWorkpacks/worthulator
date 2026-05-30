@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SalaryNegotiationWithInsights from "@/components/worthcore/SalaryNegotiationWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Salary Negotiation Calculator 2026 – Find Your Perfect Ask",
@@ -112,18 +105,13 @@ export default function SalaryNegotiationCalculator() {
         description="Enter your current offer, market range, years of experience, and skill match to get a data-driven recommended salary ask — before you walk into the room."
         chips={["Market-based", "Leverage score", "Recommended ask"]}
       >
-        <SalaryNegotiationWithInsights />
+        <CalculatorEngineLoader slug="salary-negotiation-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Negotiating your salary once can add $500,000+ to lifetime earnings." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="How to negotiate your salary" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="salary-negotiation-calculator" />
       <SEOTextBlock
         title="How the Salary Negotiation Calculator Works"
-        formula={`Market Midpoint    = (Market Low + Market High) ÷ 2
-Leverage Score     = weighted sum of experience, skills match, and urgency
-Recommended Ask    = max(Market Midpoint, Current Offer × Leverage Multiplier)`}
         paragraphs={[
           "Enter your current offer, the market low and high for your role, your years of experience, how well your skills match the job, and whether the employer has urgent hiring needs. The calculator combines these into a leverage score and recommends a specific salary ask.",
           "The recommended ask is calculated as the higher of the market midpoint and your current offer multiplied by a leverage multiplier. The higher your leverage score, the more your ask sits above the baseline.",

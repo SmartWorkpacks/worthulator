@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AlcoholCostWithInsights from "@/components/worthcore/AlcoholCostWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Alcohol Cost Calculator 2026 – See What Drinking Really Costs",
@@ -112,19 +105,13 @@ export default function AlcoholCostCalculator() {
         description="Enter your weekly drinks and average cost per drink to see your annual spend, 10-year total, and what that money would be worth invested instead."
         chips={["Annual spend", "10-year total", "Investment opportunity cost"]}
       >
-        <AlcoholCostWithInsights />
+        <CalculatorEngineLoader slug="alcohol-cost-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="The true cost of drinking is what you spend, plus what you never invest." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The real cost of drinking" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="alcohol-cost-calculator" />
       <SEOTextBlock
         title="How the Alcohol Cost Calculator Works"
-        formula={`Weekly Spend   = Drinks per Week × Cost per Drink
-Annual Spend   = Weekly Spend × 52
-Decade Spend   = Annual Spend × 10
-If Invested    = Annual Spend × ((1.07^10 − 1) ÷ 0.07)`}
         paragraphs={[
           "Enter how many drinks you have per week and your average cost per drink (blending home and out-of-home costs). The calculator multiplies weekly spend by 52 to give your annual total and by 10 for a decade view.",
           "The invested value uses the future value of an annuity formula at 7% annual return — showing what your annual alcohol budget would grow to if invested in a broad market index fund over 10 years.",

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import AirbnbProfitWithInsights from "@/components/worthcore/AirbnbProfitWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,9 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
 
 export const metadata: Metadata = {
   title: "Airbnb Profit Calculator 2026 – Estimate Short-Term Rental Income",
@@ -113,20 +110,13 @@ export default function AirbnbProfit() {
         description="Estimate your monthly and annual net profit from short-term rentals. Set your nightly rate, occupancy, platform fee, and monthly expenses."
         chips={["Occupancy-based revenue", "Platform fee deducted", "Monthly + annual profit"]}
       >
-        <AirbnbProfitWithInsights />
+        <CalculatorEngineLoader slug="airbnb-profit" />
       </SimpleCalculatorHero>
       <InsightStrip text="The average US Airbnb host earns ~$1,900/month — but location and management make the real difference." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What drives Airbnb profitability"  cards={CONTENT_CARDS} />
-
-      <InsightTable slug="airbnb-profit" />
       <SEOTextBlock
         title="How the Airbnb Profit Calculator Works"
-        formula={`Gross Revenue   = Nightly Rate × (30 × Occupancy%)
-Platform Fee    = Gross Revenue × Fee%
-Net Revenue     = Gross Revenue − Platform Fee
-Monthly Profit  = Net Revenue − Monthly Expenses
-Annual Profit   = Monthly Profit × 12`}
         paragraphs={[
           "Monthly gross revenue = nightly rate × (30 days × occupancy rate). Net revenue = gross × (1 - platform fee %). Monthly net profit = net revenue - monthly expenses.",
           "This is a simplified estimate. Actual earnings vary based on seasonality, local regulations, listing quality, reviews, and response time. Use this as a starting point, then verify with local STR market data.",

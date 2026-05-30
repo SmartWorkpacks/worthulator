@@ -9,8 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Commute Time Value Calculator 2026 – The Hidden Cost of Your Commute",
@@ -121,7 +119,7 @@ export default function CommuteTimeValuePage() {
         description="Find out how many hours and dollars your commute quietly steals from your salary each year — and what your real effective hourly rate is once travel time is included."
         chips={["Hours lost per year", "Salary % consumed", "True effective hourly rate"]}
       >
-        <CalculatorEngineLoader slug="commute-time-value" afterResults={<InsightsSection slug="commute-time-value" />} />
+        <CalculatorEngineLoader slug="commute-time-value" />
       </SimpleCalculatorHero>
       <InsightStrip text='Your commute isn&apos;t free time — <span class="font-semibold text-gray-900">every unpaid hour in transit is a reduction in your real hourly rate, hiding in plain sight.</span>' />
       <StatChipsRow stats={STATS} />
@@ -130,8 +128,6 @@ export default function CommuteTimeValuePage() {
         subtitle="How unpaid transit time silently reduces your effective compensation."
         cards={CONTENT_CARDS}
       />
-
-      <InsightTable slug="commute-time-value" />
       <SEOTextBlock
         title="How the Commute Time Value Calculator Works"
         formula={`Annual Commute Hours   = (Daily Mins ÷ 60) × Work Days

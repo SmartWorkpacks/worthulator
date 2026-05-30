@@ -9,8 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Calorie Deficit Calculator 2026 – Daily Calories for Weight Loss",
@@ -110,12 +108,11 @@ export default function CalorieDeficitCalculatorPage() {
         description="Calculate the daily calorie target and deficit you need to hit your weight loss goal — enter your current weight and weekly loss goal."
         chips={["Daily calorie target", "Daily deficit", "Weeks to lose 10 lbs"]}
       >
-        <CalculatorEngineLoader slug="calorie-deficit" afterResults={<InsightsSection slug="calorie-deficit" />} />
+        <CalculatorEngineLoader slug="calorie-deficit" />
       </SimpleCalculatorHero>
       <InsightStrip text='A 500 calorie/day deficit loses 1 lb/week — <span class="font-semibold text-gray-900">sustainable, measurable, and based on 70+ years of nutrition science.</span>' />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The science of fat loss" subtitle="What the research says about creating and maintaining a calorie deficit." cards={CONTENT_CARDS} />
-      <InsightTable slug="calorie-deficit" />
       <SEOTextBlock
         title="How the Calorie Deficit Calculator Works"
         formula={`Maintenance Calories   = Body Weight (lbs) × 15

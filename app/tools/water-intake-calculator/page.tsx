@@ -9,8 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Water Intake Calculator 2026 – How Much Water Should You Drink?",
@@ -110,14 +108,11 @@ export default function WaterIntakeCalculatorPage() {
         description="Find your ideal daily water intake based on your body weight and exercise level — see your target in oz, glasses, and liters."
         chips={["Daily oz target", "Number of glasses", "Exercise adjustment"]}
       >
-        <CalculatorEngineLoader slug="water-intake" afterResults={<InsightsSection slug="water-intake" />} />
+        <CalculatorEngineLoader slug="water-intake" />
       </SimpleCalculatorHero>
       <InsightStrip text='You&apos;re likely mildly dehydrated right now — <span class="font-semibold text-gray-900">thirst kicks in only after dehydration has already begun to impair performance.</span>' />
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="Why hydration matters more than you think" subtitle="Water is involved in nearly every function in your body." cards={CONTENT_CARDS}
-      />
-
-      <InsightTable slug="water-intake" />
+      <ContentCardGrid title="Why hydration matters more than you think" subtitle="Water is involved in nearly every function in your body." cards={CONTENT_CARDS} />
       <SEOTextBlock
         title="How the Water Intake Calculator Works"
         formula={`Base Intake (oz)    = Body Weight (lbs) × 0.5

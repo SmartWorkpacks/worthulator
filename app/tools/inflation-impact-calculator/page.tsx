@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import InflationImpactWithInsights from "@/components/worthcore/InflationImpactWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,6 +9,7 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
+import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
@@ -55,7 +56,7 @@ export default function InflationImpactCalculator() {
         description="See how much your money is really worth in the future after inflation. Enter any amount, choose an inflation rate, and see your future purchasing power — and what you've silently lost."
         chips={["Future buying power", "Purchasing power lost", "Value erosion %"]}
       >
-        <InflationImpactWithInsights />
+        <CalculatorEngineLoader slug="inflation-impact-calculator" afterResults={<InsightsSection slug="inflation-impact-calculator" />} />
       </SimpleCalculatorHero>
       <InsightStrip text="At 3.5% inflation, $100,000 today will only buy $50,000 worth of goods in 20 years. Inflation is the tax nobody talks about." />
       <StatChipsRow stats={STATS} />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import EvVsGasWithInsights from "@/components/worthcore/EvVsGasWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,8 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "EV vs Gas Cost Calculator 2026 – Annual Fuel Savings Comparison",
@@ -112,18 +110,13 @@ export default function EvVsGas() {
         description="Compare annual fuel costs between your current gas car and an EV. Enter your miles driven, MPG, gas price, and local electricity rate."
         chips={["Miles-based calculation", "Real electricity rate", "Annual savings"]}
       >
-        <EvVsGasWithInsights />
+        <CalculatorEngineLoader slug="ev-vs-gas" />
       </SimpleCalculatorHero>
       <InsightStrip text="The average EV driver saves $900–$1,500 per year in fuel vs a comparable gas car." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="EV vs gas: the real numbers"  cards={CONTENT_CARDS} />
-      <InsightTable slug="ev-vs-gas" />
       <SEOTextBlock
         title="How the EV vs Gas Comparison Works"
-        formula={`Annual Gas Cost = (Miles ÷ MPG) × Gas Price per Gallon
-Annual EV Cost  = (Miles ÷ 100) × kWh/100mi × Electricity Rate
-Annual Savings  = Annual Gas Cost − Annual EV Cost
-Break-Even Year = Price Difference ÷ Annual Savings`}
         paragraphs={[
           "Annual gas cost = (miles ÷ MPG) × gas price per gallon. Annual EV cost = (miles ÷ 100) × kWh per 100 miles × electricity rate. The difference is your annual fuel savings.",
           "This calculator uses home-charging rates. If you frequently use public DC fast chargers, your actual EV costs will be higher. For the most accurate result, use your real local electricity rate from your utility bill.",

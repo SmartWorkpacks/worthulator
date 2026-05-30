@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CreditCardInterestWithInsights from "@/components/worthcore/CreditCardInterestWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Credit Card Interest Calculator 2026 – See What Your Balance Really Costs",
@@ -121,7 +120,7 @@ export default function CreditCardInterestPage() {
         description="Enter your balance, APR, and monthly payment to see exactly how long payoff takes and how much interest you'll pay in total."
         chips={["Months to pay off", "Total interest cost", "Warning if payment is too low"]}
       >
-        <CreditCardInterestWithInsights />
+        <CalculatorEngineLoader slug="credit-card-interest" />
       </SimpleCalculatorHero>
       <InsightStrip text='At 22% APR, a $3,000 balance on minimum payments costs over <span class="font-semibold text-gray-900">$2,500 in interest</span> and takes 8 years to clear.' />
       <StatChipsRow stats={STATS} />
@@ -130,8 +129,6 @@ export default function CreditCardInterestPage() {
         subtitle="What high APRs and minimum payments actually mean for your money."
         cards={CONTENT_CARDS}
       />
-
-      <InsightTable slug="credit-card-interest" />
       <SEOTextBlock
         title="How the Credit Card Interest Calculator Works"
         formula={`Monthly Interest  = Balance × (APR ÷ 12 ÷ 100)

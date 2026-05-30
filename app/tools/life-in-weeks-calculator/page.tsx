@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import LifeInWeeksWithInsights from "@/components/worthcore/LifeInWeeksWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Life in Weeks Calculator 2026 – How Many Weeks Do You Have Left?",
@@ -106,18 +105,13 @@ export default function LifeInWeeksCalculator() {
         description="Enter your age and life expectancy to see your life broken down into weeks — how many you have lived, how many remain, and what percentage of your life you have used."
         chips={["Weeks remaining", "Weeks lived", "% of life used"]}
       >
-        <LifeInWeeksWithInsights />
+        <CalculatorEngineLoader slug="life-in-weeks-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="An 80-year life is just 4,160 weeks. Make each one count." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Why think in weeks?" cards={CONTENT_CARDS} />
-      <InsightTable slug="life-in-weeks-calculator" />
       <SEOTextBlock
         title="How the Life in Weeks Calculator Works"
-        formula={`Weeks Lived     = Current Age × 52
-Total Weeks     = Life Expectancy × 52
-Weeks Remaining = Total Weeks − Weeks Lived
-% Used          = (Weeks Lived ÷ Total Weeks) × 100`}
         paragraphs={[
           "Enter your current age and your estimated life expectancy. The calculator multiplies each by 52 to convert to weeks. Weeks lived is your age × 52, total weeks is your life expectancy × 52, and weeks remaining is the difference.",
           "The percentage used shows how far through your expected lifespan you currently are. For most adults aged 30–40, this sits at 35–50% — a number that many find both humbling and motivating.",

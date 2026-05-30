@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import MissedInvestmentWithInsights from "@/components/worthcore/MissedInvestmentWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Missed Investment Calculator 2026 – What Could That Purchase Be Worth?",
@@ -119,7 +118,7 @@ export default function MissedInvestmentCalculatorPage() {
         description="Enter any past purchase and see what it would be worth today if you had invested it instead — powered by real compound interest math."
         chips={["Worth today", "Total gain missed", "Multiplier on original amount"]}
       >
-        <MissedInvestmentWithInsights />
+        <CalculatorEngineLoader slug="missed-investment" />
       </SimpleCalculatorHero>
       <InsightStrip text='Every dollar spent is a dollar not compounding — <span class="font-semibold text-gray-900">at 10% annual return, $1,000 spent today costs you $17,000 over 30 years.</span>' />
       <StatChipsRow stats={STATS} />
@@ -128,8 +127,6 @@ export default function MissedInvestmentCalculatorPage() {
         subtitle="What compound interest means for your spending decisions."
         cards={CONTENT_CARDS}
       />
-
-      <InsightTable slug="missed-investment" />
       <SEOTextBlock
         title="How the Missed Investment Calculator Works"
         formula={`Future Value = Amount × (1 + Annual Return)^Years

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PetCostWithInsights } from "@/components/worthcore/PetCostWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,14 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Pet Cost Calculator 2026 – True Annual & Lifetime Cost of a Pet",
@@ -74,6 +66,7 @@ const CONTENT_CARDS = [
 ];
 
 const RELATED_CALCS = [
+  { title: "Baby Cost Calculator", description: "The true annual cost of having a baby.", href: "/tools/baby-cost-calculator", icon: "👶", accent: "bg-pink-500/10" },
   { title: "Emergency Fund Calculator", description: "Build a safety net for unexpected costs.", href: "/tools/emergency-fund-calculator", icon: "🛡️", accent: "bg-emerald-500/10" },
   { title: "Budget Calculator", description: "Plan your monthly budget with all expenses.", href: "/tools/savings-calculator", icon: "📊", accent: "bg-blue-500/10" },
   { title: "Savings Goal Calculator", description: "Save up for a pet emergency fund.", href: "/tools/savings-goal-calculator", icon: "🎯", accent: "bg-amber-500/10" },
@@ -112,18 +105,13 @@ export default function PetCostCalculator() {
         description="Enter your pet's food, vet, insurance, and miscellaneous costs to see the true annual expense — and the full lifetime commitment."
         chips={["Annual cost", "Lifetime total", "All-in estimate"]}
       >
-        <PetCostWithInsights />
+        <CalculatorEngineLoader slug="pet-cost-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="The average dog costs $29,000 over its lifetime — budget before you adopt." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The true cost of pet ownership" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="pet-cost-calculator" />
       <SEOTextBlock
         title="How the Pet Cost Calculator Works"
-        formula={`Annual Cost   = Food + Vet + Insurance + Misc
-Monthly Cost  = Annual Cost ÷ 12
-Lifetime Cost = Annual Cost × Expected Lifespan (years)`}
         paragraphs={[
           "Enter your estimated annual costs across four categories: food, vet bills, insurance, and miscellaneous expenses (grooming, boarding, toys). The calculator totals these to give your annual cost and multiplies by your pet's expected lifespan for a lifetime total.",
           "Use the quick-pick values as a starting point. If your pet has a chronic condition or needs specialist food, adjust the vet and food sliders upward. If you do not have insurance, set that slider to zero and consider adding an emergency vet buffer to the misc category.",

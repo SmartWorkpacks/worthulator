@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import SolarRoiWithInsights from "@/components/worthcore/SolarRoiWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Solar Panel ROI Calculator 2026 – When Will Solar Pay for Itself?",
@@ -111,19 +110,13 @@ export default function SolarRoi() {
         description="Calculate your solar payback period, first-year savings, and 25-year total savings. Factors in utility inflation for an accurate long-term picture."
         chips={["Payback period", "Year 1 savings", "25-year total"]}
       >
-        <SolarRoiWithInsights />
+        <CalculatorEngineLoader slug="solar-roi" />
       </SimpleCalculatorHero>
       <InsightStrip text="With the 30% federal tax credit, a typical solar system pays itself back in 6–9 years — then saves money for 15+ more." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Understanding solar ROI"  cards={CONTENT_CARDS} />
-
-      <InsightTable slug="solar-roi" />
       <SEOTextBlock
         title="How the Solar ROI Calculator Works"
-        formula={`Year 1 Savings  = Monthly Bill × Offset% × 12
-Year N Savings  = Year (N−1) Savings × (1 + Utility Inflation Rate)
-Payback Year    = first year when Cumulative Savings ≥ System Cost
-25-Year Savings = sum of all annual savings over 25 years`}
         paragraphs={[
           "Annual savings in year 1 = monthly bill × solar offset % × 12. Each subsequent year, savings grow by the utility inflation rate (compounding). Payback period = the year when cumulative savings first exceed system cost. 25-year savings = sum of all annual savings over 25 years.",
           "This calculator does not include the 30% federal ITC automatically — subtract 30% from your system cost before entering it if you want to include the tax credit. It also does not account for panel degradation (~0.5%/year) or state/local incentives.",

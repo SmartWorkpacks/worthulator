@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import MortgageCalculator from "@/components/calculators/MortgageCalculator";
 import MortgageLeadGen from "@/components/calculators/MortgageLeadGen";
-import RelatedTools from "@/components/RelatedTools";
-import InsightTable from "@/components/insights/InsightTable";
+import RelatedTools from "@/components/RelatedTools";
 
 // ─── Metadata ───────────────────────────────────────────────────────────────
 
@@ -104,7 +103,7 @@ export default function MortgageCalculatorPage() {
       ))}
 
       {/* ── Hero + Calculator ─────────────────────────────────────────────── */}
-      <div className="relative overflow-x-clip bg-linear-to-b from-[#f7faf8] to-white">
+      <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
         {/* Blur blobs */}
         <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-200/25 blur-[72px]" />
         <div className="pointer-events-none absolute top-1/2 right-0 h-72 w-72 -translate-y-1/2 rounded-full bg-cyan-100/20 blur-[56px]" />
@@ -316,7 +315,6 @@ export default function MortgageCalculatorPage() {
         </div>
       </section>
 
-            <InsightTable slug="mortgage-calculator" />
       {/* ── FAQ section ───────────────────────────────────────────────────── */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">

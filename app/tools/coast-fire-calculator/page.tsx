@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CoastFireWithInsights from "@/components/worthcore/CoastFireWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Coast FIRE Calculator 2026 – Find Your Coast FIRE Number",
@@ -112,19 +105,13 @@ export default function CoastFireCalculator() {
         description="Find your Coast FIRE number — the savings balance where compound growth alone will fund your retirement, with no further contributions needed."
         chips={["Coast FIRE number", "Projected portfolio", "Years to retire"]}
       >
-        <CoastFireWithInsights />
+        <CalculatorEngineLoader slug="coast-fire-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Hit your Coast FIRE number and your money does all the retirement saving for you." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Understanding Coast FIRE" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="coast-fire-calculator" />
       <SEOTextBlock
         title="How the Coast FIRE Calculator Works"
-        formula={`FIRE Target    = Annual Expenses × 25
-Coast Number   = FIRE Target ÷ (1 + r)^Years to Retirement
-r              = Annual Return Rate ÷ 100
-Projected Now  = Current Savings × (1 + r)^Years`}
         paragraphs={[
           "Enter your current savings, your FIRE target (typically 25× annual expenses), your expected annual return, and the number of years until retirement. The calculator uses the present value formula to find the lump sum needed today to compound to your target — your Coast FIRE number.",
           "It also shows what your current savings will grow to, letting you see the gap (or surplus) between where you are now and where you need to be to start coasting.",

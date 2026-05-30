@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BudgetWithInsights } from "@/components/worthcore/BudgetWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,7 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-
+import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
@@ -107,7 +107,7 @@ export default function BudgetCalculator() {
         description="Enter your take-home income and all expenses to see your monthly leftover, savings rate, and whether your budget is healthy or heading toward overspending."
         chips={["Savings rate shown", "Expense ratio calculated", "Overspend warning"]}
       >
-        <BudgetWithInsights />
+        <CalculatorEngineLoader slug="budget-calculator" afterResults={<InsightsSection slug="budget-calculator" />} />
       </SimpleCalculatorHero>
       <InsightStrip text="A healthy budget has a savings rate above <span class='font-semibold text-gray-900'>20%</span>. Most overspending traces back to housing — not coffee." />
       <StatChipsRow stats={STATS} />

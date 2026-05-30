@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import LoanCalculator from "@/components/calculators/LoanCalculator";
 import LoanLeadGen from "@/components/calculators/LoanLeadGen";
-import RelatedTools from "@/components/RelatedTools";
-import InsightTable from "@/components/insights/InsightTable";
+import RelatedTools from "@/components/RelatedTools";
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
@@ -107,7 +106,7 @@ export default function LoanCalculatorPage() {
       ))}
 
       {/* ── Hero + Calculator ────────────────────────────────────────────── */}
-      <div className="relative overflow-x-clip bg-linear-to-b from-[#f7faf8] to-white">
+      <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
         <div className="pointer-events-none absolute -top-10 left-1/4 h-64 w-64 rounded-full bg-emerald-200/25 blur-[72px]" />
         <div className="pointer-events-none absolute top-0 right-1/4 h-48 w-48 rounded-full bg-cyan-100/20 blur-[56px]" />
         <div
@@ -312,7 +311,6 @@ export default function LoanCalculatorPage() {
         </div>
       </section>
 
-            <InsightTable slug="loan-calculator" />
       {/* ── FAQ ───────────────────────────────────────────────────────────── */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">

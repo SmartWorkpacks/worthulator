@@ -47,7 +47,7 @@ export default function SimpleCalculatorHero({
   children,
 }: SimpleCalculatorHeroProps) {
   return (
-    <div className="relative overflow-x-clip bg-linear-to-b from-[#f7faf8] to-white">
+    <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
       {/* Ambient radial glow */}
       <div className="pointer-events-none absolute -top-10 left-1/4 h-64 w-64 rounded-full bg-emerald-200/25 blur-[72px]" />
       <div className="pointer-events-none absolute top-0 right-1/4 h-48 w-48 rounded-full bg-cyan-100/20 blur-[56px]" />

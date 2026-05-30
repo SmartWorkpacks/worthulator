@@ -2,8 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import RelatedTools from "@/components/RelatedTools";
 import TakeHomePayCalculator from "./TakeHomePayCalculatorLoader";
-import RegionToggle from "@/components/RegionToggle";
-import InsightTable from "@/components/insights/InsightTable";
+import RegionToggle from "@/components/RegionToggle";
 
 export const metadata: Metadata = {
   title: "Take Home Pay Calculator (US) – See Your Exact Net Salary Instantly",
@@ -83,7 +82,7 @@ export default function TakeHomePayPage() {
       ))}
 
       {/* HERO + CALCULATOR */}
-      <div className="relative overflow-x-clip bg-linear-to-b from-[#f7faf8] to-white">
+      <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
         <div className="pointer-events-none absolute -top-10 left-1/4 h-64 w-64 rounded-full bg-emerald-200/25 blur-[72px]" />
         <div className="pointer-events-none absolute top-0 right-1/4 h-48 w-48 rounded-full bg-cyan-100/20 blur-[56px]" />
         <div
@@ -287,7 +286,120 @@ export default function TakeHomePayPage() {
         </div>
       </section>
 
-      <InsightTable slug="take-home-pay-calculator" />
+      {/* SEO CONTENT */}
+      <section className="border-t border-gray-100 bg-white px-5 py-14 sm:px-8 lg:px-16">
+        <div className="mx-auto max-w-3xl space-y-10 text-gray-600">
+
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">How is take home pay calculated in the US?</h2>
+            <p className="mt-4 leading-[1.85]">
+              Your take home pay — sometimes called your after-tax salary or net income — is what lands in your bank account after your employer has deducted federal income tax, state income tax (where applicable), and payroll taxes. Understanding how each piece works makes it easier to plan your finances around what you actually earn.
+            </p>
+            <p className="mt-4 leading-[1.85]">
+              Federal income tax is calculated on your taxable income using a progressive bracket system — only the portion of your salary within each bracket is taxed at that bracket&apos;s rate. On top of that, FICA contributions cover Social Security (6.2% up to an annual wage base of $168,600) and Medicare (1.45% on all earnings). If your state has an income tax, that is calculated separately and added to your total deductions.
+            </p>
+            <p className="mt-4 leading-[1.85]">
+              For most workers earning $40,000–$80,000 in a moderate-tax state, take-home tends to work out to roughly 60–68% of gross income. Adjust for your state and filing status above to see where you land.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">Federal tax brackets explained (2026)</h2>
+            <p className="mt-4 leading-[1.85]">
+              The US uses a marginal tax rate system. You do not pay the highest rate on your entire income — only on the portion that falls within each bracket:
+            </p>
+            <div className="mt-5 overflow-hidden rounded-2xl border border-gray-200">
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="border-b border-gray-200 bg-gray-50">
+                    <th className="px-5 py-3 text-left font-semibold text-gray-700">Taxable income (single filer)</th>
+                    <th className="px-5 py-3 text-left font-semibold text-gray-700">Rate</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {([
+                    ["Up to $11,600",       "10%"],
+                    ["$11,601 – $47,150",   "12%"],
+                    ["$47,151 – $100,525",  "22%"],
+                    ["$100,526 – $191,950", "24%"],
+                    ["$191,951 – $243,725", "32%"],
+                    ["$243,726 – $609,350", "35%"],
+                    ["Over $609,350",       "37%"],
+                  ] as [string, string][]).map(([range, rate]) => (
+                    <tr key={range} className="bg-white">
+                      <td className="px-5 py-3 text-gray-600">{range}</td>
+                      <td className="px-5 py-3 font-semibold text-emerald-700">{rate}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <p className="mt-4 leading-[1.85]">
+              Married couples filing jointly have wider brackets — roughly double the thresholds for the 10% through 22% bands — which often results in a meaningfully higher take-home compared to two single filers at the same combined income.
+            </p>
+            <p className="mt-4 leading-[1.85]">
+              Payroll taxes add another layer: Social Security at 6.2% on earnings up to $168,600 and Medicare at 1.45% with no ceiling. Together these represent an additional 7.65% on most earned income.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">How state taxes affect your take-home pay</h2>
+            <p className="mt-4 leading-[1.85]">
+              State income tax can have a surprisingly large effect on your net income. Nine states — Alaska, Florida, Nevada, New Hampshire, South Dakota, Tennessee, Texas, Washington, and Wyoming — charge no income tax on wages at all. In those states, your take-home is determined almost entirely by your federal bracket and FICA obligations.
+            </p>
+            <p className="mt-4 leading-[1.85]">
+              At the other end, states like California (up to 13.3%), New Jersey (up to 10.75%), and New York (up to 10.9%) add a significant deduction on top of federal obligations. On a $100,000 salary, the difference between a no-tax state and California can amount to $8,000–$10,000 in annual take-home — roughly one month&apos;s salary.
+            </p>
+            <p className="mt-4 leading-[1.85]">
+              Most states sit somewhere in the middle, charging between 3% and 6%. Select your state in the calculator above to see exactly how the combined federal and state rate affects your situation.
+            </p>
+          </div>
+
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">Example take-home salaries in the US</h2>
+            <p className="mt-4 leading-[1.85]">
+              Someone earning around $50,000 in a moderate-tax state (roughly 5% state income tax) will typically take home somewhere between $33,000 and $35,000 per year — around 66–70% of their gross. The exact figure depends on their federal bracket, filing status, and whether they have pre-tax deductions like 401(k) contributions.
+            </p>
+            <p className="mt-4 leading-[1.85]">
+              Higher incomes see a somewhat lower take-home percentage. Someone earning $75,000 might keep around 63–65% after all deductions, while a $100,000 earner typically takes home somewhere in the 60–63% range as more income falls into the 22–24% federal brackets. The US progressive system means only earnings above each threshold are taxed at the higher rate — but the gap between gross and net does widen noticeably at higher salary levels.
+            </p>
+            <p className="mt-4 leading-[1.85]">
+              In a no-income-tax state like Texas or Florida, these percentages are typically 4–7 points higher. In a high-tax state like California or New York, they can be 5–8 points lower. Select your state in the calculator to see a figure that reflects where you actually live.
+            </p>
+          </div>
+
+          {/* FAQ */}
+          <div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-950">Frequently asked questions</h2>
+            <div className="mt-6 space-y-4">
+              {[
+                {
+                  q: "How much tax do I pay in the US?",
+                  a: "Federal income tax ranges from 10% to 37% depending on your income and filing status. Social Security takes 6.2% (up to $168,600) and Medicare takes 1.45%. State income tax varies from 0% in states like Texas and Florida to over 13% in California.",
+                },
+                {
+                  q: "What is the difference between gross and net pay?",
+                  a: "Gross pay is your salary before any deductions — the figure your employer agrees to pay you. Net pay (take-home pay) is what actually arrives in your bank account after federal tax, state income tax, Social Security, and Medicare. For most people, net pay is 60–70% of gross.",
+                },
+                {
+                  q: "Does this calculator include state taxes?",
+                  a: "Yes — select your state and the estimated state income tax rate for that state is included in the breakdown. State rates range from 0% (Texas, Florida, etc.) to over 13% (California), so this can make a meaningful difference to your estimated take-home.",
+                },
+                {
+                  q: "Why might my paycheck differ from this estimate?",
+                  a: "This tool uses general tax assumptions. Real paychecks reflect your W-4 withholding elections, 401(k) or HSA contributions, employer health insurance premiums, local city taxes, and other employer-specific deductions. Use this for a ballpark figure, not for exact payroll planning.",
+                },
+              ].map((item) => (
+                <div key={item.q} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+                  <h3 className="text-base font-semibold tracking-tight text-gray-900">{item.q}</h3>
+                  <p className="mt-2 text-sm leading-6 text-gray-500">{item.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </section>
 
       {/* STATE LINKS */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">

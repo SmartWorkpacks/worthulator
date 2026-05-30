@@ -9,8 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Quit Smoking Calculator 2026 – Money Saved Since You Quit",
@@ -110,12 +108,11 @@ export default function QuitSmokingCalculatorPage() {
         description="See exactly how much money you've saved, how many cigarettes you've avoided, and how many days of life you've regained since quitting."
         chips={["Money saved", "Cigarettes avoided", "Life regained"]}
       >
-        <CalculatorEngineLoader slug="quit-smoking" afterResults={<InsightsSection slug="quit-smoking" />} />
+        <CalculatorEngineLoader slug="quit-smoking" />
       </SimpleCalculatorHero>
       <InsightStrip text='Quitting 1 pack/day for a decade saves over <span class="font-semibold text-gray-900">$36,000 — invested at 7%, that grows to $57,000+.</span>' />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The real numbers behind quitting" subtitle="Money saved, health gained, life reclaimed." cards={CONTENT_CARDS} />
-      <InsightTable slug="quit-smoking" />
       <SEOTextBlock
         title="How the Quit Smoking Calculator Works"
         formula={`Money Saved          = Packs/Day × Pack Cost × Days Since Quit

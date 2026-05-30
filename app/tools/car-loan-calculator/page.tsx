@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CarLoanWithInsights from "@/components/worthcore/CarLoanWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -131,7 +131,7 @@ export default function CarLoanCalculatorPage() {
         description="Enter the vehicle price, down payment, trade-in, interest rate, and loan term to see your exact monthly payment and total interest."
         chips={["Monthly payment", "Total interest paid", "True cost of vehicle"]}
       >
-        <CarLoanWithInsights />
+        <CalculatorEngineLoader slug="car-loan-calculator" afterResults={<InsightsSection slug="car-loan-calculator" />} />
       </SimpleCalculatorHero>
 
       <InsightStrip

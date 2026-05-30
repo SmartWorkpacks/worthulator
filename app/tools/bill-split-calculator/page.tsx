@@ -9,14 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Bill Split Calculator 2026 – Split the Bill with Tip Evenly",
@@ -118,18 +110,13 @@ export default function BillSplitCalculator() {
         description="Split any restaurant bill with tip evenly between your group. Enter the total, tip percentage, and number of people — get the answer in seconds."
         chips={["Tip calculated", "Per-person share", "Total with tip shown"]}
       >
-        <CalculatorEngineLoader slug="bill-split-calculator" afterResults={<InsightsSection slug="bill-split-calculator" />} />
+        <CalculatorEngineLoader slug="bill-split-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="A 20% tip on a $120 dinner split 4 ways = $35.40 per person. Never do the maths in your head again." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Splitting bills the smart way"  cards={CONTENT_CARDS} />
-
-      <InsightTable slug="bill-split-calculator" />
       <SEOTextBlock
         title="How the Bill Split Calculator Works"
-        formula={`Tip Amount     = Bill × (Tip% ÷ 100)
-Total with Tip = Bill + Tip Amount
-Per Person     = Total with Tip ÷ Number of People`}
         paragraphs={[
           "Tip amount = bill × (tip % ÷ 100). Total with tip = bill + tip amount. Per person = total with tip ÷ number of people.",
           "This calculator assumes an equal split. For unequal splits (different items ordered), you'll need to calculate each person's proportional share of the tip based on what they ordered.",

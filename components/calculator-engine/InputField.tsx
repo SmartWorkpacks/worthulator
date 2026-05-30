@@ -12,34 +12,12 @@ interface InputFieldProps {
 
 /**
  * Renders a single input based on its config type:
- *  - "slider"   → range slider + number text box + optional quick-pick chips
- *  - "select"   → button group
- *  - "dropdown" → native <select> element (for large option lists, e.g. 50 states)
- *  - "number"   → plain number text box only
+ *  - "slider"  → range slider + number text box + optional quick-pick chips
+ *  - "select"  → button group
+ *  - "number"  → plain number text box only
  */
 export default function InputField({ input, value, onChange }: InputFieldProps) {
   const numValue = Number(value);
-
-  // ── Dropdown (native select) ───────────────────────────────────────────────────
-  if (input.type === "dropdown") {
-    return (
-      <div>
-        <label className="text-sm font-semibold text-gray-700">{input.label}</label>
-        {input.hint && <p className="mt-0.5 text-xs text-gray-400">{input.hint}</p>}
-        <select
-          value={String(value)}
-          onChange={(e) => onChange(e.target.value)}
-          className="mt-2 w-full appearance-none rounded-xl border border-gray-200 bg-white px-4 py-2.5 text-sm text-gray-700 shadow-sm focus:border-emerald-400 focus:outline-none focus:ring-2 focus:ring-emerald-100"
-        >
-          {input.options?.map((opt) => (
-            <option key={String(opt.value)} value={String(opt.value)}>
-              {opt.label}
-            </option>
-          ))}
-        </select>
-      </div>
-    );
-  }
 
   // ── Select (button group) ─────────────────────────────────────────────────
   if (input.type === "select") {

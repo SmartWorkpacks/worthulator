@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import RelatedTools from "@/components/RelatedTools";
-import RetirementCalculatorLoader from "@/components/calculators/RetirementCalculatorLoader";
-import InsightTable from "@/components/insights/InsightTable";
+import RetirementCalculatorLoader from "@/components/calculators/RetirementCalculatorLoader";
 
 export const metadata: Metadata = {
   title: "Retirement Calculator – Project Your Future Retirement Savings",
@@ -100,7 +99,7 @@ export default function RetirementCalculatorPage() {
       <main className="bg-white text-gray-900">
 
         {/* ── Hero + Calculator ─────────────────────────────────────────── */}
-        <div className="relative overflow-x-clip bg-linear-to-b from-[#f7faf8] to-white">
+        <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
           {/* Blur blobs */}
           <div className="pointer-events-none absolute -top-24 -left-24 h-96 w-96 rounded-full bg-emerald-200/25 blur-[72px]" />
           <div className="pointer-events-none absolute top-1/2 right-0 h-72 w-72 -translate-y-1/2 rounded-full bg-cyan-100/20 blur-[56px]" />
@@ -403,8 +402,7 @@ export default function RetirementCalculatorPage() {
           </div>
         </section>
 
-              <InsightTable slug="retirement-calculator" />
-      {/* ── FAQ ─────────────────────────────────────────────────────────── */}
+        {/* ── FAQ ─────────────────────────────────────────────────────────── */}
         <section className="mb-12">
           <h2 className="mb-6 text-xl font-bold text-gray-950">Frequently asked questions</h2>
           <div className="flex flex-col divide-y divide-gray-100">

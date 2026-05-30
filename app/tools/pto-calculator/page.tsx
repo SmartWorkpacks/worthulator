@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PtoWithInsights from "@/components/worthcore/PtoWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "PTO Calculator 2026 – Cash Value of Unused Vacation Days",
@@ -109,14 +108,11 @@ export default function PtoCalculatorPage() {
         description="Calculate the cash value of your unused PTO or vacation days — enter your hourly rate and remaining hours for an instant result."
         chips={["Cash value of PTO", "Days remaining", "Weekly earning rate"]}
       >
-        <PtoWithInsights />
+        <CalculatorEngineLoader slug="pto-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text='Unused PTO is compensation you already earned — <span class="font-semibold text-gray-900">if you don&apos;t use it and it isn&apos;t paid out, you worked for less than agreed.</span>' />
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="PTO — the paid benefit most people undervalue" subtitle="What your time off is actually worth." cards={CONTENT_CARDS}
-      />
-
-      <InsightTable slug="pto-calculator" />
+      <ContentCardGrid title="PTO — the paid benefit most people undervalue" subtitle="What your time off is actually worth." cards={CONTENT_CARDS} />
       <SEOTextBlock
         title="How the PTO Calculator Works"
         formula={`Cash Value       = Hourly Rate × PTO Hours Remaining

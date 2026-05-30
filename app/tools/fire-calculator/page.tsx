@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import FireWithInsights from "@/components/worthcore/FireWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,6 +9,7 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
+import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
@@ -113,7 +114,7 @@ export default function FireCalculatorPage() {
         description="Calculate your FIRE number and see how many years until work becomes optional — enter your expenses, savings, and monthly investment."
         chips={["4% rule FIRE number", "Years to independence", "Savings rate impact"]}
       >
-        <FireWithInsights />
+        <CalculatorEngineLoader slug="fire-calculator" afterResults={<InsightsSection slug="fire-calculator" />} />
       </SimpleCalculatorHero>
       <InsightStrip text='Your savings rate matters more than your salary — <span class="font-semibold text-gray-900">saving 50% of income reaches FIRE in ~17 years at any income level.</span>' />
       <StatChipsRow stats={STATS} />

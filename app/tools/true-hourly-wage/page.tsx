@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import TrueHourlyWithInsights from "@/components/worthcore/TrueHourlyWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "True Hourly Wage Calculator 2026 – Your Real Pay After Commute & Prep Time",
@@ -111,19 +110,13 @@ export default function TrueHourlyWage() {
         description="Factor in your commute, work prep, and decompression time to find your real hourly rate — not just your salary divided by 40 hours."
         chips={["Commute included", "Decompression time", "True vs advertised rate"]}
       >
-        <TrueHourlyWithInsights />
+        <CalculatorEngineLoader slug="true-hourly-wage" />
       </SimpleCalculatorHero>
       <InsightStrip text="Your contract says 40 hours. Your job demands more. Here's what you're really earning." />
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="Why your true hourly rate matters"  cards={CONTENT_CARDS}
-      />
-
-      <InsightTable slug="true-hourly-wage" />
+      <ContentCardGrid title="Why your true hourly rate matters"  cards={CONTENT_CARDS} />
       <SEOTextBlock
         title="How Your True Hourly Wage Is Calculated"
-        formula={`Total Work Hours = Contract Hours + Commute Hours + Decompression Hours
-Commute Hours    = (One-Way Mins × 2 ÷ 60) × Office Days per Year
-True Hourly Wage = Annual Salary ÷ Total Work Hours`}
         paragraphs={[
           "This calculator adds commute time (both directions × 5 days × 52 weeks) and daily decompression time (× 5 days × 52 weeks) to your contracted work hours. Your salary is then divided by this total to give your true effective hourly rate.",
           "For example: $65,000/year with a 30-min each-way commute and 30-min decompression adds 260 unpaid hours/year, reducing your effective rate from $31.25/hr to approximately $26/hr.",

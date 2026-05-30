@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { SubscriptionAuditorWithInsights } from "@/components/worthcore/SubscriptionAuditorWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-
+import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
@@ -131,7 +131,7 @@ export default function SubscriptionAuditorPage() {
         description="Drag the sliders to your real monthly spend on each category. See your annual total — and what that money would be worth invested over 10 years."
         chips={["Monthly & annual total", "10-year spend", "Opportunity cost at 7%"]}
       >
-        <SubscriptionAuditorWithInsights />
+        <CalculatorEngineLoader slug="subscription-auditor" afterResults={<InsightsSection slug="subscription-auditor" />} />
       </SimpleCalculatorHero>
 
       <InsightStrip

@@ -9,8 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Caffeine Half-Life Calculator 2026 – How Much Caffeine Is in Your System at Bedtime?",
@@ -111,19 +109,13 @@ export default function CaffeineHalfLife() {
         description="See exactly how much caffeine is still active at your bedtime. Uses the 5-hour half-life formula to track caffeine clearance through your day."
         chips={["5-hour half-life formula", "mg at bedtime shown", "Ideal cutoff time"]}
       >
-        <CalculatorEngineLoader slug="caffeine-half-life" afterResults={<InsightsSection slug="caffeine-half-life" />} />
+        <CalculatorEngineLoader slug="caffeine-half-life" />
       </SimpleCalculatorHero>
       <InsightStrip text="A 3pm coffee still has ~50% of its caffeine active at 8pm. More than most people realise." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Caffeine and sleep: the science"  cards={CONTENT_CARDS} />
-
-      <InsightTable slug="caffeine-half-life" />
       <SEOTextBlock
         title="How the Caffeine Half-Life Calculator Works"
-        formula={`Total Caffeine      = Cups × 95mg
-Remaining at Time T = Total × 0.5^((T − Last Cup) ÷ Half-Life)
-Clearance Time      = Last Cup + Half-Life × log(Total ÷ 10) ÷ log(2)
-Default Half-Life   = 5 hours`}
         paragraphs={[
           "Total caffeine = cups × 95mg. Remaining at bedtime = total × 0.5^((bedtime − last cup) / 5). The clearance time is calculated as: last cup hour + 5 × log(total / 10) / log(2), which gives the time when caffeine drops below 10mg.",
           "This uses an average 5-hour half-life. Individual metabolism varies — some people clear caffeine in 3 hours, others take 9. If you find you're very caffeine-sensitive, try using 7–8 hours as your effective personal half-life.",

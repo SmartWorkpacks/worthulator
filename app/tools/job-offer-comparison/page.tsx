@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import JobOfferComparisonWithInsights from "@/components/worthcore/JobOfferComparisonWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Job Offer Comparison Calculator 2026 – Compare Two Job Offers Side by Side",
@@ -117,18 +110,13 @@ export default function JobOfferComparison() {
         description="Go beyond base salary. Compare two job offers on total effective compensation — including benefits value, commute costs, and real take-home."
         chips={["Salary + benefits", "Commute costs deducted", "True gap shown"]}
       >
-        <JobOfferComparisonWithInsights />
+        <CalculatorEngineLoader slug="job-offer-comparison" />
       </SimpleCalculatorHero>
       <InsightStrip text="A job with lower salary but no commute and better benefits often wins on total compensation." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Beyond base salary: total compensation"  cards={CONTENT_CARDS} />
-
-      <InsightTable slug="job-offer-comparison" />
       <SEOTextBlock
         title="How the Job Offer Comparison Works"
-        formula={`Effective Comp = Salary + Benefits Value − Annual Commute Cost
-Annual Commute = Daily Cost × Working Days per Year
-Difference     = Effective Comp A − Effective Comp B`}
         paragraphs={[
           "Effective compensation for each job = annual salary + estimated benefits value − annual commute cost. The calculator then shows you both figures side-by-side and the dollar difference between them.",
           "This is a pre-tax comparison. For an after-tax comparison, apply your marginal tax rate to the salary portion. Benefits like health insurance and 401k matches are typically not taxed as income, which makes them even more valuable than the raw numbers suggest.",

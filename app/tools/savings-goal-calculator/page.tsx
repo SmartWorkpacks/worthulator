@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import SavingsGoalWithInsights from "@/components/worthcore/SavingsGoalWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
+import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
@@ -130,7 +131,7 @@ export default function SavingsGoalCalculatorPage() {
         description="Enter your goal, timeline, and current savings to see exactly how much you need to put away each month — with compound interest factored in."
         chips={["Monthly contribution needed", "Interest earned vs deposited", "Compound interest model"]}
       >
-        <SavingsGoalWithInsights />
+        <CalculatorEngineLoader slug="savings-goal-calculator" afterResults={<InsightsSection slug="savings-goal-calculator" />} />
       </SimpleCalculatorHero>
 
       <InsightStrip

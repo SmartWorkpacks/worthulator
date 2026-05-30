@@ -9,14 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "TDEE Calculator 2026 – Daily Calorie Needs to Maintain, Lose, or Gain Weight",
@@ -117,19 +109,13 @@ export default function TdeeCalculator() {
         description="Calculate your Total Daily Energy Expenditure using the Mifflin-St Jeor formula. Get your BMR, maintenance calories, and weekly calorie budget."
         chips={["Mifflin-St Jeor formula", "BMR + activity factor", "Weekly budget"]}
       >
-        <CalculatorEngineLoader slug="tdee-calculator" afterResults={<InsightsSection slug="tdee-calculator" />} />
+        <CalculatorEngineLoader slug="tdee-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Most adults overestimate their activity level by one category — which means eating 200–400 more calories than they think." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="How to use your TDEE"  cards={CONTENT_CARDS} />
-
-      <InsightTable slug="tdee-calculator" />
       <SEOTextBlock
         title="How the TDEE Calculator Works"
-        formula={`BMR (male)   = 10×kg + 6.25×cm − 5×age + 5
-BMR (female) = 10×kg + 6.25×cm − 5×age − 161
-TDEE         = BMR × Activity Multiplier
-               (1.2 sedentary → 1.9 very active)`}
         paragraphs={[
           "BMR (Mifflin-St Jeor, male) = 10 × weight(kg) + 6.25 × height(cm) − 5 × age + 5. Convert: kg = lbs ÷ 2.205, cm = inches × 2.54. TDEE = BMR × activity multiplier. Weekly calorie budget = TDEE × 7.",
           "This calculator uses the male Mifflin-St Jeor formula with a default activity multiplier of 1.55 (moderately active). For women, subtract 166 from the result. For the most accurate results, use your weight and height in metric units and be honest about your true activity level.",

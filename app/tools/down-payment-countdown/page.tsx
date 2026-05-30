@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import DownPaymentWithInsights from "@/components/worthcore/DownPaymentWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Down Payment Calculator 2026 – Monthly Savings to Buy a Home",
@@ -117,18 +110,13 @@ export default function DownPaymentCountdown() {
         description="Enter your target home price, down payment percentage, current savings, and timeline. Get your exact monthly savings target."
         chips={["Any down payment %", "Subtract current savings", "Monthly goal shown"]}
       >
-        <DownPaymentWithInsights />
+        <CalculatorEngineLoader slug="down-payment-countdown" />
       </SimpleCalculatorHero>
       <InsightStrip text="The typical US first-time buyer takes ~7 years to save their down payment. Here's how to speed that up." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="How to save a down payment faster"  cards={CONTENT_CARDS} />
-
-      <InsightTable slug="down-payment-countdown" />
       <SEOTextBlock
         title="How the Down Payment Calculator Works"
-        formula={`Target Down Payment = Home Price × Down Payment%
-Savings Gap         = Target − Current Savings
-Monthly Needed      = Savings Gap ÷ Target Months`}
         paragraphs={[
           "The calculator finds your target down payment (home price × down payment %) then subtracts your current savings to get the remaining gap. That gap is divided by your target number of months to give your required monthly savings amount.",
           "Note: this assumes you're saving in a standard account without investment returns on the savings. If you're earning interest in a HYSA, your real monthly requirement will be slightly lower.",

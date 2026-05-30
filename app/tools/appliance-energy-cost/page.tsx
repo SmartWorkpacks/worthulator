@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import ApplianceEnergyWithInsights from "@/components/worthcore/ApplianceEnergyWithInsights";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
-
-
-
-
-
-
 
 export const metadata: Metadata = {
   title: "Appliance Energy Cost Calculator 2026 – How Much Does It Cost to Run?",
@@ -117,19 +110,13 @@ export default function ApplianceEnergyCost() {
         description="Enter wattage, hours per day, and your electricity rate. Instantly see daily, monthly, and annual running costs for any device."
         chips={["Watts to cost", "Daily / monthly / annual", "Any electricity rate"]}
       >
-        <ApplianceEnergyWithInsights />
+        <CalculatorEngineLoader slug="appliance-energy-cost" />
       </SimpleCalculatorHero>
       <InsightStrip text="The average US home spends ~$1,500/year on electricity — most of it heating, cooling, and appliances you barely notice." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Where your electricity bill actually goes"  cards={CONTENT_CARDS} />
-
-      <InsightTable slug="appliance-energy-cost" />
       <SEOTextBlock
         title="How the Appliance Energy Cost Calculator Works"
-        formula={`Daily kWh      = Watts ÷ 1,000 × Hours per Day
-Daily Cost     = Daily kWh × Rate ($/kWh)
-Monthly Cost   = Daily Cost × 30
-Annual Cost    = Daily Cost × 365`}
         paragraphs={[
           "Daily cost = (watts ÷ 1,000) × hours per day × electricity rate. Monthly cost = daily cost × 30. Annual cost = daily cost × 365.",
           "This calculator gives you a simple estimate based on average daily usage. Actual cost varies if usage fluctuates seasonally or the appliance cycles on and off (like a refrigerator). For accurate totals, use a plug-in energy monitor like the Kill-A-Watt meter.",
