@@ -760,6 +760,180 @@ export const tools: Tool[] = [
     description: "Estimate the installed cost of a concrete slab in the UK. Prices in £/m², updated for 2026.",
     keywords: ["concrete slab cost uk", "how much does a concrete slab cost uk", "concrete slab price uk"],
   },
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // 🚩 FLAGSHIP CALCULATORS (standalone pages — custom-loader standard)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // Money · Loans & Debt
+  { name: "Amortization Calculator",        slug: "amortization-calculator",        tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", status: "live", popular: true,  description: "Build a full loan amortization schedule — see how each payment splits between principal and interest, and your total interest over the life of the loan." },
+  { name: "Loan Payment Calculator",        slug: "loan-payment-calculator",        tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", status: "live", popular: true,  description: "Calculate the monthly payment, total interest, and total cost of any fixed-rate loan." },
+  { name: "Personal Loan Calculator",       slug: "personal-loan-calculator",       tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", status: "live", popular: true,  description: "Estimate monthly payments and total interest on a personal loan using current benchmark APRs." },
+  { name: "Interest Rate Calculator",       slug: "interest-rate-calculator",       tier: 2, category: "money", subcategory: "loans",     toolType: "calculator", status: "live",                 description: "Solve for the implied interest rate on a loan from its amount, monthly payment, and term." },
+  { name: "APR Calculator",                 slug: "apr-calculator",                 tier: 2, category: "money", subcategory: "loans",     toolType: "calculator", status: "live", popular: true,  description: "Find the true APR on a loan once upfront fees and points are folded into the rate." },
+
+  // Money · Investing
+  { name: "Dividend Calculator",            slug: "dividend-calculator",            tier: 2, category: "money", subcategory: "investing", toolType: "calculator", status: "live", popular: true,  description: "Project dividend income, yield-on-cost, and growth with optional dividend reinvestment (DRIP)." },
+  { name: "Annuity Calculator",             slug: "annuity-calculator",             tier: 2, category: "money", subcategory: "investing", toolType: "calculator", status: "live",                 description: "Model fixed, period-certain annuity payouts from a lump sum at a given rate and term." },
+  { name: "Interest Calculator",            slug: "interest-calculator",            tier: 2, category: "money", subcategory: "investing", toolType: "calculator", status: "live", popular: true,  description: "Calculate simple and compound interest on any balance over time." },
+
+  // Money · Savings
+  { name: "APY Calculator",                 slug: "apy-calculator",                 tier: 2, category: "money", subcategory: "savings",   toolType: "calculator", status: "live", popular: true,  description: "Convert a nominal rate to annual percentage yield (APY) and project balance growth by compounding frequency." },
+  { name: "CD Calculator",                  slug: "cd-calculator",                  tier: 2, category: "money", subcategory: "savings",   toolType: "calculator", status: "live", popular: true,  description: "Calculate the maturity value and interest earned on a certificate of deposit." },
+  { name: "Social Security Calculator",     slug: "social-security-calculator",     tier: 1, category: "money", subcategory: "savings",   toolType: "calculator", status: "live", popular: true,  description: "Estimate your Social Security benefit and how claiming early or late changes your monthly payment." },
+  { name: "RMD Calculator",                 slug: "rmd-calculator",                 tier: 2, category: "money", subcategory: "savings",   toolType: "calculator", status: "live",                 description: "Calculate your required minimum distribution from retirement accounts based on age and balance." },
+
+  // Money · Income & Tax
+  { name: "Paycheck Calculator",            slug: "paycheck-calculator",            tier: 1, category: "money", subcategory: "income",    toolType: "calculator", status: "live", popular: true,  description: "Calculate take-home pay after federal, state, FICA, and pension deductions for the US and UK." },
+  { name: "Income Tax Calculator",          slug: "income-tax-calculator",          tier: 1, category: "money", subcategory: "income",    toolType: "calculator", status: "live", popular: true,  description: "Estimate your income tax bill and effective rate by bracket for the current tax year." },
+  { name: "Tax Calculator",                 slug: "tax-calculator",                 tier: 1, category: "money", subcategory: "income",    toolType: "calculator", status: "live", popular: true,  description: "Estimate total tax owed across income, FICA, and deductions to see your net pay." },
+
+  // Home & Property · Mortgages
+  { name: "Mortgage Payment Calculator",    slug: "mortgage-payment-calculator",    tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live", popular: true,  description: "Calculate your monthly mortgage payment with principal, interest, taxes, and insurance using live benchmark rates." },
+  { name: "Home Loan Calculator",           slug: "home-loan-calculator",           tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live", popular: true,  description: "Estimate monthly home loan repayments and total interest over the term of your mortgage." },
+  { name: "HELOC Calculator",               slug: "heloc-calculator",               tier: 2, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live",                 description: "Work out how much you can borrow against your home equity and what the payments would look like." },
+  { name: "Mortgage Payoff Calculator",     slug: "mortgage-payoff-calculator",     tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live", popular: true,  description: "See how extra payments shorten your mortgage and how much interest you'd save." },
+  { name: "Home Equity Loan Calculator",    slug: "home-equity-loan-calculator",    tier: 2, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live",                 description: "Calculate how much you can borrow with a home equity loan and the monthly payment by term." },
+  { name: "How Much House Can I Afford Calculator", slug: "how-much-house-can-i-afford-calculator", tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live", popular: true,  description: "Find the home price you can afford based on income, debts, down payment, and current rates." },
+
+  // Home & Property · Renting
+  { name: "Rent Calculator",                slug: "rent-calculator",                tier: 2, category: "home-living", subcategory: "renting",   toolType: "calculator", status: "live", popular: true,  description: "Find how much rent you can afford using the 30% rule, the 3x income rule, and a debt-adjusted budget." },
+
+  // Transport · Car
+  { name: "Car Payment Calculator",         slug: "car-payment-calculator",         tier: 1, category: "transport", subcategory: "car",       toolType: "calculator", status: "live", popular: true,  description: "Calculate your monthly car payment, total interest, and the true cost of financing a vehicle." },
+
+  // Time · Life Milestones
+  { name: "Age Calculator",                 slug: "age-calculator",                 tier: 2, category: "time", subcategory: "milestones",  toolType: "calculator", status: "live", popular: true,  description: "Calculate your exact age in years, months, weeks, and days from your date of birth." },
+  { name: "Date Calculator",                slug: "date-calculator",                tier: 3, category: "time", subcategory: "milestones",  toolType: "calculator", status: "live",                 description: "Add or subtract days, weeks, months, or years from any date to find a future or past date." },
+  { name: "Days Calculator",                slug: "days-calculator",                tier: 3, category: "time", subcategory: "milestones",  toolType: "calculator", status: "live",                 description: "Count the number of days between two dates, with or without weekends." },
+  { name: "Pregnancy Calculator",           slug: "pregnancy-calculator",           tier: 2, category: "time", subcategory: "milestones",  toolType: "calculator", status: "live", popular: true,  description: "Estimate your due date and track each week of pregnancy from your last period or conception date." },
+
+  // Time · Work Hours
+  { name: "Hours Calculator",               slug: "hours-calculator",               tier: 2, category: "time", subcategory: "work-hours",  toolType: "calculator", status: "live", popular: true,  description: "Add up hours and minutes worked, subtract breaks, and convert the total to decimal hours." },
+  { name: "Timecard Calculator",            slug: "timecard-calculator",            tier: 2, category: "time", subcategory: "work-hours",  toolType: "calculator", status: "live", popular: true,  description: "Total your weekly timecard — clock-in/out hours, breaks, overtime, and gross pay." },
+
+  // Health & Fitness
+  { name: "Calorie Calculator",             slug: "calorie-calculator",             tier: 1, category: "health", subcategory: "fitness",   toolType: "calculator", status: "live", popular: true,  description: "Calculate your daily calorie needs (TDEE) and targets for losing, maintaining, or gaining weight." },
+  { name: "Maintenance Calorie Calculator", slug: "maintenance-calorie-calculator", tier: 2, category: "health", subcategory: "fitness",   toolType: "calculator", status: "live",                 description: "Find the daily calories you need to maintain your current weight based on activity level." },
+  { name: "One Rep Max Calculator",         slug: "1-rep-max-calculator",           tier: 2, category: "health", subcategory: "fitness",   toolType: "calculator", status: "live", popular: true,  description: "Estimate your one-rep max (1RM) from the weight and reps of a working set." },
+
+  // DIY & Building · Layout Tools
+  { name: "Square Footage Calculator",      slug: "square-footage-calculator",      tier: 2, category: "construction", subcategory: "planning", toolType: "calculator", status: "live", popular: true,  description: "Calculate the square footage of a room or area, plus material amounts and cost from a price per sq ft." },
+
+  // ══════════════════════════════════════════════════════════════════════════
+  // 🚩 FLAGSHIP CALCULATORS — wave 2 (existing standalone pages, core US set)
+  // ══════════════════════════════════════════════════════════════════════════
+
+  // Money · Income & Tax
+  { name: "Payroll Calculator",             slug: "payroll-calculator",             tier: 2, category: "money", subcategory: "income",    toolType: "calculator", status: "live",                 description: "Work out the true cost of an employee including taxes, benefits, and overheads." },
+  { name: "Salary Negotiation Calculator",  slug: "salary-negotiation-calculator",  tier: 2, category: "money", subcategory: "income",    toolType: "calculator", status: "live", popular: true,  description: "See the lifetime earnings impact of negotiating a higher starting salary." },
+  { name: "Self-Employed Tax Calculator",   slug: "self-employed-tax",              tier: 1, category: "money", subcategory: "income",    toolType: "calculator", status: "live", popular: true,  description: "Estimate quarterly and annual self-employment tax for 1099 and freelance income." },
+  { name: "Side Hustle Calculator",         slug: "side-hustle-calculator",         tier: 2, category: "money", subcategory: "income",    toolType: "calculator", status: "live", popular: true,  description: "Calculate your side-hustle take-home pay after tax and expenses." },
+  { name: "Tax Bracket Calculator",         slug: "tax-bracket-calculator",         tier: 1, category: "money", subcategory: "income",    toolType: "calculator", status: "live", popular: true,  description: "See your marginal and effective tax rate and how much falls in each bracket." },
+  { name: "True Hourly Wage Calculator",    slug: "true-hourly-wage",               tier: 2, category: "money", subcategory: "income",    toolType: "calculator", status: "live", popular: true,  description: "Find your real hourly pay after commute, prep, and unpaid time are factored in." },
+
+  // Money · Spending
+  { name: "Budget Calculator",              slug: "budget-calculator",              tier: 1, category: "money", subcategory: "spending",  toolType: "calculator", status: "live", popular: true,  description: "Plan your monthly budget with the 50/30/20 rule and see your savings rate." },
+  { name: "Inflation Impact Calculator",    slug: "inflation-impact-calculator",    tier: 2, category: "money", subcategory: "spending",  toolType: "calculator", status: "live",                 description: "See how inflation erodes your money's purchasing power over time using live CPI data." },
+
+  // Money · Loans & Debt
+  { name: "Credit Card Payoff Calculator",  slug: "credit-card-payoff-calculator",  tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", status: "live", popular: true,  description: "Calculate how long it takes to clear credit card debt and the total interest you'll pay." },
+  { name: "Student Loan Calculator",        slug: "student-loan-calculator",        tier: 1, category: "money", subcategory: "loans",     toolType: "calculator", status: "live", popular: true,  description: "Estimate student loan monthly payments, payoff time, and total interest." },
+
+  // Money · Investing
+  { name: "401(k) Calculator",              slug: "401k-calculator",                tier: 1, category: "money", subcategory: "investing", toolType: "calculator", status: "live", popular: true,  description: "Project your 401(k) balance at retirement including employer match and growth." },
+  { name: "Coast FIRE Calculator",          slug: "coast-fire-calculator",          tier: 2, category: "money", subcategory: "investing", toolType: "calculator", status: "live", popular: true,  description: "Find your Coast FIRE number — the point where your investments can grow to retirement on their own." },
+  { name: "Crypto Loss Calculator",         slug: "crypto-loss-calculator",         tier: 3, category: "money", subcategory: "investing", toolType: "calculator", status: "live",                 description: "Calculate your crypto gains or losses and the index-fund opportunity cost." },
+  { name: "DRIP Calculator",                slug: "drip-calculator",                tier: 2, category: "money", subcategory: "investing", toolType: "calculator", status: "live", popular: true,  description: "Compare dividend reinvestment (DRIP) against taking dividends in cash over time." },
+  { name: "Future Value Calculator",        slug: "future-value-calculator",        tier: 2, category: "money", subcategory: "investing", toolType: "calculator", status: "live", popular: true,  description: "Calculate the future value of an investment, inflation-adjusted, over any time horizon." },
+  { name: "Global Wealth Percentile Calculator", slug: "global-wealth-percentile",  tier: 3, category: "money", subcategory: "investing", toolType: "calculator", status: "live", popular: true,  description: "See where your net worth ranks among the global population." },
+  { name: "Lottery vs Investing Calculator",slug: "lottery-vs-investing",           tier: 3, category: "money", subcategory: "investing", toolType: "calculator", status: "live",                 description: "Compare lottery spending against the same money compounded in an index fund." },
+
+  // Money · Savings & FIRE
+  { name: "Down Payment Countdown",         slug: "down-payment-countdown",         tier: 2, category: "money", subcategory: "savings",   toolType: "calculator", status: "live",                 description: "Work out how long until you've saved enough for a home down payment." },
+  { name: "Time to Retirement Calculator",  slug: "time-to-retirement-calculator",  tier: 1, category: "money", subcategory: "savings",   toolType: "calculator", status: "live", popular: true,  description: "Find out how many years until you reach financial independence and can retire." },
+
+  // Home & Property · Mortgages
+  { name: "Closing Cost Calculator",        slug: "closing-cost-calculator",        tier: 2, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live",                 description: "Estimate the closing costs you'll pay when buying a home." },
+  { name: "Home Equity Calculator",         slug: "home-equity-calculator",         tier: 2, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live",                 description: "Calculate how much equity you have in your home and how much you could borrow." },
+  { name: "Mortgage Refinance Calculator",  slug: "mortgage-refinance-calculator",  tier: 1, category: "home-living", subcategory: "mortgages", toolType: "calculator", status: "live", popular: true,  description: "See your refinance break-even point and how much interest you'd save." },
+
+  // Home & Property · Family / Household
+  { name: "Child Support Calculator",       slug: "child-support-calculator",       tier: 2, category: "home-living", subcategory: "family",    toolType: "calculator", status: "live",                 description: "Estimate monthly child support based on income and custody arrangements." },
+  { name: "Moving Cost Calculator",         slug: "moving-cost-calculator",         tier: 2, category: "home-living", subcategory: "household", toolType: "calculator", status: "live",                 description: "Budget the total cost of a move including movers, supplies, and transport." },
+
+  // Work & Career
+  { name: "Burnout Calculator",             slug: "burnout-calculator",             tier: 3, category: "work-career", subcategory: "wellbeing", toolType: "calculator", status: "live", popular: true,  description: "Assess your burnout risk based on workload, recovery, and stress factors." },
+  { name: "Job Offer Comparison Calculator",slug: "job-offer-comparison",           tier: 2, category: "work-career", subcategory: "career",    toolType: "calculator", status: "live", popular: true,  description: "Compare two job offers on pay, benefits, commute, and total value." },
+  { name: "WFH Savings Calculator",         slug: "wfh-savings-calculator",         tier: 3, category: "work-career", subcategory: "career",    toolType: "calculator", status: "live",                 description: "Calculate how much you save each year by working from home." },
+
+  // DIY & Building / Cost
+  { name: "Flooring Cost Calculator",       slug: "flooring-cost-calculator",       tier: 2, category: "cost", subcategory: "home-improvement", toolType: "estimator", status: "live",                 description: "Estimate flooring costs for any room including materials and labour." },
+  { name: "Tile Calculator",                slug: "tile-calculator",                tier: 2, category: "construction", subcategory: "planning",  toolType: "calculator", status: "live",                 description: "Calculate how many tiles you need for a floor or wall, plus material cost." },
+
+  // Energy & Sustainability
+  { name: "Appliance Energy Cost Calculator", slug: "appliance-energy-cost",        tier: 2, category: "energy", subcategory: "bills", toolType: "calculator", status: "live",                 description: "Work out the running cost of any household appliance per year." },
+  { name: "EV Charging Cost Calculator",    slug: "ev-charging-cost",               tier: 2, category: "energy", subcategory: "bills", toolType: "calculator", status: "live", popular: true,  description: "Calculate the cost to charge your electric vehicle at home or in public." },
+  { name: "Heating Cost Calculator",        slug: "heating-cost",                   tier: 2, category: "energy", subcategory: "bills", toolType: "calculator", status: "live",                 description: "Estimate your home heating costs for gas, electric, oil, or propane." },
+  { name: "Solar ROI Calculator",           slug: "solar-roi",                      tier: 1, category: "energy", subcategory: "solar", toolType: "calculator", status: "live", popular: true,  description: "Calculate the payback period and return on a residential solar panel system." },
+  { name: "Water Bill Calculator",          slug: "water-bill-calculator",          tier: 3, category: "energy", subcategory: "bills", toolType: "calculator", status: "live",                 description: "Estimate your monthly and annual water bill based on usage." },
+
+  // Transport
+  { name: "EV vs Gas Calculator",           slug: "ev-vs-gas",                      tier: 2, category: "transport", subcategory: "car", toolType: "calculator", status: "live", popular: true,  description: "Compare the annual running cost of an electric vehicle against a petrol car." },
+
+  // Health & Fitness
+  { name: "Biological Age Calculator",      slug: "biological-age-calculator",      tier: 2, category: "health", subcategory: "fitness", toolType: "calculator", status: "live", popular: true,  description: "Estimate your biological age based on lifestyle and health markers." },
+  { name: "BMR Calculator",                 slug: "bmr-calculator",                 tier: 2, category: "health", subcategory: "fitness", toolType: "calculator", status: "live", popular: true,  description: "Calculate your basal metabolic rate — the calories you burn at rest." },
+  { name: "Body Fat Calculator",            slug: "body-fat-calculator",            tier: 2, category: "health", subcategory: "fitness", toolType: "calculator", status: "live", popular: true,  description: "Estimate your body fat percentage using the US Navy method." },
+  { name: "Heart Rate Zone Calculator",     slug: "heart-rate-zone-calculator",     tier: 2, category: "health", subcategory: "fitness", toolType: "calculator", status: "live",                 description: "Calculate your max heart rate and training zones for cardio." },
+  { name: "Life Expectancy Calculator",     slug: "life-expectancy-calculator",     tier: 2, category: "health", subcategory: "fitness", toolType: "calculator", status: "live", popular: true,  description: "Estimate your life expectancy based on lifestyle and health factors." },
+  { name: "Macro Calculator",               slug: "macro-calculator",               tier: 1, category: "health", subcategory: "fitness", toolType: "calculator", status: "live", popular: true,  description: "Calculate your daily protein, carb, and fat targets for your goal." },
+  { name: "Protein Intake Calculator",      slug: "protein-intake-calculator",      tier: 2, category: "health", subcategory: "fitness", toolType: "calculator", status: "live", popular: true,  description: "Find how much protein you need each day based on weight and activity." },
+  { name: "Steps to Calories Calculator",   slug: "steps-to-calories-calculator",   tier: 3, category: "health", subcategory: "fitness", toolType: "calculator", status: "live",                 description: "Convert your daily step count into calories burned." },
+  { name: "TDEE Calculator",                slug: "tdee-calculator",                tier: 1, category: "health", subcategory: "fitness", toolType: "calculator", status: "live", popular: true,  description: "Calculate your total daily energy expenditure (TDEE) and maintenance calories." },
+
+  // Health · Sleep
+  { name: "Caffeine Half-Life Calculator",  slug: "caffeine-half-life",             tier: 3, category: "health", subcategory: "sleep", toolType: "calculator", status: "live",                 description: "See how much caffeine remains in your system at bedtime." },
+
+  // Health · Vices
+  { name: "Alcohol Cost Calculator",        slug: "alcohol-cost-calculator",        tier: 3, category: "health", subcategory: "vices", toolType: "calculator", status: "live",                 description: "Calculate the yearly and lifetime cost of your drinking habit." },
+  { name: "Vaping Cost Calculator",         slug: "vaping-cost-calculator",         tier: 3, category: "health", subcategory: "vices", toolType: "calculator", status: "live",                 description: "Work out how much vaping costs you per year and over a lifetime." },
+
+  // Time · Screen & Apps
+  { name: "Phone Addiction Calculator",     slug: "phone-addiction-calculator",     tier: 3, category: "time", subcategory: "screen", toolType: "calculator", status: "live", popular: true,  description: "See how many years of your life your phone habit adds up to." },
+  { name: "Social Media Time Calculator",   slug: "social-media-time-calculator",   tier: 3, category: "time", subcategory: "screen", toolType: "calculator", status: "live",                 description: "Calculate the hours and life-years you spend on social media." },
+  { name: "Streaming Time Calculator",      slug: "streaming-time-calculator",      tier: 3, category: "time", subcategory: "screen", toolType: "calculator", status: "live",                 description: "Total the hours, life-years, and cost of your streaming habit." },
+
+  // Time · Work Hours
+  { name: "Pomodoro Calculator",            slug: "pomodoro-calculator",            tier: 3, category: "time", subcategory: "work-hours", toolType: "calculator", status: "live",                 description: "Plan your day in Pomodoro sessions and see your focused hours." },
+  { name: "Work Hours Calculator",          slug: "work-hours-calculator",          tier: 2, category: "time", subcategory: "work-hours", toolType: "calculator", status: "live", popular: true,  description: "Add up hours worked, subtract breaks, and calculate overtime and pay." },
+  { name: "Working Days Calculator",        slug: "working-days-calculator",        tier: 2, category: "time", subcategory: "work-hours", toolType: "calculator", status: "live",                 description: "Count the business days between two dates, excluding weekends and holidays." },
+
+  // Time · Milestones
+  { name: "Life in Weeks Calculator",       slug: "life-in-weeks-calculator",       tier: 3, category: "time", subcategory: "milestones", toolType: "calculator", status: "live", popular: true,  description: "Visualise your life in weeks and see how many you have left." },
+  { name: "Time Between Dates Calculator",  slug: "time-between-dates-calculator",  tier: 2, category: "time", subcategory: "milestones", toolType: "calculator", status: "live",                 description: "Calculate the exact days, weeks, and months between two dates." },
+
+  // Lifestyle · Food & Drink
+  { name: "Latte Factor Calculator",        slug: "latte-factor",                   tier: 3, category: "lifestyle", subcategory: "food-drink", toolType: "calculator", status: "live", popular: true,  description: "See what a small daily habit would be worth if you invested it instead." },
+  { name: "Meal Prep Calculator",           slug: "meal-prep-calculator",           tier: 3, category: "lifestyle", subcategory: "food-drink", toolType: "calculator", status: "live",                 description: "Calculate how much you save by meal prepping instead of eating out." },
+
+  // Lifestyle · Habits & Travel
+  { name: "Pet Cost Calculator",            slug: "pet-cost-calculator",            tier: 2, category: "lifestyle", subcategory: "habits", toolType: "calculator", status: "live", popular: true,  description: "Estimate the annual and lifetime cost of owning a pet." },
+  { name: "Wedding Cost Calculator",        slug: "wedding-cost-calculator",        tier: 2, category: "lifestyle", subcategory: "travel", toolType: "calculator", status: "live", popular: true,  description: "Budget your wedding across venue, catering, and all the major costs." },
+
+  // Everyday
+  { name: "Bill Split Calculator",          slug: "bill-split-calculator",          tier: 3, category: "everyday", subcategory: "quick", toolType: "calculator", status: "live",                 description: "Split a bill and tip evenly between any number of people." },
+  { name: "Expense Split Calculator",       slug: "expense-split-calculator",       tier: 3, category: "everyday", subcategory: "quick", toolType: "calculator", status: "live", popular: true,  description: "Split shared expenses, tips, and group costs fairly." },
+
+  // Education
+  { name: "GPA Calculator",                 slug: "gpa-calculator",                 tier: 2, category: "education", subcategory: "university", toolType: "calculator", status: "live", popular: true,  description: "Calculate your GPA and the grades you need to hit a target." },
+
+  // Decisions / What-if
+  { name: "Airbnb Profit Calculator",       slug: "airbnb-profit",                  tier: 2, category: "decisions", subcategory: "tradeoffs", toolType: "calculator", status: "live", popular: true,  description: "Estimate the profit from a short-term rental after costs and occupancy." },
+  { name: "Procrastination Cost Calculator",slug: "procrastination-cost",           tier: 3, category: "decisions", subcategory: "opp-cost",  toolType: "calculator", status: "live",                 description: "Calculate what procrastination costs you each year at your hourly wage." },
+
+  // Gaming & Odds
+  { name: "Gambling Loss Calculator",       slug: "gambling-loss-calculator",       tier: 3, category: "gaming", subcategory: "betting", toolType: "calculator", status: "live",                 description: "Add up gambling losses and see the index-fund opportunity cost." },
 ];
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
