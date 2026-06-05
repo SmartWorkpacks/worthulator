@@ -1,18 +1,13 @@
 "use client";
-
-import CalculatorEngine from "@/components/calculator-engine/CalculatorEngine";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import LiveInsightBlock from "@/components/worthcore/LiveInsightBlock";
-
+import type { CalculatorValues, CalculatorOutputs } from "@/components/calculator-engine/types";
 export default function ScreenTimeWithInsights() {
   return (
-    <CalculatorEngine
+    <CalculatorEngineLoader
       slug="screen-time-impact"
-      afterResults={(outputs, values) => (
-        <LiveInsightBlock
-          slug="screen-time-impact"
-          outputs={outputs}
-          values={values}
-        />
+      afterResults={(outputs: CalculatorOutputs, values: CalculatorValues) => (
+        <LiveInsightBlock slug="screen-time-impact" outputs={outputs} values={values} />
       )}
     />
   );

@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Mortgage Refinance Calculator 2026 – Break-Even & Savings",
@@ -60,7 +59,6 @@ export default function MortgageRefinanceCalculator() {
       <InsightStrip text="Refinancing only saves money if you stay in the home long enough to recoup closing costs — always calculate the break-even first." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Before you sign the refinance papers" cards={CONTENT_CARDS} />
-      <InsightTable slug="mortgage-refinance-calculator" />
       <SEOTextBlock
         title="How the break-even calculation works"
         formula={`New Monthly Payment = standard amortisation formula at new rate

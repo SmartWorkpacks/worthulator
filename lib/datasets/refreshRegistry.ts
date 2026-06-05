@@ -44,6 +44,7 @@ export type RefreshCadence = "daily" | "weekly" | "monthly" | "quarterly";
  */
 export type DataSource =
   | "apify-expatistan"  // Apify cheerio-scraper → Expatistan city pages
+  | "apify-energy"     // Apify web-scraper → AAA gas + ChooseEnergy electricity tables
   | "fred"             // St. Louis Fed FRED API (free, stable, global access)
   | "yahoo-finance"    // Yahoo Finance quote/screener API
   | "bls"             // Bureau of Labor Statistics public API (salary only)
@@ -152,6 +153,23 @@ export const REFRESH_REGISTRY = [
     notes:
       "Expatistan 8-city US average: Nashville, Atlanta, Dallas, Denver, Chicago, Seattle, Boston, LA. " +
       "Fuel converted from liters → gallons. Run: npx tsx scripts/updateCostBenchmarks.ts",
+  },
+
+  {
+    label:   "Apify State Energy Prices (EV vs Gas)",
+    script:  "scripts/updateEnergyPrices.ts",
+    dataset: "lib/datasets/usStateFuelPrices.ts",
+    cadence: "weekly" as RefreshCadence,
+    source:  "apify-energy" as DataSource,
+    status:  "active" as RefreshStatus,
+    fields:  [
+      "states",       // per-state gas $/gal (usStateFuelPrices.ts)
+      "national",
+    ],
+    notes:
+      "Scrapes AAA state gas averages + ChooseEnergy residential electricity rates via Apify web-scraper. " +
+      "Also patches lib/datasets/regional/usStateElectricityPrices.ts. " +
+      "Safe no-op without a token or on parse failure (keeps static fallback). Run: npm run energy:refresh",
   },
 
   // ╔══════════════════════════════════════════════════════════════════════════╗

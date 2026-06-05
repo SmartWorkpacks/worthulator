@@ -1,11 +1,15 @@
 "use client";
 
 import { useState, useMemo, useId, lazy, Suspense } from "react";
-import { getFinanceValue } from "@/lib/dataStore";
 import { CalcDisclaimer } from "@/src/templates/take-home-pay";
+import { fredBenchmarks, getCpiInflationYoY } from "@/lib/datasets/finance/fredBenchmarks";
 
 // ─── WorthCore defaults (module-level — evaluated once at load, never in render) ─
-const INITIAL_INFLATION_RATE = getFinanceValue("inflationRate"); // dataStore.finance.inflationRate
+// Inflation default is the live FRED CPI year-over-year rate (refreshed via
+// scripts/updateFredBenchmarks.ts), so the "today's money" view opens with the
+// current inflation number rather than a stale guess.
+const INITIAL_INFLATION_RATE = getCpiInflationYoY();
+const CPI_AS_OF = fredBenchmarks.currentPeriodLabel;
 import {
   compoundInterestConfig,
   buildCompoundSchedule,
@@ -497,7 +501,9 @@ export default function CompoundInterestCalculator() {
                 step={0.1}
                 suffix="%"
               />
-              <p className="mt-1 text-xs text-gray-400">US historical avg ~2.5%</p>
+              <p className="mt-1 text-xs text-gray-400">
+                Default {INITIAL_INFLATION_RATE}% from live FRED CPI ({CPI_AS_OF})
+              </p>
             </div>
 
             {/* Contribution Growth */}

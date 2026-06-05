@@ -1,32 +1,19 @@
-// ─── Time to Retirement Insight Generator ────────────────────────────────────
-//
-// Produces live WorthCore insights for the time-to-retirement-calculator.
-// Called on every slider change via LiveInsightBlock → GENERATOR_REGISTRY.
-//
-// Rules:
-//   ttretire.on-track         — yearsToRetire ≤ 20 → positive
-//   ttretire.late-timeline    — yearsToRetire > 35 → warning
-//   ttretire.low-contributions — monthlySavings < 500 → warning
-//   ttretire.savings-progress  — shows % progress toward target (always fires)
-//   ttretire.10yr-projection   — shows projected 10-year balance
-//   ttretire.gap-context       — frames the retirementGap in real terms
-//
-// ─────────────────────────────────────────────────────────────────────────────
-
 import type { Insight } from "@/lib/insights/types";
+import { formatCurrency } from "@/lib/insights/benchmarks";
+import { futureValueAnnuity } from "@/lib/insights/projections";
 
 export interface TimeToRetirementInputs {
-  expenses:       number;  // $/month
-  current:        number;  // $ saved
-  monthlySavings: number;  // $/month
-  returnRate:     number;  // %
+  expenses:       number;
+  current:        number;
+  monthlySavings: number;
+  returnRate:     number;
 }
 
 export interface TimeToRetirementOutputs {
   yearsToRetire:    number;
   retirementTarget: number;
   retirementGap?:        number;
-  savingsProgress?:      number;  // 0.0–1.0
+  savingsProgress?:      number;
   projectedBalance10yr?: number;
   annualContribution?:   number;
 }
@@ -41,85 +28,87 @@ export function generateTimeToRetirementInsights(
   const {
     yearsToRetire,
     retirementTarget,
-    retirementGap        = Math.max(0, retirementTarget - current),
-    savingsProgress      = current / Math.max(retirementTarget, 1),
+    retirementGap       = Math.max(0, retirementTarget - current),
+    savingsProgress     = current / Math.max(retirementTarget, 1),
     projectedBalance10yr = 0,
-    annualContribution   = monthlySavings * 12,
+    annualContribution  = monthlySavings * 12,
   } = outputs;
 
-  // ── 1. On track ──────────────────────────────────────────────────────────
-  if (yearsToRetire <= 20 && yearsToRetire > 0) {
-    insights.push({
-      id:       "ttretire.on-track",
-      type:     "positive",
-      title:    `Retirement in ${yearsToRetire} years — you're on track`,
-      body:     `At $${monthlySavings.toLocaleString()}/month and ${returnRate}% annual return, you'll reach your $${retirementTarget.toLocaleString()} target in ${yearsToRetire} years. Even modest contribution increases could shave years off that timeline.`,
-      priority: 100,
-    });
-  }
-
-  // ── 2. Very long timeline ────────────────────────────────────────────────
-  if (yearsToRetire > 35) {
-    insights.push({
-      id:       "ttretire.late-timeline",
-      type:     "warning",
-      title:    `${yearsToRetire} years is a long road — act now`,
-      body:     `At your current savings rate, retirement is ${yearsToRetire} years away. Increasing monthly contributions by just $300 now can dramatically cut this number. The earlier you increase contributions, the more compounding amplifies the impact.`,
-      priority: 95,
-    });
-  }
-
-  // ── 3. Low monthly contributions ────────────────────────────────────────
-  if (monthlySavings < 500) {
-    insights.push({
-      id:       "ttretire.low-contributions",
-      type:     "warning",
-      title:    `$${monthlySavings}/month is below the recommended minimum`,
-      body:     `Most financial planners suggest saving 15% of gross income for retirement. At $${monthlySavings}/month, you may be behind the curve. Automating contributions — even a small increase — removes the friction of manual saving.`,
-      priority: 90,
-    });
-  }
-
-  // ── 4. Savings progress (always fires) ──────────────────────────────────
   const progressPct = Math.round(savingsProgress * 100);
-  if (progressPct < 100) {
-    insights.push({
-      id:       "ttretire.savings-progress",
-      type:     progressPct >= 50 ? "neutral" : "neutral",
-      title:    `You're ${progressPct}% of the way to your $${retirementTarget.toLocaleString()} target`,
-      body:     `Your current $${current.toLocaleString()} covers ${progressPct}% of your retirement number. You have a $${retirementGap.toLocaleString()} gap to close — and $${annualContribution.toLocaleString()} in contributions per year working toward it.`,
-      priority: 80,
-    });
-  } else {
+
+  // 1. Already there
+  if (progressPct >= 100) {
     insights.push({
       id:       "ttretire.savings-complete",
-      type:     "positive",
-      title:    `You've already hit your retirement target`,
-      body:     `Your current savings of $${current.toLocaleString()} already exceeds your $${retirementTarget.toLocaleString()} target. At ${returnRate}% return, you're in a position to consider pulling back contributions and letting compounding do the rest.`,
-      priority: 100,
+      severity: "positive",
+      category: "savings",
+      title:    `${formatCurrency(current)} — retirement target already reached`,
+      body:     `Your current savings exceed the ${formatCurrency(retirementTarget)} target. At ${returnRate}% return and a 4% withdrawal rate, ${formatCurrency(current)} supports approximately ${formatCurrency(Math.round(current * 0.04 / 12))}/month in passive income indefinitely.`,
+      metric:   { label: "Passive income at 4%", value: `${formatCurrency(Math.round(current * 0.04 / 12))}/mo` },
+    });
+    return insights;
+  }
+
+  // 2. Progress — always shown
+  insights.push({
+    id:       "ttretire.savings-progress",
+    severity: progressPct >= 50 ? "neutral" : "neutral",
+    category: "projection",
+    title:    `${progressPct}% of the way to a ${formatCurrency(retirementTarget)} retirement target`,
+    body:     `Your ${formatCurrency(current)} covers ${progressPct}% of your retirement number — ${formatCurrency(retirementGap)} still to close. At ${formatCurrency(monthlySavings)}/month and ${returnRate}% return, the projected timeline is ${yearsToRetire > 0 ? `${yearsToRetire} years` : "calculable once inputs are set"}.`,
+    metric:   { label: "Gap to target", value: formatCurrency(retirementGap) },
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      current,
+      userLabel:      "Current savings",
+      benchmarkValue: retirementTarget,
+      benchmarkLabel: "Retirement target (25×)",
+      format:         "currency",
+    },
+  });
+
+  // 3. Long timeline — urgency is compounding math
+  if (yearsToRetire > 35) {
+    const extra300 = Math.round(futureValueAnnuity((monthlySavings + 300) * 12, yearsToRetire, returnRate));
+    insights.push({
+      id:       "ttretire.late-timeline",
+      severity: "neutral",
+      category: "projection",
+      title:    `${yearsToRetire} years at current pace`,
+      body:     `With ${yearsToRetire} years of compounding ahead, increasing contributions by ${formatCurrency(300)}/month today has an outsized effect. An extra ${formatCurrency(300)}/month from now would push the 10-year balance significantly higher because the extra amount compounds for the entire remaining horizon.`,
+      metric:   { label: "Years to retire", value: `${yearsToRetire}yr` },
+    });
+  } else if (yearsToRetire <= 20 && yearsToRetire > 0) {
+    insights.push({
+      id:       "ttretire.on-track",
+      severity: "positive",
+      category: "projection",
+      title:    `On track for retirement in ${yearsToRetire} years`,
+      body:     `At ${formatCurrency(monthlySavings)}/month and ${returnRate}% annual return, you reach ${formatCurrency(retirementTarget)} in ${yearsToRetire} years. The Vanguard Center for Investor Research found consistent savers retire an average of 4 years earlier than irregular savers.`,
+      metric:   { label: "Years to retirement", value: `${yearsToRetire}yr` },
     });
   }
 
-  // ── 5. 10-year projection ────────────────────────────────────────────────
+  // 4. 10-year milestone
   if (projectedBalance10yr > 0) {
     const pct10yr = retirementTarget > 0 ? Math.round((projectedBalance10yr / retirementTarget) * 100) : 0;
     insights.push({
       id:       "ttretire.10yr-projection",
-      type:     "neutral",
-      title:    `In 10 years your portfolio could reach $${projectedBalance10yr.toLocaleString()}`,
-      body:     `At $${monthlySavings.toLocaleString()}/month and ${returnRate}% annual return, 10 years of consistent investing would put you at $${projectedBalance10yr.toLocaleString()} — ${pct10yr}% of your final target of $${retirementTarget.toLocaleString()}.`,
-      priority: 70,
-    });
-  }
-
-  // ── 6. Retirement gap framing ────────────────────────────────────────────
-  if (retirementGap > 500000) {
-    insights.push({
-      id:       "ttretire.gap-context",
-      type:     "neutral",
-      title:    `$${retirementGap.toLocaleString()} gap — but time is your best asset`,
-      body:     `A $${retirementGap.toLocaleString()} gap sounds large, but compound growth is exponential. Investing $${monthlySavings.toLocaleString()}/month at ${returnRate}% means each year of early contributions is worth significantly more than contributions made in the final decade.`,
-      priority: 65,
+      severity: "neutral",
+      category: "projection",
+      title:    `${formatCurrency(projectedBalance10yr)} projected in 10 years — ${pct10yr}% of target`,
+      body:     `${formatCurrency(monthlySavings)}/month at ${returnRate}% for 10 years from today produces ${formatCurrency(projectedBalance10yr)}. The remaining ${100 - pct10yr}% of the target is then reached through continued contributions and the compounding on this larger base.`,
+      metric:   { label: "10-year balance", value: formatCurrency(projectedBalance10yr) },
+      visualization: {
+        type:   "projection-line",
+        points: [1, 3, 5, 10, 20, Math.min(yearsToRetire, 30)].filter((y, i, a) => a.indexOf(y) === i && y <= yearsToRetire).sort((a, b) => a - b).map((yr) => {
+          const pv = current * Math.pow(1 + returnRate / 100, yr);
+          return { label: `Yr ${yr}`, value: Math.round(pv + futureValueAnnuity(annualContribution, yr, returnRate)) };
+        }),
+        format: "currency",
+        yLabel: "Portfolio value",
+        color:  "#6366f1",
+      },
     });
   }
 

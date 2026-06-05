@@ -19,37 +19,45 @@
 // ─────────────────────────────────────────────────────────────────────────────
 
 import {
-  compareToNationalCigarettePrice,
   formatCurrency,
   formatCurrencyPrecise,
 } from "@/lib/insights/benchmarks";
 import { futureValueAnnuity } from "@/lib/insights/projections";
-import type { Insight }       from "@/lib/insights/types";
+import type { Insight, InsightVisualization } from "@/lib/insights/types";
+import { usStateCigaretteDataset } from "@/lib/datasets/regional/usStateCigarettePrices";
 
 // ─── Rule thresholds ─────────────────────────────────────────────────────────
 
 /**
- * US average annual spend for a 1 pack/day smoker at the national average
- * pack price ($9.20). Source: usCostDataset.national.cigarettes × 365.
- * $9.20 × 365 = $3,358
+ * US average annual spend for a 1 pack/day smoker at the live national average
+ * pack price. Derived from the cigarette dataset so it stays in sync with the
+ * Apify-refreshed prices (national × 365).
  */
-const AVG_ANNUAL_SMOKER_SPEND = Math.round(9.2 * 365); // $3,358
+const AVG_ANNUAL_SMOKER_SPEND = Math.round(usStateCigaretteDataset.national * 365);
 
-/** Pack cost 15%+ above national avg → regional price insight fires. */
+/** Pack cost 15%+ above the state avg → "warning" severity on the benchmark. */
 const HIGH_PACK_PRICE_THRESHOLD = 15;
 
 // ─── Input / Output types ─────────────────────────────────────────────────────
 
 export interface SmokingInputs {
+  state?:        string;
   packsPerDay:   number;
   packCost:      number;
   daysSinceQuit: number;
 }
 
 export interface SmokingOutputs {
-  moneySaved:         number;
-  cigarettesAvoided:  number;
-  daysOfLifeRegained: number;
+  moneySaved:           number;
+  cigarettesAvoided:    number;
+  daysOfLifeRegained:   number;
+  annualSaving:         number;
+  investedValue10yr:    number;
+  investedValue20yr:    number;
+  totalContributed10yr: number;
+  compoundGrowth10yr:   number;
+  stateAvgPackPrice:    number;
+  vsStateAvgPct:        number;
 }
 
 // ─── Generator ────────────────────────────────────────────────────────────────
@@ -70,29 +78,27 @@ export function generateSmokingInsights(
 
   const insights: Insight[] = [];
 
-  // Annual equivalent — what the habit was costing per year
-  const annualSpend = Math.round(inputs.packsPerDay * inputs.packCost * 365);
+  const annualSpend = outputs.annualSaving;
 
-  // ── Rule 1: Annual habit cost vs average ──────────────────────────────────
-  if (annualSpend > AVG_ANNUAL_SMOKER_SPEND * 1.2) {
-    insights.push({
-      id:       "smoking.above-avg-annual-spend",
-      category: "spending",
-      severity: "warning",
-      title:    "Above-average habit cost",
-      body:     `Your habit was costing ${formatCurrency(annualSpend)}/year — above the US average of ${formatCurrency(AVG_ANNUAL_SMOKER_SPEND)}/year for a 1 pack/day smoker. Staying smoke-free keeps that entire amount in your pocket.`,
-      metric:   { label: "Was costing per year", value: formatCurrency(annualSpend) },
-    });
-  } else {
-    insights.push({
-      id:       "smoking.annual-spend",
-      category: "spending",
-      severity: "neutral",
-      title:    "Annual habit cost",
-      body:     `Your habit was costing ${formatCurrency(annualSpend)}/year. The US average is ${formatCurrency(AVG_ANNUAL_SMOKER_SPEND)}/year for a 1 pack/day smoker at the national average price of $9.20/pack.`,
-      metric:   { label: "Was costing per year", value: formatCurrency(annualSpend) },
-    });
-  }
+  // ── Rule 1: Annual habit cost vs national average — benchmark-bar ─────────
+  const aboveAvg = annualSpend > AVG_ANNUAL_SMOKER_SPEND * 1.2;
+  insights.push({
+    id:       aboveAvg ? "smoking.above-avg-annual-spend" : "smoking.annual-spend",
+    category: "spending",
+    severity: aboveAvg ? "warning" : "neutral",
+    title:    aboveAvg
+      ? `Your habit was costing ${formatCurrency(annualSpend)}/year — above average.`
+      : `Your habit was costing ${formatCurrency(annualSpend)}/year.`,
+    body:     `${aboveAvg ? "That's above" : "The US average is"} ${formatCurrency(AVG_ANNUAL_SMOKER_SPEND)}/year for a 1 pack/day smoker at the national average of ${formatCurrencyPrecise(usStateCigaretteDataset.national)}/pack. Every dollar of that now stays in your pocket.`,
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      annualSpend,
+      userLabel:      "Your habit cost / yr",
+      benchmarkValue: AVG_ANNUAL_SMOKER_SPEND,
+      benchmarkLabel: "National avg / yr",
+      format:         "currency",
+    },
+  });
 
   // ── Rule 2: 10-year investment projection of continued savings ─────────────
   const tenYearFV   = Math.round(futureValueAnnuity(annualSpend, 10));
@@ -102,80 +108,102 @@ export function generateSmokingInsights(
     id:       "smoking.investment-projection",
     category: "investment",
     severity: "positive",
-    title:    "Your savings, invested",
-    body:     `If you invest the ${formatCurrency(annualSpend)}/year you're no longer spending on cigarettes, it could grow to ${formatCurrency(tenYearFV)} in 10 years — ${formatCurrency(Math.round(tenYearGain))} in compound gains on top of your contributions.`,
+    title:    `${formatCurrency(annualSpend)}/year invested at 7% is ${formatCurrency(tenYearFV)} in 10 years`,
+    body:     `Investing the ${formatCurrency(annualSpend)}/year you are no longer spending on cigarettes at a 7% return produces ${formatCurrency(tenYearFV)} in 10 years. Of that, ${formatCurrency(Math.round(tenYearGain))} is compound growth on top of your contributions.`,
     metric:   { label: "10-yr investment value", value: formatCurrency(tenYearFV) },
+    visualization: {
+      type:   "projection-line",
+      points: [1, 3, 5, 10, 20, 30].map((yr) => ({
+        label: `Yr ${yr}`,
+        value: Math.round(futureValueAnnuity(annualSpend, yr)),
+      })),
+      format: "currency",
+      yLabel: "Invested value",
+      color:  "#10b981",
+    },
   });
 
-  // ── Rule 3: Pack price vs national average ─────────────────────────────────
-  const vsNational = compareToNationalCigarettePrice(inputs.packCost);
-  if (vsNational.direction === "above" && vsNational.percentDiff >= HIGH_PACK_PRICE_THRESHOLD) {
+  // ── Rule 3: Pack price vs YOUR STATE average — live benchmark-bar ───────────
+  const stateAvg   = outputs.stateAvgPackPrice;
+  const stateLabel = inputs.state && inputs.state !== "National" ? inputs.state : "the US average";
+  if (stateAvg > 0 && inputs.packCost > 0) {
+    const pctDiff = outputs.vsStateAvgPct;
+    const above   = pctDiff > 0;
+    const liveCaption = {
+      text: `${stateLabel} avg ${formatCurrencyPrecise(stateAvg)}/pack`,
+      asOf: usStateCigaretteDataset.currentPeriodLabel,
+      live: true,
+    };
     insights.push({
-      id:       "smoking.above-avg-pack-price",
+      id:       above ? "smoking.above-state-pack-price" : "smoking.vs-state-pack-price",
       category: "comparison",
-      severity: "neutral",
-      title:    "High pack cost area",
-      body:     `At ${formatCurrencyPrecise(inputs.packCost)}/pack, your area is ${vsNational.percentDiff.toFixed(0)}% above the national average of ${formatCurrencyPrecise(vsNational.reference)}/pack. State excise taxes are the primary driver — quitting saves you even more than the average smoker.`,
-      metric:   { label: "vs. national avg", value: `+${vsNational.percentDiff.toFixed(0)}%` },
+      severity: above && pctDiff >= HIGH_PACK_PRICE_THRESHOLD ? "warning" : "neutral",
+      title:    above
+        ? `Your pack cost is ${Math.abs(pctDiff).toFixed(0)}% above ${stateLabel}`
+        : pctDiff < 0
+          ? `Your pack cost is ${Math.abs(pctDiff).toFixed(0)}% below ${stateLabel}`
+          : `Your pack cost matches ${stateLabel}`,
+      body:     `At ${formatCurrencyPrecise(inputs.packCost)}/pack you're paying ${
+        above ? `more than` : pctDiff < 0 ? `less than` : `about`
+      } the ${formatCurrencyPrecise(stateAvg)}/pack average for ${stateLabel}. State excise taxes are the biggest driver of pack price — and the higher your price, the more quitting puts back in your pocket.`,
+      metric:   { label: `vs. ${stateLabel}`, value: `${above ? "+" : ""}${pctDiff.toFixed(0)}%` },
+      visualization: {
+        type:           "benchmark-bar",
+        userValue:      Math.round(inputs.packCost * 100) / 100,
+        userLabel:      "Your pack cost",
+        benchmarkValue: stateAvg,
+        benchmarkLabel: `${stateLabel} avg`,
+        format:         "currency",
+        caption:        liveCaption,
+      } satisfies InsightVisualization,
     });
   }
 
-  // ── Rule 4: Milestone recognition (ordered largest → smallest) ────────────
+  // ── Rule 4: Milestone recognition — with delta-card visual ─────────────
+  const wouldHaveSpent = outputs.moneySaved;
+  let milestoneId: string;
+  let milestoneTitle: string;
+  let milestoneBody: string;
+
   if (inputs.daysSinceQuit >= 3_650) {
-    insights.push({
-      id:       "smoking.milestone-10yr",
-      category: "savings",
-      severity: "positive",
-      title:    "10 years smoke-free",
-      body:     `A decade without cigarettes is exceptional. Your lung cancer risk is now close to that of a lifetime non-smoker. You've avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes and reclaimed ${outputs.daysOfLifeRegained.toFixed(1)} days of your life.`,
-      metric:   { label: "Life regained", value: `${outputs.daysOfLifeRegained.toFixed(1)} days` },
-    });
+    milestoneId    = "smoking.milestone-10yr";
+    milestoneTitle = "10 years smoke-free";
+    milestoneBody  = `Ten years without cigarettes. The American Cancer Society states that at the 10-year mark, the risk of dying from lung cancer is roughly half that of someone who kept smoking. You have avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes and reclaimed ${outputs.daysOfLifeRegained.toFixed(1)} days of life expectancy.`;
   } else if (inputs.daysSinceQuit >= 1_825) {
-    insights.push({
-      id:       "smoking.milestone-5yr",
-      category: "savings",
-      severity: "positive",
-      title:    "5 years smoke-free",
-      body:     `Five years is a landmark. Your heart disease risk is now close to that of a non-smoker. You've saved ${formatCurrency(outputs.moneySaved)} and avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes — keep going.`,
-      metric:   { label: "Money saved", value: formatCurrency(outputs.moneySaved) },
-    });
+    milestoneId    = "smoking.milestone-5yr";
+    milestoneTitle = "5 years smoke-free";
+    milestoneBody  = `Five years smoke-free. The American Heart Association notes that after 5–15 years of not smoking, the risk of stroke returns to that of a non-smoker. You have avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes.`;
   } else if (inputs.daysSinceQuit >= 365) {
-    insights.push({
-      id:       "smoking.milestone-1yr",
-      category: "savings",
-      severity: "positive",
-      title:    "One year smoke-free",
-      body:     `A full year without cigarettes — your risk of coronary heart disease is now half that of a smoker. You've already saved ${formatCurrency(outputs.moneySaved)} and avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes.`,
-      metric:   { label: "Saved so far", value: formatCurrency(outputs.moneySaved) },
-    });
+    milestoneId    = "smoking.milestone-1yr";
+    milestoneTitle = "One year smoke-free";
+    milestoneBody  = `One year smoke-free. The CDC states that after one year, the excess risk of coronary heart disease is half that of a smoker. You have avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes.`;
   } else if (inputs.daysSinceQuit >= 100) {
-    insights.push({
-      id:       "smoking.milestone-100d",
-      category: "savings",
-      severity: "positive",
-      title:    "100 days smoke-free",
-      body:     `Over 100 days in — the hardest cravings are behind you. You've saved ${formatCurrency(outputs.moneySaved)} and avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes. Keep building momentum.`,
-      metric:   { label: "Saved so far", value: formatCurrency(outputs.moneySaved) },
-    });
+    milestoneId    = "smoking.milestone-100d";
+    milestoneTitle = "100 days smoke-free";
+    milestoneBody  = `100 days without cigarettes. Nicotine cravings typically peak in the first 3 weeks and weaken significantly after 3 months. You have avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes.`;
   } else if (inputs.daysSinceQuit >= 30) {
-    insights.push({
-      id:       "smoking.milestone-30d",
-      category: "savings",
-      severity: "positive",
-      title:    "One month smoke-free",
-      body:     `One month down — physical cravings are significantly reduced. You've already saved ${formatCurrency(outputs.moneySaved)} and avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes. The best is ahead.`,
-      metric:   { label: "Already saved", value: formatCurrency(outputs.moneySaved) },
-    });
+    milestoneId    = "smoking.milestone-30d";
+    milestoneTitle = "One month smoke-free";
+    milestoneBody  = `One month without cigarettes. Within 2–12 weeks of quitting, circulation improves and lung function increases by up to 30%. You have avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes.`;
   } else {
-    insights.push({
-      id:       "smoking.milestone-early",
-      category: "savings",
-      severity: "positive",
-      title:    "Every day counts",
-      body:     `${inputs.daysSinceQuit} days smoke-free — the first weeks are the hardest. You've already saved ${formatCurrency(outputs.moneySaved)} and avoided ${outputs.cigarettesAvoided.toLocaleString()} cigarettes. You're doing it.`,
-      metric:   { label: "Saved so far", value: formatCurrency(outputs.moneySaved) },
-    });
+    milestoneId    = "smoking.milestone-early";
+    milestoneTitle = "Every day counts";
+    milestoneBody  = `${inputs.daysSinceQuit} days smoke-free. Within 20 minutes of your last cigarette, heart rate and blood pressure dropped. Within 12 hours, blood carbon monoxide levels returned to normal.`;
   }
+
+  insights.push({
+    id:       milestoneId,
+    category: "savings",
+    severity: "positive",
+    title:    milestoneTitle,
+    body:     milestoneBody,
+    visualization: {
+      type:   "delta-card",
+      before: { label: "Would have spent", value: formatCurrency(wouldHaveSpent) },
+      after:  { label: "Money kept",       value: formatCurrency(wouldHaveSpent) },
+      delta:  { label: "Saved",            value: formatCurrency(wouldHaveSpent), positive: true },
+    },
+  });
 
   return insights;
 }

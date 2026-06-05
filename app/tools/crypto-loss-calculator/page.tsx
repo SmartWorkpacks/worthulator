@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Crypto Loss Calculator 2026 – Real P&L vs Index Fund",
@@ -60,7 +59,6 @@ export default function CryptoLossCalculator() {
       <InsightStrip text="The question isn't just 'did I make money?' — it's 'did I beat what I could have made with boring index investing?'" />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The honest crypto math" cards={CONTENT_CARDS} />
-      <InsightTable slug="crypto-loss-calculator" />
       <SEOTextBlock
         title="How the crypto P&L is calculated"
         formula={`P&L             = Current Value − Total Invested

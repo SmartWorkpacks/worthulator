@@ -145,6 +145,20 @@ export interface Insight {
 
 export type InsightVisFormat = "currency" | "percent" | "number";
 
+/**
+ * Optional provenance caption rendered beneath a visual, used to surface that
+ * a benchmark/value is backed by live data and to show its vintage.
+ * Example: { text: "Texas food costs", asOf: "May 2026", live: true }
+ */
+export interface VisualCaption {
+  /** Short description of what the data represents */
+  text: string;
+  /** Human-readable vintage, e.g. "May 2026" */
+  asOf?: string;
+  /** When true, renders a subtle "live" indicator */
+  live?: boolean;
+}
+
 /** Two horizontal bars: user value vs a national/regional benchmark */
 export interface BenchmarkBarVisualization {
   type:           "benchmark-bar";
@@ -153,6 +167,7 @@ export interface BenchmarkBarVisualization {
   benchmarkValue: number;
   benchmarkLabel: string;
   format:         InsightVisFormat;
+  caption?:       VisualCaption;
 }
 
 /** Before/After columns + a delta column */
@@ -161,6 +176,7 @@ export interface DeltaCardVisualization {
   before: { label: string; value: string };
   after:  { label: string; value: string };
   delta:  { label: string; value: string; positive: boolean };
+  caption?: VisualCaption;
 }
 
 /** A line chart showing growth over time */
@@ -170,6 +186,7 @@ export interface ProjectionLineVisualization {
   format:  InsightVisFormat;
   yLabel?: string;
   color?:  string;
+  caption?: VisualCaption;
 }
 
 /** A donut/pie chart for spending breakdown */
@@ -178,6 +195,7 @@ export interface DonutVisualization {
   segments:     Array<{ label: string; value: number; color: string }>;
   centerLabel?: string;
   format:       InsightVisFormat;
+  caption?:     VisualCaption;
 }
 
 export type InsightVisualization =

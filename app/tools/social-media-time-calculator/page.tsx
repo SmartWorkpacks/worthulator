@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Social Media Time Calculator 2026 – Hours Per Year & Years of Life Lost",
@@ -112,7 +111,6 @@ export default function SocialMediaTimeCalculator() {
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What your scrolling time really costs" cards={CONTENT_CARDS} />
 
-      <InsightTable slug="social-media-time-calculator" />
       <SEOTextBlock
         title="How the Social Media Time Calculator Works"
         formula="Yearly Hours = Daily Hours × 365\nLifetime Hours = Yearly Hours × Years\nYears of Life = Lifetime Hours ÷ 24 ÷ 365"

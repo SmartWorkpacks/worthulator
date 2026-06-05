@@ -17,6 +17,9 @@ import {
   CalcDisclaimer,
 } from "@/src/templates/take-home-pay";
 import { calculateROI } from "@/lib/calculators/roiCalculatorEngine";
+import { getCpiInflationYoY } from "@/lib/datasets/finance/fredBenchmarks";
+
+const LIVE_INFLATION = getCpiInflationYoY();
 
 function fmt(v: number) { return "$" + Math.round(Math.abs(v)).toLocaleString(); }
 function fmtPct(v: number) { return v.toFixed(1) + "%"; }
@@ -39,11 +42,11 @@ export default function ROICalculator() {
   const [contribInput, setContribInput] = useState("0");
   const [feePct,       setFeePct]       = useState(1);
   const [taxPct,       setTaxPct]       = useState(15);
-  const [inflationPct, setInflationPct] = useState(2.5);
+  const [inflationPct, setInflationPct] = useState(LIVE_INFLATION);
   const [benchmarkPct, setBenchmarkPct] = useState(7);
 
   const [calculated,   setCalculated]   = useState(false);
-  const [calculating,  setCalculating]  = useState(false);
+  const [calculating,  setCalculating]  = useState(true);
   const [calcStep,     setCalcStep]     = useState(0);
   const [calcProgress, setCalcProgress] = useState(0);
   const [flash,        setFlash]        = useState(false);
@@ -96,6 +99,13 @@ export default function ROICalculator() {
     }
     setTimeout(() => { prevRef.current = 0; setCalculating(false); setCalculated(true); }, CALC_STEPS.length * dur);
   }
+
+  // Hybrid auto-reveal: play the loader once on mount, then reveal results.
+  // Subsequent input changes update live (no click needed).
+  useEffect(() => {
+    handleCalculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const outperforms = result.benchmarkOutperformance >= 0;
 
@@ -182,10 +192,10 @@ export default function ROICalculator() {
           value={benchmarkPct} min={1} max={15} step={0.5} unit="%" minLabel="1%" maxLabel="15%"
           onChange={setBenchmarkPct} />
 
-        {!calculated && (
-          <button type="button" onClick={handleCalculate} disabled={calculating}
-            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed">
-            {calculating ? "Calculating…" : "Calculate ROI →"}
+        {!calculated && !calculating && (
+          <button type="button" onClick={handleCalculate}
+            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98]">
+            Calculate ROI →
           </button>
         )}
       </div>
@@ -251,7 +261,9 @@ export default function ROICalculator() {
               formattedNet={fmt(result.realPurchasingPower)}
               rows={[
                 { label: "Initial investment",   formattedValue: fmt(initial),                    color: "gray"    },
-                { label: "Gross profit",         formattedValue: `+${fmt(result.totalProfit)}`,   color: "emerald" },
+                { label: result.totalProfit >= 0 ? "Gross profit" : "Gross loss",
+                  formattedValue: `${result.totalProfit >= 0 ? "+" : "−"}${fmt(result.totalProfit)}`,
+                  color: result.totalProfit >= 0 ? "emerald" : "red" },
                 { label: "Fee drag",             formattedValue: `−${fmt(result.feeDragTotal)}`,  color: "blue"    },
                 { label: "Tax on gains",         formattedValue: `−${fmt(result.taxDragTotal)}`,  color: "blue"    },
                 { label: "Inflation erosion",    formattedValue: `−${fmt(result.inflationErosion)}`, color: "gray" },
@@ -287,7 +299,7 @@ export default function ROICalculator() {
                 { label: "+1% return",    sentiment: "pos", onClick: () => setFinalValue((v) => Math.round(v * 1.1)) },
                 { label: "+5 years",      sentiment: "pos", onClick: () => { const v = Math.min(40, years + 5); setYears(v); setYearsInput(String(v)); } },
                 { label: "+0.5% fees",    sentiment: "neg", onClick: () => setFeePct((f) => Math.min(3, parseFloat((f + 0.5).toFixed(1)))) },
-                { label: "Reset",         sentiment: "neutral", onClick: () => { setInitial(10000); setInitialInput("10000"); setFinalValue(20000); setFinalInput("20000"); setYears(10); setYearsInput("10"); setContribution(0); setContribInput("0"); setFeePct(1); setTaxPct(15); setInflationPct(2.5); setBenchmarkPct(7); } },
+                { label: "Reset",         sentiment: "neutral", onClick: () => { setInitial(10000); setInitialInput("10000"); setFinalValue(20000); setFinalInput("20000"); setYears(10); setYearsInput("10"); setContribution(0); setContribInput("0"); setFeePct(1); setTaxPct(15); setInflationPct(LIVE_INFLATION); setBenchmarkPct(7); } },
               ]}
             />
 

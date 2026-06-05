@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateBurnout } from "@/calculations/work/burnout";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
   keywords: ["burnout calculator", "burnout risk calculator", "am I burning out", "workplace burnout test", "stress and burnout calculator"],
   alternates: { canonical: "https://worthulator.com/tools/burnout-calculator" },
 };
+
+// ── Step 5c: worked example derived from the calculator's default inputs ─────
+const EX = calculateBurnout({ hours: 45, stress: 6, sleep: 6.5 });
+const EX_BAND = EX.burnoutRisk > 70 ? "high" : EX.burnoutRisk > 40 ? "moderate" : "low";
 
 const FAQS = [
   {
@@ -105,7 +110,7 @@ export default function BurnoutCalculator() {
         description="Enter your weekly work hours, stress level, and nightly sleep to get a burnout risk score out of 100 — and know whether to act now or monitor."
         chips={["Risk score /100", "Low / Moderate / High", "Evidence-based"]}
       >
-        <CalculatorEngineLoader slug="burnout-calculator" />
+        <EngineWithInsights slug="burnout-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="77% of workers experience burnout — catching it early makes recovery far easier." />
       <StatChipsRow stats={STATS} />
@@ -115,6 +120,7 @@ export default function BurnoutCalculator() {
         paragraphs={[
           "The calculator weights three inputs: hours worked (40% of the score, scaled to a 60-hour maximum), stress level out of 10 (30% of the score), and a 20-point penalty for sleeping under 6 hours per night. The total is capped at 100.",
           "A score above 70 is high risk, 40–70 is moderate, and below 40 is low. These thresholds are informed by the Maslach Burnout Inventory — the most widely used clinical burnout assessment framework.",
+          `Worked example: 45 hours a week, stress 6/10, and 6.5 hours of sleep scores ${EX.burnoutRisk}/100 — ${EX_BAND} risk.`,
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

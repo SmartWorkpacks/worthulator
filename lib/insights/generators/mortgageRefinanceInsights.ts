@@ -1,4 +1,5 @@
 import type { Insight } from "../types";
+import { formatCurrency } from "../benchmarks";
 
 export interface MortgageRefinanceInputs {
   oldPayment: number;
@@ -95,11 +96,18 @@ export function generateMortgageRefinanceInsights(
   // lifetime-savings — always fires if positive
   if (totalSavings > 0) {
     insights.push({
-      id: "mortgage-refinance.lifetime-savings",
-      title: `$${Math.round(totalSavings).toLocaleString()} net savings over ${years} years`,
-      body: `After paying $${closingCosts.toLocaleString()} in closing costs, you net $${Math.round(totalSavings).toLocaleString()} in total savings over your ${years}-year planning horizon.`,
+      id:       "mortgage-refinance.lifetime-savings",
+      title:    `${formatCurrency(Math.round(totalSavings))} net savings over ${years} years`,
+      body:     `After paying ${formatCurrency(closingCosts)} in closing costs, you net ${formatCurrency(Math.round(totalSavings))} in total savings over your ${years}-year planning horizon.`,
       severity: "positive",
       category: "benchmark-comparison",
+      metric:   { label: "Net savings over period", value: formatCurrency(Math.round(totalSavings)) },
+      visualization: {
+        type:   "delta-card",
+        before: { label: "Closing costs paid",  value: formatCurrency(closingCosts) },
+        after:  { label: `Savings over ${years}yr`, value: formatCurrency(Math.round(savingsPerMonth * 12 * years)) },
+        delta:  { label: "Net gain",              value: formatCurrency(Math.round(totalSavings)), positive: true },
+      },
     });
   } else {
     insights.push({

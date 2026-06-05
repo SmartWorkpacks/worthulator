@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import DripWithInsights from "@/components/worthcore/DripWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -11,10 +11,10 @@ import {
 } from "@/src/templates/take-home-pay/StandardSEOSection";
 
 export const metadata: Metadata = {
-  title: "DRIP Calculator 2026 – Dividend Reinvestment Growth Calculator",
+  title: "DRIP Calculator 2026 – Dividend Reinvestment vs Cash",
   description:
-    "Model the compounding power of dividend reinvestment. See how reinvesting dividends plus regular contributions grows your portfolio over time.",
-  keywords: ["DRIP calculator", "dividend reinvestment calculator", "dividend compounding", "passive income investment"],
+    "Model dividend reinvestment growth and see exactly how much more you keep by reinvesting vs taking dividends as cash. Includes final-year dividend income and the value in today's dollars using live CPI.",
+  keywords: ["DRIP calculator", "dividend reinvestment calculator", "dividend reinvestment vs cash", "dividend compounding", "dividend snowball calculator", "passive income investment"],
   alternates: { canonical: "https://worthulator.com/tools/drip-calculator" },
 };
 
@@ -47,9 +47,9 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "$200+", color: "text-emerald-600", accent: "bg-emerald-500", label: "average monthly forgotten subscriptions the typical US household pays" },
-  { stat: "10–15×", color: "text-blue-600", accent: "bg-blue-500", label: "long-term investment multiplier on monthly savings at 7% over 30 years" },
-  { stat: "60%", color: "text-amber-600", accent: "bg-amber-500", label: "of people underestimate their monthly subscription spend by this margin" },
+  { stat: "$43,269", color: "text-emerald-600", accent: "bg-emerald-500", label: "Extra you keep by reinvesting vs taking dividends as cash — default $10k + $200/mo, 4% yield, 20 yrs" },
+  { stat: "~40%",    color: "text-blue-600",    accent: "bg-blue-500",    label: "Share of the S&P 500's long-run total return that has come from reinvested dividends" },
+  { stat: "3.3×",    color: "text-amber-600",   accent: "bg-amber-500",   label: "Return multiple in the default scenario — $58k invested grows to ~$194k with DRIP" },
 ];
 
 const CONTENT_CARDS = [
@@ -108,18 +108,31 @@ export default function DripCalculator() {
         eyebrowText="DRIP Calculator"
         title="How Much Will Your Dividend Portfolio Grow?"
         description="Model the compounding power of reinvesting dividends alongside regular contributions. Set your yield, price growth, and time horizon."
-        chips={["Dividend yield + price growth", "Monthly contributions", "25-year projection"]}
+        chips={["Reinvest vs cash comparison", "Dividend snowball", "Value in today's dollars"]}
       >
-        <CalculatorEngineLoader slug="drip-calculator" />
+        <DripWithInsights />
       </SimpleCalculatorHero>
-      <InsightStrip text="Reinvested dividends account for nearly half of the stock market's total historical return." />
+      <InsightStrip text='Reinvested dividends account for nearly half of the stock market&apos;s long-run total return — <span class="font-semibold text-gray-900">the snowball is the strategy.</span>' />
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="The power of stopping the drip"  cards={CONTENT_CARDS} />
+      <ContentCardGrid title="Why reinvesting beats taking the cash" cards={CONTENT_CARDS} />
       <SEOTextBlock
         title="How the DRIP Calculator Works"
+        formula={`Each month (dividends reinvested):
+  dividend = value × (yield / 12)
+  value    = value × (1 + priceGrowth/12) + dividend + contribution
+
+DRIP advantage = reinvested value − value if dividends taken as cash
+Today's $      = value ÷ (1 + inflation)^years   (live FRED CPI)`}
+        steps={[
+          { label: "Set your starting investment", description: "The lump sum already in dividend-paying stocks or ETFs." },
+          { label: "Add a monthly contribution", description: "Optional regular buying on top — it compounds alongside the dividends." },
+          { label: "Enter yield and price growth separately", description: "Dividend yield drives the reinvestment snowball; price growth appreciates your shares." },
+          { label: "Choose your horizon", description: "DRIP rewards time — the snowball accelerates in the later years." },
+          { label: "Compare reinvest vs cash", description: "See the dollars you'd forfeit by spending dividends, plus the value in today's money." },
+        ]}
         paragraphs={[
-          "The calculator combines dividend yield and price growth into a total annual return rate. It then calculates the future value of both your lump-sum initial investment and monthly contributions compounded at that rate.",
-          "Formula: FV = initial × (1 + monthlyRate)^months + monthlyContrib × ((1 + monthlyRate)^months − 1) / monthlyRate. The total gain is the final value minus all contributions made.",
+          "Rather than lumping dividends and price growth into one rate, this calculator simulates them separately month by month. Dividends are computed on your current balance and reinvested to buy more shares — which then pay their own dividends. With the default inputs ($10,000 + $200/month, 4% yield, 5% price growth, 20 years) the portfolio reaches about $194,000, of which roughly $60,000 is reinvested dividends.",
+          "The defining DRIP number is the comparison: reinvesting finishes at ~$194,000, while taking those same dividends as uninvested cash would leave about $150,000 — a ~$43,000 advantage purely from reinvestment. The calculator also deflates the result by the live FRED CPI rate, so a $194,000 portfolio in 20 years is shown as roughly $103,000 in today's buying power.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

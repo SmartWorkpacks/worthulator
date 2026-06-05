@@ -1,4 +1,5 @@
 import type { Insight } from "../types";
+import { formatCurrency } from "../benchmarks";
 
 export interface StudentLoanInputs {
   loan: number;
@@ -43,11 +44,18 @@ export function generateStudentLoanInsights(
   // interest-heavy — paying 50%+ extra
   if (interestToLoanRatio > 0.5) {
     insights.push({
-      id: "student-loan.interest-heavy",
-      title: `Interest adds ${Math.round(interestToLoanRatio * 100)}% to what you borrowed`,
-      body: `You borrowed $${loan.toLocaleString()} but will pay $${Math.round(interest).toLocaleString()} in interest — effectively borrowing at a cost of ${Math.round(interestToLoanRatio * 100)} cents for every dollar you received.`,
+      id:       "student-loan.interest-heavy",
+      title:    `You borrowed ${formatCurrency(loan)} and will pay back ${formatCurrency(Math.round(outputs.totalPaid))}`,
+      body:     `Interest adds ${Math.round(interestToLoanRatio * 100)}% to the original loan — ${formatCurrency(Math.round(interest))} on top of the ${formatCurrency(loan)} you received. Every extra payment made early reduces the interest total dollar for dollar, because the interest is calculated on the remaining balance.`,
       severity: "warning",
       category: "hidden-cost",
+      metric:   { label: "Total interest paid", value: formatCurrency(Math.round(interest)) },
+      visualization: {
+        type:   "delta-card",
+        before: { label: "Amount borrowed",    value: formatCurrency(loan) },
+        after:  { label: "Total repaid",        value: formatCurrency(Math.round(outputs.totalPaid)) },
+        delta:  { label: "Interest cost",       value: formatCurrency(Math.round(interest)), positive: false },
+      },
     });
   } else if (interestToLoanRatio > 0.2) {
     // moderate-interest

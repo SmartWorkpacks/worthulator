@@ -1,0 +1,15 @@
+import { chromium } from "playwright";
+import { mkdirSync } from "node:fs";
+const OUT = "screenshots";
+mkdirSync(OUT, { recursive: true });
+const BASE = "http://localhost:3000";
+const browser = await chromium.launch();
+const ctx = await browser.newContext({ viewport: { width: 1366, height: 1000 }, deviceScaleFactor: 2 });
+const page = await ctx.newPage();
+await page.goto(`${BASE}/tools/savings-goal-calculator`, { waitUntil: "networkidle" });
+await page.waitForTimeout(3000);
+await page.screenshot({ path: `${OUT}/savings-goal__fold.png`, fullPage: false });
+await page.screenshot({ path: `${OUT}/savings-goal__full.png`, fullPage: true });
+console.log("saved");
+await page.close();
+await browser.close();

@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateSalaryNegotiation } from "@/calculations/work/salaryNegotiation";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -17,6 +18,14 @@ export const metadata: Metadata = {
   keywords: ["salary negotiation calculator", "how much to ask for salary", "salary counter offer calculator", "negotiate salary"],
   alternates: { canonical: "https://worthulator.com/tools/salary-negotiation-calculator" },
 };
+
+// ── Step 5c: worked example derived from the calculator's default inputs ─────
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX = calculateSalaryNegotiation({
+  currentOffer: 65000, marketLow: 60000, marketHigh: 85000,
+  experienceYears: 5, skillMatch: 75, offerUrgencyHigh: false,
+});
+const EX_BUMP = EX.recommendedAsk - 65000;
 
 const FAQS = [
   {
@@ -105,7 +114,7 @@ export default function SalaryNegotiationCalculator() {
         description="Enter your current offer, market range, years of experience, and skill match to get a data-driven recommended salary ask — before you walk into the room."
         chips={["Market-based", "Leverage score", "Recommended ask"]}
       >
-        <CalculatorEngineLoader slug="salary-negotiation-calculator" />
+        <EngineWithInsights slug="salary-negotiation-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Negotiating your salary once can add $500,000+ to lifetime earnings." />
       <StatChipsRow stats={STATS} />
@@ -115,6 +124,7 @@ export default function SalaryNegotiationCalculator() {
         paragraphs={[
           "Enter your current offer, the market low and high for your role, your years of experience, how well your skills match the job, and whether the employer has urgent hiring needs. The calculator combines these into a leverage score and recommends a specific salary ask.",
           "The recommended ask is calculated as the higher of the market midpoint and your current offer multiplied by a leverage multiplier. The higher your leverage score, the more your ask sits above the baseline.",
+          `Worked example: a $65,000 offer against a $60k–$85k market range, with 5 years of experience and a 75% skill match, produces a recommended ask of ${usd(EX.recommendedAsk)} — a ${usd(EX_BUMP)} bump — at a ${Math.round(EX.confidenceScore)}/100 leverage score.`,
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

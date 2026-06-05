@@ -1,91 +1,57 @@
 // ─── WorthCore Insight Engine — EV vs Gas Generator ──────────────────────────
 //
 // PURPOSE:
-//   Deterministic insight rules for the "ev-vs-gas" engine calculator.
-//   Surfaces break-even framing, long-term savings, cost-per-mile comparison,
-//   and honest caveats when the EV advantage is limited.
-//
-// CALCULATOR OUTPUT SCHEMA (from calculatorConfigs.ts "ev-vs-gas"):
-//   inputs:  milesPerYear, mpg, gasPrice, kwhPer100mi, electricRate
-//   outputs: annualSavings, annualGasCost, annualEvCost,
-//            fiveYearSavings, tenYearSavings, breakEvenYears,
-//            gasCostPerMile, evCostPerMile
+//   Deterministic, visual insight rules for the "ev-vs-gas" engine calculator.
+//   Surfaces per-mile cost comparison, annual cost delta, a 10-year
+//   inflation-adjusted savings projection, break-even framing, and honest
+//   context when public charging or local prices erode the EV advantage.
 //
 // RULES:
 //   ✅ Pure TypeScript — synchronous, deterministic, no side effects
-//   ✅ $7,500 premium is a documented constant with source comment
-//   ✅ All insight IDs are stable and unique: "ev.<rule-name>"
-//   ❌ Never import React
-//   ❌ Never call fetch() or async operations
+//   ✅ Every constant is documented with a source comment (see calc module)
+//   ✅ Live prices carry a provenance caption with their vintage
+//   ❌ Never import React · never call fetch()
 //
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { formatCurrency, formatCurrencyPrecise } from "@/lib/insights/benchmarks";
-import type { Insight }                           from "@/lib/insights/types";
+import type { Insight, InsightVisualization } from "@/lib/insights/types";
+import { EV_PRICE_PREMIUM, GAS_INFLATION } from "@/calculations/finance/evVsGas";
+import { usStateFuelDataset } from "@/lib/datasets/usStateFuelPrices";
 
-// ─── Rule thresholds (documented with sources) ───────────────────────────────
-
-/**
- * Average EV purchase price premium over comparable gas vehicle, US market 2025.
- * Source: Cox Automotive / Kelley Blue Book median transaction price gap.
- * $50,000 EV median vs $42,500 gas median ≈ $7,500 premium.
- */
-const EV_PRICE_PREMIUM = 7_500;
-
-/** MPG > 35 → gas car is already fuel-efficient, EV advantage narrows. */
-const EFFICIENT_GAS_CAR_MPG = 35;
-
-/** Annual EV savings > $1,200 → meaningful savings framing fires. */
-const MEANINGFUL_SAVINGS_THRESHOLD = 1_200;
-
-/** Electricity rate > $0.20/kWh → high rate warning. US avg is $0.16/kWh. */
-const HIGH_ELECTRICITY_RATE = 0.20;
-
-/** Break-even > 12 years → payback period is long relative to vehicle life. */
 const LONG_BREAKEVEN_THRESHOLD = 12;
 
 // ─── Input / Output types ─────────────────────────────────────────────────────
 
 export interface EvVsGasInputs {
-  milesPerYear: number;
-  mpg:          number;
-  gasPrice:     number;
-  kwhPer100mi:  number;
-  electricRate: number;
+  state:             string;
+  milesPerYear:      number;
+  mpg:               number;
+  kwhPer100mi:       number;
+  publicChargingPct: number;
+  /** Optional user-entered prices; when > 0 they override the live state values. */
+  gasPriceOverride?:     number;
+  electricRateOverride?: number;
 }
 
 export interface EvVsGasOutputs {
-  annualSavings:   number;
-  annualGasCost:   number;
-  annualEvCost:    number;
-  /** Phase 6C intelligence output — annual savings × 5 */
-  fiveYearSavings?: number;
-  /** Phase 6C intelligence output — annual savings × 10 */
-  tenYearSavings?:  number;
-  /** Phase 6C intelligence output — years to recoup EV_PRICE_PREMIUM */
-  breakEvenYears?:  number;
-  /** Phase 6C intelligence output — gas cost per mile driven */
-  gasCostPerMile?:  number;
-  /** Phase 6C intelligence output — EV cost per mile driven */
-  evCostPerMile?:   number;
-  /** Phase 7D — fuel inflation savings over 10 years at 4%/yr gas price rise */
+  annualSavings:    number;
+  annualGasCost:    number;
+  annualEvCost:     number;
+  gasCostPerMile:   number;
+  evCostPerMile:    number;
+  effectiveKwhRate: number;
+  gasPrice:         number;
+  homeElectricRate: number;
+  tenYearSavings?:           number;
+  breakEvenYears?:           number;
   fuelInflationSavings10yr?: number;
-  /** Phase 7D — EV maintenance savings over 10 years (~$800/yr vs ICE) */
-  maintenanceSavings10yr?: number;
-  /** Phase 7D — total 10-year EV advantage: inflation-adjusted fuel + maintenance */
-  totalAdvantage10yr?: number;
+  maintenanceSavings10yr?:   number;
+  totalAdvantage10yr?:       number;
 }
 
 // ─── Generator ────────────────────────────────────────────────────────────────
 
-/**
- * Generate all applicable EV vs Gas insights.
- * Focuses on: break-even framing, long-term savings, cost-per-mile comparison,
- * and honest context when the EV advantage is limited.
- *
- * @param inputs   Calculator inputs  (milesPerYear, mpg, gasPrice, …)
- * @param outputs  Calculator outputs (including Phase 6C intelligence fields)
- */
 export function generateEvVsGasInsights(
   inputs: EvVsGasInputs,
   outputs: EvVsGasOutputs,
@@ -93,129 +59,150 @@ export function generateEvVsGasInsights(
   if (outputs.annualGasCost <= 0) return [];
 
   const insights: Insight[] = [];
-
-  // Resolve intelligence fields with graceful fallback calculation
-  const tenYearSavings = outputs.tenYearSavings
-    ?? Math.round(outputs.annualSavings * 10);
+  const stateLabel = inputs.state && inputs.state !== "National" ? inputs.state : "US average";
 
   const breakEvenYears = outputs.breakEvenYears
     ?? (outputs.annualSavings > 0 ? Math.round((EV_PRICE_PREMIUM / outputs.annualSavings) * 10) / 10 : 99);
+  const fuelInflation10 = outputs.fuelInflationSavings10yr ?? Math.round(outputs.annualSavings * 10);
+  const totalAdvantage10 = outputs.totalAdvantage10yr ?? (fuelInflation10 + 8000);
 
-  const gasCostPerMile = outputs.gasCostPerMile
-    ?? (inputs.mpg > 0 ? Math.round((inputs.gasPrice / inputs.mpg) * 1000) / 1000 : 0);
+  // Provenance caption shared by the live-priced visuals. If the user entered
+  // their own gas/electricity price, drop the live stamp — it's no longer
+  // dataset-sourced.
+  const customPrice =
+    (inputs.gasPriceOverride ?? 0) > 0 || (inputs.electricRateOverride ?? 0) > 0;
+  const liveCaption = customPrice
+    ? {
+        text: `Your prices: gas $${outputs.gasPrice.toFixed(2)}/gal · home power $${outputs.homeElectricRate.toFixed(2)}/kWh`,
+        asOf: usStateFuelDataset.currentPeriodLabel,
+        live: false,
+      }
+    : {
+        text: `${stateLabel} gas $${outputs.gasPrice.toFixed(2)}/gal · home power $${outputs.homeElectricRate.toFixed(2)}/kWh`,
+        asOf: usStateFuelDataset.currentPeriodLabel,
+        live: true,
+      };
 
-  const evCostPerMile = outputs.evCostPerMile
-    ?? (inputs.milesPerYear > 0 ? Math.round((outputs.annualEvCost / inputs.milesPerYear) * 1000) / 1000 : 0);
+  // ── 1. Per-mile cost — benchmark-bar (live) ───────────────────────────────
+  if (outputs.evCostPerMile > 0 && outputs.gasCostPerMile > 0) {
+    const perMileSavingsCents = Math.round((outputs.gasCostPerMile - outputs.evCostPerMile) * 1000) / 10;
+    insights.push({
+      id:       "ev.cost-per-mile",
+      severity: perMileSavingsCents > 0 ? "positive" : "neutral",
+      category: "comparison",
+      title:
+        perMileSavingsCents > 0
+          ? `Every mile costs ${perMileSavingsCents.toFixed(1)}¢ less in an EV.`
+          : `In ${stateLabel}, the per-mile costs are close.`,
+      body:
+        `At ${stateLabel} prices, fueling the gas car costs ${formatCurrencyPrecise(outputs.gasCostPerMile)} per mile; charging the EV costs ${formatCurrencyPrecise(outputs.evCostPerMile)} per mile. Across ${Number(inputs.milesPerYear).toLocaleString()} miles a year that gap is worth ${formatCurrency(outputs.annualSavings)}.`,
+      visualization: {
+        type:           "benchmark-bar",
+        userValue:      outputs.evCostPerMile,
+        userLabel:      "EV / mile",
+        benchmarkValue: outputs.gasCostPerMile,
+        benchmarkLabel: "Gas / mile",
+        format:         "currency",
+        caption:        liveCaption,
+      } satisfies InsightVisualization,
+    });
+  }
 
-  // ── Rule 1: Break-even framing ────────────────────────────────────────────
+  // ── 2. Annual fuel bill — delta-card ──────────────────────────────────────
+  insights.push({
+    id:       "ev.annual-bill",
+    severity: outputs.annualSavings >= 0 ? "positive" : "warning",
+    category: outputs.annualSavings >= 0 ? "savings" : "spending",
+    title:
+      outputs.annualSavings >= 0
+        ? `Your fuel bill drops to ${formatCurrency(outputs.annualEvCost)} a year.`
+        : `Here the EV costs ${formatCurrency(Math.abs(outputs.annualSavings))} more a year to fuel.`,
+    body:
+      outputs.annualSavings >= 0
+        ? `Switching from the gas car to an EV takes your annual fuel cost from ${formatCurrency(outputs.annualGasCost)} down to ${formatCurrency(outputs.annualEvCost)} — ${formatCurrency(outputs.annualSavings)} back in your pocket every year, or about ${formatCurrency(Math.round(outputs.annualSavings / 12))} a month.`
+        : `With ${stateLabel} electricity prices${inputs.publicChargingPct >= 25 ? ` and ${inputs.publicChargingPct}% public fast charging` : ""}, the EV's annual fuel cost of ${formatCurrency(outputs.annualEvCost)} runs above the gas car's ${formatCurrency(outputs.annualGasCost)}. Charging more at home would close the gap.`,
+    visualization: {
+      type:   "delta-card",
+      before: { label: "Gas car / yr", value: formatCurrency(outputs.annualGasCost) },
+      after:  { label: "EV / yr",      value: formatCurrency(outputs.annualEvCost) },
+      delta:  {
+        label:    outputs.annualSavings >= 0 ? "Saved / yr" : "Extra / yr",
+        value:    `${outputs.annualSavings >= 0 ? "" : "−"}${formatCurrency(Math.abs(outputs.annualSavings))}`,
+        positive: outputs.annualSavings >= 0,
+      },
+    } satisfies InsightVisualization,
+  });
+
+  // ── 3. 10-year inflation-adjusted projection — projection-line ────────────
+  if (outputs.annualSavings > 0) {
+    const sampleYears = [1, 2, 3, 5, 7, 10];
+    let cumulative = 0;
+    const cumByYear: number[] = [];
+    for (let y = 1; y <= 10; y++) {
+      cumulative += Math.max(0, outputs.annualGasCost * Math.pow(1 + GAS_INFLATION, y - 1) - outputs.annualEvCost);
+      cumByYear[y] = cumulative;
+    }
+    const points = sampleYears.map((y) => ({ label: `Yr ${y}`, value: Math.round(cumByYear[y]) }));
+
+    insights.push({
+      id:       "ev.ten-year-projection",
+      severity: "positive",
+      category: "projection",
+      title:    `Over 10 years you keep about ${formatCurrency(fuelInflation10)}.`,
+      body:     `Gas prices have risen roughly ${Math.round(GAS_INFLATION * 100)}% a year historically. As they climb, your fixed home-charging cost makes the gap widen — the savings curve bends upward rather than running flat.`,
+      visualization: {
+        type:   "projection-line",
+        points,
+        format: "currency",
+        yLabel: "Cumulative savings",
+        color:  "#10b981",
+        caption: { text: `Assumes ${Math.round(GAS_INFLATION * 100)}%/yr gas inflation, flat electricity` },
+      } satisfies InsightVisualization,
+    });
+  }
+
+  // ── 4. Break-even on the EV price premium — metric framing ────────────────
   if (outputs.annualSavings > 0 && breakEvenYears < LONG_BREAKEVEN_THRESHOLD) {
     insights.push({
       id:       "ev.breakeven",
-      category: "investment",
       severity: "positive",
-      title:    `EV pays for itself in ${breakEvenYears} years`,
-      body:     `With ${formatCurrency(outputs.annualSavings)}/year in fuel savings, the typical ${formatCurrency(EV_PRICE_PREMIUM)} EV price premium is recouped in ${breakEvenYears} year${breakEvenYears === 1 ? "" : "s"} — after which you're ahead on every mile. This doesn't include tax credits, which can reduce break-even further.`,
-      metric:   { label: "Break-even point", value: `${breakEvenYears} years` },
+      category: "investment",
+      title:    `Fuel savings repay the EV price premium in ${breakEvenYears} years.`,
+      body:     `EVs still sell for about ${formatCurrency(EV_PRICE_PREMIUM)} more than a comparable gas car. At ${formatCurrency(outputs.annualSavings)}/year in fuel savings that premium is recovered in ${breakEvenYears} year${breakEvenYears === 1 ? "" : "s"} — before any federal tax credit, which can shorten it further.`,
+      metric:   { label: "Break-even", value: `${breakEvenYears} yrs` },
     });
-  } else if (outputs.annualSavings > 0 && breakEvenYears >= LONG_BREAKEVEN_THRESHOLD) {
+  } else if (outputs.annualSavings > 0) {
     insights.push({
       id:       "ev.long-breakeven",
+      severity: "neutral",
       category: "neutral",
+      title:    `The ${formatCurrency(EV_PRICE_PREMIUM)} price premium takes ${breakEvenYears} years to recover on fuel alone.`,
+      body:     `At ${formatCurrency(outputs.annualSavings)}/year, fuel savings recover the EV premium slowly here. Federal tax credits of up to ${formatCurrency(7500)} for qualifying EVs can change this materially — check current IRS eligibility.`,
+      metric:   { label: "Break-even", value: `${breakEvenYears} yrs` },
+    });
+  }
+
+  // ── 5. Public-charging realism ────────────────────────────────────────────
+  if (inputs.publicChargingPct >= 50 && outputs.annualSavings > 0) {
+    insights.push({
+      id:       "ev.public-charging",
       severity: "neutral",
-      title:    "Long break-even period",
-      body:     `At ${formatCurrency(outputs.annualSavings)}/year in savings, recouping the ${formatCurrency(EV_PRICE_PREMIUM)} EV premium takes ${breakEvenYears} years. Federal tax credits ($3,750–$7,500 for qualifying EVs) can bring this down significantly — check current IRS eligibility for your purchase.`,
-      metric:   { label: "Break-even (before credits)", value: `${breakEvenYears} years` },
+      category: "hidden-cost",
+      title:    `${inputs.publicChargingPct}% public charging is quietly costing you.`,
+      body:     `Public DC fast charging runs about 3x the price of home charging, which is why your blended rate sits at ${formatCurrencyPrecise(outputs.effectiveKwhRate)}/kWh. Shifting more sessions to overnight home charging is the single biggest lever on your EV running cost.`,
+      metric:   { label: "Blended rate", value: `${formatCurrencyPrecise(outputs.effectiveKwhRate)}/kWh` },
     });
   }
 
-  // ── Rule 2: 10-year savings perspective ───────────────────────────────────
-  if (outputs.annualSavings > 0 && tenYearSavings > EV_PRICE_PREMIUM) {
-    insights.push({
-      id:       "ev.ten-year-savings",
-      category: "projection",
-      severity: "positive",
-      title:    "Strong 10-year savings",
-      body:     `Over 10 years your EV fuel savings total ${formatCurrency(tenYearSavings)} — exceeding the ${formatCurrency(EV_PRICE_PREMIUM)} price premium by ${formatCurrency(tenYearSavings - EV_PRICE_PREMIUM)}. Long-term ownership strongly favors the EV on fuel costs alone.`,
-      metric:   { label: "10-year savings", value: formatCurrency(tenYearSavings) },
-    });
-  }
-
-  // ── Rule 3: Meaningful annual savings ─────────────────────────────────────
-  if (outputs.annualSavings >= MEANINGFUL_SAVINGS_THRESHOLD) {
-    insights.push({
-      id:       "ev.meaningful-savings",
-      category: "savings",
-      severity: "positive",
-      title:    `Save ${formatCurrency(Math.round(outputs.annualSavings / 12))}/month on fuel`,
-      body:     `Switching to an EV reduces your annual fuel bill from ${formatCurrency(outputs.annualGasCost)} to ${formatCurrency(outputs.annualEvCost)} — saving ${formatCurrency(outputs.annualSavings)}/year or ${formatCurrency(Math.round(outputs.annualSavings / 12))}/month. That's a real, recurring reduction in your monthly cost of living.`,
-      metric:   { label: "Monthly savings", value: formatCurrency(Math.round(outputs.annualSavings / 12)) },
-    });
-  }
-
-  // ── Rule 4: Cost per mile comparison ──────────────────────────────────────
-  if (gasCostPerMile > 0 && evCostPerMile > 0) {
-    const perMileSavings = Math.round((gasCostPerMile - evCostPerMile) * 1000) / 1000;
-    if (perMileSavings > 0.01) {
-      insights.push({
-        id:       "ev.cost-per-mile",
-        category: "comparison",
-        severity: "neutral",
-        title:    "Per-mile fuel cost comparison",
-        body:     `Your gas car costs ${formatCurrencyPrecise(gasCostPerMile)}/mile in fuel; an EV costs ${formatCurrencyPrecise(evCostPerMile)}/mile at home charging rates. On ${Number(inputs.milesPerYear).toLocaleString()} miles per year, the EV saves ${(perMileSavings * 100).toFixed(1)}¢ per mile.`,
-        metric:   { label: "Savings per mile", value: `${(perMileSavings * 100).toFixed(1)}¢` },
-      });
-    }
-  }
-
-  // ── Rule 5: Efficient gas car — honest framing ────────────────────────────
-  if (inputs.mpg >= EFFICIENT_GAS_CAR_MPG && outputs.annualSavings < MEANINGFUL_SAVINGS_THRESHOLD) {
-    insights.push({
-      id:       "ev.efficient-gas-car",
-      category: "neutral",
-      severity: "neutral",
-      title:    "Your gas car is already efficient",
-      body:     `At ${inputs.mpg} MPG your gas vehicle is already in the top tier for fuel efficiency. The fuel cost gap vs an EV is smaller than average — your savings of ${formatCurrency(outputs.annualSavings)}/year are real but more modest. The EV case may rest more on long-term maintenance savings and environmental factors.`,
-      metric:   { label: "Gas car MPG", value: `${inputs.mpg} MPG` },
-    });
-  }
-
-  // ── Rule 6: High electricity rate ─────────────────────────────────────────
-  if (inputs.electricRate >= HIGH_ELECTRICITY_RATE && outputs.annualSavings < MEANINGFUL_SAVINGS_THRESHOLD / 2) {
-    insights.push({
-      id:       "ev.high-electricity-rate",
-      category: "warning",
-      severity: "neutral",
-      title:    "High electricity rate narrows EV advantage",
-      body:     `At ${formatCurrencyPrecise(inputs.electricRate)}/kWh your electricity cost is above the US average of $0.16/kWh. This reduces the EV fuel savings significantly. Consider whether you can charge at lower off-peak rates, or use workplace or public charging at lower tariffs to improve your EV economics.`,
-      metric:   { label: "Your electricity rate", value: formatCurrencyPrecise(inputs.electricRate) },
-    });
-  }
-
-  // ── Rule 7: Fuel inflation protection ────────────────────────────────────
-  const fuelInflationSavings10yr = outputs.fuelInflationSavings10yr
-    ?? Math.round((() => { let s = 0; for (let i = 0; i < 10; i++) { s += Math.max(0, outputs.annualGasCost * Math.pow(1.04, i) - outputs.annualEvCost); } return s; })());
-  if (outputs.annualSavings > 0 && fuelInflationSavings10yr > outputs.annualSavings * 10) {
-    insights.push({
-      id:       "ev.fuel-inflation-protection",
-      category: "projection",
-      severity: "positive",
-      title:    `If fuel rises 4%/yr, your 10-year savings grow to ${formatCurrency(fuelInflationSavings10yr)}`,
-      body:     `Gas prices have averaged ~4% annual inflation historically. With that trajectory, your fuel savings over 10 years balloon to ${formatCurrency(fuelInflationSavings10yr)} — ${formatCurrency(fuelInflationSavings10yr - outputs.annualSavings * 10)} more than the flat estimate. An EV is an inflation hedge on fuel.`,
-      metric:   { label: "Inflation-adjusted 10-yr savings", value: formatCurrency(fuelInflationSavings10yr) },
-    });
-  }
-
-  // ── Rule 8: Total 10-year advantage (fuel + maintenance) ──────────────────
-  const totalAdvantage10yr = outputs.totalAdvantage10yr
-    ?? fuelInflationSavings10yr + 8000;
-  if (totalAdvantage10yr > 10000) {
+  // ── 6. Total 10-year advantage (fuel + maintenance) ───────────────────────
+  if (outputs.annualSavings > 0 && totalAdvantage10 > 10_000) {
     insights.push({
       id:       "ev.total-advantage",
-      category: "projection",
       severity: "positive",
-      title:    `Total 10-year advantage: ${formatCurrency(totalAdvantage10yr)}`,
-      body:     `Including fuel inflation savings (${formatCurrency(fuelInflationSavings10yr)}) and ~$8,000 in avoided maintenance — EVs average $800/yr less in repairs vs gas cars — your total 10-year financial advantage reaches ${formatCurrency(totalAdvantage10yr)}.`,
-      metric:   { label: "10-yr fuel + maintenance edge", value: formatCurrency(totalAdvantage10yr) },
+      category: "projection",
+      title:    `Total 10-year advantage: about ${formatCurrency(totalAdvantage10)}.`,
+      body:     `Adding inflation-adjusted fuel savings (${formatCurrency(fuelInflation10)}) to roughly ${formatCurrency(outputs.maintenanceSavings10yr ?? 8000)} in avoided maintenance — EVs skip oil changes, transmission service, and most brake jobs — the EV's total financial edge over 10 years reaches about ${formatCurrency(totalAdvantage10)}.`,
+      metric:   { label: "10-yr edge", value: formatCurrency(totalAdvantage10) },
     });
   }
 

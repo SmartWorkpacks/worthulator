@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Tax Bracket Calculator 2026 – Effective vs Marginal Rate",
@@ -40,28 +39,49 @@ const CONTENT_CARDS = [
 
 const RELATED_CALCS = [
   { icon: "💵", accent: "bg-emerald-500/10", title: "Take-Home Pay Calculator",   description: "See exactly what lands in your account.",        href: "/tools/take-home-pay-calculator" },
-  { icon: "🧾", accent: "bg-blue-500/10",    title: "Pay Stub Calculator",        description: "Decode every line of your paycheck.",             href: "/tools/pay-stub-calculator" },
-  { icon: "💼", accent: "bg-amber-500/10",   title: "Self-Employed Tax",          description: "SE tax, quarterly estimates, deductions.",        href: "/tools/self-employed-tax-calculator" },
-  { icon: "💭", accent: "bg-purple-500/10",  title: "Dream Salary Calculator",    description: "Work backwards from the life you want.",          href: "/tools/dream-salary-calculator" },
+  { icon: "💼", accent: "bg-blue-500/10",    title: "Self-Employed Tax",          description: "SE tax, quarterly estimates, deductions.",        href: "/tools/self-employed-tax" },
+  { icon: "🧾", accent: "bg-amber-500/10",   title: "Sales Tax Calculator",       description: "Add or back out sales tax fast.",                 href: "/tools/sales-tax-calculator" },
+  { icon: "📊", accent: "bg-purple-500/10",  title: "Budget Calculator",          description: "Plan your after-tax monthly budget.",             href: "/tools/budget-calculator" },
 ];
+
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "Tax Bracket Calculator",
+      url: "https://worthulator.com/tools/tax-bracket-calculator",
+      applicationCategory: "FinanceApplication",
+      description: "Compute 2025 US federal income tax across the progressive brackets and compare your marginal bracket to your effective rate.",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
 
 export default function TaxBracketCalculator() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SimpleCalculatorHero
         eyebrowIcon="📊"
         eyebrowText="Tax Brackets"
         title="Tax Bracket Calculator"
-        description="Enter your income and total taxes paid to see your effective rate vs your marginal bracket. Understand the difference and stop over-estimating what you owe."
-        chips={["Effective tax rate", "Marginal bracket", "Side-by-side comparison"]}
+        description="Enter your income, filing status, and pre-tax contributions. We compute your 2025 federal income tax across the brackets and show your effective rate next to your marginal bracket."
+        chips={["Effective tax rate", "Marginal bracket", "2025 brackets built in"]}
       >
-        <CalculatorEngineLoader slug="tax-bracket-calculator" />
+        <EngineWithInsights slug="tax-bracket-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Most people overestimate their tax rate. Your effective rate is almost always several points below your marginal bracket." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Tax rates most people misunderstand" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="tax-bracket-calculator" />
       <SEOTextBlock
         title="Marginal vs effective rate formula"
         formula={`Tax Owed       = sum of (income in each bracket × bracket rate)

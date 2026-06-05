@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import TrueHourlyWageWithInsights from "@/components/worthcore/TrueHourlyWageWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
+import { calculateTrueHourlyWage } from "@/calculations/work/trueHourlyWage";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
   StatChipsRow,
@@ -9,6 +10,9 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
+
+// ── Worked example derived from the calculator's default inputs (Step 5c) ─────
+const EX = calculateTrueHourlyWage({ salary: 65000, hoursPerWeek: 40, commuteHrsDay: 0.5, decompressHrs: 0.5 });
 
 export const metadata: Metadata = {
   title: "True Hourly Wage Calculator 2026 – Your Real Pay After Commute & Prep Time",
@@ -110,7 +114,7 @@ export default function TrueHourlyWage() {
         description="Factor in your commute, work prep, and decompression time to find your real hourly rate — not just your salary divided by 40 hours."
         chips={["Commute included", "Decompression time", "True vs advertised rate"]}
       >
-        <CalculatorEngineLoader slug="true-hourly-wage" />
+        <TrueHourlyWageWithInsights />
       </SimpleCalculatorHero>
       <InsightStrip text="Your contract says 40 hours. Your job demands more. Here's what you're really earning." />
       <StatChipsRow stats={STATS} />
@@ -119,7 +123,7 @@ export default function TrueHourlyWage() {
         title="How Your True Hourly Wage Is Calculated"
         paragraphs={[
           "This calculator adds commute time (both directions × 5 days × 52 weeks) and daily decompression time (× 5 days × 52 weeks) to your contracted work hours. Your salary is then divided by this total to give your true effective hourly rate.",
-          "For example: $65,000/year with a 30-min each-way commute and 30-min decompression adds 260 unpaid hours/year, reducing your effective rate from $31.25/hr to approximately $26/hr.",
+          `For example: $65,000/year with a 30-min each-way commute and 30-min decompression adds ${EX.extraHoursPerYear.toLocaleString()} unpaid hours/year (${EX.timeRobbedWeeks} work weeks), reducing your effective rate from $${EX.advertisedHourly.toFixed(2)}/hr to about $${EX.trueHourly.toFixed(2)}/hr — a $${EX.hourlyLoss.toFixed(2)}/hr cut.`,
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import CompoundInterestCalculator from "@/components/calculators/CompoundInterestCalculator";
 import CompoundInterestLeadGen from "@/components/calculators/CompoundInterestLeadGen";
-import RelatedTools from "@/components/RelatedTools";
-import InsightTable from "@/components/insights/InsightTable";
+import RelatedTools from "@/components/RelatedTools";
 
 // ─── Metadata ────────────────────────────────────────────────────────────────
 
 export const metadata: Metadata = {
-  title: "Compound Interest Calculator 2025 – Investment Growth, Inflation & Tax",
+  title: "Compound Interest Calculator 2026 – Investment Growth, Inflation & Tax",
   description:
     "Free compound interest calculator. See how your money grows over time with monthly contributions, inflation adjustment, contribution growth, and tax impact simulation. Includes year-by-year schedule.",
   keywords: [
@@ -119,7 +118,7 @@ export default function CompoundInterestCalculatorPage() {
       ))}
 
       {/* ── Hero + Calculator — shared grid background ─────────────────── */}
-      <div className="relative overflow-hidden bg-gradient-to-b from-[#f7faf8] to-white">
+      <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
         {/* Ambient glow */}
         <div className="pointer-events-none absolute -top-10 left-1/4 h-64 w-64 rounded-full bg-emerald-200/25 blur-[72px]" />
         <div className="pointer-events-none absolute top-0 right-1/4 h-48 w-48 rounded-full bg-cyan-100/20 blur-[56px]" />
@@ -306,7 +305,9 @@ export default function CompoundInterestCalculatorPage() {
               per year but inflation averages 3%, your real (purchasing power) return is only
               about 4%. The future dollar figure shown in most calculators is a <em>nominal</em>{" "}
               figure — what your account will say in twenty years. The inflation-adjusted figure
-              tells you what that money can actually buy in today&apos;s terms.
+              tells you what that money can actually buy in today&apos;s terms. The calculator&apos;s
+              inflation field defaults to the current US CPI rate pulled from live Federal Reserve
+              (FRED) data, so the &quot;today&apos;s money&quot; view starts from a real, current number.
             </p>
             <p className="text-base leading-relaxed text-gray-600 mb-4">
               For long-term planning, the inflation-adjusted return is almost always the more
@@ -375,7 +376,6 @@ export default function CompoundInterestCalculatorPage() {
         </div>
       </section>
 
-            <InsightTable slug="compound-interest-calculator" />
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="border-t border-gray-100 bg-gray-50 px-5 py-14 sm:px-8 lg:px-16">
         <div className="mx-auto max-w-5xl">

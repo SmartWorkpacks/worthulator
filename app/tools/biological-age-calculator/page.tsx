@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateBiologicalAge } from "@/calculations/health/biologicalAge";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -17,6 +18,9 @@ export const metadata: Metadata = {
   keywords: ["biological age calculator", "real age calculator", "how old am I biologically", "lifestyle age test"],
   alternates: { canonical: "https://worthulator.com/tools/biological-age-calculator" },
 };
+
+// ── Step 5c: worked example derived from the live calculation module ─────────
+const EX = calculateBiologicalAge({ age: 35, sleep: 5, exercise: 1, bmi: 24, smoker: false });
 
 const FAQS = [
   {
@@ -105,7 +109,7 @@ export default function BiologicalAgeCalculator() {
         description="Answer a few lifestyle questions about sleep, exercise, BMI, and smoking to get an estimate of your biological age — and an ageing risk score you can actually improve."
         chips={["Lifestyle-based", "Biological age estimate", "Risk score"]}
       >
-        <CalculatorEngineLoader slug="biological-age-calculator" />
+        <EngineWithInsights slug="biological-age-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Your biological age is not fixed — lifestyle changes can measurably reverse it." />
       <StatChipsRow stats={STATS} />
@@ -115,6 +119,7 @@ export default function BiologicalAgeCalculator() {
         paragraphs={[
           "This calculator uses an evidence-based lifestyle adjustment model. Starting from your chronological age, it adds years for known risk factors: sleeping under 6 hours per night, exercising fewer than 2 days per week, smoking, and having a BMI above 30. Each factor is supported by peer-reviewed longevity research.",
           "The ageing risk score (0–100) reflects the total lifestyle burden. A score of zero means all factors are in the optimal range. Improving any single factor — particularly sleep and smoking — produces the largest reductions.",
+          `Worked example: a 35-year-old who sleeps 5 hours and exercises just once a week adds ${EX.ageDelta} years — a biological age of ${EX.biologicalAge} and a ${EX.riskScore}/100 risk score from ${EX.riskFactorCount} risk factors.`,
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

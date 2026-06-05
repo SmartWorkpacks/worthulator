@@ -1,4 +1,4 @@
-import type { Insight } from "../index";
+import type { Insight } from "../types";
 
 interface LifeExpectancyInputs {
   age:      number;
@@ -16,9 +16,14 @@ interface LifeExpectancyOutputs {
   productiveYearsRemaining?: number;
 }
 
+// US life expectancy: 76.1 years (CDC 2022).
+// Smoking reduces life expectancy by ~10 years (CDC).
+// Physical inactivity costs 4–6 life-years (WHO; Lancet 2012).
+// Obesity (BMI >30) associated with 4–8 year reduction (NEJM 2010).
+
 export function lifeExpectancyInsights(
   inputs: LifeExpectancyInputs,
-  outputs: LifeExpectancyOutputs
+  outputs: LifeExpectancyOutputs,
 ): Insight[] {
   const results: Insight[] = [];
 
@@ -33,75 +38,99 @@ export function lifeExpectancyInsights(
   const days      = outputs.daysRemaining            ?? 0;
   const prodYears = outputs.productiveYearsRemaining ?? 0;
 
-  // 1. Core expectancy framing
+  // 1. Core expectancy — always shown
   results.push({
-    id: "lifeexp.core",
-    type: "info",
-    message: `Based on your current lifestyle, estimated life expectancy is ${lifeExp} — leaving roughly ${yearsLeft} years (${weeks.toLocaleString()} weeks) from now.`,
-    detail: `This is a planning estimate, not a prediction. Use it as a prompt to live with more intention.`,
+    id:       "lifeexp.core",
+    severity: "neutral",
+    category: "projection",
+    title:    `Estimated life expectancy: ${lifeExp} — ${yearsLeft} years (${weeks.toLocaleString()} weeks) remaining`,
+    body:     `The US average life expectancy is 76.1 years (CDC 2022). Your estimate of ${lifeExp} reflects modifiable lifestyle inputs. ${days.toLocaleString()} days remain in this projection — a figure that changes with every lifestyle adjustment.`,
+    metric:   { label: "Years remaining", value: `${yearsLeft}yr` },
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      lifeExp,
+      userLabel:      "Your estimate",
+      benchmarkValue: 76.1,
+      benchmarkLabel: "US average (CDC 2022)",
+      format:         "number",
+    },
   });
 
-  // 2. Smoking is the biggest lever
+  // 2. Smoking — single largest modifiable factor
   if (smoker === 1) {
     results.push({
-      id: "lifeexp.smoking",
-      type: "warning",
-      message: `Smoking is estimated to reduce life expectancy by ~10 years. That's ${10 * 52} weeks removed from your projection.`,
-      detail: `Quitting at ${age} still recovers many of those years. Life expectancy begins improving within months of quitting.`,
+      id:       "lifeexp.smoking",
+      severity: "warning",
+      category: "warning",
+      title:    `Smoking reduces life expectancy by approximately 10 years — that is ${10 * 52} fewer weeks`,
+      body:     `The CDC estimates smoking reduces US life expectancy by roughly 10 years on average. Quitting at ${age} still recovers a significant portion: research shows life expectancy gain from quitting at age 35 is 6–8 years; at age 55, it remains 4–5 years (NEJM 2013).`,
+      metric:   { label: "Years lost to smoking", value: "~10yr" },
     });
   }
 
-  // 3. Exercise impact
+  // 3. Exercise
   if (exercise === 0) {
     results.push({
-      id: "lifeexp.no-exercise",
-      type: "warning",
-      message: `Not exercising costs an estimated 4–6 years of life expectancy. Even 2 sessions/week of 30-minute walks measurably changes this.`,
-      detail: `Exercise is one of the most studied longevity interventions. The dose required to see benefit is lower than most people think.`,
+      id:       "lifeexp.no-exercise",
+      severity: "warning",
+      category: "warning",
+      title:    `No exercise — physical inactivity is linked to 4–6 fewer life-years`,
+      body:     `A 2012 Lancet study of 670,000 adults found physical inactivity reduces life expectancy by 4–6 years. Meeting WHO guidelines (150 minutes of moderate activity per week) begins showing measurable life-expectancy benefit within 1–2 years of consistent exercise.`,
+      metric:   { label: "Years at risk", value: "4–6yr" },
     });
-  } else if (exercise === 3) {
+  } else if (exercise >= 3) {
     results.push({
-      id: "lifeexp.high-exercise",
-      type: "positive",
-      message: `5+ exercise sessions per week adds ~6 years to life expectancy in this model — you're doing the right things.`,
-      detail: `High-frequency exercisers consistently outlive sedentary peers by 5–10 years across multiple large cohort studies.`,
+      id:       "lifeexp.high-exercise",
+      severity: "positive",
+      category: "comparison",
+      title:    `${exercise >= 3 ? "5+" : exercise}+ exercise sessions/week — linked to 6+ additional life-years`,
+      body:     `High-frequency exercisers in multiple large cohort studies (Harvard Alumni Health Study; Copenhagen City Heart Study) consistently outlive sedentary peers by 5–10 years. Regular vigorous activity is the single most studied longevity intervention.`,
+      metric:   { label: "Exercise benefit", value: "+6yr estimated" },
     });
   }
 
-  // 4. Improvement potential
+  // 4. BMI impact
+  if (bmi > 30) {
+    results.push({
+      id:       "lifeexp.bmi-risk",
+      severity: "neutral",
+      category: "warning",
+      title:    `BMI above 30 — associated with 4–8 fewer life-years (NEJM 2010)`,
+      body:     `A 2010 New England Journal of Medicine analysis of 1.46 million adults found obesity (BMI >30) reduces life expectancy by 4–8 years depending on severity. Even a 5–10% reduction in body weight significantly improves the markers associated with this risk.`,
+      metric:   { label: "BMI", value: `${bmi}` },
+    });
+  }
+
+  // 5. Improvement potential
   if (improve > 0) {
     results.push({
-      id: "lifeexp.improvement",
-      type: "opportunity",
-      message: `Optimising your lifestyle could add up to ${improve} more years to your life expectancy from this baseline.`,
-      detail: `No single change produces all of this — but stacking small, consistent lifestyle improvements compounds over decades.`,
+      id:       "lifeexp.improvement",
+      severity: "positive",
+      category: "projection",
+      title:    `Lifestyle optimisation could add up to ${improve} years to this projection`,
+      body:     `The active risk factors in your profile account for up to ${improve} years below your optimised potential. No single change closes the full gap — the evidence consistently shows that stacking improvements across sleep, exercise, weight, and smoking produces compounding longevity benefits.`,
+      metric:   { label: "Potential years gained", value: `+${improve}yr` },
     });
   }
 
-  // 5. Productive years framing (career/creative years left)
+  // 6. Productive years or post-65
   if (prodYears > 0) {
     results.push({
-      id: "lifeexp.productive-years",
-      type: "milestone",
-      message: `You have an estimated ${prodYears} productive working years ahead (to age 65) — enough time to build, change careers, or leave a legacy.`,
-      detail: `${prodYears} years is ${prodYears * 52} weeks — more than enough to become expert-level in a new field, build a business, or pivot meaningfully.`,
+      id:       "lifeexp.productive-years",
+      severity: "positive",
+      category: "projection",
+      title:    `${prodYears} estimated working years ahead — ${prodYears * 52} weeks`,
+      body:     `${prodYears} years to the traditional retirement age of 65 is ${prodYears * 52} weeks. That is enough to start and complete multiple multi-year projects, change careers, or build something from scratch that compounds for decades beyond.`,
+      metric:   { label: "Working years ahead", value: `${prodYears}yr` },
     });
   } else if (age >= 65) {
     results.push({
-      id: "lifeexp.post-65",
-      type: "positive",
-      message: `At ${age}, you're past the traditional retirement marker — with ${yearsLeft} years remaining. These are bonus productive years, entirely on your terms.`,
-      detail: `Many people do their most meaningful work in retirement — freed from obligation, they build, create, and contribute more intentionally.`,
-    });
-  }
-
-  // 6. Days remaining — visceral framing
-  if (days > 0) {
-    results.push({
-      id: "lifeexp.days-framing",
-      type: "info",
-      message: `${yearsLeft} years is ${days.toLocaleString()} days. Each one is a new opportunity to make progress toward what matters most.`,
-      detail: `"How we spend our days is, of course, how we spend our lives." — Annie Dillard`,
+      id:       "lifeexp.post-65",
+      severity: "positive",
+      category: "comparison",
+      title:    `${yearsLeft} years remaining past traditional retirement age`,
+      body:     `At ${age}, the traditional retirement marker has passed. ${yearsLeft} years is ${yearsLeft * 52} weeks — a substantial span entirely available for self-directed activity, creative work, or deepening relationships.`,
+      metric:   { label: "Post-65 years", value: `${yearsLeft}yr` },
     });
   }
 

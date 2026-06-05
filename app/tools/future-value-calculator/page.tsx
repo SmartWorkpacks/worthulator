@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import FutureValueWithInsights from "@/components/worthcore/FutureValueWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,14 +9,18 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
-  title: "Future Value Calculator 2026 – See What Your Money Grows To",
+  title: "Future Value Calculator 2026 – Nominal + Inflation-Adjusted Growth",
   description:
-    "See exactly what your investment is worth in 10, 20, or 30 years. Enter your initial deposit, monthly contributions, and expected return rate for an instant compound interest projection.",
-  keywords: ["future value calculator", "compound interest calculator", "investment growth calculator"],
+    "See what your investment grows to with compound interest and monthly contributions — plus what it actually buys in today's dollars, deflated by the live FRED CPI inflation rate.",
+  keywords: [
+    "future value calculator",
+    "compound interest calculator",
+    "investment growth calculator",
+    "inflation adjusted future value",
+    "real return calculator",
+  ],
   alternates: { canonical: "https://worthulator.com/tools/future-value-calculator" },
   robots: { index: true, follow: true },
 };
@@ -24,47 +28,47 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "What is future value?",
-    a: "Future value is what a sum of money today will be worth at a specific point in the future, assuming it grows at a given rate. It accounts for both your initial deposit and any regular contributions.",
+    a: "Future value is what a sum of money today will be worth at a specific point in the future, assuming it grows at a given rate. This calculator accounts for both your initial deposit and your regular monthly contributions, compounded monthly.",
   },
   {
     q: "How does compound interest work?",
-    a: "Compound interest means you earn interest on your interest. Each month, your balance grows — and the next month's interest is calculated on that larger balance. Over decades, this creates exponential growth.",
+    a: "Compound interest means you earn returns on your returns. Each month your balance grows, and the next month's growth is calculated on that larger balance. Over decades this becomes exponential — with $10,000 plus $500/month at 7% for 20 years, about 57% of the final $300,851 balance is growth you never deposited.",
   },
   {
     q: "What return rate should I use?",
-    a: "The US stock market (S&P 500) has returned roughly 7–10% per year on average historically (7% inflation-adjusted). Use a lower rate for bonds or savings accounts, higher for more aggressive assumptions.",
+    a: "The S&P 500 has returned roughly 10% per year nominally over the long run (about 7% after inflation). Use ~7% for a conservative real-terms estimate, 9–10% for nominal projections, or a lower rate (2–5%) for bonds and savings accounts.",
   },
   {
     q: "Does this include inflation?",
-    a: "No — this calculator shows nominal future value. To get real (inflation-adjusted) future value, subtract roughly 2–3% from your expected return rate before calculating.",
+    a: "Yes. Alongside the nominal future value, the calculator shows the result in today's dollars — it deflates the nominal balance by the live FRED CPI inflation rate over your horizon. At 3.2% inflation, a nominal $300,851 in 20 years buys what about $160,235 buys today.",
   },
   {
-    q: "Why does monthly contribution matter so much?",
-    a: "Even a small regular contribution compounds dramatically over time. $200/mo at 7% for 30 years grows to over $240,000 — compared to $0 with no contributions on the same initial deposit.",
+    q: "Why does the monthly contribution matter so much?",
+    a: "Regular contributions compound alongside your lump sum. $200/month at 7% for 30 years grows to roughly $244,000 from just $72,000 contributed — more than 70% of the final balance is compound growth. Consistency over a long horizon beats a large one-time deposit.",
   },
 ];
 
 const STATS = [
-  { stat: "10×",     color: "text-emerald-600", accent: "bg-emerald-500", label: "$10k at 7% for 30 years grows to over $100,000 — purely from compounding" },
-  { stat: "50%+",    color: "text-blue-600",    accent: "bg-blue-500",    label: "of your final balance typically comes from compound interest, not contributions" },
-  { stat: "Month 1", color: "text-amber-600",   accent: "bg-amber-500",   label: "is the best time to start — every month of delay costs you exponential growth" },
+  { stat: "2.3×",  color: "text-emerald-600", accent: "bg-emerald-500", label: "$130k invested ($10k + $500/mo) grows to $300,851 at 7% over 20 years" },
+  { stat: "57%",   color: "text-blue-600",    accent: "bg-blue-500",    label: "of that final balance is pure compound growth — money you never deposited" },
+  { stat: "$160k", color: "text-amber-600",   accent: "bg-amber-500",   label: "what that $300,851 actually buys in today's dollars after live CPI inflation" },
 ];
 
 const CONTENT_CARDS = [
   {
     icon: "📈",
     title: "The power of compounding",
-    body: "Compound interest grows exponentially — not linearly. In the first years you barely notice. By year 20–30, your interest is earning more than your contributions. Time in the market is everything.",
+    body: "Compound growth is exponential, not linear. Early years barely move the needle; by year 20–30 the growth dwarfs your contributions. In the default scenario the final year alone adds about $20,000 of growth — more than three years of deposits.",
+  },
+  {
+    icon: "🪙",
+    title: "Nominal vs. today's dollars",
+    body: "A big future number is misleading if you ignore inflation. We deflate the nominal balance by the live FRED CPI rate so you see real buying power — at 3.2% inflation, $300,851 in 20 years is worth about $160,235 in today's money.",
   },
   {
     icon: "📅",
     title: "Starting early vs starting late",
-    body: "Someone who invests $200/mo from age 25 to 65 ends up with roughly twice as much as someone who starts at 35, even though they invested for 10 fewer years. The difference is compounding time.",
-  },
-  {
-    icon: "⚖️",
-    title: "Return rate vs contribution rate",
-    body: "Increasing your monthly contribution by $100 often has more impact than chasing an extra 1% return. Both matter — but contributions are within your control in a way that market returns are not.",
+    body: "Time matters more than amount. At 7%, money doubles roughly every 10 years — so one extra year on the front end is worth far more than a bigger deposit. Delaying the start costs you the most valuable, fully-compounded years.",
   },
 ];
 
@@ -77,24 +81,24 @@ const RELATED_CALCS = [
     accent: "bg-emerald-500/10",
   },
   {
-    title: "Investment Calculator",
-    description: "Model portfolio growth with regular contributions.",
-    href: "/tools/investment-calculator",
-    icon: "💼",
-    accent: "bg-blue-500/10",
-  },
-  {
-    title: "Inflation Calculator",
-    description: "Understand what your money will really be worth.",
-    href: "/tools/inflation-calculator",
+    title: "Inflation Impact Calculator",
+    description: "See how rising prices erode purchasing power over time.",
+    href: "/tools/inflation-impact-calculator",
     icon: "📉",
     accent: "bg-amber-500/10",
   },
   {
-    title: "Retirement Calculator",
-    description: "Project savings, income, and retirement readiness.",
-    href: "/tools/retirement-calculator",
-    icon: "🏡",
+    title: "Savings Goal Calculator",
+    description: "Work out the monthly deposit to hit a target by a date.",
+    href: "/tools/savings-goal-calculator",
+    icon: "🎯",
+    accent: "bg-blue-500/10",
+  },
+  {
+    title: "FIRE Calculator",
+    description: "Project your financial-independence number and timeline.",
+    href: "/tools/fire-calculator",
+    icon: "🔥",
     accent: "bg-purple-500/10",
   },
 ];
@@ -107,7 +111,8 @@ export default function FutureValuePage() {
       name: "Future Value Calculator",
       applicationCategory: "FinanceApplication",
       operatingSystem: "Web",
-      description: "Calculate the future value of an investment with compound interest and regular contributions.",
+      description:
+        "Calculate the future value of an investment with compound interest and monthly contributions, plus the inflation-adjusted value in today's dollars using the live FRED CPI rate.",
       url: "https://worthulator.com/tools/future-value-calculator",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
@@ -137,15 +142,15 @@ export default function FutureValuePage() {
         eyebrowIcon="$"
         eyebrowText="Investing · Compound Growth"
         title="Future Value Calculator"
-        description="See exactly what your money grows to — enter your deposit, monthly contributions, and expected return rate."
-        chips={["Monthly compounding", "Interest vs contributions split", "What-if scenarios"]}
+        description="See what your money grows to with compound interest and monthly contributions — then what it actually buys in today's dollars, adjusted for live inflation."
+        chips={["Monthly compounding", "Inflation-adjusted real value", "Contributions vs growth split"]}
       >
-        <CalculatorEngineLoader slug="future-value" afterResults={<InsightsSection slug="future-value" />} />
+        <FutureValueWithInsights />
       </SimpleCalculatorHero>
 
       {/* INSIGHT STRIP */}
       <InsightStrip
-        text='Money invested today is worth more than the same money invested tomorrow — because it has more time to <span class="font-semibold text-gray-900">compound and grow</span>.'
+        text='A big future balance only matters in <span class="font-semibold text-gray-900">today&apos;s dollars</span> — so we show both the nominal total and its real buying power after live inflation.'
       />
 
       {/* STAT CHIPS */}
@@ -154,32 +159,34 @@ export default function FutureValuePage() {
       {/* CONTENT CARDS */}
       <ContentCardGrid
         title="What this means for your money"
-        subtitle="Compound interest rewards patience above almost everything else."
+        subtitle="Compound interest rewards patience — and inflation quietly taxes the headline number."
         cards={CONTENT_CARDS}
       />
 
       {/* HOW IT WORKS + FORMULA */}
-
-      <InsightTable slug="future-value" />
       <SEOTextBlock
         title="How the Future Value Calculator Works"
         formula={`FV = PV × (1 + r)ⁿ + PMT × (((1 + r)ⁿ − 1) / r)
 
+Real FV = FV ÷ (1 + i)^years
+
 Where:
   PV  = Initial deposit (present value)
   PMT = Monthly contribution
-  r   = Monthly interest rate (annual rate ÷ 12)
-  n   = Total months (years × 12)`}
+  r   = Monthly return rate (annual rate ÷ 12)
+  n   = Total months (years × 12)
+  i   = Annual inflation (live FRED CPI)`}
         steps={[
           { label: "Enter your initial deposit", description: "The lump sum you're starting with — can be $0 if you're starting fresh." },
-          { label: "Set monthly contributions", description: "How much you plan to add each month. Even $50/mo compounds significantly." },
-          { label: "Choose your return rate", description: "The expected annual return. Use 7% for a conservative inflation-adjusted estimate." },
-          { label: "Pick your time horizon", description: "How many years you'll let the money grow. Longer = exponentially more." },
-          { label: "Read the result", description: "Your final balance, total interest earned, and contributions vs. growth split." },
+          { label: "Set monthly contributions", description: "How much you add each month. Even $50/mo compounds significantly over decades." },
+          { label: "Choose your return rate", description: "Expected annual return. ~7% is a conservative real estimate; ~10% is the S&P long-run nominal average." },
+          { label: "Pick your time horizon", description: "How many years the money grows. Longer horizons multiply the result exponentially." },
+          { label: "Read both numbers", description: "Your nominal future value and its value in today's dollars, deflated by the live CPI inflation rate." },
         ]}
         paragraphs={[
-          "This calculator uses the standard compound interest formula with monthly compounding. The return rate you enter is applied as an annual rate, divided by 12 for monthly calculations.",
-          "Historical averages for diversified equity portfolios range from 7–10% annually. Use 7% for a conservative inflation-adjusted estimate (real return), or 9–10% for nominal (pre-inflation) projections.",
+          "This calculator uses the standard future-value formula with monthly compounding: contributions are added at the end of each month and the whole balance grows at your annual rate divided by 12.",
+          "Crucially, it doesn't stop at the nominal number. It deflates the result by the live FRED Consumer Price Index inflation rate over your horizon, so you see what the balance is actually worth in today's purchasing power — the figure that determines what your money can buy.",
+          "Historical context: the S&P 500 has averaged roughly 10% nominal (about 7% after inflation) over the long run, and US prices have risen ~3.3% per year on average since 1914. We pull the current CPI live so the inflation adjustment reflects today's economy, not a stale assumption.",
         ]}
       />
 

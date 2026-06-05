@@ -1,4 +1,6 @@
 import type { Insight } from "../index";
+import { formatCurrency } from "../benchmarks";
+import { futureValueAnnuity } from "../projections";
 
 interface WfhInputs {
   dailyCommuteCost: number;
@@ -22,73 +24,79 @@ export function wfhSavingsInsights(
 ): Insight[] {
   const results: Insight[] = [];
 
-  const commuteCost   = Number(inputs.dailyCommuteCost);
-  const officeDays    = Number(inputs.officeDays);
-  const foodCost      = Number(inputs.dailyFood);
-  const commuteMin    = Number(inputs.commuteMinutes);
-  const yearly        = outputs.yearlySavings        ?? 0;
-  const monthly       = outputs.monthlySavings       ?? 0;
-  const timeHours     = outputs.timeSavedHours       ?? 0;
-  const tenYear       = outputs.tenYearSavings       ?? 0;
-  const invested10    = outputs.investedSavings10yr  ?? 0;
-  const hrValue       = outputs.hourlyValueRecovered ?? 0;
+  const commuteCost = Number(inputs.dailyCommuteCost);
+  const officeDays  = Number(inputs.officeDays);
+  const foodCost    = Number(inputs.dailyFood);
+  const commuteMin  = Number(inputs.commuteMinutes);
+  const yearly      = outputs.yearlySavings        ?? 0;
+  const monthly     = outputs.monthlySavings       ?? 0;
+  const timeHours   = outputs.timeSavedHours       ?? 0;
+  const tenYear     = outputs.tenYearSavings       ?? 0;
+  const invested10  = outputs.investedSavings10yr  ?? 0;
+  const hrValue     = outputs.hourlyValueRecovered ?? 0;
 
-  // 1. Annual savings summary — always shown
+  if (yearly <= 0) return results;
+
+  // 1. Annual savings — always shown
+  const grossEquivalent = Math.round(yearly / 0.72);
   results.push({
-    id: "wfh.annual-savings",
-    type: "positive",
-    message: `Working from home ${officeDays} day(s)/week saves $${yearly.toLocaleString()}/year ($${monthly.toLocaleString()}/month) in commute and food costs.`,
-    detail: `That's real take-home value — no gross-up needed. WFH savings arrive after-tax, making them worth more than equivalent salary increases.`,
+    id:       "wfh.annual-savings",
+    severity: "positive",
+    category: "savings",
+    title:    `WFH ${officeDays} day${officeDays > 1 ? "s" : ""}/week saves ${formatCurrency(yearly)}/year — ${formatCurrency(monthly)}/month after-tax`,
+    body:     `After-tax savings are more valuable than equivalent salary because they require no gross-up. ${formatCurrency(yearly)}/year in WFH savings is worth ${formatCurrency(grossEquivalent)} in pre-tax salary at a 28% marginal rate. That never shows up in an offer letter — but it should.`,
+    metric:   { label: "Annual WFH savings", value: formatCurrency(yearly) },
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      yearly,
+      userLabel:      "Annual WFH savings",
+      benchmarkValue: grossEquivalent,
+      benchmarkLabel: "Equivalent gross salary raise",
+      format:         "currency",
+    },
   });
 
   // 2. Time recovered
   if (timeHours > 100) {
     results.push({
-      id: "wfh.time-recovered",
-      type: "positive",
-      message: `You reclaim ${timeHours.toLocaleString()} hours/year by not commuting — equivalent to ${Math.round(timeHours / 40)} full working weeks returned to your life.`,
-      detail: `Those hours can compound into skills, side income, fitness, or rest. Time recovered from commuting is among the most valuable WFH benefits.`,
+      id:       "wfh.time-recovered",
+      severity: "positive",
+      category: "time-loss",
+      title:    `${timeHours.toLocaleString()} hours/year recovered — ${Math.round(timeHours / 40)} full working weeks`,
+      body:     `The average US commute is 27 minutes each way. At ${commuteMin} minutes round-trip ${officeDays} day${officeDays > 1 ? "s" : ""}/week, you recover ${timeHours.toLocaleString()} hours annually. That time has economic value — at $${hrValue}/hr in direct savings alone, before counting what it is actually worth to you.`,
+      metric:   { label: "Time recovered", value: `${timeHours}hrs/yr` },
     });
   }
 
-  // 3. Hourly value of time recovered
-  if (hrValue > 10 && timeHours > 0) {
+  // 3. 10-year investment value
+  if (invested10 > tenYear && monthly > 0) {
+    const projected = Math.round(futureValueAnnuity(monthly * 12, 10, 7));
     results.push({
-      id: "wfh.hourly-value",
-      type: "info",
-      message: `Each hour you don't commute is worth $${hrValue} in saved direct costs — before accounting for the value of your time itself.`,
-      detail: `Add your personal hourly value to this and the effective hourly savings of WFH often exceeds $50/hour.`,
+      id:       "wfh.invested-savings",
+      severity: "positive",
+      category: "investment",
+      title:    `${formatCurrency(monthly)}/month invested at 7% becomes ${formatCurrency(projected)} in 10 years`,
+      body:     `If WFH savings are redirected to investment rather than absorbed by lifestyle inflation, the 10-year compound value is ${formatCurrency(projected)} — far more than the ${formatCurrency(tenYear)} in direct savings alone. Most people adjust their spending to match their income; the ones who don't build wealth instead.`,
+      metric:   { label: "10-year invested value", value: formatCurrency(projected) },
+      visualization: {
+        type:   "delta-card",
+        before: { label: "10-year direct savings",   value: formatCurrency(tenYear) },
+        after:  { label: "10-year invested at 7%",   value: formatCurrency(projected) },
+        delta:  { label: "Compound growth",           value: formatCurrency(projected - tenYear), positive: true },
+      },
     });
   }
 
-  // 4. 10-year accumulated savings
-  if (tenYear > 20_000) {
-    results.push({
-      id: "wfh.ten-year",
-      type: "milestone",
-      message: `Over 10 years, this WFH arrangement saves $${tenYear.toLocaleString()} in direct costs alone — before factoring in time.`,
-      detail: `Companies frequently undervalue WFH as a compensation benefit. In salary terms, $${yearly.toLocaleString()}/year in savings is equivalent to a raise of $${Math.round(yearly / 0.72).toLocaleString()} gross (at 28% tax).`,
-    });
-  }
-
-  // 5. Investment value of savings
-  if (invested10 > tenYear) {
-    results.push({
-      id: "wfh.invested-savings",
-      type: "opportunity",
-      message: `If the $${yearly.toLocaleString()}/year WFH savings were invested at 7%, they'd be worth $${invested10.toLocaleString()} after 10 years.`,
-      detail: `The compounding case for WFH is often more powerful than the direct savings alone. Redirect the savings to investments rather than lifestyle inflation.`,
-    });
-  }
-
-  // 6. Food cost insight
+  // 4. Food cost breakdown
   const annualFood = Math.round(foodCost * officeDays * 52);
   if (annualFood > 2_000) {
     results.push({
-      id: "wfh.food-cost",
-      type: "info",
-      message: `$${foodCost}/day in office food and coffee costs $${annualFood.toLocaleString()}/year at ${officeDays} day(s)/week. Working from home eliminates this category almost entirely.`,
-      detail: `Bought lunches and coffees are one of the highest-visibility household discretionary expenses — and one of the easiest to reclaim with WFH.`,
+      id:       "wfh.food-cost",
+      severity: "neutral",
+      category: "hidden-cost",
+      title:    `${formatCurrency(foodCost)}/day in office food = ${formatCurrency(annualFood)}/year at ${officeDays} day${officeDays > 1 ? "s" : ""}/week`,
+      body:     `Bought lunches and coffee are among the most visible household discretionary expenses — and among the easiest to eliminate with WFH. At ${formatCurrency(foodCost)}/day, food alone accounts for ${formatCurrency(annualFood)}/year in the office cost stack.`,
+      metric:   { label: "Annual food cost (office)", value: formatCurrency(annualFood) },
     });
   }
 

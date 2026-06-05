@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import SavingsCalcWithInsights from "@/components/worthcore/SavingsCalcWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,62 +9,60 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
-  title: "Savings Calculator 2026 – Project Your Savings Growth",
+  title: "Savings Calculator 2026 – Will Your Savings Beat Inflation?",
   description:
-    "Calculate how much your savings will grow over time. Enter your starting balance, monthly contributions, interest rate, and time horizon for an instant projection.",
-  keywords: ["savings calculator", "savings growth calculator", "compound savings calculator", "how much will my savings grow", "monthly savings calculator"],
+    "Project your savings growth and see whether your interest rate actually beats inflation. Get your balance in today's dollars, real return, and how much a high-yield account adds — using live CPI data.",
+  keywords: ["savings calculator", "savings growth calculator", "real return savings", "does my savings beat inflation", "high-yield savings calculator", "savings calculator inflation adjusted"],
   alternates: { canonical: "https://worthulator.com/tools/savings-calculator" },
   robots: { index: true, follow: true },
 };
 
 const FAQS = [
   {
-    q: "How does a savings account grow?",
-    a: "Savings accounts grow through interest — the bank pays you a percentage of your balance periodically. With compound interest, that interest is added to your balance and then earns interest itself, accelerating growth over time.",
+    q: "Will my savings actually beat inflation?",
+    a: "Only if your APY is higher than the inflation rate. At a 4.5% high-yield rate against ~3.2% inflation, you earn roughly a 1.3% real return — your money genuinely grows in buying power. At a typical 2% legacy bank rate, you'd be losing ground every year even though the balance rises on paper.",
+  },
+  {
+    q: "What's the difference between my balance and 'today's dollars'?",
+    a: "The headline balance is the nominal number you'll see in the account. 'Today's dollars' (the real value) adjusts that figure for inflation so it reflects what it can actually buy. In the default example, a $53,194 balance after 10 years is worth about $38,821 in today's purchasing power.",
   },
   {
     q: "What is a good interest rate for a savings account?",
-    a: "Traditional savings accounts often pay 0.5–1%. High-yield savings accounts (HYSAs) — typically offered by online banks — often pay 4–5% or more. Even a small rate difference compounds into thousands of dollars over a decade.",
+    a: "Traditional savings accounts often pay 0.4–1%. High-yield savings accounts (HYSAs) from online banks typically pay 4–5%. The gap is huge over time: on $5,000 + $300/month for 10 years, a 4.5% account earns roughly $11,000 more interest than the ~0.45% national average.",
   },
   {
     q: "How much should I save each month?",
-    a: "A common benchmark is the 50/30/20 rule — save 20% of your take-home pay. But any consistent amount helps. Even $50/month at 4.5% interest grows to over $7,500 in 10 years — all from habit, not a windfall.",
+    a: "A common benchmark is the 50/30/20 rule — save 20% of your take-home pay. But any consistent amount compounds. $300/month plus a $5,000 start at 4.5% grows to about $53,000 in 10 years, of which roughly $12,000 is interest you never deposited.",
   },
   {
     q: "How much should I have in an emergency fund?",
-    a: "Most financial experts recommend 3–6 months of living expenses. If your monthly expenses are $3,000, aim for $9,000–$18,000 in an accessible, liquid savings account before allocating money to longer-term investments.",
-  },
-  {
-    q: "Does compound frequency matter?",
-    a: "Yes, but the difference is smaller than most people expect. Monthly compounding vs. annual compounding on the same rate makes a meaningful difference only over very long periods. The rate itself and your contribution consistency matter far more.",
+    a: "Most experts recommend 3–6 months of living expenses in a liquid, high-yield savings account. If your monthly expenses are $3,000, aim for $9,000–$18,000 before moving money to longer-term, less-accessible investments.",
   },
 ];
 
 const STATS = [
-  { stat: "4–5%",   color: "text-emerald-600", accent: "bg-emerald-500", label: "Annual yield on high-yield savings accounts in 2026 — 10× higher than traditional banks" },
-  { stat: "$7,500", color: "text-blue-600",    accent: "bg-blue-500",    label: "$50/month for 10 years at 4.5% — proof that small habits build real money" },
-  { stat: "3–6mo",  color: "text-amber-600",   accent: "bg-amber-500",   label: "Emergency fund target that financial experts recommend before investing" },
+  { stat: "1.3%",     color: "text-emerald-600", accent: "bg-emerald-500", label: "Real return on a 4.5% account vs ~3.2% live inflation — the only growth that builds buying power" },
+  { stat: "$11,149",  color: "text-blue-600",    accent: "bg-blue-500",    label: "Extra interest a 4.5% high-yield account earns vs a 0.45% legacy bank (default $5k + $300/mo, 10 yrs)" },
+  { stat: "3–6mo",    color: "text-amber-600",   accent: "bg-amber-500",   label: "Emergency fund target experts recommend in liquid savings before investing" },
 ];
 
 const CONTENT_CARDS = [
   {
+    icon: "🛡️",
+    title: "Beating inflation is the real goal",
+    body: "A balance that grows on paper isn't the same as growing wealth. If your APY trails inflation, each year your savings buy less. The real return — your rate minus inflation — is the number that actually matters. At 4.5% against ~3.2% inflation, that's about +1.3% per year in true buying power.",
+  },
+  {
     icon: "🏦",
     title: "The high-yield savings advantage",
-    body: "Traditional bank savings accounts pay 0.01–0.5%. High-yield savings accounts at online banks often pay 10–20× more. Moving $10,000 from 0.5% to 4.5% earns an extra $400/year — just from switching accounts.",
+    body: "The FDIC national average savings rate is around 0.45%. High-yield accounts at online banks pay 4–5%. On a $5,000 start plus $300/month for 10 years, that gap is worth roughly $11,000 in extra interest — free money for simply moving accounts.",
   },
   {
     icon: "📅",
-    title: "Monthly contributions beat lump sums",
-    body: "Most people don't have a lump sum to deposit. The good news: consistent monthly contributions are actually more powerful than you think. $200/month for 10 years at 4.5% grows to over $30,000 — from a habit, not a windfall.",
-  },
-  {
-    icon: "🛡️",
-    title: "Emergency fund first, then invest",
-    body: "Before chasing higher investment returns, build a 3–6 month emergency fund in a liquid savings account. It removes the risk of liquidating investments at a loss when life happens. Financial resilience before financial growth.",
+    title: "Consistency beats windfalls",
+    body: "Most people don't have a lump sum — and they don't need one. Steady monthly deposits do the heavy lifting: $300/month plus a $5,000 start at 4.5% reaches about $53,000 in a decade, with roughly $12,000 of that coming from interest alone.",
   },
 ];
 
@@ -107,7 +105,7 @@ export default function SavingsCalculatorPage() {
       name: "Savings Calculator",
       applicationCategory: "FinanceApplication",
       operatingSystem: "Web",
-      description: "Calculate how much your savings will grow with compound interest over time.",
+      description: "Project savings growth, see your balance in today's dollars, and check whether your rate beats inflation using live CPI data.",
       url: "https://worthulator.com/tools/savings-calculator",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
@@ -134,16 +132,16 @@ export default function SavingsCalculatorPage() {
 
       <SimpleCalculatorHero
         eyebrowIcon="🏦"
-        eyebrowText="Savings · Compound Growth"
+        eyebrowText="Savings · Real Growth"
         title="Savings Calculator"
-        description="See how your savings grow over time — enter your balance, monthly contributions, and interest rate for an instant projection."
-        chips={["Compound interest", "Monthly contribution impact", "High-yield vs standard rates"]}
+        description="Project your savings growth and see whether your rate actually beats inflation — your balance, its value in today's dollars, and your real return, using live CPI data."
+        chips={["Beats-inflation check", "Value in today's dollars", "High-yield vs legacy bank"]}
       >
-        <CalculatorEngineLoader slug="savings-calculator" afterResults={<InsightsSection slug="savings-calculator" />} />
+        <SavingsCalcWithInsights />
       </SimpleCalculatorHero>
 
       <InsightStrip
-        text='Saving consistently — even small amounts — is how most wealth is built. <span class="font-semibold text-gray-900">Compound interest rewards patience above everything else.</span>'
+        text='A rising balance isn&apos;t the same as growing wealth. <span class="font-semibold text-gray-900">Only the return above inflation actually builds buying power.</span>'
       />
 
       <StatChipsRow stats={STATS} />
@@ -153,28 +151,30 @@ export default function SavingsCalculatorPage() {
         subtitle="Small, consistent habits outperform one-time windfalls over time."
         cards={CONTENT_CARDS}
       />
-      <InsightTable slug="savings-calculator" />
 
       <SEOTextBlock
         title="How the Savings Calculator Works"
-        formula={`FV = P × (1 + r/n)^(nt) + PMT × (((1 + r/n)^(nt) − 1) / (r/n))
+        formula={`Balance = P × (1 + r/12)^(12t) + PMT × (((1 + r/12)^(12t) − 1) / (r/12))
+
+Real return  = APY − inflation
+Today's $    = Balance ÷ (1 + inflation)^t
 
 Where:
-  P   = Initial balance (starting savings)
-  PMT = Monthly contribution (adjusted for compound period)
-  r   = Annual interest rate (as a decimal)
-  n   = Compounds per year (12 for monthly)
-  t   = Years`}
+  P   = Starting balance
+  PMT = Monthly deposit
+  r   = Annual APY (as a decimal)
+  t   = Years
+  inflation = live FRED CPI rate`}
         steps={[
           { label: "Enter your starting balance", description: "The amount you already have saved — can be $0 if you're starting fresh." },
-          { label: "Set your monthly contribution", description: "How much you'll add each month. Even $50 makes a significant difference over a decade." },
-          { label: "Enter your interest rate", description: "Check your account's APY. High-yield savings accounts typically offer 4–5% in 2026." },
-          { label: "Choose your time horizon", description: "How many years you'll save for. The longer, the more powerful the compounding." },
-          { label: "Select compound frequency", description: "Most savings accounts compound monthly. Annual compounding gives slightly lower results." },
+          { label: "Set your monthly deposit", description: "How much you'll add each month. Even $300 reaches about $53,000 in 10 years at 4.5%." },
+          { label: "Enter your APY", description: "Use your account's real rate. High-yield savings accounts typically pay 4–5%; legacy banks average ~0.45%." },
+          { label: "Choose your time horizon", description: "How many years you'll save. The longer the horizon, the larger the compounding slice." },
+          { label: "Read the real return", description: "The calculator subtracts live inflation so you can see whether your money is actually gaining buying power." },
         ]}
         paragraphs={[
-          "This calculator uses the standard compound interest formula. Monthly contributions are converted to match your chosen compound frequency for accurate results.",
-          "High-yield savings accounts (HYSAs) from online banks typically pay 4–5% APY — dramatically more than traditional savings accounts. The rate difference alone can mean tens of thousands of dollars over 10–20 years.",
+          "Interest compounds monthly on your balance plus every deposit. With the default $5,000 start and $300/month at 4.5% APY, the balance reaches about $53,194 over 10 years — roughly $12,194 of that is interest you never deposited.",
+          "But the nominal number hides inflation. Using the live FRED CPI rate (~3.2%), that $53,194 is worth about $38,821 in today's dollars, and your 4.5% rate clears inflation by roughly 1.3 points — a positive real return. A legacy 0.45% account would lose to inflation while earning roughly $11,000 less in interest over the same period.",
         ]}
       />
 

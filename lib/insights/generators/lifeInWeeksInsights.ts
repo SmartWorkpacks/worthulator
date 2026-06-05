@@ -1,4 +1,4 @@
-import type { Insight } from "../index";
+import type { Insight } from "../types";
 
 interface LifeInWeeksInputs {
   age:            number;
@@ -14,90 +14,95 @@ interface LifeInWeeksOutputs {
   summerWeeksRemaining?: number;
 }
 
+// US life expectancy at birth: 76.1 years (CDC 2022).
+// Concept by Tim Urban, "Your Life in Weeks" (waitbutwhy.com, 2014).
+
 export function lifeInWeeksInsights(
   inputs: LifeInWeeksInputs,
-  outputs: LifeInWeeksOutputs
+  outputs: LifeInWeeksOutputs,
 ): Insight[] {
   const results: Insight[] = [];
 
   const age       = Number(inputs.age);
   const lifeExp   = Number(inputs.lifeExpectancy);
-  const remaining = outputs.weeksRemaining       ?? 0;
-  const lived     = outputs.weeksLived           ?? 0;
-  const pct       = outputs.percentUsed          ?? 0;
-  const yearsLeft = outputs.yearsRemaining       ?? 0;
-  const daysLeft  = outputs.daysRemaining        ?? 0;
-  const summers   = outputs.summerWeeksRemaining ?? 0;
+  const remaining = outputs.weeksRemaining       ?? Math.round((lifeExp - age) * 52);
+  const lived     = outputs.weeksLived           ?? Math.round(age * 52);
+  const pct       = outputs.percentUsed          ?? Math.round((age / lifeExp) * 100);
+  const yearsLeft = outputs.yearsRemaining       ?? Math.round(lifeExp - age);
+  const daysLeft  = outputs.daysRemaining        ?? Math.round(remaining * 7);
+  const summers   = outputs.summerWeeksRemaining ?? Math.round(yearsLeft * 13);
 
-  // 1. Core scarcity framing
+  // 1. Core scale framing — always shown
   results.push({
-    id: "weeks.core-scarcity",
-    type: "info",
-    message: `A ${lifeExp}-year life is ${lifeExp * 52} weeks total. At ${age}, you've used ${lived.toLocaleString()} and have ${remaining.toLocaleString()} remaining.`,
-    detail: `Each week is a fixed, non-renewable unit. There's no making up a week you let slip by.`,
+    id:       "weeks.core-scarcity",
+    severity: "neutral",
+    category: "comparison",
+    title:    `${(lifeExp * 52).toLocaleString()} weeks in a ${lifeExp}-year life — ${remaining.toLocaleString()} remain`,
+    body:     `At ${age}, you have used ${lived.toLocaleString()} of ${(lifeExp * 52).toLocaleString()} weeks — ${pct}% of the total. The remaining ${remaining.toLocaleString()} weeks is ${daysLeft.toLocaleString()} days. US life expectancy is 76.1 years (CDC 2022), placing a typical life at approximately 3,957 weeks.`,
+    metric:   { label: "Weeks remaining", value: remaining.toLocaleString() },
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      lived,
+      userLabel:      "Weeks lived",
+      benchmarkValue: lifeExp * 52,
+      benchmarkLabel: `Total (${lifeExp}yr life)`,
+      format:         "number",
+    },
   });
 
-  // 2. Percentage milestone framing
+  // 2. Percentage milestone
   if (pct >= 50) {
     results.push({
-      id: "weeks.past-halfway",
-      type: "milestone",
-      message: `You're ${pct}% through your expected lifespan — past the halfway point.`,
-      detail: `This isn't a cause for anxiety — it's a signal. The weeks remaining are just as full of potential as the ones already lived.`,
+      id:       "weeks.past-halfway",
+      severity: "neutral",
+      category: "comparison",
+      title:    `${pct}% through expected lifespan — ${(100 - pct)}% remaining`,
+      body:     `More than half the estimated total weeks have been lived. The remaining ${100 - pct}% — ${remaining.toLocaleString()} weeks — is the time horizon for everything still on the list.`,
+      metric:   { label: "Lifespan used", value: `${pct}%` },
     });
   } else {
     results.push({
-      id: "weeks.before-halfway",
-      type: "positive",
-      message: `You're ${pct}% through your expected lifespan — more than ${(100 - pct).toFixed(0)}% of your life is still ahead of you.`,
-      detail: `Most of the compounding — in wealth, relationships, skills, and experience — still lies ahead.`,
+      id:       "weeks.before-halfway",
+      severity: "positive",
+      category: "projection",
+      title:    `${100 - pct}% of expected life still ahead — ${remaining.toLocaleString()} weeks`,
+      body:     `At ${age}, the majority of the total week-count lies ahead. The decisions made over the next decade compound across the remaining ${yearsLeft} years.`,
+      metric:   { label: "Lifespan remaining", value: `${100 - pct}%` },
     });
   }
 
-  // 3. Years as "summers" framing
-  if (summers > 0) {
+  // 3. Summers
+  if (summers > 0 && yearsLeft > 5) {
     results.push({
-      id: "weeks.summers-remaining",
-      type: "info",
-      message: `${yearsLeft} years remaining means roughly ${summers} weeks of summer left to experience.`,
-      detail: `Thinking in "summers" or "Christmases" makes abstract time feel immediate and motivating.`,
+      id:       "weeks.summers-remaining",
+      severity: "neutral",
+      category: "comparison",
+      title:    `${yearsLeft} years — approximately ${summers.toLocaleString()} summer weeks remaining`,
+      body:     `Each year has about 13 weeks of summer (meteorological definition). ${yearsLeft} years forward from now is roughly ${summers.toLocaleString()} summer weeks. Tim Urban's "Your Life in Weeks" popularised thinking in seasonal units — it makes abstract time feel concrete.`,
+      metric:   { label: "Summers remaining", value: `${yearsLeft}` },
     });
   }
 
-  // 4. Days remaining
-  if (daysLeft > 0) {
+  // 4. Early stage context
+  if (age < 30) {
     results.push({
-      id: "weeks.days-remaining",
-      type: "info",
-      message: `${remaining.toLocaleString()} weeks is ${daysLeft.toLocaleString()} days — each one a discrete choice about where to direct your attention.`,
-      detail: `Tim Urban's "Your Life in Weeks" visual shows this powerfully: most of your weeks already have an owner. The question is whether the remaining ones do too.`,
+      id:       "weeks.early-stage",
+      severity: "positive",
+      category: "projection",
+      title:    `At ${age}, compound habits have ${yearsLeft} years to run`,
+      body:     `The earlier a habit, skill, or investment begins, the longer its compound curve. ${yearsLeft} years of consistent effort — even small daily actions — produces exponentially different outcomes than the same effort starting a decade later.`,
+      metric:   { label: "Years ahead", value: `${yearsLeft}yr` },
+    });
+  } else if (age >= 60) {
+    results.push({
+      id:       "weeks.late-stage",
+      severity: "positive",
+      category: "comparison",
+      title:    `At ${age}, ${remaining.toLocaleString()} weeks remain — Gallup research shows life satisfaction peaks in the 60s`,
+      body:     `Gallup's global wellbeing data consistently shows reported life satisfaction and sense of meaning peaks for people in their 60s and 70s. ${remaining.toLocaleString()} weeks is a substantial span — enough to start, build, and complete meaningful new chapters.`,
+      metric:   { label: "Weeks ahead", value: remaining.toLocaleString() },
     });
   }
-
-  // 5. Urgency without anxiety
-  if (age >= 60) {
-    results.push({
-      id: "weeks.late-stage",
-      type: "milestone",
-      message: `At ${age}, you have ${remaining.toLocaleString()} weeks remaining — enough to start a new chapter, build something meaningful, or deepen every relationship that matters.`,
-      detail: `Research on life satisfaction consistently shows people in their 60s–80s report higher meaning and contentment than younger adults. These are not diminished years.`,
-    });
-  } else if (age < 30) {
-    results.push({
-      id: "weeks.early-stage",
-      type: "opportunity",
-      message: `At ${age}, you have ${remaining.toLocaleString()} weeks ahead — roughly ${(remaining / 52).toFixed(0)} years. The compound effect of starting habits now is enormous.`,
-      detail: `A habit started at ${age} has ${yearsLeft} years to compound. Whether it's savings, fitness, learning, or relationships — start now.`,
-    });
-  }
-
-  // 6. Intentionality prompt
-  results.push({
-    id: "weeks.intentionality",
-    type: "opportunity",
-    message: `If you filled just ${Math.round(remaining * 0.1).toLocaleString()} of your remaining weeks with one deliberate focus, that's ${Math.round(remaining * 0.1 / 52)} years of intentional progress.`,
-    detail: `You don't need every week. 10% of your remaining time, focused deliberately, compounds into a life-defining body of work.`,
-  });
 
   return results;
 }

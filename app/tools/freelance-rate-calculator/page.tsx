@@ -5,7 +5,6 @@ import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Freelance Rate Calculator 2026 – What Should You Charge Per Hour?",
@@ -40,9 +39,9 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "3×",     color: "text-violet-600",  accent: "bg-violet-500",  label: "Higher rates charged by freelancers who calculate their minimum rate vs. those who guess" },
-  { stat: "20–30h", color: "text-blue-600",    accent: "bg-blue-500",    label: "Typical billable hours per week — not 40. Admin, sales, and non-billable work take the rest" },
-  { stat: "40%",    color: "text-amber-600",   accent: "bg-amber-500",   label: "Of freelancers say they undercharge — most have never calculated their actual minimum viable rate" },
+  { stat: "15.3%",  color: "text-violet-600",  accent: "bg-violet-500",  label: "Self-employment tax (Social Security + Medicare) freelancers owe on top of income tax — IRS, 2025" },
+  { stat: "20–30h", color: "text-blue-600",    accent: "bg-blue-500",    label: "Realistic billable hours per 40-hour week — admin, sales, and non-billable work take the rest" },
+  { stat: "25–40%", color: "text-amber-600",   accent: "bg-amber-500",   label: "Typical effective tax rate once self-employment and federal/state income tax combine" },
 ];
 
 const CONTENT_CARDS = [
@@ -134,7 +133,7 @@ export default function FreelanceRateCalculatorPage() {
       </SimpleCalculatorHero>
 
       <InsightStrip
-        text='40% of freelancers say they undercharge. Most have <span class="font-semibold text-gray-900">never done the math</span> on what they actually need to earn. Your minimum viable rate is a calculation, not a guess.'
+        text='Most freelancers set their rate by gut feel, not math — and <span class="font-semibold text-gray-900">almost always too low</span>. Your minimum viable rate is a calculation, not a guess.'
       />
 
       <StatChipsRow stats={STATS} />
@@ -145,25 +144,26 @@ export default function FreelanceRateCalculatorPage() {
         cards={CONTENT_CARDS}
       />
 
-            <InsightTable slug="freelance-rate-calculator" />
       <SEOTextBlock
         title="How the Freelance Rate Calculator Works"
-        formula={`Billable Hours/Year = Billable Hours/Week × (52 − Weeks Off)
+        formula={`Billable Hours/Year = Hours/Week × Weeks Worked × Utilization %
 
 Gross Income Needed = Desired Take-Home ÷ (1 − Tax Rate)
 
-Revenue Needed = (Gross Income + Business Expenses) ÷ (1 − Profit Margin)
+Base Revenue Needed = (Gross Income + Business Expenses) ÷ (1 − Profit Margin)
 
-Minimum Hourly Rate = Revenue Needed ÷ Billable Hours/Year
+Revenue After Fees = Base Revenue × [1 ÷ (1 − Platform Fee %)] × (1 + Scope-Creep %)
 
-Daily Rate = Hourly Rate × 8
-Monthly Rate = Hourly Rate × Billable Hours/Week × 4.33`}
+Survival Rate = Revenue After Fees ÷ Billable Hours/Year
+Your Rate = Survival Rate × Mode  (Survival 1× · Comfortable 1.2× · Premium 1.5×)
+
+Monthly Target = Hourly Rate × (Billable Hours/Year ÷ 12)`}
         steps={[
           { label: "Enter your income goal",       description: "What you want to actually take home after tax." },
-          { label: "Set your work schedule",       description: "Billable hours per week and weeks off — be realistic." },
+          { label: "Set your work schedule",       description: "Hours per week, weeks worked, and your utilization rate — the share of time you can actually bill." },
           { label: "Add business expenses",        description: "All annual costs: software, hardware, insurance, accountant." },
-          { label: "Set tax and margin rates",     description: "Effective tax rate (including self-employment tax) and profit buffer." },
-          { label: "See your minimum viable rate", description: "The number below which you cannot hit your goals — plus income scenarios." },
+          { label: "Set tax, margin & fees",       description: "Effective tax rate (incl. self-employment tax), profit buffer, platform cut, and scope-creep buffer." },
+          { label: "See your minimum viable rate", description: "The number below which you cannot hit your goals — across survival, comfortable, and premium modes." },
         ]}
         paragraphs={[
           "The most important insight is that your minimum viable rate is a floor, not a target. Once you know the floor, you can price strategically above it. Many freelancers find that calculating the floor makes them realize they've been charging 20–40% below what they actually need.",

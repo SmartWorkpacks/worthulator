@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculatePetCost } from "@/calculations/lifestyle/petCost";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
   keywords: ["pet cost calculator", "cost of owning a dog", "cost of owning a cat", "annual pet expenses", "how much does a pet cost"],
   alternates: { canonical: "https://worthulator.com/tools/pet-cost-calculator" },
 };
+
+// ── Step 5c: worked example derived from the live calculation module ─────────
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX = calculatePetCost({ food: 800, vet: 600, insurance: 400, misc: 300, years: 14 });
 
 const FAQS = [
   {
@@ -42,8 +47,8 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "$2,100", color: "text-emerald-600", accent: "bg-emerald-500", label: "average annual cost of owning a medium-sized dog in the US" },
-  { stat: "$29K", color: "text-amber-600", accent: "bg-amber-500", label: "estimated lifetime cost of a dog over a 14-year lifespan" },
+  { stat: usd(EX.yearlyCost), color: "text-emerald-600", accent: "bg-emerald-500", label: "average annual cost of owning a medium-sized dog in the US" },
+  { stat: `$${Math.round(EX.lifetimeCost / 1000)}K`, color: "text-amber-600", accent: "bg-amber-500", label: "estimated lifetime cost of a dog over a 14-year lifespan" },
   { stat: "67%", color: "text-blue-600", accent: "bg-blue-500", label: "of US households own a pet — with 65 million owning dogs" },
 ];
 
@@ -105,15 +110,16 @@ export default function PetCostCalculator() {
         description="Enter your pet's food, vet, insurance, and miscellaneous costs to see the true annual expense — and the full lifetime commitment."
         chips={["Annual cost", "Lifetime total", "All-in estimate"]}
       >
-        <CalculatorEngineLoader slug="pet-cost-calculator" />
+        <EngineWithInsights slug="pet-cost-calculator" />
       </SimpleCalculatorHero>
-      <InsightStrip text="The average dog costs $29,000 over its lifetime — budget before you adopt." />
+      <InsightStrip text={`The average dog costs ${usd(EX.lifetimeCost)} over its lifetime — budget before you adopt.`} />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The true cost of pet ownership" cards={CONTENT_CARDS} />
       <SEOTextBlock
         title="How the Pet Cost Calculator Works"
         paragraphs={[
           "Enter your estimated annual costs across four categories: food, vet bills, insurance, and miscellaneous expenses (grooming, boarding, toys). The calculator totals these to give your annual cost and multiplies by your pet's expected lifespan for a lifetime total.",
+          `Worked example: ${usd(EX.yearlyCost)}/year over a 14-year lifespan totals ${usd(EX.lifetimeCost)} — about ${usd(EX.monthlyCost)}/month. Invested at 7% instead, that same yearly spend would grow to ${usd(EX.investedAlternative)}, the compound opportunity cost of ownership.`,
           "Use the quick-pick values as a starting point. If your pet has a chronic condition or needs specialist food, adjust the vet and food sliders upward. If you do not have insurance, set that slider to zero and consider adding an emergency vet buffer to the misc category.",
         ]}
       />

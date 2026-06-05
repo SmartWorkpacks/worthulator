@@ -1,92 +1,120 @@
-import type { Insight } from "../index";
+// ─── WorthCore Insight Engine — Alcohol Cost Generator ────────────────────────
+//
+// PURPOSE:
+//   Deterministic, visual insight rules for the "alcohol-cost-calculator".
+//   Surfaces annual spend vs BLS average, investment opportunity cost,
+//   cut-drinking savings, and CDC heavy-drinking threshold.
+//
+// RULES:
+//   ✅ Pure TypeScript — synchronous, deterministic, no side effects
+//   ❌ Never import React · never call fetch()
+//
+// ─────────────────────────────────────────────────────────────────────────────
 
-interface AlcoholInputs {
-  drinksPerWeek: number;
-  costPerDrink:  number;
+import { formatCurrency } from "@/lib/insights/benchmarks";
+import { futureValueAnnuity } from "@/lib/insights/projections";
+import type { Insight, InsightVisualization } from "@/lib/insights/types";
+
+/** BLS average annual alcohol spend for US adults who drink (CES 2023) */
+const BLS_AVG_ANNUAL_ALCOHOL = 570;
+
+// ─── Input / Output types ─────────────────────────────────────────────────────
+
+export interface AlcoholInsightInputs {
+  drinksPerWeek:  number;
+  costPerDrink:   number;
+  reduceDrinksBy: number;
 }
 
-interface AlcoholOutputs {
-  yearlyCost?:          number;
-  tenYearCost?:         number;
-  investedValue?:       number;
-  weeklySpend?:         number;
-  dailyCost?:           number;
-  twentyYearInvested?:  number;
+export interface AlcoholInsightOutputs {
+  weeklySpend:       number;
+  yearlyCost:        number;
+  monthlyCost:       number;
+  tenYearCost:       number;
+  dailyCost:         number;
+  investedValue10yr: number;
+  investedValue20yr: number;
+  cutYearlySaving:   number;
+  cutInvested10yr:   number;
+  reducedYearlyCost: number;
 }
 
-export function alcoholCostInsights(
-  inputs: AlcoholInputs,
-  outputs: AlcoholOutputs
+// ─── Generator ────────────────────────────────────────────────────────────────
+
+export function generateAlcoholCostInsights(
+  inputs: AlcoholInsightInputs,
+  outputs: AlcoholInsightOutputs,
 ): Insight[] {
-  const results: Insight[] = [];
+  if (inputs.drinksPerWeek <= 0) return [];
 
-  const drinks  = Number(inputs.drinksPerWeek);
-  const perDrink = Number(inputs.costPerDrink);
-  const yearly   = outputs.yearlyCost         ?? 0;
-  const tenYear  = outputs.tenYearCost        ?? 0;
-  const invested = outputs.investedValue      ?? 0;
-  const weekly   = outputs.weeklySpend        ?? 0;
-  const daily    = outputs.dailyCost          ?? 0;
-  const twenty   = outputs.twentyYearInvested ?? 0;
+  const insights: Insight[] = [];
+  const yearly = outputs.yearlyCost;
+  const vsAvg  = yearly - BLS_AVG_ANNUAL_ALCOHOL;
 
-  // 1. Core habit cost — always shown
-  results.push({
-    id: "alcohol.annual-habit",
-    type: "info",
-    message: `${drinks} drinks/week at $${perDrink} each costs $${weekly.toLocaleString()}/week — $${yearly.toLocaleString()}/year.`,
-    detail: `That's $${daily.toFixed(2)}/day, every day, whether you drink or not on average.`,
+  // ── 1. Annual spend vs BLS average — benchmark-bar ────────────────────────
+  insights.push({
+    id:       "alcohol.vs-average",
+    severity: yearly > BLS_AVG_ANNUAL_ALCOHOL * 1.5 ? "warning" : "neutral",
+    category: "comparison",
+    title:    `${formatCurrency(yearly)}/year on alcohol — ${vsAvg > 0 ? formatCurrency(vsAvg) + " above" : formatCurrency(Math.abs(vsAvg)) + " below"} the US average.`,
+    body:     `${inputs.drinksPerWeek} drinks a week at ${formatCurrency(inputs.costPerDrink)} each is ${formatCurrency(outputs.weeklySpend)}/week and ${formatCurrency(yearly)}/year. The BLS average for American adults who drink is ${formatCurrency(BLS_AVG_ANNUAL_ALCOHOL)}/year.`,
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      yearly,
+      userLabel:      "Your spend",
+      benchmarkValue: BLS_AVG_ANNUAL_ALCOHOL,
+      benchmarkLabel: "US avg (BLS)",
+      format:         "currency",
+    } satisfies InsightVisualization,
   });
 
-  // 2. Decade framing
-  if (tenYear > 5_000) {
-    results.push({
-      id: "alcohol.decade-framing",
-      type: "warning",
-      message: `A decade of this habit totals $${tenYear.toLocaleString()} — and that's before any price increases.`,
-      detail: `Alcohol prices have risen ~3-4% per year historically. Real 10-year cost is likely higher.`,
+  // ── 2. Investment opportunity cost — projection-line ──────────────────────
+  insights.push({
+    id:       "alcohol.decade",
+    severity: "neutral",
+    category: "projection",
+    title:    `${formatCurrency(outputs.tenYearCost)} over 10 years — ${formatCurrency(outputs.investedValue10yr)} if invested.`,
+    body:     `At this rate, the 10-year direct spend is ${formatCurrency(outputs.tenYearCost)}. Invested at 7% instead, ${formatCurrency(yearly)}/year grows to ${formatCurrency(outputs.investedValue10yr)} in 10 years and ${formatCurrency(outputs.investedValue20yr)} in 20.`,
+    visualization: {
+      type:   "projection-line",
+      points: [1, 3, 5, 10, 15, 20].map((yr) => ({
+        label: `Yr ${yr}`,
+        value: Math.round(futureValueAnnuity(yearly, yr)),
+      })),
+      format: "currency",
+      yLabel: "Invested value",
+      color:  "#f59e0b",
+    } satisfies InsightVisualization,
+  });
+
+  // ── 3. Cut-saving — delta-card (the clever insight) ───────────────────────
+  if (outputs.cutYearlySaving > 0) {
+    insights.push({
+      id:       "alcohol.cut-saving",
+      severity: "positive",
+      category: "savings",
+      title:    `Cut ${inputs.reduceDrinksBy} drinks/week to save ${formatCurrency(outputs.cutYearlySaving)}/year.`,
+      body:     `Reducing from ${inputs.drinksPerWeek} to ${inputs.drinksPerWeek - inputs.reduceDrinksBy} drinks per week saves ${formatCurrency(outputs.cutYearlySaving)}/year. Invested at 7%, that's ${formatCurrency(outputs.cutInvested10yr)} over 10 years. Your annual alcohol spend drops from ${formatCurrency(yearly)} to ${formatCurrency(outputs.reducedYearlyCost)}.`,
+      visualization: {
+        type:   "delta-card",
+        before: { label: "Current / yr",   value: formatCurrency(yearly) },
+        after:  { label: "After cut / yr",  value: formatCurrency(outputs.reducedYearlyCost) },
+        delta:  { label: "Saved / yr",      value: formatCurrency(outputs.cutYearlySaving), positive: true },
+      } satisfies InsightVisualization,
     });
   }
 
-  // 3. Investment alternative
-  if (invested > tenYear) {
-    results.push({
-      id: "alcohol.investment-alternative",
-      type: "opportunity",
-      message: `Invested at 7% instead, your $${yearly.toLocaleString()}/year becomes $${invested.toLocaleString()} over 10 years — $${(invested - tenYear).toLocaleString()} more than just stopping.`,
-      detail: `The opportunity cost isn't just the cash spent — it's the compound growth you forgo.`,
+  // ── 4. CDC heavy drinking threshold (conditional) ─────────────────────────
+  if (inputs.drinksPerWeek >= 14) {
+    insights.push({
+      id:       "alcohol.cdc-heavy",
+      severity: "warning",
+      category: "comparison",
+      title:    `${inputs.drinksPerWeek} drinks/week exceeds the CDC heavy drinking threshold.`,
+      body:     `The CDC defines heavy drinking as more than 14 drinks per week for men and more than 7 for women. Beyond the financial cost, heavy drinking is associated with increased risk of liver disease, certain cancers, and cardiovascular conditions. The NIAAA helpline is 1-800-662-4357.`,
+      metric:   { label: "Your drinks/week", value: `${inputs.drinksPerWeek}` },
     });
   }
 
-  // 4. 20-year horizon framing
-  if (twenty > 50_000) {
-    results.push({
-      id: "alcohol.twenty-year",
-      type: "milestone",
-      message: `Over 20 years, the same money invested at 7% grows to $${twenty.toLocaleString()}.`,
-      detail: `That's a retirement supplement, a house deposit, or 2+ years of financial runway — all from one habit.`,
-    });
-  }
-
-  // 5. Heavy drinking threshold
-  if (drinks >= 14) {
-    results.push({
-      id: "alcohol.heavy-threshold",
-      type: "warning",
-      message: `${drinks} drinks/week exceeds the CDC's "heavy drinking" threshold (14+ for men, 7+ for women).`,
-      detail: `Beyond the financial cost, heavy drinking is associated with increased health risks that can compound long-term costs significantly.`,
-    });
-  }
-
-  // 6. Per-drink equivalence (if high cost)
-  if (perDrink >= 10 && drinks >= 7) {
-    const weeklyGroceries = Math.round(weekly * 0.7); // rough grocery equivalent
-    results.push({
-      id: "alcohol.cost-context",
-      type: "info",
-      message: `Your weekly alcohol spend of $${weekly.toLocaleString()} is comparable to a full week of groceries for one person.`,
-      detail: `Context reframes the habit. It's not just the amount — it's what else that money represents.`,
-    });
-  }
-
-  return results;
+  return insights;
 }

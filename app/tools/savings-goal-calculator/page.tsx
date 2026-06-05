@@ -1,18 +1,16 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import SavingsGoalWithInsights from "@/components/worthcore/SavingsGoalWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
-  title: "Savings Goal Calculator 2026 – How Much to Save Per Month",
+  title: "Savings Goal Calculator 2026 – Monthly Deposit + Inflation-Adjusted Target",
   description:
-    "Calculate the exact monthly savings contribution needed to reach any financial goal — down payment, emergency fund, holiday, or retirement milestone.",
-  keywords: ["savings goal calculator", "how much to save per month", "monthly savings calculator", "savings target calculator", "how long to save"],
+    "Calculate the exact monthly deposit needed to reach any financial goal — and see what that goal really costs in future dollars, using the live FRED CPI inflation rate.",
+  keywords: ["savings goal calculator", "how much to save per month", "monthly savings calculator", "savings target calculator", "inflation adjusted savings goal"],
   alternates: { canonical: "https://worthulator.com/tools/savings-goal-calculator" },
   robots: { index: true, follow: true },
 };
@@ -36,21 +34,25 @@ const FAQS = [
   },
   {
     q: "What if I already have some savings?",
-    a: "Enter your current savings in the 'Current savings' field. The calculator will account for the compound growth of your existing savings and reduce your required monthly contribution accordingly. More existing savings = smaller monthly deposit needed.",
+    a: "Enter your current savings in the 'Current savings' field. The calculator will account for the compound growth of your existing savings and reduce your required monthly contribution accordingly. More existing savings = smaller monthly deposit needed. With $2,000 already saved toward a $20,000 goal in 3 years at 4%, you need $465/month instead of $524.",
+  },
+  {
+    q: "Does the goal need to grow with inflation?",
+    a: "Often, yes — if your goal is to buy something (a house, a car, a trip), its price rises with inflation. The calculator restates your goal in future dollars using the live FRED CPI rate: a $20,000 goal in 3 years at 3.2% inflation really needs to be about $21,982 to buy the same thing, which means saving about $517/month to truly keep pace.",
   },
 ];
 
 const STATS = [
-  { stat: "20%",   color: "text-emerald-600", accent: "bg-emerald-500", label: "Recommended savings rate — the 50/30/20 rule allocates 20% of take-home pay to savings and debt payoff" },
-  { stat: "$20K",  color: "text-blue-600",    accent: "bg-blue-500",    label: "Typical down payment on a $100K home at 20% — a common first major savings goal" },
-  { stat: "3–6mo", color: "text-amber-600",   accent: "bg-amber-500",   label: "Recommended emergency fund before starting other savings goals" },
+  { stat: "$465/mo", color: "text-emerald-600", accent: "bg-emerald-500", label: "To save a $20,000 goal in 3 years at 4% return, with $2,000 already saved" },
+  { stat: "6.3%",    color: "text-blue-600",    accent: "bg-blue-500",    label: "of that $20,000 goal is funded by investment growth ($1,268), not your deposits" },
+  { stat: "$21,982", color: "text-amber-600",   accent: "bg-amber-500",   label: "what the $20,000 goal really costs in 3 years at the live 3.2% CPI inflation rate" },
 ];
 
 const CONTENT_CARDS = [
   {
     icon: "🎯",
     title: "Break any goal into a monthly number",
-    body: "A $20,000 down payment sounds daunting. But at 4% in a high-yield savings account over 3 years, it's $515/month. Over 5 years, it drops to $294/month. Every financial goal becomes manageable once you translate it into a monthly contribution.",
+    body: "A $20,000 down payment sounds daunting. But at 4% in a high-yield savings account over 3 years — with $2,000 already saved — it's about $465/month. Stretch the timeline to 5 years and it drops to roughly $265/month. Every goal becomes manageable once it's a monthly number.",
   },
   {
     icon: "📈",
@@ -129,13 +131,13 @@ export default function SavingsGoalCalculatorPage() {
         eyebrowText="Personal Finance · Savings"
         title="Savings Goal Calculator"
         description="Enter your goal, timeline, and current savings to see exactly how much you need to put away each month — with compound interest factored in."
-        chips={["Monthly contribution needed", "Interest earned vs deposited", "Compound interest model"]}
+        chips={["Monthly contribution needed", "Inflation-adjusted goal (live CPI)", "Deposits vs growth split"]}
       >
-        <CalculatorEngineLoader slug="savings-goal-calculator" afterResults={<InsightsSection slug="savings-goal-calculator" />} />
+        <SavingsGoalWithInsights />
       </SimpleCalculatorHero>
 
       <InsightStrip
-        text='Any financial goal — down payment, emergency fund, holiday — <span class="font-semibold text-gray-900">becomes achievable once you know the monthly number.</span>'
+        text='Any financial goal becomes achievable once you know the monthly number — and we also show <span class="font-semibold text-gray-900">what the goal really costs after inflation.</span>'
       />
 
       <StatChipsRow stats={STATS} />
@@ -145,7 +147,6 @@ export default function SavingsGoalCalculatorPage() {
         subtitle="Break it down. Pick a timeline. Hit the monthly number consistently."
         cards={CONTENT_CARDS}
       />
-      <InsightTable slug="savings-goal-calculator" />
 
       <SEOTextBlock
         title="How the Savings Goal Calculator Works"
@@ -153,21 +154,21 @@ export default function SavingsGoalCalculatorPage() {
 n = Years × 12                       (total months)
 
 PV Grown = Current Savings × (1 + r)^n
-
 Monthly Contribution = (Goal − PV Grown) × r / ((1 + r)^n − 1)
 
-Total Contributed = Monthly Contribution × n
-Interest Earned   = Goal − Current Savings − Total Contributed`}
+Interest Earned        = Goal − Current Savings − (Monthly × n)
+Inflation-Adjusted Goal = Goal × (1 + i)^years      i = live FRED CPI`}
         steps={[
           { label: "Enter your savings goal", description: "The target amount — down payment, emergency fund, lump sum, or any goal." },
           { label: "Add your current savings", description: "Money already set aside. This reduces your required monthly contribution." },
           { label: "Set your timeline", description: "Years until you need the money. Longer timelines = lower monthly contributions." },
           { label: "Choose an annual return", description: "HYSA: ~4–5% · Conservative portfolio: ~5–6% · Stock market (long-term): ~7–10%." },
-          { label: "See your monthly number", description: "The exact monthly deposit to hit your goal, plus total contributed and interest earned." },
+          { label: "Read your numbers", description: "The monthly deposit, growth vs deposits split, and the inflation-adjusted goal with the deposit needed to keep pace." },
         ]}
         paragraphs={[
           "This calculator uses the standard future-value-of-an-annuity formula, which accounts for compound interest on both your existing savings and each monthly contribution as it is made. It's the same calculation used in financial planning software, just made accessible without a spreadsheet.",
-          "A key insight: your existing savings reduce the required monthly contribution more than you might expect, especially with a longer timeline. $5,000 already saved toward a 5-year goal at 5% return is worth $6,381 by the end — that's $1,381 in compound growth that reduces what you need to deposit monthly.",
+          "A key insight: your existing savings reduce the required monthly contribution more than you might expect. In the default scenario — a $20,000 goal in 3 years at 4% with $2,000 already saved — you need $465/month, and growth supplies $1,268 (6.3%) of the goal so you only deposit $16,732 of it yourself.",
+          "It also corrects for inflation. If your goal is to buy something, its price rises too — so we restate the target in future dollars using the live FRED CPI rate. At 3.2% inflation a $20,000 goal becomes about $21,982 in 3 years, and keeping pace takes roughly $517/month rather than $465.",
         ]}
       />
 

@@ -1,8 +1,10 @@
-import type { Insight } from "../index";
+import type { Insight } from "../types";
+import { futureValueAnnuity } from "../projections";
+import { formatCurrency } from "../benchmarks";
 
 interface LotteryInputs {
   weekly: number;
-  years: number;
+  years:  number;
   return: number;
 }
 
@@ -15,77 +17,94 @@ interface LotteryOutputs {
   dailyCost?:    number;
 }
 
+// Powerball odds of jackpot: 1 in 292,201,338 (Powerball official).
+// Mega Millions jackpot: 1 in 302,575,350.
+// State lottery payout ratio: ~47–53 cents per dollar (varies by state).
+// S&P 500 historical: ~10.7% nominal / ~7% real over 30 years.
+
 export function lotteryVsInvestingInsights(
   inputs: LotteryInputs,
-  outputs: LotteryOutputs
+  outputs: LotteryOutputs,
 ): Insight[] {
   const results: Insight[] = [];
 
-  const weekly    = Number(inputs.weekly);
-  const years     = Number(inputs.years);
-  const rate      = Number(inputs.return);
-  const invested  = outputs.invested      ?? 0;
-  const spent     = outputs.spent         ?? 0;
-  const gap       = outputs.gap           ?? 0;
-  const multiple  = outputs.lossMultiple  ?? 0;
-  const monthly   = outputs.monthlySpend  ?? 0;
-  const daily     = outputs.dailyCost     ?? 0;
+  const weekly   = Number(inputs.weekly);
+  const years    = Number(inputs.years);
+  const rate     = Number(inputs.return);
+  const annual   = weekly * 52;
+  const invested = outputs.invested  ?? Math.round(futureValueAnnuity(annual, years, rate));
+  const spent    = outputs.spent     ?? Math.round(annual * years);
+  const gap      = outputs.gap       ?? Math.max(0, invested - spent);
+  const monthly  = outputs.monthlySpend ?? Math.round(weekly * 52 / 12);
+  const daily    = outputs.dailyCost    ?? Math.round(weekly / 7 * 100) / 100;
 
-  // 1. Core comparison — always shown
+  if (weekly <= 0) return results;
+
+  const expectedReturn  = Math.round(spent * 0.5);   // ~50 cents per dollar returned on avg
+  const expectedLoss    = spent - expectedReturn;
+  const investedVsSpent = Math.round((invested / spent) * 10) / 10;
+
+  // 1. The expected value math — what the lottery actually returns
   results.push({
-    id: "lottery.core-comparison",
-    type: "warning",
-    message: `Investing your $${weekly}/week instead of lottery tickets would build $${invested.toLocaleString()} over ${years} years.`,
-    detail: `You'd spend $${spent.toLocaleString()} on tickets and have virtually nothing to show. Invested at ${rate}%, it's $${invested.toLocaleString()}.`,
+    id:       "lottery.expected-value",
+    severity: "neutral",
+    category: "hidden-cost",
+    title:    `State lotteries return about 50 cents per dollar wagered`,
+    body:     `Lottery payout ratios range from 47–53% of total ticket sales — the rest funds government programs. Over ${years} years at ${formatCurrency(weekly)}/week, you spend ${formatCurrency(spent)} and the statistical expected return is ${formatCurrency(expectedReturn)}. The expected loss: ${formatCurrency(expectedLoss)}. Powerball jackpot odds are 1 in 292 million.`,
+    metric:   { label: "Expected loss over period", value: formatCurrency(expectedLoss) },
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      spent,
+      userLabel:      "Total spent",
+      benchmarkValue: expectedReturn,
+      benchmarkLabel: "Statistical return (~50%)",
+      format:         "currency",
+    },
   });
 
-  // 2. Loss multiple
-  if (multiple >= 2) {
-    results.push({
-      id: "lottery.loss-multiple",
-      type: "warning",
-      message: `For every $1 you put into lottery tickets, you give up $${multiple.toFixed(1)} in future investment value.`,
-      detail: `That's a ${multiple.toFixed(1)}x opportunity cost — the "cost" of each ticket is far more than its face value.`,
-    });
-  }
-
-  // 3. Monthly reframe
-  if (monthly > 50) {
-    results.push({
-      id: "lottery.monthly-reframe",
-      type: "info",
-      message: `You're spending $${monthly.toLocaleString()}/month on lottery — enough to max a Roth IRA contribution in a few months.`,
-      detail: `$${monthly.toLocaleString()}/month invested at ${rate}% for ${years} years grows to $${invested.toLocaleString()}.`,
-    });
-  }
-
-  // 4. Daily habit
-  if (daily > 0) {
-    results.push({
-      id: "lottery.daily-habit",
-      type: "info",
-      message: `That's $${daily.toFixed(2)}/day — a small habit with a $${invested.toLocaleString()} price tag over ${years} years.`,
-      detail: `Small daily habits compound in both directions — toward debt or toward wealth.`,
-    });
-  }
-
-  // 5. Gap (what compounding adds beyond what you'd have spent)
-  if (gap > 10_000) {
-    results.push({
-      id: "lottery.compound-gap",
-      type: "opportunity",
-      message: `The market adds $${gap.toLocaleString()} on top of what you contribute — money created from nothing.`,
-      detail: `Of the $${invested.toLocaleString()} total, only $${spent.toLocaleString()} came from you. The rest is compounding at work.`,
-    });
-  }
-
-  // 6. Jackpot odds context
+  // 2. Invested alternative
   results.push({
-    id: "lottery.odds-context",
-    type: "info",
-    message: `The odds of winning a major jackpot are roughly 1 in 300 million. The odds of building wealth by investing consistently are near certainty.`,
-    detail: `Expected value of a lottery ticket is negative by design. Compound investing has a provably positive expected value.`,
+    id:       "lottery.invested-alternative",
+    severity: "neutral",
+    category: "opportunity-cost",
+    title:    `Invested instead at ${rate}%: ${formatCurrency(invested)} over ${years} years`,
+    body:     `${formatCurrency(weekly)}/week invested in an index fund at ${rate}% annually becomes ${formatCurrency(invested)} in ${years} years. You contribute ${formatCurrency(spent)} — the remaining ${formatCurrency(gap)} is compound growth. The lottery alternative: statistically ${formatCurrency(expectedReturn)}.`,
+    metric:   { label: `${years}-year invested value`, value: formatCurrency(invested) },
+    visualization: {
+      type:   "projection-line",
+      points: [1, 3, 5, 10, 20, Math.min(years, 30)].filter((y, i, a) => a.indexOf(y) === i && y <= years).sort((a, b) => a - b).map((yr) => ({
+        label: `Yr ${yr}`,
+        value: Math.round(futureValueAnnuity(annual, yr, rate)),
+      })),
+      format: "currency",
+      yLabel: "Invested value",
+      color:  "#10b981",
+    },
   });
+
+  // 3. Monthly framing
+  if (monthly > 30) {
+    results.push({
+      id:       "lottery.monthly",
+      severity: "neutral",
+      category: "spending",
+      title:    `${formatCurrency(monthly)}/month on lottery tickets`,
+      body:     `${formatCurrency(weekly)}/week is ${formatCurrency(monthly)}/month and ${formatCurrency(annual)}/year. The 2024 max Roth IRA contribution is $7,000/year — at ${formatCurrency(monthly)}/month, that limit would be reached in ${Math.ceil(7000 / monthly)} months of redirected lottery spending.`,
+      metric:   { label: "Monthly spend", value: formatCurrency(monthly) },
+    });
+  }
+
+  // 4. Multiplication factor — what investing does vs lottery
+  if (investedVsSpent >= 1.5) {
+    results.push({
+      id:       "lottery.multiplier",
+      severity: "positive",
+      category: "comparison",
+      title:    `Investing turns ${formatCurrency(spent)} into ${formatCurrency(invested)} — a ${investedVsSpent.toFixed(1)}× multiple`,
+      body:     `Every dollar you contribute grows to ${investedVsSpent.toFixed(1)} dollars through compound interest over ${years} years at ${rate}%. The lottery's expected return on the same money is ${formatCurrency(expectedReturn)} — a 0.5× multiple.`,
+      metric:   { label: "Investment multiple", value: `${investedVsSpent.toFixed(1)}×` },
+    });
+  }
 
   return results;
 }

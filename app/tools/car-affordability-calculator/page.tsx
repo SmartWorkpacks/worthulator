@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
@@ -110,7 +109,7 @@ export default function CarAffordabilityCalculatorPage() {
         description="Find the maximum car payment, loan amount, and target price you can afford — based on your income and loan terms."
         chips={["15% income rule", "Max loan amount", "Target car price with 20% down"]}
       >
-        <CalculatorEngineLoader slug="car-affordability" afterResults={<InsightsSection slug="car-affordability" />} />
+        <EngineWithInsights slug="car-affordability" />
       </SimpleCalculatorHero>
       <InsightStrip text='The loan payment is just the beginning — <span class="font-semibold text-gray-900">insurance, fuel, and maintenance often double the true monthly cost of a car.</span>' />
       <StatChipsRow stats={STATS} />

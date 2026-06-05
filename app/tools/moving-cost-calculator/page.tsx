@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Moving Cost Calculator 2026 – Total Relocation Budget",
@@ -34,7 +33,7 @@ const STATS = [
 
 const CONTENT_CARDS = [
   { icon: "🔍", title: "The hidden costs everyone forgets", body: "Moving company tip, extra boxes mid-pack, parking permits for trucks, reconnection fees, cleaning supplies for both homes, and the first grocery run at the new place. These add up fast." },
-  { icon: "🚛", title: "DIY vs professional movers", body: "DIY can save $1,000–$3,000 on labour but costs you time, physical effort, and the risk of damage. For moves over 2 bedrooms, professional movers often work out more cost-effectively than you'd expect." },
+  { icon: "🚛", title: "DIY vs professional movers", body: "DIY can save $1,000–$3,000 on labor but costs you time, physical effort, and the risk of damage. For moves over 2 bedrooms, professional movers often work out more cost-effectively than you'd expect." },
   { icon: "📅", title: "Overlap your leases", body: "Having even 2 weeks of lease overlap lets you move at a relaxed pace and clean the old place properly. The cost is usually worth avoiding the chaos of a same-day move-out/move-in." },
 ];
 
@@ -45,9 +44,32 @@ const RELATED_CALCS = [
   { icon: "🧾", accent: "bg-purple-500/10",  title: "Closing Cost Calculator",   description: "If you're buying: all the fees at signing.",    href: "/tools/closing-cost-calculator" },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "Moving Cost Calculator",
+      url: "https://worthulator.com/tools/moving-cost-calculator",
+      applicationCategory: "FinanceApplication",
+      description: "Estimate your total relocation budget from line items plus a contingency buffer and cost per mile.",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
+
 export default function MovingCostCalculator() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SimpleCalculatorHero
         eyebrowIcon="📦"
         eyebrowText="Moving"
@@ -55,12 +77,11 @@ export default function MovingCostCalculator() {
         description="Enter your moving expenses to see a total budget — truck, fuel, packing, storage, and the bits everyone forgets. Add a 15% buffer and move without surprises."
         chips={["Total move cost", "Per-room estimate", "Surprise buffer"]}
       >
-        <CalculatorEngineLoader slug="moving-cost-calculator" />
+        <EngineWithInsights slug="moving-cost-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Most people budget for the truck and forget everything else. The real cost of moving is usually 30–50% higher than the initial quote." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What to include in your moving budget" cards={CONTENT_CARDS} />
-      <InsightTable slug="moving-cost-calculator" />
       <SEOTextBlock
         title="How to budget your move accurately"
         formula={`Total Cost    = Movers + Fuel + Packing + Storage + Tips & Misc

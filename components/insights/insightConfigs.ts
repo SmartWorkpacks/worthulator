@@ -1693,22 +1693,29 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
   "laundry-cost-calculator": (() => {
     const c = CALCULATOR_CONFIGS["laundry-cost-calculator"];
     if (!c) return null;
-    const r = c.calculate({ loadsPerWeek: 4, electricityRate: 0.16, detergentCost: 0.30, machineType: 3.8 });
+    const laundryInputs = (loads: number) => ({
+      loadsPerWeek: loads,
+      machineType: "standard",
+      waterTemp: "warm",
+      detergentCost: 0.30,
+      electricRateOverride: 0.16,
+    });
+    const r = c.calculate(laundryInputs(4));
     const chartData = [2, 4, 6, 8, 10].map((loads) => {
-      const row = c.calculate({ loadsPerWeek: loads, electricityRate: 0.16, detergentCost: 0.30, machineType: 3.8 });
-      return { label: `${loads} loads`, "Annual cost": Math.round(row.annualLaundry) };
+      const row = c.calculate(laundryInputs(loads));
+      return { label: `${loads} loads`, "Annual cost": Math.round(row.annualCost) };
     });
     const tableRows = [2, 4, 6, 8, 10].map((loads) => {
-      const row = c.calculate({ loadsPerWeek: loads, electricityRate: 0.16, detergentCost: 0.30, machineType: 3.8 });
-      return [`${loads} loads/wk`, `$${row.costPerLoad}`, `$${row.weeklyLaundry.toFixed(2)}/wk`, `$${Math.round(row.annualLaundry)}/yr`];
+      const row = c.calculate(laundryInputs(loads));
+      return [`${loads} loads/wk`, `$${row.costPerLoad.toFixed(2)}`, `$${row.weeklyCost.toFixed(2)}/wk`, `$${Math.round(row.annualCost)}/yr`];
     });
     return {
       blocks: [
         {
           type: "hero",
-          stat: `$${Math.round(r.annualLaundry)}`,
+          stat: `$${Math.round(r.annualCost)}`,
           label: "per year running 4 loads/week (standard machine, $0.16/kWh)",
-          subStat: `$${r.costPerLoad}/load · ${r.electricityShare}% of cost is electricity`,
+          subStat: `$${r.costPerLoad.toFixed(2)}/load · ${r.electricityPct}% of cost is electricity`,
           accent: "blue",
         } satisfies HeroInsightBlock,
         {
@@ -2137,20 +2144,27 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
   "commute-cost": (() => {
     const c = CALCULATOR_CONFIGS["commute-cost"];
     if (!c) return null;
-    const r = c.calculate({ milesOneWay: 15, mpg: 28, gasPrice: 3.5, workDaysPerYear: 250 });
+    const commuteInputs = (miles: number) => ({
+      milesOneWay: miles,
+      mpg: 28,
+      officeDaysPerWeek: 5,
+      weeksPerYear: 50,
+      gasPriceOverride: 3.5,
+    });
+    const r = c.calculate(commuteInputs(15));
     const distData = [5, 10, 15, 25, 40].map((miles) => {
-      const row = c.calculate({ milesOneWay: miles, mpg: 28, gasPrice: 3.5, workDaysPerYear: 250 });
-      return { label: `${miles} mi`, "Annual cost": row.annualCost };
+      const row = c.calculate(commuteInputs(miles));
+      return { label: `${miles} mi`, "Annual cost": row.annualFuelCost };
     });
     const tableRows = [5, 10, 15, 25, 40].map((miles) => {
-      const row = c.calculate({ milesOneWay: miles, mpg: 28, gasPrice: 3.5, workDaysPerYear: 250 });
-      return [`${miles} miles`, `$${row.costPerDay.toFixed(2)}/day`, `$${row.monthlyCost}/mo`, `$${row.annualCost.toLocaleString()}/yr`];
+      const row = c.calculate(commuteInputs(miles));
+      return [`${miles} miles`, `$${row.costPerDay.toFixed(2)}/day`, `$${row.monthlyCost}/mo`, `$${row.annualFuelCost.toLocaleString()}/yr`];
     });
     return {
       blocks: [
         {
           type: "hero",
-          stat: `$${r.annualCost.toLocaleString()}`,
+          stat: `$${r.annualFuelCost.toLocaleString()}`,
           label: "annual fuel cost commuting 15 miles each way (28 MPG, $3.50/gal)",
           subStat: `$${r.costPerDay.toFixed(2)}/day · $${r.monthlyCost}/month`,
           accent: "red",
@@ -3428,17 +3442,17 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
     const c = CALCULATOR_CONFIGS["expense-split-calculator"];
     if (!c) return null;
 
-    const r = c.calculate({ total: 120, people: 4, tip: 18 });
+    const r = c.calculate({ amount: 120, people: 4, tipPct: 18 });
 
     const tableRows = [80, 120, 200, 350].map((total) => {
-      const r2 = c.calculate({ total, people: 2, tip: 18 });
-      const r4 = c.calculate({ total, people: 4, tip: 18 });
-      const r6 = c.calculate({ total, people: 6, tip: 18 });
+      const r2 = c.calculate({ amount: total, people: 2, tipPct: 18 });
+      const r4 = c.calculate({ amount: total, people: 4, tipPct: 18 });
+      const r6 = c.calculate({ amount: total, people: 6, tipPct: 18 });
       return [
         `$${total} bill`,
-        `$${r2.perPersonWithTip.toFixed(2)}`,
-        `$${r4.perPersonWithTip.toFixed(2)}`,
-        `$${r6.perPersonWithTip.toFixed(2)}`,
+        `$${r2.perPersonTotal.toFixed(2)}`,
+        `$${r4.perPersonTotal.toFixed(2)}`,
+        `$${r6.perPersonTotal.toFixed(2)}`,
       ];
     });
 
@@ -3446,16 +3460,16 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
       blocks: [
         {
           type: "hero",
-          stat: `$${r.perPersonWithTip.toFixed(2)}`,
+          stat: `$${r.perPersonTotal.toFixed(2)}`,
           label: "per person — $120 dinner, 4 people, 18% tip",
-          subStat: `Total with tip: $${r.withTip.toFixed(2)}. Before tip: $${r.perPerson.toFixed(2)}/person.`,
+          subStat: `Total with tip: $${r.grandTotal.toFixed(2)}. Before tip: $${r.perPersonBase.toFixed(2)}/person.`,
           accent: "emerald",
         } satisfies HeroInsightBlock,
         {
           type: "comparison",
           title: "Tip impact on a $120 bill split 4 ways",
-          left:  { label: "15% tip", value: `$${c.calculate({ total: 120, people: 4, tip: 15 }).perPersonWithTip.toFixed(2)}/person`, note: "Standard minimum", highlight: true },
-          right: { label: "20% tip", value: `$${c.calculate({ total: 120, people: 4, tip: 20 }).perPersonWithTip.toFixed(2)}/person`, note: "Good service standard" },
+          left:  { label: "15% tip", value: `$${c.calculate({ amount: 120, people: 4, tipPct: 15 }).perPersonTotal.toFixed(2)}/person`, note: "Standard minimum", highlight: true },
+          right: { label: "20% tip", value: `$${c.calculate({ amount: 120, people: 4, tipPct: 20 }).perPersonTotal.toFixed(2)}/person`, note: "Good service standard" },
         } satisfies ComparisonBlock,
         {
           type: "explanation",
@@ -3475,7 +3489,15 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
     const c = CALCULATOR_CONFIGS["flooring-cost-calculator"];
     if (!c) return null;
 
-    const r = c.calculate({ length: 20, width: 15, costPerSqFt: 4.5 });
+    const flooringInputs = (length: number, width: number, cost: number) => ({
+      roomLength: length,
+      roomWidth: width,
+      materialPerSqFt: cost,
+      laborPerSqFt: cost * 0.4,
+      wastePct: 10,
+    });
+
+    const r = c.calculate(flooringInputs(20, 15, 4.5));
 
     const tableRows = [
       { label: "Vinyl/LVP",   cost: 3.5 },
@@ -3483,9 +3505,9 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
       { label: "Hardwood",    cost: 9.0 },
       { label: "Tile",        cost: 7.0 },
     ].map(({ label, cost }) => {
-      const r200  = c.calculate({ length: 14, width: 14, costPerSqFt: cost });
-      const r500  = c.calculate({ length: 25, width: 20, costPerSqFt: cost });
-      const r1000 = c.calculate({ length: 40, width: 25, costPerSqFt: cost });
+      const r200  = c.calculate(flooringInputs(14, 14, cost));
+      const r500  = c.calculate(flooringInputs(25, 20, cost));
+      const r1000 = c.calculate(flooringInputs(40, 25, cost));
       return [label, fmtK(r200.totalCost), fmtK(r500.totalCost), fmtK(r1000.totalCost)];
     });
 
@@ -3495,14 +3517,14 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
           type: "hero",
           stat: fmtK(r.totalCost),
           label: "estimated all-in flooring cost — 300 sq ft at $4.50/sq ft (incl. installation)",
-          subStat: `Area: ${r.area} sq ft. All-in per sq ft: $${r.costPerSqFtAll.toFixed(2)} (materials + 40% labour).`,
+          subStat: `Area: ${r.area} sq ft. All-in per sq ft: $${r.costPerSqFtInstalled.toFixed(2)} (materials + 40% labour).`,
           accent: "amber",
         } satisfies HeroInsightBlock,
         {
           type: "comparison",
           title: "Vinyl vs hardwood — 300 sq ft room",
-          left:  { label: "Vinyl/LVP", value: fmtK(c.calculate({ length: 20, width: 15, costPerSqFt: 3.5 }).totalCost), note: "Durable, water resistant", highlight: true },
-          right: { label: "Hardwood",  value: fmtK(c.calculate({ length: 20, width: 15, costPerSqFt: 9.0 }).totalCost), note: "Higher resale value" },
+          left:  { label: "Vinyl/LVP", value: fmtK(c.calculate(flooringInputs(20, 15, 3.5)).totalCost), note: "Durable, water resistant", highlight: true },
+          right: { label: "Hardwood",  value: fmtK(c.calculate(flooringInputs(20, 15, 9.0)).totalCost), note: "Higher resale value" },
         } satisfies ComparisonBlock,
         {
           type: "explanation",
@@ -3618,35 +3640,35 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
     const c = CALCULATOR_CONFIGS["gpa-calculator"];
     if (!c) return null;
 
-    const r = c.calculate({ currentGPA: 3.2, totalCredits: 60, remainingCredits: 30, targetGPA: 3.5 });
+    const r = c.calculate({ currentGpa: 3.2, creditsDone: 60, remainingCredits: 30, targetGpa: 3.5 });
 
     const tableRows = [
-      { currentGPA: 2.5, label: "2.5 GPA" },
-      { currentGPA: 3.0, label: "3.0 GPA" },
-      { currentGPA: 3.3, label: "3.3 GPA" },
-      { currentGPA: 3.5, label: "3.5 GPA" },
-    ].map(({ currentGPA, label }) => {
+      { currentGpa: 2.5, label: "2.5 GPA" },
+      { currentGpa: 3.0, label: "3.0 GPA" },
+      { currentGpa: 3.3, label: "3.3 GPA" },
+      { currentGpa: 3.5, label: "3.5 GPA" },
+    ].map(({ currentGpa, label }) => {
       const fmt = (v: number) => v > 4 ? "Impossible" : v <= 0 ? "Already there" : v.toFixed(2);
-      const r35 = c.calculate({ currentGPA, totalCredits: 60, remainingCredits: 30, targetGPA: 3.5 });
-      const r37 = c.calculate({ currentGPA, totalCredits: 60, remainingCredits: 30, targetGPA: 3.7 });
-      const r40 = c.calculate({ currentGPA, totalCredits: 60, remainingCredits: 30, targetGPA: 4.0 });
-      return [label, fmt(r35.neededGPA), fmt(r37.neededGPA), fmt(r40.neededGPA)];
+      const r35 = c.calculate({ currentGpa, creditsDone: 60, remainingCredits: 30, targetGpa: 3.5 });
+      const r37 = c.calculate({ currentGpa, creditsDone: 60, remainingCredits: 30, targetGpa: 3.7 });
+      const r40 = c.calculate({ currentGpa, creditsDone: 60, remainingCredits: 30, targetGpa: 4.0 });
+      return [label, fmt(r35.requiredGpa), fmt(r37.requiredGpa), fmt(r40.requiredGpa)];
     });
 
     return {
       blocks: [
         {
           type: "hero",
-          stat: r.neededGPA > 4 ? "Not possible" : r.neededGPA.toFixed(2),
+          stat: r.requiredGpa > 4 ? "Not possible" : r.requiredGpa.toFixed(2),
           label: "GPA needed in remaining 30 credits to reach a 3.5 — starting at 3.2 with 60 earned",
-          subStat: `Current quality points: ${r.currentPoints}. Feasibility score: ${r.feasibility}/100.`,
-          accent: r.neededGPA > 4 ? "red" : r.neededGPA > 3.7 ? "amber" : "emerald",
+          subStat: `Current quality points: ${r.currentQualityPoints}. ${r.feasible === 1 ? "Target is reachable." : "Target is out of reach."}`,
+          accent: r.requiredGpa > 4 ? "red" : r.requiredGpa > 3.7 ? "amber" : "emerald",
         } satisfies HeroInsightBlock,
         {
           type: "comparison",
           title: "Target comparison — 3.2 GPA, 30 credits remaining",
-          left:  { label: "Target 3.5", value: r.neededGPA > 4 ? "Not possible" : `${r.neededGPA.toFixed(2)} needed`, note: "Honors threshold", highlight: true },
-          right: { label: "Target 3.7", value: c.calculate({ currentGPA: 3.2, totalCredits: 60, remainingCredits: 30, targetGPA: 3.7 }).neededGPA > 4 ? "Not possible" : `${c.calculate({ currentGPA: 3.2, totalCredits: 60, remainingCredits: 30, targetGPA: 3.7 }).neededGPA.toFixed(2)} needed`, note: "Summa cum laude range" },
+          left:  { label: "Target 3.5", value: r.requiredGpa > 4 ? "Not possible" : `${r.requiredGpa.toFixed(2)} needed`, note: "Honors threshold", highlight: true },
+          right: { label: "Target 3.7", value: c.calculate({ currentGpa: 3.2, creditsDone: 60, remainingCredits: 30, targetGpa: 3.7 }).requiredGpa > 4 ? "Not possible" : `${c.calculate({ currentGpa: 3.2, creditsDone: 60, remainingCredits: 30, targetGpa: 3.7 }).requiredGpa.toFixed(2)} needed`, note: "Summa cum laude range" },
         } satisfies ComparisonBlock,
         {
           type: "explanation",
@@ -4178,27 +4200,30 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
   "phone-addiction-calculator": (() => {
     const c = CALCULATOR_CONFIGS["phone-addiction-calculator"];
     if (!c) return null;
-    const r = c.calculate({ dailyHours: 4, yearsAhead: 30, hourlyValue: 35 });
+    const r = c.calculate({ hoursPerDay: 4, pickupsPerDay: 86, yearsAhead: 30, hourlyRateOverride: 35 });
+    const yearsLost = (rr: Record<string, number>) => rr.lifetimeDays / 365;
+    const lifetimeHours = (rr: Record<string, number>) => Math.round(rr.lifetimeDays * 24);
+    const opportunityCost = (rr: Record<string, number>) => rr.annualCost * 30;
 
-    const tableRows = [2, 4, 6, 8].map((dailyHours) => {
-      const rr = c.calculate({ dailyHours, yearsAhead: 30, hourlyValue: 35 });
-      return [`${dailyHours}h/day`, `${rr.lifetimeHours.toLocaleString()} hours`, `${rr.yearsLost} years`, fmtK(rr.opportunityCost)];
+    const tableRows = [2, 4, 6, 8].map((hoursPerDay) => {
+      const rr = c.calculate({ hoursPerDay, pickupsPerDay: 86, yearsAhead: 30, hourlyRateOverride: 35 });
+      return [`${hoursPerDay}h/day`, `${lifetimeHours(rr).toLocaleString()} hours`, `${yearsLost(rr).toFixed(1)} years`, fmtK(opportunityCost(rr))];
     });
 
     return {
       blocks: [
         {
           type: "hero",
-          stat: `${r.yearsLost} years`,
+          stat: `${yearsLost(r).toFixed(1)} years`,
           label: "of your life on your phone — 4 hours/day over 30 years",
-          subStat: `${r.lifetimeHours.toLocaleString()} total hours. At $35/hr, that's ${fmtK(r.opportunityCost)} in opportunity cost.`,
+          subStat: `${lifetimeHours(r).toLocaleString()} total hours. At $35/hr, that's ${fmtK(opportunityCost(r))} in opportunity cost.`,
           accent: "red",
         } satisfies HeroInsightBlock,
         {
           type: "comparison",
           title: "2 hrs/day vs 6 hrs/day — 30-year lifetime impact",
-          left:  { label: "2 hrs/day", value: `${c.calculate({ dailyHours: 2, yearsAhead: 30, hourlyValue: 35 }).yearsLost} years`, note: "Light user",  highlight: true },
-          right: { label: "6 hrs/day", value: `${c.calculate({ dailyHours: 6, yearsAhead: 30, hourlyValue: 35 }).yearsLost} years`, note: "Heavy user" },
+          left:  { label: "2 hrs/day", value: `${yearsLost(c.calculate({ hoursPerDay: 2, pickupsPerDay: 86, yearsAhead: 30, hourlyRateOverride: 35 })).toFixed(1)} years`, note: "Light user",  highlight: true },
+          right: { label: "6 hrs/day", value: `${yearsLost(c.calculate({ hoursPerDay: 6, pickupsPerDay: 86, yearsAhead: 30, hourlyRateOverride: 35 })).toFixed(1)} years`, note: "Heavy user" },
         } satisfies ComparisonBlock,
         {
           type: "explanation",
@@ -4419,27 +4444,29 @@ export const INSIGHT_CONFIGS: Record<string, InsightConfig | null> = {
   "streaming-time-calculator": (() => {
     const c = CALCULATOR_CONFIGS["streaming-time-calculator"];
     if (!c) return null;
-    const r = c.calculate({ dailyHours: 3, years: 10, costPerMonth: 35 });
+    const r = c.calculate({ hoursPerDay: 3, yearsAhead: 10, monthlySubCost: 35 });
+    const yearsLost = (rr: Record<string, number>) => rr.lifetimeDays / 365;
+    const totalHours = (rr: Record<string, number>) => Math.round(rr.lifetimeDays * 24);
 
-    const tableRows = [1, 2, 3, 5].map((dailyHours) => {
-      const rr = c.calculate({ dailyHours, years: 10, costPerMonth: 35 });
-      return [`${dailyHours}h/day`, `${rr.totalHours.toLocaleString()} hours`, `${rr.yearsLost} years`, fmtK(rr.totalSpent)];
+    const tableRows = [1, 2, 3, 5].map((hoursPerDay) => {
+      const rr = c.calculate({ hoursPerDay, yearsAhead: 10, monthlySubCost: 35 });
+      return [`${hoursPerDay}h/day`, `${totalHours(rr).toLocaleString()} hours`, `${yearsLost(rr).toFixed(1)} years`, fmtK(rr.subTotalCost)];
     });
 
     return {
       blocks: [
         {
           type: "hero",
-          stat: `${r.yearsLost} years`,
+          stat: `${yearsLost(r).toFixed(1)} years`,
           label: "of your life watching streaming content — 3 hours/day over 10 years",
-          subStat: `${r.totalHours.toLocaleString()} total hours. Subscription cost over 10 years: ${fmtK(r.totalSpent)}.`,
+          subStat: `${totalHours(r).toLocaleString()} total hours. Subscription cost over 10 years: ${fmtK(r.subTotalCost)}.`,
           accent: "amber",
         } satisfies HeroInsightBlock,
         {
           type: "comparison",
           title: "1 hr vs 4 hrs daily — streaming over 10 years",
-          left:  { label: "1 hr/day",  value: `${c.calculate({ dailyHours: 1, years: 10, costPerMonth: 35 }).totalHours.toLocaleString()} hours`, note: "Selective viewer",   highlight: true },
-          right: { label: "4 hrs/day", value: `${c.calculate({ dailyHours: 4, years: 10, costPerMonth: 35 }).totalHours.toLocaleString()} hours`, note: "Heavy binge-watcher" },
+          left:  { label: "1 hr/day",  value: `${totalHours(c.calculate({ hoursPerDay: 1, yearsAhead: 10, monthlySubCost: 35 })).toLocaleString()} hours`, note: "Selective viewer",   highlight: true },
+          right: { label: "4 hrs/day", value: `${totalHours(c.calculate({ hoursPerDay: 4, yearsAhead: 10, monthlySubCost: 35 })).toLocaleString()} hours`, note: "Heavy binge-watcher" },
         } satisfies ComparisonBlock,
         {
           type: "explanation",

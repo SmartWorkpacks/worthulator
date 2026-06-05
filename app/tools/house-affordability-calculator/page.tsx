@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "House Affordability Calculator 2026 – How Much House Can You Afford?",
@@ -111,7 +110,6 @@ export default function HouseAffordabilityCalculator() {
       <InsightStrip text="Most lenders cap your mortgage payment at 28% of gross income — but conservative buyers target 25% of take-home pay." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What really determines your buying power" cards={CONTENT_CARDS} />
-      <InsightTable slug="house-affordability-calculator" />
       <SEOTextBlock
         title="How the House Affordability Calculator Works"
         formula={`Max Monthly Payment = Gross Monthly Income × 28%

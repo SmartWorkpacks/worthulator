@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,82 +9,84 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
-  title: "Work Hours Calculator 2026 – Total Hours from Daily Hours & Days",
+  title: "Work Hours Calculator 2026 – Total Hours, Overtime & Gross Pay",
   description:
-    "Calculate total work hours from daily hours and number of days. Use for timesheets, freelance billing, contractor invoices, or any work period tracking.",
-  keywords: ["work hours calculator", "hours worked calculator", "timesheet calculator", "total hours calculator", "how many hours did I work"],
+    "Calculate total work hours from daily hours, days per week, and weeks. See FLSA overtime, gross pay at your rate, and how it compares to a full-time year.",
+  keywords: ["work hours calculator", "hours worked calculator", "timesheet calculator", "overtime calculator", "total hours calculator"],
   alternates: { canonical: "https://worthulator.com/tools/work-hours-calculator" },
+  robots: { index: true, follow: true },
 };
 
 const FAQS = [
   {
     q: "How many work hours are in a year?",
-    a: "A standard full-time schedule of 8 hours/day × 5 days/week × 52 weeks = 2,080 hours per year. Subtract 10 federal holidays (80 hours) and you get approximately 2,000 productive work hours. Accounting for average sick days (~6/year) and vacation (10+ days), most full-time employees work 1,880–1,960 effective hours per year.",
+    a: "A standard full-time schedule of 8 hours/day × 5 days/week × 52 weeks = 2,080 hours per year. Subtract 10 federal holidays (80 hours) and you get roughly 2,000 productive hours. After typical sick days and vacation, most full-time employees work 1,880–1,960 effective hours a year. This calculator shows your total as a fraction of that 2,080-hour benchmark (your FTE).",
+  },
+  {
+    q: "How is overtime calculated?",
+    a: "Under the FLSA, overtime is any time over 40 hours in a workweek, paid at 1.5× your regular rate. It's a weekly calculation, not daily — working 10 hours one day and 0 the next only triggers overtime if the week exceeds 40 hours total (California is an exception with daily overtime rules). This calculator splits your hours into regular and overtime on the weekly basis and prices the overtime at time-and-a-half.",
   },
   {
     q: "How do I calculate hours for a freelance invoice?",
-    a: "Log your actual hours worked per project, multiply by your hourly rate, and add any expenses. For example: 14.5 hours × $85/hr = $1,232.50. Always track in 15-minute increments at minimum, and log time immediately — trying to recall hours worked days later is notoriously inaccurate. Tools like Toggl, Harvest, or even a simple spreadsheet work well.",
+    a: "Enter your hours per day, days per week, and the number of weeks the project spanned, then add your hourly rate to get gross billable pay instantly. Always track in 15-minute increments at minimum and log time as you go — reconstructing hours days later is notoriously inaccurate.",
   },
   {
-    q: "What is a part-time hours range?",
-    a: "There is no federal definition of part-time, but most employers consider anything under 30–35 hours/week as part-time. For ACA health insurance purposes, 30 hours/week is the threshold. Part-time employees often work 15–29 hours/week. Below 10 hours/week is typically classified as casual or on-call.",
-  },
-  {
-    q: "How do I calculate overtime on a non-standard schedule?",
-    a: "FLSA overtime is calculated on a workweek basis (Sunday–Saturday or any fixed 7-day period). If you work 10 hours on Monday and 0 on Friday, you only earn overtime if your weekly total exceeds 40 hours. The daily schedule doesn't matter federally — only the weekly total (except in California, which has daily overtime rules).",
+    q: "What counts as part-time hours?",
+    a: "There's no single federal definition, but most employers treat under 30–35 hours/week as part-time. For ACA health-insurance purposes, 30 hours/week is the threshold. The calculator reports your full-time equivalent (FTE) so you can see exactly where a schedule sits.",
   },
   {
     q: "How many hours should I work per day for peak productivity?",
-    a: "Research on deep work and cognitive performance suggests that most knowledge workers have 4–6 hours of peak productive capacity per day, not 8. Studies by K. Anders Ericsson found elite performers rarely exceed 4 hours of deliberate, focused work daily. More hours worked ≠ more output — scheduling high-priority work during peak energy windows is more effective than extending hours.",
+    a: "Research on deep work (K. Anders Ericsson) suggests most knowledge workers sustain only 4–6 hours of genuinely focused effort per day. More hours on the clock rarely means proportionally more output — scheduling high-priority work during peak-energy windows beats simply extending the day.",
   },
 ];
 
 const STATS = [
-  { stat: "2,080", color: "text-emerald-600", accent: "bg-emerald-500", label: "standard work hours in a year at 8 hrs/day, 5 days/week" },
-  { stat: "4–6 hr", color: "text-blue-600", accent: "bg-blue-500", label: "daily peak productive capacity for most knowledge workers" },
-  { stat: "15 min", color: "text-amber-600", accent: "bg-amber-500", label: "minimum billing increment used by most professional service firms" },
+  { stat: "2,080", color: "text-emerald-600", accent: "bg-emerald-500", label: "standard work hours in a full-time year (8h × 5d × 52)" },
+  { stat: "40 hr", color: "text-rose-600",    accent: "bg-rose-500",    label: "weekly FLSA overtime threshold — extra hours pay 1.5×" },
+  { stat: "4–6 hr", color: "text-blue-600",   accent: "bg-blue-500",    label: "daily peak productive capacity for most knowledge workers" },
 ];
 
 const CONTENT_CARDS = [
   {
     icon: "🧾",
-    title: "Use this for contractor invoicing",
-    body: "Freelancers and contractors should log hours at the project level, not the week level. Enter the hours worked on a specific project and the number of days it spanned to get total billable hours. Multiply by your rate to generate invoice totals instantly.",
+    title: "Built for contractor invoicing",
+    body: "Enter the hours and weeks a project spanned plus your rate to get billable gross pay instantly. Multiply nothing by hand — the calculator splits regular and overtime hours and prices them correctly so your invoice total is defensible.",
   },
   {
-    icon: "📅",
-    title: "Convert hours to days and weeks",
-    body: "Use this calculator for scheduling and project planning. If a project requires 120 hours of work and you have 3 team members at 6 hours/day each, total capacity is 18 hours/day — meaning the project takes about 6.7 working days. Capacity planning prevents under- and over-delivery commitments.",
+    icon: "⏰",
+    title: "Overtime is a weekly calculation",
+    body: "The FLSA bases overtime on the workweek, not the day. Anything over 40 hours in a fixed 7-day week is overtime at 1.5×. The calculator applies this per week and scales it across your whole period, so a consistently long week is correctly flagged and priced.",
   },
   {
     icon: "⚖️",
     title: "Track actual vs contracted hours",
-    body: "Many fixed-price contracts are based on estimated hours that are rarely tracked against actuals. Running even a rough hours-worked log reveals whether you're over-servicing clients. If you consistently work 30% more hours than estimated, your effective rate is 30% lower than quoted — adjust your pricing accordingly.",
+    body: "Many fixed-price contracts use estimated hours that are never checked against actuals. If you consistently work 30% more hours than quoted, your effective rate is 30% lower than you think. Running an hours-worked log reveals over-servicing before it erodes your margin.",
   },
 ];
 
 const RELATED_CALCS = [
-  { title: "Time Clock Calculator", description: "Calculate hours from clock-in and clock-out times.", href: "/tools/time-clock-calculator", icon: "⏰", accent: "bg-emerald-500/10" },
   { title: "Working Days Calculator", description: "Count business days between two dates.", href: "/tools/working-days-calculator", icon: "📅", accent: "bg-blue-500/10" },
   { title: "Freelance Rate Calculator", description: "Set a rate that covers your hours and costs.", href: "/tools/freelance-rate-calculator", icon: "🧑‍💻", accent: "bg-amber-500/10" },
   { title: "Overtime Pay Calculator", description: "See how much your overtime hours are worth.", href: "/tools/overtime-pay-calculator", icon: "💰", accent: "bg-purple-500/10" },
+  { title: "Take-Home Pay Calculator", description: "What lands in your account after tax.", href: "/tools/take-home-pay-calculator", icon: "💵", accent: "bg-emerald-500/10" },
 ];
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
+export default function WorkHoursCalculatorPage() {
+  const jsonLd = [
     {
+      "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Work Hours Calculator",
       url: "https://worthulator.com/tools/work-hours-calculator",
       applicationCategory: "BusinessApplication",
-      description: "Calculate total work hours from daily hours and number of days worked.",
+      operatingSystem: "Web",
+      description: "Calculate total work hours, FLSA overtime, and gross pay from daily hours, days per week, and weeks.",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
     {
+      "@context": "https://schema.org",
       "@type": "FAQPage",
       mainEntity: FAQS.map((f) => ({
         "@type": "Question",
@@ -92,37 +94,45 @@ const jsonLd = {
         acceptedAnswer: { "@type": "Answer", text: f.a },
       })),
     },
-  ],
-};
+  ];
 
-export default function WorkHoursCalculator() {
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    <main className="bg-white text-gray-900">
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
       <SimpleCalculatorHero
         eyebrowIcon="⏱️"
-        eyebrowText="Work Hours Calculator"
-        title="How Many Hours Have You Worked?"
-        description="Enter your daily hours and number of days worked to get your total hours for any period — ideal for timesheets, invoices, and project planning."
-        chips={["Total hours calculated", "Average per day shown", "Works for any period"]}
+        eyebrowText="Work · Time"
+        title="Work Hours Calculator"
+        description="Enter your daily hours, days per week, and weeks to get total hours for any period — with FLSA overtime, gross pay at your rate, and a full-time-equivalent comparison."
+        chips={["Total hours", "Overtime at 1.5×", "Gross pay"]}
       >
-        <CalculatorEngineLoader slug="work-hours-calculator" />
+        <EngineWithInsights slug="work-hours-calculator" />
       </SimpleCalculatorHero>
-      <InsightStrip text="A standard full-time year is <span class='font-semibold text-gray-900'>2,080 hours</span> — but most workers log closer to 1,900 effective hours after leave and holidays." />
+      <InsightStrip text="A standard full-time year is <span class='font-semibold text-gray-900'>2,080 hours</span> — anything over 40 in a week is overtime, paid at time-and-a-half." />
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="Getting the most from your hours" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="work-hours-calculator" />
+      <ContentCardGrid title="Getting the most from your hours" subtitle="Hours, overtime, and what they're worth." cards={CONTENT_CARDS} />
       <SEOTextBlock
         title="How the Work Hours Calculator Works"
-        formula="Total Hours = Hours Per Day × Days Worked\nAverage Per Day = Total Hours ÷ Days Worked"
+        formula={`Weekly Hours  = Hours Per Day × Days Per Week
+Total Hours   = Weekly Hours × Weeks
+Overtime/wk   = max(0, Weekly Hours − 40)
+Gross Pay     = Regular Hours × Rate + Overtime Hours × Rate × 1.5
+FTE           = Total Hours ÷ 2,080`}
+        steps={[
+          { label: "Enter hours per day", description: "Your net daily hours after breaks. Use decimals: 7.5 = 7h 30m." },
+          { label: "Set days per week", description: "How many days you work in a typical week (1–7)." },
+          { label: "Set the weeks in the period", description: "One week, a billing period, or a full 52-week year." },
+          { label: "Add your hourly rate", description: "Optional — leave at 0 to skip earnings and just see hours." },
+        ]}
         paragraphs={[
-          "This is a direct multiplication calculator. Enter your net daily hours (after breaks) and the number of days worked to get a total. It works for any period — a single week, a billing period, a project, or an entire year.",
-          "Use decimal values for partial hours: 7.5 = 7 hours 30 minutes, 8.25 = 8 hours 15 minutes.",
+          "Hours are a direct multiplication, but overtime makes it cleverer: the calculator applies the FLSA weekly rule, treating any time over 40 hours in a week as overtime payable at 1.5×, then scales that across your whole period.",
+          "Gross pay combines regular and overtime hours at your rate, and the full-time-equivalent (FTE) figure tells you instantly whether a schedule is part-time, full-time, or beyond — measured against the standard 2,080-hour work year.",
         ]}
       />
-      <StandardFAQSection faqs={FAQS} />
-      <RelatedCalcCards items={RELATED_CALCS} />
-    </>
+      <StandardFAQSection faqs={FAQS} bg="bg-gray-50" />
+      <RelatedCalcCards title="Related Calculators" subtitle="More work and time tools." items={RELATED_CALCS} />
+    </main>
   );
 }

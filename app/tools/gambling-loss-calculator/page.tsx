@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Gambling Loss Calculator 2026 – True Cost & Opportunity Cost of Gambling",
@@ -111,7 +110,6 @@ export default function GamblingLossCalculator() {
       <InsightStrip text="The real cost of gambling isn't just what you lose — it's the <span class='font-semibold text-gray-900'>wealth you give up</span> by not investing that money instead." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The true mathematics of gambling" cards={CONTENT_CARDS} />
-      <InsightTable slug="gambling-loss-calculator" />
       <SEOTextBlock
         title="How the Gambling Loss Calculator Works"
         formula="Total Loss = Weekly Spend × 52 × Years\nIf Invested = Annual Spend × ((1.07ⁿ − 1) ÷ 0.07)\nOpportunity Cost = Invested Value − Total Loss"

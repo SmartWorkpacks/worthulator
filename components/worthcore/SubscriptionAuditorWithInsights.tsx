@@ -1,14 +1,19 @@
 "use client";
 
-import CalculatorEngine from "@/components/calculator-engine/CalculatorEngine";
-import LiveInsightBlock from "@/components/worthcore/LiveInsightBlock";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import LiveInsightBlock       from "@/components/worthcore/LiveInsightBlock";
+import type { CalculatorValues, CalculatorOutputs } from "@/components/calculator-engine/types";
 
-export function SubscriptionAuditorWithInsights() {
+export default function SubscriptionAuditorWithInsights() {
   return (
-    <CalculatorEngine
+    <CalculatorEngineLoader
       slug="subscription-auditor"
-      afterResults={(outputs, values) => (
-        <LiveInsightBlock slug="subscription-auditor" outputs={outputs} values={values} />
+      afterResults={(outputs: CalculatorOutputs, values: CalculatorValues) => (
+        <LiveInsightBlock
+          slug="subscription-auditor"
+          outputs={outputs}
+          values={values}
+        />
       )}
     />
   );

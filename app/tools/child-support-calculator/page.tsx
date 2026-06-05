@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -41,7 +41,7 @@ const CONTENT_CARDS = [
 const RELATED_CALCS = [
   { icon: "📊", accent: "bg-blue-500/10",    title: "Budget Calculator",        description: "Build a budget around your new obligations.",     href: "/tools/budget-calculator" },
   { icon: "💵", accent: "bg-emerald-500/10", title: "Take-Home Pay Calculator", description: "See your net income after all deductions.",       href: "/tools/take-home-pay-calculator" },
-  { icon: "🧾", accent: "bg-amber-500/10",   title: "Pay Stub Calculator",      description: "Understand every deduction on your paycheck.",    href: "/tools/pay-stub-calculator" },
+  { icon: "🧾", accent: "bg-amber-500/10",   title: "Budget Calculator",        description: "Map your full monthly expenses.",                 href: "/tools/budget-calculator" },
   { icon: "📈", accent: "bg-purple-500/10",  title: "Salary Breakdown",         description: "Where does your income actually go?",             href: "/tools/salary-breakdown-calculator" },
 ];
 
@@ -55,7 +55,7 @@ export default function ChildSupportCalculator() {
         description="Get a rough estimate of monthly child support based on income-share guidelines. Enter both parents' income, number of children, and custody split."
         chips={["Monthly estimate", "Annual total", "Income share ratio"]}
       >
-        <CalculatorEngineLoader slug="child-support-calculator" />
+        <EngineWithInsights slug="child-support-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="This is a starting estimate only — actual court orders vary by state, income type, and many other factors. Always consult a family law attorney." />
       <StatChipsRow stats={STATS} />

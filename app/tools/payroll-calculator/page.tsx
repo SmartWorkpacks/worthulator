@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Payroll Calculator 2026 – True Employer Cost Per Employee",
@@ -106,19 +105,22 @@ export default function PayrollCalculator() {
         description="Enter your headcount, average salary, employer tax rate, and benefits package to see your true total payroll cost and cost per employee."
         chips={["Employer taxes included", "Benefits factored in", "Cost per head shown"]}
       >
-        <CalculatorEngineLoader slug="payroll-calculator" />
+        <EngineWithInsights slug="payroll-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="A $60,000 salary typically costs the employer <span class='font-semibold text-gray-900'>$75,000–$84,000</span> all-in once taxes, insurance, and benefits are added." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Understanding the true cost of hiring" cards={CONTENT_CARDS} />
-
-      <InsightTable slug="payroll-calculator" />
       <SEOTextBlock
         title="How the Payroll Calculator Works"
-        formula="Total Cost = (Employees × Salary) + (Payroll × Tax%) + (Employees × Benefits)"
+        formula={`Gross Payroll   = Employees × Average Salary
+Employer Taxes  = Gross Payroll × Employer Tax %
+Benefits        = Employees × Benefits per Employee
+Total Cost      = Gross Payroll + Employer Taxes + Benefits
+Cost / Employee = Total Cost ÷ Employees
+Burden Rate     = (Cost per Employee − Salary) ÷ Salary`}
         paragraphs={[
-          "This calculator computes total gross payroll, then adds employer payroll taxes (a percentage applied to the total salary pool), and annual benefits cost per employee to arrive at the true workforce cost.",
-          "Cost per employee is the all-in annual cost divided by headcount — the number you should use for any pricing, budgeting, or profitability analysis.",
+          "This calculator computes total gross payroll, adds employer payroll taxes (a percentage of the salary pool) and annual benefits, and divides by headcount for the true cost per employee — the number to use for pricing, budgeting, and profitability.",
+          "The burden rate is how much each hire costs above base salary; 25–40% is typical. Add billable hours to see an all-in cost per hour — the floor your billing rate must clear before overhead and profit.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

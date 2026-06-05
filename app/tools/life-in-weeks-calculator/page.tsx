@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateLifeInWeeks } from "@/calculations/lifestyle/lifeInWeeks";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
   keywords: ["life in weeks calculator", "how many weeks left to live", "life expectancy weeks calculator", "life timeline calculator"],
   alternates: { canonical: "https://worthulator.com/tools/life-in-weeks-calculator" },
 };
+
+// ── Step 5c: worked example derived from the live calculation module ─────────
+const EX = calculateLifeInWeeks({ age: 30, lifeExpectancy: 80 });
+const TOTAL_80 = EX.weeksLived + EX.weeksRemaining;
 
 const FAQS = [
   {
@@ -42,7 +47,7 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "4,160", color: "text-emerald-600", accent: "bg-emerald-500", label: "weeks in an 80-year life — the full grid that makes up your time on earth" },
+  { stat: TOTAL_80.toLocaleString(), color: "text-emerald-600", accent: "bg-emerald-500", label: "weeks in an 80-year life — the full grid that makes up your time on earth" },
   { stat: "1 week", color: "text-amber-600", accent: "bg-amber-500", label: "is 0.024% of an 80-year life — small, but each one is irreplaceable" },
   { stat: "52 wks", color: "text-blue-600", accent: "bg-blue-500", label: "per year — the building blocks of every goal, relationship, and experience" },
 ];
@@ -105,9 +110,9 @@ export default function LifeInWeeksCalculator() {
         description="Enter your age and life expectancy to see your life broken down into weeks — how many you have lived, how many remain, and what percentage of your life you have used."
         chips={["Weeks remaining", "Weeks lived", "% of life used"]}
       >
-        <CalculatorEngineLoader slug="life-in-weeks-calculator" />
+        <EngineWithInsights slug="life-in-weeks-calculator" />
       </SimpleCalculatorHero>
-      <InsightStrip text="An 80-year life is just 4,160 weeks. Make each one count." />
+      <InsightStrip text={`An 80-year life is just ${TOTAL_80.toLocaleString()} weeks. Make each one count.`} />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Why think in weeks?" cards={CONTENT_CARDS} />
       <SEOTextBlock
@@ -115,6 +120,7 @@ export default function LifeInWeeksCalculator() {
         paragraphs={[
           "Enter your current age and your estimated life expectancy. The calculator multiplies each by 52 to convert to weeks. Weeks lived is your age × 52, total weeks is your life expectancy × 52, and weeks remaining is the difference.",
           "The percentage used shows how far through your expected lifespan you currently are. For most adults aged 30–40, this sits at 35–50% — a number that many find both humbling and motivating.",
+          `Worked example: at 30 with an 80-year expectancy, you've lived ${EX.weeksLived.toLocaleString()} weeks and have ${EX.weeksRemaining.toLocaleString()} remaining — ${EX.percentUsed}% of your life used.`,
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

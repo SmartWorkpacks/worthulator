@@ -46,8 +46,11 @@ export default function SimpleCalculatorHero({
   chips,
   children,
 }: SimpleCalculatorHeroProps) {
+  // overflow-clip (not overflow-hidden) clips the ambient glow/grid without
+  // creating a scroll container, so the calculator's sticky input column still
+  // pins on scroll.
   return (
-    <div className="relative overflow-hidden bg-linear-to-b from-[#f7faf8] to-white">
+    <div className="relative overflow-clip bg-linear-to-b from-[#f7faf8] to-white">
       {/* Ambient radial glow */}
       <div className="pointer-events-none absolute -top-10 left-1/4 h-64 w-64 rounded-full bg-emerald-200/25 blur-[72px]" />
       <div className="pointer-events-none absolute top-0 right-1/4 h-48 w-48 rounded-full bg-cyan-100/20 blur-[56px]" />
@@ -80,7 +83,7 @@ export default function SimpleCalculatorHero({
           </h1>
 
           {/* Description */}
-          <p className="mt-2 max-w-lg text-sm leading-[1.65] text-gray-500">
+          <p className="mt-3 max-w-2xl text-[15px] leading-[1.7] text-gray-500 sm:text-base">
             {description}
           </p>
 

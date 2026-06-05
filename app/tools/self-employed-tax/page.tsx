@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateSelfEmployedTax } from "@/calculations/finance/selfEmployedTax";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -17,6 +18,12 @@ export const metadata: Metadata = {
   keywords: ["self employed tax calculator", "1099 tax calculator", "quarterly estimated tax", "freelancer tax calculator", "SE tax"],
   alternates: { canonical: "https://worthulator.com/tools/self-employed-tax" },
 };
+
+// ── Step 5c: worked examples derived from the live calculation module ────────
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX = calculateSelfEmployedTax({ grossIncome: 80000, businessExpenses: 8000, federalRate: 22 });
+const EX_MORE = calculateSelfEmployedTax({ grossIncome: 80000, businessExpenses: 13000, federalRate: 22 });
+const DEDUCT_SAVING = EX.annualTaxEstimate - EX_MORE.annualTaxEstimate;
 
 const FAQS = [
   {
@@ -61,7 +68,7 @@ const CONTENT_CARDS = [
   {
     icon: "✂️",
     title: "Lower your bill with deductions",
-    body: "Business deductions directly reduce your net income, which reduces both federal income tax and SE tax. A $5,000 deduction at a 22% bracket + 15.3% SE tax saves you roughly $1,865 in total taxes.",
+    body: `Business deductions directly reduce your net income, which reduces both federal income tax and SE tax. On $80,000 gross at a 22% bracket, an extra $5,000 of deductions saves you roughly ${usd(DEDUCT_SAVING)} in total taxes.`,
   },
   {
     icon: "🏦",
@@ -110,7 +117,7 @@ export default function SelfEmployedTax() {
         description="Estimate your self-employment tax, federal income tax, quarterly payment amount, and exactly how much to set aside each month."
         chips={["SE tax formula", "Quarterly payments", "Monthly reserve"]}
       >
-        <CalculatorEngineLoader slug="self-employed-tax" />
+        <EngineWithInsights slug="self-employed-tax" />
       </SimpleCalculatorHero>
       <InsightStrip text="Self-employed workers pay 15.3% SE tax on top of income tax — most first-year freelancers underestimate this." />
       <StatChipsRow stats={STATS} />
@@ -119,6 +126,7 @@ export default function SelfEmployedTax() {
         title="How Self-Employment Tax Is Calculated"
         paragraphs={[
           "Net income = gross income − business expenses. SE tax = net income × 0.9235 × 0.153. Federal income tax = (net income − SE tax ÷ 2) × federal rate. Total tax = SE tax + federal income tax.",
+          `Worked example: on $80,000 gross with $8,000 of expenses at a 22% bracket, the calculator estimates ${usd(EX.annualTaxEstimate)} in total federal + SE tax (${EX.effectiveTaxRate}% effective) — ${usd(EX.quarterlyPayment)} per quarter, or ${usd(EX.monthlyReserve)} set aside each month — leaving ${usd(EX.netAfterTax)} take-home.`,
           "This calculator provides a federal estimate only. Add your state income tax rate on top for total tax liability. Consult a CPA or tax professional for advice specific to your situation — especially if you have complex deductions or multiple income streams.",
         ]}
       />

@@ -87,6 +87,12 @@ export interface CalculatorConfig {
   /** Optional summary sentence rendered in the results panel */
   insight?: (inputs: CalculatorValues, outputs: CalculatorOutputs) => string;
   /**
+   * Optional override for the staged "calculating…" loader copy.
+   * Falls back to a warm, generic 4-step sequence when omitted.
+   * The last entry should read as a completion line.
+   */
+  calcSteps?: string[];
+  /**
    * If set, an amber ready-mix callout appears when outputs["volume"]
    * exceeds this threshold (cubic yards / metres).
    */

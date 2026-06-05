@@ -1,0 +1,501 @@
+rank,keyword,slug,category,volume,kd,cpc,intent,status,fit,owner
+1,bmi calculator,bmi-calculator,Health & Fitness,4090000,95,0.18,Informational,new,adjacent,A (me)
+2,mortgage calculator,mortgage-calculator,Finance & Loans,2740000,88,0.69,Commercial,exists,core,
+3,calorie calculator,calorie-calculator,Health & Fitness,2240000,100,0.99,Informational,new,adjacent,B (Copilot)
+4,age calculator,age-calculator,Date & Time,823000,76,1.58,Navigational,new,core,A (me)
+5,loan calculator,loan-calculator,Finance & Loans,823000,83,1.03,Commercial,exists,core,
+6,tip calculator,tip-calculator,Other & Misc,673000,49,0.37,Informational,exists,off,
+7,paycheck calculator,paycheck-calculator,Finance & Loans,450000,87,5.33,"Informational, Commercial",new,core,B (Copilot)
+8,compound interest calculator,compound-interest-calculator,Finance & Loans,673000,65,0.33,Informational,exists,core,
+9,concrete calculator,concrete-calculator,Home & Construction,368000,28,1.36,Informational,new,core,A (me)
+10,grade calculator,grade-calculator,Education & Grades,673000,55,0,Informational,new,off,
+11,percentage calculator,percentage-calculator,Math & Science,450000,87,3.19,Informational,exists,off,
+12,time calculator,time-calculator,Date & Time,550000,84,1.3,"Informational, Transactional",new,core,A (me)
+13,inflation calculator,inflation-calculator,Finance & Loans,450000,86,1.67,Informational,exists,core,
+14,car loan calculator,car-loan-calculator,Finance & Loans,550000,81,0.33,Informational,exists,core,
+15,investment calculator,investment-calculator,Finance & Loans,450000,67,0.39,Informational,exists,core,
+16,fraction calculator,fraction-calculator,Math & Science,368000,58,0.76,Informational,new,off,
+17,tdee calculator,tdee-calculator,Health & Fitness,368000,50,0.33,Informational,exists,adjacent,
+18,scientific calculator,scientific-calculator,Other & Misc,368000,69,0.76,Informational,new,off,
+19,car payment calculator,car-payment-calculator,Finance & Loans,450000,80,0.25,Informational,new,core,B (Copilot)
+20,date calculator,date-calculator,Date & Time,368000,83,0.83,"Informational, Transactional",new,core,B (Copilot)
+21,due date calculator,due-date-calculator,Pregnancy & Baby,368000,69,0.12,Informational,new,adjacent,A (me)
+22,love calculator,love-calculator,Other & Misc,301000,52,0.05,Informational,new,off,
+23,bac calculator,bac-calculator,Health & Fitness,135000,48,4.4,Informational,new,adjacent,A (me)
+24,snow day calculator,snow-day-calculator,Other & Misc,246000,31,0,Informational,new,off,
+25,retirement calculator,retirement-calculator,Finance & Loans,246000,76,1.27,Commercial,exists,core,
+26,hours calculator,hours-calculator,Date & Time,201000,82,2.72,Informational,new,core,B (Copilot)
+27,cd calculator,cd-calculator,Finance & Loans,165000,42,1.48,Informational,new,core,B (Copilot)
+28,amortization calculator,amortization-calculator,Finance & Loans,246000,70,0.79,Informational,new,core,A (me)
+29,margin calculator,margin-calculator,Finance & Loans,110000,49,4.12,Informational,exists,core,
+30,calorie deficit calculator,calorie-deficit-calculator,Health & Fitness,246000,79,0.48,Informational,exists,adjacent,
+31,salary calculator,salary-calculator,Finance & Loans,165000,80,2.16,"Informational, Commercial",new,core,A (me)
+32,pregnancy calculator,pregnancy-calculator,Pregnancy & Baby,201000,63,0.3,Informational,new,adjacent,B (Copilot)
+33,ovulation calculator,ovulation-calculator,Pregnancy & Baby,165000,73,1.19,Informational,new,adjacent,A (me)
+34,mortgage payment calculator,mortgage-payment-calculator,Finance & Loans,201000,81,0.6,Commercial,new,core,A (me)
+35,interest calculator,interest-calculator,Finance & Loans,165000,73,1.1,Transactional,new,core,B (Copilot)
+36,dynasty trade calculator,dynasty-trade-calculator,Other & Misc,135000,45,0.79,Informational,new,off,
+37,time card calculator,time-card-calculator,Date & Time,110000,61,2.68,Informational,new,core,A (me)
+38,percent change calculator,percent-change-calculator,Math & Science,74000,62,7.83,Informational,new,off,
+39,percentage increase calculator,percentage-increase-calculator,Math & Science,74000,52,5.99,Informational,exists,off,
+40,cpm calculator,cpm-calculator,Other & Misc,27100,29,36.48,Informational,new,off,
+41,tax calculator,tax-calculator,Finance & Loans,165000,78,0.82,"Informational, Commercial",new,core,B (Copilot)
+42,peptide calculator,peptide-calculator,Other & Misc,110000,50,1.23,Informational,new,off,
+43,401k calculator,401k-calculator,Finance & Loans,135000,49,0.37,Informational,exists,core,
+44,height calculator,height-calculator,Other & Misc,90500,55,2.39,Informational,new,adjacent,B (Copilot)
+45,final grade calculator,final-grade-calculator,Education & Grades,135000,45,0,Informational,new,off,
+46,integral calculator,integral-calculator,Math & Science,110000,43,0.41,Informational,new,off,
+47,tire size calculator,tire-size-calculator,Other & Misc,110000,67,1.27,Informational,new,off,
+48,time clock calculator,time-clock-calculator,Date & Time,90500,66,2.25,Informational,exists,core,
+49,sales tax calculator,sales-tax-calculator,Finance & Loans,90500,64,2.1,Transactional,exists,core,
+50,parlay calculator,parlay-calculator,Other & Misc,74000,82,5.81,Informational,new,off,
+51,hour calculator,hour-calculator,Other & Misc,90500,79,2.72,Informational,new,adjacent,B (Copilot)
+52,personal loan calculator,personal-loan-calculator,Finance & Loans,60500,65,3,Commercial,new,core,B (Copilot)
+53,time duration calculator,time-duration-calculator,Math & Science,110000,40,0,Informational,new,off,
+54,odds calculator,odds-calculator,Other & Misc,49500,82,12.3,Informational,new,off,
+55,bah calculator,bah-calculator,Other & Misc,74000,49,1.68,Informational,new,off,
+56,loan payment calculator,loan-payment-calculator,Finance & Loans,110000,80,1.01,Informational,new,core,A (me)
+57,bmr calculator,bmr-calculator,Health & Fitness,135000,74,0.05,Informational,exists,adjacent,
+58,pace calculator,pace-calculator,Health & Fitness,90500,68,1.19,Commercial,new,adjacent,A (me)
+59,va disability calculator,va-disability-calculator,Other & Misc,110000,51,0,Informational,new,off,
+60,trade calculator,trade-calculator,Other & Misc,60500,43,1.81,Informational,new,off,
+61,percentage difference calculator,percentage-difference-calculator,Math & Science,40500,49,5.99,Informational,new,off,
+62,timecard calculator,timecard-calculator,Date & Time,60500,62,2.68,Informational,new,core,B (Copilot)
+63,heloc calculator,heloc-calculator,Finance & Loans,49500,62,4.73,Informational,new,core,B (Copilot)
+64,standard deviation calculator,standard-deviation-calculator,Math & Science,60500,57,2.25,Informational,new,off,
+65,chipotle nutrition calculator,chipotle-nutrition-calculator,Other & Misc,90500,45,0,Navigational,new,off,
+66,sleep calculator,sleep-calculator,Health & Fitness,74000,68,1.5,Informational,new,adjacent,A (me)
+67,birth chart calculator,birth-chart-calculator,Other & Misc,90500,72,0.67,Informational,new,off,
+68,home equity loan calculator,home-equity-loan-calculator,Finance & Loans,49500,68,4.83,Commercial,new,core,A (me)
+69,bra size calculator,bra-size-calculator,Conversion & Units,74000,51,0.65,Informational,new,off,
+70,square footage calculator,square-footage-calculator,Date & Time,74000,42,0.29,Informational,new,core,B (Copilot)
+71,ascvd risk calculator,ascvd-risk-calculator,Other & Misc,49500,47,2.26,Informational,new,off,
+72,macro calculator,macro-calculator,Health & Fitness,90500,76,0.43,Informational,exists,adjacent,
+73,subnet calculator,subnet-calculator,Other & Misc,49500,61,3.01,Informational,new,off,
+74,rmd calculator,rmd-calculator,Other & Misc,74000,50,0.31,Informational,new,adjacent,B (Copilot)
+75,derivative calculator,derivative-calculator,Math & Science,74000,52,0.36,Informational,new,off,
+76,home loan calculator,home-loan-calculator,Finance & Loans,74000,79,1.31,Commercial,new,core,A (me)
+77,income tax calculator,income-tax-calculator,Finance & Loans,90500,79,0.35,Informational,new,core,B (Copilot)
+78,weight loss calculator,weight-loss-calculator,Health & Fitness,60500,62,1.15,Informational,new,adjacent,A (me)
+79,chronological age calculator,chronological-age-calculator,Date & Time,40500,29,1.66,Informational,new,core,A (me)
+80,take home pay calculator,take-home-pay-calculator,Other & Misc,60500,94,2.84,"Informational, Commercial",exists,core,
+81,maintenance calorie calculator,maintenance-calorie-calculator,Health & Fitness,74000,54,0.06,Informational,new,adjacent,B (Copilot)
+82,period calculator,period-calculator,Pregnancy & Baby,49500,38,0.83,Informational,new,adjacent,B (Copilot)
+83,tire calculator,tire-calculator,Other & Misc,49500,61,1.65,"Informational, Commercial",new,off,
+84,average calculator,average-calculator,Date & Time,74000,59,0,Transactional,new,core,A (me)
+85,1 rep max calculator,1-rep-max-calculator,Health & Fitness,60500,38,0.01,Informational,new,adjacent,B (Copilot)
+86,fantasy trade calculator,fantasy-trade-calculator,Other & Misc,60500,44,0,Informational,new,off,
+87,timesheet calculator,timesheet-calculator,Date & Time,40500,65,2.74,Informational,new,core,B (Copilot)
+88,conception calculator,conception-calculator,Pregnancy & Baby,60500,63,0.47,Informational,new,adjacent,A (me)
+89,body fat calculator,body-fat-calculator,Health & Fitness,60500,62,0.44,Informational,exists,adjacent,
+90,math calculator,math-calculator,Other & Misc,90500,100,0.27,Informational,new,adjacent,A (me)
+91,tax return calculator,tax-return-calculator,Finance & Loans,60500,70,0.67,Commercial,new,core,
+92,usps shipping calculator,usps-shipping-calculator,Other & Misc,60500,58,0.29,"Navigational, Transactional",new,off,
+93,one rep max calculator,one-rep-max-calculator,Health & Fitness,74000,68,0.01,Informational,new,adjacent,A (me)
+94,dividend calculator,dividend-calculator,Finance & Loans,33100,35,2.05,Informational,new,core,A (me)
+95,savings calculator,savings-calculator,Finance & Loans,49500,58,0.92,Informational,exists,core,
+96,gravel calculator,gravel-calculator,Home & Construction,40500,44,1.22,Informational,new,core,A (me)
+97,1rm calculator,1rm-calculator,Health & Fitness,60500,50,0.01,Informational,new,adjacent,A (me)
+98,high yield savings account calculator,high-yield-savings-account-calculator,Finance & Loans,33100,47,2.6,Commercial,new,core,B (Copilot)
+99,calendar calculator,calendar-calculator,Other & Misc,49500,69,1.25,Informational,new,adjacent,A (me)
+100,sip calculator,sip-calculator,Other & Misc,49500,77,1.64,Informational,new,off,
+101,apy calculator,apy-calculator,Finance & Loans,40500,61,1.93,Commercial,new,core,A (me)
+102,square foot calculator,square-foot-calculator,Other & Misc,49500,43,0.29,Informational,new,adjacent,A (me)
+103,refinance calculator,refinance-calculator,Finance & Loans,40500,75,2.59,Commercial,new,core,B (Copilot)
+104,cost of living calculator,cost-of-living-calculator,Other & Misc,49500,77,1.38,Informational,new,core,B (Copilot)
+105,car loan payment calculator,car-loan-payment-calculator,Finance & Loans,60500,77,0.43,Commercial,new,core,B (Copilot)
+106,creatinine clearance calculator,creatinine-clearance-calculator,Health & Fitness,27100,42,3,Informational,new,off,
+107,pythagorean theorem calculator,pythagorean-theorem-calculator,Math & Science,33100,37,1.3,Informational,new,off,
+108,mortgage payoff calculator,mortgage-payoff-calculator,Finance & Loans,49500,65,0.63,Informational,new,core,B (Copilot)
+109,asphalt calculator,asphalt-calculator,Home & Construction,22200,19,2.72,Informational,new,core,B (Copilot)
+110,cubic feet calculator,cubic-feet-calculator,Finance & Loans,27100,42,2.81,Informational,new,core,A (me)
+111,future value calculator,future-value-calculator,Other & Misc,40500,37,0.36,Informational,exists,core,
+112,protein calculator,protein-calculator,Health & Fitness,49500,57,0.3,Informational,new,adjacent,A (me)
+113,annuity calculator,annuity-calculator,Finance & Loans,33100,60,2.3,Commercial,new,core,A (me)
+114,grow a garden calculator,grow-a-garden-calculator,Home & Construction,40500,24,0,"Informational, Transactional",new,off,
+115,ups shipping calculator,ups-shipping-calculator,Other & Misc,49500,63,0.41,"Navigational, Transactional",new,off,
+116,map calculator,map-calculator,Other & Misc,60500,69,0,Informational,new,off,
+117,crcl calculator,crcl-calculator,Other & Misc,22200,47,4.89,Informational,new,off,
+118,mortgage affordability calculator,mortgage-affordability-calculator,Finance & Loans,40500,71,1.53,Informational,new,core,B (Copilot)
+119,gold calculator,gold-calculator,Other & Misc,40500,40,0.34,Informational,new,off,
+120,car insurance calculator,car-insurance-calculator,Other & Misc,14800,52,14.31,Commercial,new,adjacent,A (me)
+121,final exam calculator,final-exam-calculator,Other & Misc,49500,50,0,Informational,new,off,
+122,time sheet calculator,time-sheet-calculator,Date & Time,33100,63,2.18,Informational,new,core,A (me)
+123,work hours calculator,work-hours-calculator,Date & Time,40500,78,1.76,Informational,exists,core,
+124,life path calculator,life-path-calculator,Other & Misc,27100,50,2.72,Informational,new,off,
+125,credit card interest calculator,credit-card-interest-calculator,Finance & Loans,27100,58,3.2,Informational,exists,core,
+126,life expectancy calculator,life-expectancy-calculator,Other & Misc,33100,52,1.3,Informational,exists,adjacent,
+127,reverse mortgage calculator,reverse-mortgage-calculator,Finance & Loans,14800,33,8.21,Informational,new,core,B (Copilot)
+128,betting odds calculator,betting-odds-calculator,Other & Misc,22200,79,8.59,Informational,new,off,
+129,car calculator,car-calculator,Other & Misc,49500,81,0.66,Informational,new,adjacent,B (Copilot)
+130,hourly to salary calculator,hourly-to-salary-calculator,Finance & Loans,49500,67,0.24,Informational,exists,core,
+131,mulch calculator,mulch-calculator,Home & Construction,33100,27,0.29,Informational,new,core,B (Copilot)
+132,financial calculator,financial-calculator,Other & Misc,49500,81,0.57,"Informational, Transactional",new,adjacent,A (me)
+133,loan amortization calculator,loan-amortization-calculator,Finance & Loans,33100,71,2.12,Informational,new,core,B (Copilot)
+134,illinois paycheck calculator,illinois-paycheck-calculator,Finance & Loans,14800,23,5.8,Informational,dup-in-list,core,
+135,palworld breeding calculator,palworld-breeding-calculator,Other & Misc,40500,39,0,Informational,new,off,
+136,rent calculator,rent-calculator,Finance & Loans,40500,59,0.48,Informational,new,core,A (me)
+137,loan payoff calculator,loan-payoff-calculator,Finance & Loans,27100,57,2.42,Commercial,new,core,A (me)
+138,ebay fee calculator,ebay-fee-calculator,Finance & Loans,22200,48,1.6,"Informational, Transactional",new,core,B (Copilot)
+139,a1c calculator,a1c-calculator,Health & Fitness,18100,30,3.59,Informational,new,off,
+140,cd rate calculator,cd-rate-calculator,Finance & Loans,27100,46,1.56,Commercial,new,core,B (Copilot)
+141,student loan calculator,student-loan-calculator,Finance & Loans,27100,71,3.23,Commercial,exists,core,
+142,day calculator,day-calculator,Other & Misc,49500,66,0,"Informational, Transactional",new,adjacent,A (me)
+143,va loan calculator,va-loan-calculator,Finance & Loans,22200,72,5.62,Informational,exists,core,
+144,stair calculator,stair-calculator,Home & Construction,22200,43,2.6,Informational,new,core,A (me)
+145,long division calculator,long-division-calculator,Other & Misc,27100,44,1.35,Informational,new,off,
+146,lottery calculator,lottery-calculator,Finance & Loans,33100,57,0.93,Informational,new,off,
+147,aspect ratio calculator,aspect-ratio-calculator,Math & Science,14800,30,5.63,Informational,new,off,
+148,heloc payment calculator,heloc-payment-calculator,Finance & Loans,22200,64,4.24,Commercial,new,core,B (Copilot)
+149,gfr calculator,gfr-calculator,Health & Fitness,22200,40,2.17,Informational,new,off,
+150,right triangle calculator,right-triangle-calculator,Math & Science,33100,66,1.22,Informational,new,off,
+151,compounding interest calculator,compounding-interest-calculator,Finance & Loans,40500,63,0.33,Commercial,new,core,B (Copilot)
+152,days calculator,days-calculator,Date & Time,49500,72,0,"Informational, Transactional",new,core,B (Copilot)
+153,crypto calculator,crypto-calculator,Finance & Loans,27100,66,2.37,Informational,new,core,B (Copilot)
+154,payment calculator home equity line,payment-home-equity-line-calculator,Finance & Loans,22200,67,4.24,Commercial,new,core,A (me)
+155,credit card payoff calculator,credit-card-payoff-calculator,Other & Misc,22200,37,1.83,Commercial,exists,core,
+156,gas calculator,gas-calculator,Other & Misc,27100,67,2.32,Transactional,new,adjacent,A (me)
+157,molarity calculator,molarity-calculator,Math & Science,22200,40,1.85,Informational,new,off,
+158,powerball calculator,powerball-calculator,Other & Misc,18100,59,5.56,Informational,new,off,
+159,discount calculator,discount-calculator,Other & Misc,40500,55,0.01,Informational,exists,adjacent,
+160,mortgage loan calculator,mortgage-loan-calculator,Finance & Loans,40500,83,0.79,Commercial,new,core,A (me)
+161,new york salary calculator,new-york-salary-calculator,Finance & Loans,14800,51,7.58,Informational,new,core,B (Copilot)
+162,strength calculator,strength-calculator,Other & Misc,14800,24,3.85,Navigational,new,adjacent,A (me)
+163,mortgage refinance calculator,mortgage-refinance-calculator,Finance & Loans,27100,71,2.31,Commercial,exists,core,
+164,body fat percentage calculator,body-fat-percentage-calculator,Health & Fitness,33100,55,0.52,Informational,new,adjacent,A (me)
+165,car finance calculator,car-finance-calculator,Other & Misc,40500,75,0.46,Commercial,new,adjacent,A (me)
+166,ratio calculator,ratio-calculator,Math & Science,27100,48,1.04,Informational,new,off,
+167,bottleneck calculator,bottleneck-calculator,Other & Misc,40500,58,0,Informational,new,off,
+168,slope calculator,slope-calculator,Math & Science,27100,65,1.79,Informational,new,off,
+169,ohio paycheck calculator,ohio-paycheck-calculator,Finance & Loans,12100,27,6.46,Informational,dup-in-list,core,
+170,bitumen calculator,bitumen-calculator,Other & Misc,14800,15,2.72,Informational,new,adjacent,B (Copilot)
+171,dilution calculator,dilution-calculator,Other & Misc,14800,33,4.31,Informational,new,off,
+172,chipotle calorie calculator,chipotle-calorie-calculator,Health & Fitness,33100,39,0,Navigational,new,off,
+173,mileage calculator,mileage-calculator,Date & Time,27100,63,1.53,Commercial,new,core,B (Copilot)
+174,apr calculator,apr-calculator,Finance & Loans,27100,59,1.33,Informational,new,core,A (me)
+175,moon sign calculator,moon-sign-calculator,Other & Misc,27100,47,0.76,Informational,new,off,
+176,options profit calculator,options-profit-calculator,Finance & Loans,22200,59,2.5,Transactional,new,core,A (me)
+177,mortgage amortization calculator,mortgage-amortization-calculator,Finance & Loans,33100,66,0.66,"Informational, Transactional",new,core,B (Copilot)
+178,percent decrease calculator,percent-decrease-calculator,Math & Science,12100,36,5.98,Informational,new,off,
+179,annual income calculator,annual-income-calculator,Finance & Loans,40500,69,0.12,Informational,new,core,B (Copilot)
+180,birthday calculator,birthday-calculator,Other & Misc,27100,65,1.48,Informational,new,off,
+181,social security calculator,social-security-calculator,Finance & Loans,49500,92,0.11,"Informational, Navigational",new,core,B (Copilot)
+182,powerball annuity calculator,powerball-annuity-calculator,Finance & Loans,6600,44,35.46,Informational,new,off,
+183,hourly paycheck calculator,hourly-paycheck-calculator,Finance & Loans,18100,48,3.19,"Informational, Commercial",new,core,B (Copilot)
+184,interest rate calculator,interest-rate-calculator,Finance & Loans,33100,77,0.92,Commercial,new,core,A (me)
+185,scrap gold calculator,scrap-gold-calculator,Other & Misc,22200,40,1.18,"Informational, Commercial",new,off,
+186,pay raise calculator,pay-raise-calculator,Finance & Loans,14800,36,3.92,Informational,exists,core,
+187,system of equations calculator,system-of-equations-calculator,Other & Misc,22200,43,1.26,Informational,new,adjacent,B (Copilot)
+188,fha loan calculator,fha-loan-calculator,Finance & Loans,27100,74,1.72,Commercial,new,core,A (me)
+189,numerology calculator,numerology-calculator,Other & Misc,27100,55,0.84,Informational,new,off,
+190,bench press calculator,bench-press-calculator,Other & Misc,27100,26,0.01,Informational,new,adjacent,B (Copilot)
+191,tax refund calculator 2025,tax-refund-2025-calculator,Finance & Loans,33100,62,0.35,Commercial,new,core,A (me)
+192,egfr calculator,egfr-calculator,Health & Fitness,18100,39,2.17,Informational,new,off,
+193,closing cost calculator,closing-cost-calculator,Finance & Loans,18100,36,1.93,Commercial,exists,core,
+194,paycheck tax calculator,paycheck-tax-calculator,Finance & Loans,27100,78,1.81,Commercial,new,core,B (Copilot)
+195,payroll calculator,payroll-calculator,Finance & Loans,40500,88,0.23,Commercial,exists,core,
+196,blood alcohol calculator,blood-alcohol-calculator,Health & Fitness,14800,45,4.4,Informational,new,adjacent,A (me)
+197,triangle calculator,triangle-calculator,Math & Science,40500,73,0,"Informational, Transactional",new,off,
+198,mixed number calculator,mixed-number-calculator,Other & Misc,18100,27,1.32,Informational,new,off,
+199,overtime calculator,overtime-calculator,Finance & Loans,14800,35,3.2,Informational,new,core,A (me)
+200,home affordability calculator,home-affordability-calculator,Finance & Loans,27100,72,1.31,Informational,new,core,A (me)
+201,savings bond calculator,savings-bond-calculator,Finance & Loans,22200,55,1.52,Informational,new,core,B (Copilot)
+202,boat loan calculator,boat-loan-calculator,Finance & Loans,27100,63,0.9,Commercial,new,core,B (Copilot)
+203,voltage drop calculator,voltage-drop-calculator,Date & Time,22200,28,0.44,Informational,new,off,
+204,factoring calculator,factoring-calculator,Other & Misc,33100,56,0.04,Informational,new,off,
+205,cubic yard calculator,cubic-yard-calculator,Home & Construction,27100,49,0.38,Informational,new,core,A (me)
+206,square root calculator,square-root-calculator,Math & Science,33100,72,0.41,Informational,new,off,
+207,salary increase calculator,salary-increase-calculator,Finance & Loans,12100,24,3.92,Informational,exists,core,
+208,pokemon damage calculator,pokemon-damage-calculator,Date & Time,27100,34,0,Navigational,new,off,
+209,mortgage rate calculator,mortgage-rate-calculator,Finance & Loans,33100,80,0.62,Commercial,new,core,B (Copilot)
+210,finance calculator,finance-calculator,Other & Misc,33100,80,0.57,Informational,new,adjacent,B (Copilot)
+211,dog age calculator,dog-age-calculator,Date & Time,27100,42,0.12,Informational,new,core,A (me)
+212,military pay calculator,military-pay-calculator,Other & Misc,22200,65,1.79,Informational,new,off,
+213,work time calculator,work-time-calculator,Date & Time,22200,65,1.76,Informational,new,core,A (me)
+214,roofing calculator,roofing-calculator,Home & Construction,9900,33,7.61,Commercial,new,core,A (me)
+215,fuel cost calculator,fuel-cost-calculator,Home & Construction,18100,69,3.71,Transactional,new,core,A (me)
+216,scientific notation calculator,scientific-notation-calculator,Math & Science,22200,54,1.2,Informational,new,off,
+217,toll calculator,toll-calculator,Other & Misc,18100,48,2.05,Informational,new,off,
+218,square feet calculator,square-feet-calculator,Finance & Loans,27100,50,0.29,Informational,new,core,B (Copilot)
+219,clock calculator,clock-calculator,Other & Misc,22200,80,2.71,"Informational, Transactional",new,adjacent,B (Copilot)
+220,rising sign calculator,rising-sign-calculator,Other & Misc,27100,58,0.51,Informational,new,off,
+221,petrol expense calculator,petrol-expense-calculator,Other & Misc,14800,48,3.71,Informational,new,adjacent,B (Copilot)
+222,volume calculator,volume-calculator,Math & Science,27100,53,0.36,Informational,new,off,
+223,simplify calculator,simplify-calculator,Other & Misc,22200,34,0.4,Informational,new,off,
+224,starbucks calorie calculator,starbucks-calorie-calculator,Health & Fitness,22200,18,0,Informational,new,off,
+225,poker odds calculator,poker-odds-calculator,Other & Misc,12100,67,9.41,Informational,new,off,
+226,markup calculator,markup-calculator,Finance & Loans,18100,36,1.24,Informational,exists,core,
+227,sq ft calculator,sq-ft-calculator,Other & Misc,27100,53,0.29,Informational,new,adjacent,B (Copilot)
+228,racine carree calculator,racine-carree-calculator,Other & Misc,18100,14,0.41,Informational,new,adjacent,A (me)
+229,nc paycheck calculator,nc-paycheck-calculator,Finance & Loans,9900,27,5.97,Informational,dup-in-list,core,
+230,irs withholding calculator,irs-withholding-calculator,Other & Misc,27100,82,1.28,"Navigational, Transactional",new,adjacent,A (me)
+231,life path number calculator,life-path-number-calculator,Other & Misc,22200,54,1,Informational,new,off,
+232,budget calculator,budget-calculator,Finance & Loans,18100,54,2.14,Informational,exists,core,
+233,finding cubic feet calculator,finding-cubic-feet-calculator,Finance & Loans,12100,20,2.81,Informational,new,core,A (me)
+234,sat score calculator,sat-score-calculator,Other & Misc,18100,37,1.2,"Informational, Commercial",new,off,
+235,freight class calculator,freight-class-calculator,Other & Misc,12100,27,3.36,Informational,new,off,
+236,nj paycheck calculator,nj-paycheck-calculator,Finance & Loans,9900,36,7.03,Informational,dup-in-list,core,
+237,mme calculator,mme-calculator,Other & Misc,9900,41,7.89,Informational,new,off,
+238,coast fire calculator,coast-fire-calculator,Other & Misc,14800,23,1.5,Informational,exists,adjacent,
+239,profit margin calculator,profit-margin-calculator,Finance & Loans,18100,51,1.83,Informational,exists,core,
+240,calories burned calculator,calories-burned-calculator,Health & Fitness,22200,52,0.83,Informational,new,adjacent,A (me)
+241,washington paycheck calculator,washington-paycheck-calculator,Finance & Loans,8100,24,8.67,Informational,dup-in-list,core,
+242,cd interest calculator,cd-interest-calculator,Finance & Loans,18100,45,1.48,Commercial,new,core,B (Copilot)
+243,paycheckcity calculator,paycheckcity-calculator,Finance & Loans,8100,29,9.61,Navigational,new,core,B (Copilot)
+244,chess calculator,chess-calculator,Other & Misc,14800,33,2,Commercial,new,off,
+245,paint calculator,paint-calculator,Home & Construction,22200,39,0.37,Informational,new,core,A (me)
+246,body shape calculator,body-shape-calculator,Other & Misc,12100,19,2.5,Informational,new,adjacent,B (Copilot)
+247,va home loan calculator,va-home-loan-calculator,Finance & Loans,14800,72,5.62,Informational,dup-in-list,core,
+248,roof pitch calculator,roof-pitch-calculator,Other & Misc,14800,21,1.33,Informational,new,adjacent,B (Copilot)
+249,cars car payment calculator,cars-car-payment-calculator,Finance & Loans,33100,78,0.25,Informational,new,core,A (me)
+250,how much house can i afford,how-much-house-can-i-afford-calculator,Finance & Loans,135000,68,1.53,Informational,new,core,B (Copilot)
+251,money calculator,money-calculator,Other & Misc,27100,95,1.7,Informational,new,adjacent,B (Copilot)
+252,fantasy football trade calculator,fantasy-football-trade-calculator,Other & Misc,22200,44,0.48,Informational,new,off,
+253,adp hourly calculator,adp-hourly-calculator,Other & Misc,9900,55,10.04,"Navigational, Transactional",new,adjacent,B (Copilot)
+254,board foot calculator,board-foot-calculator,Other & Misc,22200,27,0.02,Informational,new,adjacent,B (Copilot)
+255,capital gains tax calculator,capital-gains-tax-calculator,Finance & Loans,18100,51,1.62,Informational,new,core,B (Copilot)
+256,rv loan calculator,rv-loan-calculator,Finance & Loans,22200,51,0.64,Commercial,new,core,B (Copilot)
+257,stock calculator,stock-calculator,Other & Misc,18100,53,1.66,Informational,new,adjacent,A (me)
+258,max bench calculator,max-bench-calculator,Other & Misc,22200,28,0.01,Informational,new,adjacent,A (me)
+259,work calculator,work-calculator,Other & Misc,22200,72,1.44,Informational,new,adjacent,B (Copilot)
+260,oregon paycheck calculator,oregon-paycheck-calculator,Finance & Loans,8100,32,9.07,Informational,dup-in-list,core,
+261,date and time calculator,date-and-time-calculator,Date & Time,40500,94,0,"Informational, Transactional",new,core,B (Copilot)
+262,roi calculator,roi-calculator,Finance & Loans,18100,53,1.57,Informational,exists,core,
+263,michigan paycheck calculator,michigan-paycheck-calculator,Finance & Loans,8100,22,7.07,Informational,dup-in-list,core,
+264,body type calculator,body-type-calculator,Other & Misc,12100,26,2.5,Informational,new,off,
+265,distance calculator,distance-calculator,Other & Misc,27100,72,0.47,Informational,new,off,
+266,mixed fraction calculator,mixed-fraction-calculator,Math & Science,14800,29,1.32,Informational,new,off,
+267,blox fruits calculator,blox-fruits-calculator,Other & Misc,22200,32,0,Informational,new,off,
+268,calorie calculator for weight loss,calorie-for-weight-loss-calculator,Health & Fitness,22200,59,0.71,Informational,new,adjacent,A (me)
+269,bookmakers odds calculator,bookmakers-odds-calculator,Other & Misc,12100,78,8.59,Informational,new,off,
+270,debt payoff calculator,debt-payoff-calculator,Finance & Loans,14800,65,3.61,Commercial,exists,core,
+271,ivf due date calculator,ivf-due-date-calculator,Pregnancy & Baby,18100,37,0.63,Informational,new,adjacent,B (Copilot)
+272,grading calculator,grading-calculator,Other & Misc,27100,57,0,Informational,new,off,
+273,cagr calculator,cagr-calculator,Other & Misc,18100,50,1.12,Informational,new,adjacent,A (me)
+274,colorado paycheck calculator,colorado-paycheck-calculator,Finance & Loans,8100,30,7.33,Informational,dup-in-list,core,
+275,bet calculator,bet-calculator,Other & Misc,12100,85,9.49,Informational,new,off,
+276,abv calculator,abv-calculator,Other & Misc,18100,28,0.33,Informational,new,adjacent,A (me)
+277,business loan calculator,business-loan-calculator,Finance & Loans,14800,64,3.34,Commercial,new,core,A (me)
+278,mortage calculator,mortage-calculator,Date & Time,27100,84,0.69,Commercial,new,core,A (me)
+279,aws cost calculator,aws-cost-calculator,Other & Misc,9900,25,3.68,Informational,new,off,
+280,calorie burn calculator,calorie-burn-calculator,Health & Fitness,18100,58,1.35,Informational,new,adjacent,B (Copilot)
+281,tax withholding calculator,tax-withholding-calculator,Finance & Loans,22200,79,1.29,"Informational, Commercial",new,core,A (me)
+282,cash out refinance calculator,cash-out-refinance-calculator,Finance & Loans,12100,55,4.34,Commercial,new,core,B (Copilot)
+283,house payment calculator,house-payment-calculator,Finance & Loans,27100,83,0.57,Commercial,new,core,A (me)
+284,percent off calculator,percent-off-calculator,Math & Science,22200,40,0.01,"Informational, Transactional",new,off,
+285,mathematical calculators,mathematical-calculator,Other & Misc,33100,95,0.27,Commercial,new,adjacent,B (Copilot)
+286,change as a percentage calculator,change-as-a-percentage-calculator,Math & Science,9900,59,7.83,Informational,new,off,
+287,hedge calculator,hedge-calculator,Other & Misc,8100,59,12.7,Informational,new,off,
+288,probability calculator,probability-calculator,Math & Science,14800,42,1.51,Informational,new,off,
+289,change calculator,change-calculator,Other & Misc,8100,52,10.49,Informational,new,adjacent,A (me)
+290,pa paycheck calculator,pa-paycheck-calculator,Finance & Loans,8100,22,5.2,Informational,dup-in-list,core,
+291,virginia paycheck calculator,virginia-paycheck-calculator,Finance & Loans,6600,17,7.77,Informational,dup-in-list,core,
+292,dew point calculator,dew-point-calculator,Other & Misc,12100,54,3.86,Informational,new,off,
+293,loan repayment calculator,loan-repayment-calculator,Finance & Loans,18100,68,1.61,Commercial,new,core,B (Copilot)
+294,pay stub calculator ny,pay-stub-ny-calculator,Other & Misc,8100,39,7.58,Informational,exists,core,
+295,protein intake calculator,protein-intake-calculator,Health & Fitness,22200,50,0.14,Informational,exists,adjacent,
+296,maryland paycheck calculator,maryland-paycheck-calculator,Finance & Loans,6600,17,7.56,Informational,dup-in-list,core,
+297,damage calculator,damage-calculator,Date & Time,8100,27,5.65,Informational,new,off,
+298,final calculator,final-calculator,Other & Misc,22200,44,0,Informational,new,adjacent,B (Copilot)
+299,ideal body weight calculator,ideal-body-weight-calculator,Health & Fitness,18100,57,1.02,Informational,new,adjacent,A (me)
+300,subnet mask calculator,subnet-mask-calculator,Other & Misc,14800,69,3.01,Informational,new,off,
+301,calculate tip calculator,calculate-tip-calculator,Other & Misc,18100,39,0.37,Informational,new,off,
+302,aws pricing calculator,aws-pricing-calculator,Other & Misc,12100,44,2.69,Navigational,new,off,
+303,time and a half calculator,time-and-a-half-calculator,Date & Time,9900,29,3.16,Informational,new,core,B (Copilot)
+304,limit calculator,limit-calculator,Other & Misc,18100,39,0.33,Informational,new,off,
+305,time to decimal calculator,time-to-decimal-calculator,Date & Time,8100,27,5.02,Informational,new,core,A (me)
+306,function graph and calculator,function-graph-and-calculator,Math & Science,22200,64,0.35,Informational,new,off,
+307,hours worked calculator,hours-worked-calculator,Date & Time,18100,77,1.76,Informational,new,core,B (Copilot)
+308,heloc loan calculator,heloc-loan-calculator,Finance & Loans,12100,70,4.83,Commercial,new,core,A (me)
+309,how much water to drink a day calculator,how-much-water-to-drink-a-day-calculator,Other & Misc,22200,58,0.17,Informational,new,adjacent,B (Copilot)
+310,running pace calculator,running-pace-calculator,Health & Fitness,18100,62,0.99,Commercial,exists,adjacent,
+311,home mortgage calculator,home-mortgage-calculator,Finance & Loans,22200,82,0.88,Commercial,new,core,A (me)
+312,home insurance calculator,home-insurance-calculator,Other & Misc,8100,46,7.43,Informational,new,adjacent,B (Copilot)
+313,rent affordability calculator,rent-affordability-calculator,Finance & Loans,14800,23,0.38,Informational,new,core,B (Copilot)
+314,betting calculator,betting-calculator,Other & Misc,9900,79,9.49,Informational,new,off,
+315,income calculator,income-calculator,Finance & Loans,18100,77,1.63,"Informational, Commercial",new,core,A (me)
+316,no vig calculator,no-vig-calculator,Other & Misc,5400,17,10.27,"Informational, Commercial",new,off,
+317,apush score calculator,apush-score-calculator,Other & Misc,14800,8,0,"Informational, Commercial",new,off,
+318,usps postage calculator,usps-postage-calculator,Date & Time,22200,60,0.16,"Navigational, Transactional",new,off,
+319,crypto profit calculator,crypto-profit-calculator,Finance & Loans,9900,33,2.99,Informational,new,core,A (me)
+320,options calculator,options-calculator,Other & Misc,12100,47,2.4,Informational,new,adjacent,B (Copilot)
+321,land loan calculator,land-loan-calculator,Finance & Loans,14800,49,1.26,Commercial,new,core,A (me)
+322,lottery tax calculator,lottery-tax-calculator,Finance & Loans,18100,60,0.8,Commercial,new,off,
+323,cost per impression calculator,cost-per-impression-calculator,Other & Misc,2900,10,36.48,Informational,new,off,
+324,no tax on overtime calculator,no-tax-on-overtime-calculator,Finance & Loans,9900,27,2.47,Informational,new,core,B (Copilot)
+325,pregnancy due date calculator,pregnancy-due-date-calculator,Pregnancy & Baby,22200,63,0.2,Informational,new,adjacent,B (Copilot)
+326,sqft calculator,sqft-calculator,Other & Misc,22200,67,0.29,Informational,new,adjacent,A (me)
+327,net income calculator,net-income-calculator,Finance & Loans,14800,77,2.88,"Informational, Commercial",new,core,A (me)
+328,credit card payment calculator,credit-card-payment-calculator,Finance & Loans,9900,43,3.71,Commercial,new,core,A (me)
+329,graph calculator,graph-calculator,Math & Science,22200,70,0.35,Informational,new,off,
+330,percent reduction calculator,percent-reduction-calculator,Math & Science,8100,41,5.98,Informational,new,off,
+331,bench calculator,bench-calculator,Other & Misc,18100,34,0.01,Informational,new,adjacent,A (me)
+332,macros calculator,macros-calculator,Health & Fitness,18100,51,0.43,Informational,new,adjacent,B (Copilot)
+333,usps calculator,usps-calculator,Other & Misc,22200,63,0.16,"Navigational, Transactional",new,off,
+334,fire calculator,fire-calculator,Other & Misc,12100,34,1.44,Commercial,exists,adjacent,
+335,my internet speed calculator,my-internet-speed-calculator,Other & Misc,22200,90,0.98,Informational,new,off,
+336,weighted grade calculator,weighted-grade-calculator,Health & Fitness,18100,35,0,Informational,new,off,
+337,morgage calculator,morgage-calculator,Date & Time,22200,83,0.69,Commercial,new,core,A (me)
+338,new york paycheck calculator,new-york-paycheck-calculator,Finance & Loans,6600,31,7.58,Informational,new,core,B (Copilot)
+339,student loan repayment calculator,student-loan-repayment-calculator,Finance & Loans,12100,81,5.19,Informational,new,core,A (me)
+340,army pay calculator,army-pay-calculator,Other & Misc,14800,64,1.79,Informational,new,off,
+341,monthly payment calculator,monthly-payment-calculator,Finance & Loans,22200,78,0.5,Transactional,new,core,B (Copilot)
+342,fedex shipping calculator,fedex-shipping-calculator,Other & Misc,14800,50,1.07,"Navigational, Transactional",new,off,
+343,rounding calculator,rounding-calculator,Math & Science,18100,37,0,Informational,new,off,
+344,wage calculator,wage-calculator,Finance & Loans,18100,88,1.84,"Informational, Commercial",new,core,B (Copilot)
+345,lease calculator,lease-calculator,Finance & Loans,14800,58,1.4,Commercial,new,core,B (Copilot)
+346,interest only loan calculator,interest-only-loan-calculator,Finance & Loans,12100,52,2.3,Commercial,new,core,A (me)
+347,etg calculator,etg-calculator,Other & Misc,9900,19,1.62,Informational,new,off,
+348,georgia paycheck calculator,georgia-paycheck-calculator,Finance & Loans,6600,29,6.9,Informational,dup-in-list,core,
+349,matrix calculator,matrix-calculator,Math & Science,22200,60,0,Informational,new,off,
+350,rent vs buy calculator,rent-vs-buy-calculator,Finance & Loans,22200,63,0.06,Commercial,exists,core,
+351,pay increase calculator,pay-increase-calculator,Other & Misc,8100,29,3.92,Informational,new,core,B (Copilot)
+352,taxable social security benefits calculator,taxable-social-security-benefits-calculator,Finance & Loans,14800,33,0.39,Informational,new,core,B (Copilot)
+353,parlay odds calculator,parlay-odds-calculator,Other & Misc,9900,79,7.66,Informational,new,off,
+354,mortgage loan calculator va,mortgage-loan-va-calculator,Finance & Loans,9900,66,5.62,Informational,dup-in-list,core,
+355,credit card calculator,credit-card-calculator,Other & Misc,12100,52,2.16,Commercial,new,adjacent,B (Copilot)
+356,va mortgage calculator,va-mortgage-calculator,Finance & Loans,12100,67,3.27,Informational,exists,core,
+357,net worth calculator,net-worth-calculator,Finance & Loans,18100,56,0.39,Informational,exists,core,
+358,factor calculator,factor-calculator,Other & Misc,22200,64,0.04,Informational,new,off,
+359,army body fat calculator,army-body-fat-calculator,Health & Fitness,18100,40,0,"Informational, Transactional",new,off,
+360,cpi calculator,cpi-calculator,Other & Misc,18100,92,1.88,Informational,new,adjacent,A (me)
+361,shipping cost calculator,shipping-cost-calculator,Other & Misc,12100,58,0.63,Commercial,new,off,
+362,puppy weight calculator,puppy-weight-calculator,Health & Fitness,12100,17,0.51,Informational,new,adjacent,B (Copilot)
+363,insurance calculator,insurance-calculator,Other & Misc,6600,60,12.92,Commercial,new,adjacent,A (me)
+364,conduit fill calculator,conduit-fill-calculator,Other & Misc,12100,26,0.8,Informational,new,off,
+365,mit living wage calculator,mit-living-wage-calculator,Finance & Loans,8100,31,3.85,Navigational,new,core,A (me)
+366,schedule 1 calculator,schedule-1-calculator,Other & Misc,14800,20,0,Navigational,new,off,
+367,savings account calculator,savings-account-calculator,Finance & Loans,12100,57,2.32,Informational,new,core,A (me)
+368,indiana paycheck calculator,indiana-paycheck-calculator,Finance & Loans,6600,21,5.06,Informational,dup-in-list,core,
+369,nj salary calculator,nj-salary-calculator,Finance & Loans,6600,35,7.03,Informational,dup-in-list,core,
+370,test grade calculator,test-grade-calculator,Education & Grades,22200,65,0,Informational,new,off,
+371,fantasy calculator,fantasy-calculator,Other & Misc,18100,43,0,Informational,new,off,
+372,ebay charges calculator,ebay-charges-calculator,Other & Misc,12100,46,1.6,Informational,new,adjacent,B (Copilot)
+373,missouri paycheck calculator,missouri-paycheck-calculator,Finance & Loans,5400,21,8.29,Informational,dup-in-list,core,
+374,net pay calculator,net-pay-calculator,Other & Misc,14800,88,2.88,Navigational,new,core,A (me)
+375,calorie intake calculator,calorie-intake-calculator,Health & Fitness,18100,58,0.32,Informational,new,adjacent,B (Copilot)
+376,neb tm calculator,neb-tm-calculator,Other & Misc,5400,26,9.02,Navigational,new,off,
+377,kcal weight loss calculator,kcal-weight-loss-calculator,Health & Fitness,18100,71,0.71,Informational,new,adjacent,A (me)
+378,raise calculator,raise-calculator,Finance & Loans,6600,23,5,Informational,new,core,A (me)
+379,home equity line of credit calculator,home-equity-line-of-credit-calculator,Finance & Loans,9900,65,4.73,Informational,new,core,A (me)
+380,wisconsin paycheck calculator,wisconsin-paycheck-calculator,Finance & Loans,5400,20,7.66,Informational,dup-in-list,core,
+381,trig calculator,trig-calculator,Other & Misc,14800,65,1.32,Informational,new,adjacent,B (Copilot)
+382,conception date calculator,conception-date-calculator,Pregnancy & Baby,18100,69,0.61,Informational,new,adjacent,A (me)
+383,quadratic equation calculator,quadratic-equation-calculator,Math & Science,14800,61,1.13,Informational,new,off,
+384,satisfactory calculator,satisfactory-calculator,Other & Misc,18100,46,0,Informational,new,off,
+385,blood alcohol level calculator,blood-alcohol-level-calculator,Health & Fitness,8100,42,4.4,Informational,new,adjacent,B (Copilot)
+386,finals calculator,finals-calculator,Other & Misc,18100,47,0,Informational,new,adjacent,B (Copilot)
+387,auto lease calculator,auto-lease-calculator,Finance & Loans,12100,56,1.94,Commercial,new,core,A (me)
+388,commercial loan calculator,commercial-loan-calculator,Finance & Loans,12100,55,1.88,Commercial,new,core,A (me)
+389,sba loan calculator,sba-loan-calculator,Finance & Loans,9900,52,3.18,Commercial,new,core,B (Copilot)
+390,pft calculator,pft-calculator,Other & Misc,14800,26,0,Informational,new,off,
+391,mean calculator,mean-calculator,Other & Misc,18100,48,0,Informational,new,adjacent,B (Copilot)
+392,pokemon type calculator,pokemon-type-calculator,Other & Misc,18100,48,0,Navigational,new,off,
+393,blooket calculator,blooket-calculator,Other & Misc,14800,27,0,Informational,new,off,
+394,loan interest calculator,loan-interest-calculator,Finance & Loans,18100,80,0.89,Commercial,new,core,A (me)
+395,federal tax calculator,federal-tax-calculator,Finance & Loans,22200,85,0.33,Informational,new,core,B (Copilot)
+396,antiderivative calculator,antiderivative-calculator,Math & Science,12100,19,0.32,Informational,new,off,
+397,investment growth calculator,investment-growth-calculator,Finance & Loans,18100,65,0.38,Informational,new,core,B (Copilot)
+398,tvm calculator,tvm-calculator,Other & Misc,12100,47,1.32,Informational,new,adjacent,B (Copilot)
+399,drywall calculator,drywall-calculator,Home & Construction,12100,27,0.53,Informational,new,core,B (Copilot)
+400,construction calculator,construction-calculator,Other & Misc,12100,48,1.35,Commercial,new,adjacent,A (me)
+401,annual salary calculator,annual-salary-calculator,Finance & Loans,22200,78,0.12,Informational,new,core,A (me)
+402,log calculator,log-calculator,Math & Science,18100,64,0.32,Informational,new,off,
+403,figure simple interest calculator,figure-simple-interest-calculator,Finance & Loans,14800,71,1.38,Commercial,new,core,A (me)
+404,date duration calculator,date-duration-calculator,Math & Science,22200,73,0,Informational,new,off,
+405,sig fig calculator,sig-fig-calculator,Math & Science,18100,51,0,Informational,new,off,
+406,ga paycheck calculator,ga-paycheck-calculator,Finance & Loans,5400,21,6.9,Informational,dup-in-list,core,
+407,reverse tax calculator,reverse-tax-calculator,Finance & Loans,4400,14,9.71,Commercial,new,core,B (Copilot)
+408,debt to income ratio calculator,debt-to-income-ratio-calculator,Finance & Loans,18100,69,0.42,Informational,new,core,A (me)
+409,529 calculator,529-calculator,Other & Misc,12100,35,0.73,Informational,new,adjacent,B (Copilot)
+410,natal chart calculator,natal-chart-calculator,Other & Misc,18100,74,0.57,Informational,new,off,
+411,pool salt calculator,pool-salt-calculator,Home & Construction,6600,9,2.86,Informational,new,core,B (Copilot)
+412,gas mileage calculator,gas-mileage-calculator,Date & Time,12100,73,2.7,Transactional,new,core,A (me)
+413,kaiser sepsis calculator,kaiser-sepsis-calculator,Other & Misc,4400,40,16.75,Navigational,new,off,
+414,ap score calculator,ap-score-calculator,Other & Misc,14800,31,0,Commercial,new,off,
+415,calculator for payroll tax,for-payroll-tax-calculator,Finance & Loans,9900,57,6.14,Commercial,new,core,B (Copilot)
+416,student loan payment calculator,student-loan-payment-calculator,Finance & Loans,9900,77,5.19,Informational,new,core,A (me)
+417,fidelity ira minimum distribution calculator,fidelity-ira-minimum-distribution-calculator,Finance & Loans,8100,70,7.33,"Navigational, Transactional",new,core,A (me)
+418,usps price calculator,usps-price-calculator,Other & Misc,18100,60,0.13,"Navigational, Transactional",new,off,
+419,life insurance calculator,life-insurance-calculator,Other & Misc,6600,45,6.8,Informational,new,adjacent,B (Copilot)
+420,weight calculator,weight-calculator,Health & Fitness,18100,84,0.84,Informational,new,adjacent,A (me)
+421,decimal calculator,decimal-calculator,Other & Misc,12100,40,0.82,Informational,new,adjacent,A (me)
+422,yearly salary calculator,yearly-salary-calculator,Finance & Loans,18100,60,0.12,Informational,new,core,B (Copilot)
+423,p value calculator,p-value-calculator,Other & Misc,9900,44,2.08,Informational,new,off,
+424,inherited ira rmd calculator,inherited-ira-rmd-calculator,Finance & Loans,9900,50,2.47,Informational,new,core,B (Copilot)
+425,fence calculator,fence-calculator,Home & Construction,8100,25,2.24,Informational,new,core,A (me)
+426,acft calculator,acft-calculator,Other & Misc,14800,33,0,Informational,new,off,
+427,pay stub calculator nj,pay-stub-nj-calculator,Other & Misc,5400,26,7.03,Informational,exists,core,
+428,compound calculator,compound-calculator,Finance & Loans,18100,70,0.34,Informational,new,core,B (Copilot)
+429,concrete slab calculator,concrete-slab-calculator,Home & Construction,12100,38,0.69,Informational,new,core,B (Copilot)
+430,whole life insurance calculator,whole-life-insurance-calculator,Other & Misc,6600,40,5.76,Informational,new,adjacent,A (me)
+431,wheel offset calculator,wheel-offset-calculator,Other & Misc,9900,28,1.15,Informational,new,off,
+432,option profit calculator,option-profit-calculator,Finance & Loans,9900,52,2.5,Transactional,new,core,A (me)
+433,present value calculator,present-value-calculator,Other & Misc,12100,58,1.53,Informational,new,core,B (Copilot)
+434,nj wage calculator,nj-wage-calculator,Finance & Loans,5400,27,7.03,Informational,dup-in-list,core,
+435,height percentile calculator,height-percentile-calculator,Math & Science,12100,62,1.73,"Informational, Commercial",new,off,
+436,va rating calculator,va-rating-calculator,Other & Misc,14800,54,0.47,"Informational, Transactional",new,off,
+437,increase calculator,increase-calculator,Other & Misc,9900,66,3.55,Informational,new,adjacent,A (me)
+438,ip subnet calculator,ip-subnet-calculator,Other & Misc,9900,60,3.02,Informational,new,off,
+439,power supply calculator,power-supply-calculator,Other & Misc,18100,60,0.04,Informational,new,off,
+440,psu calculator,psu-calculator,Other & Misc,18100,60,0.04,Informational,new,off,
+441,interest only calculator,interest-only-calculator,Finance & Loans,9900,51,2.3,Commercial,new,core,B (Copilot)
+442,wage calculator az,wage-az-calculator,Finance & Loans,5400,25,6.39,Informational,dup-in-list,core,
+443,increased by percent calculator,increased-by-percent-calculator,Math & Science,18100,59,0,Informational,new,off,
+444,subway nutrition calculator,subway-nutrition-calculator,Other & Misc,14800,40,0.05,"Informational, Transactional",new,off,
+445,reducing percentage calculator,reducing-percentage-calculator,Math & Science,6600,45,5.98,Informational,new,off,
+446,business day calculator,business-day-calculator,Math & Science,18100,60,0,Informational,new,off,
+447,integration calculator,integration-calculator,Math & Science,14800,55,0.41,Informational,new,off,
+448,federal income tax rate calculator,federal-income-tax-rate-calculator,Finance & Loans,14800,50,0.27,Informational,new,core,A (me)
+449,property tax calculator,property-tax-calculator,Finance & Loans,12100,43,0.71,Informational,new,core,A (me)
+450,utah paycheck calculator,utah-paycheck-calculator,Finance & Loans,4400,15,8.09,Informational,dup-in-list,core,
+451,ap lang score calculator,ap-lang-score-calculator,Other & Misc,12100,17,0,Informational,new,off,
+452,calculator net calculator,net-calculator,Other & Misc,18100,61,0,Navigational,new,adjacent,A (me)
+453,correlation coefficient calculator,correlation-coefficient-calculator,Other & Misc,6600,37,4.73,Informational,new,off,
+454,ffmi calculator,ffmi-calculator,Other & Misc,12100,18,0.01,Informational,new,adjacent,B (Copilot)
+455,cost of petrol calculator,cost-of-petrol-calculator,Other & Misc,8100,50,3.71,Informational,new,core,B (Copilot)
+456,silca tire pressure calculator,silca-tire-pressure-calculator,Other & Misc,8100,28,2,"Informational, Transactional",new,off,
+457,cpi inflation calculator,cpi-inflation-calculator,Finance & Loans,14800,89,1.74,Informational,new,core,B (Copilot)
+458,board feet calculator,board-feet-calculator,Finance & Loans,12100,19,0.02,Informational,new,core,A (me)
+459,recipe calorie calculator,recipe-calorie-calculator,Health & Fitness,12100,55,1.13,Informational,new,adjacent,A (me)
+460,car affordability calculator,car-affordability-calculator,Finance & Loans,12100,59,1.28,Informational,exists,core,
+461,salary calculator illinois,salary-illinois-calculator,Finance & Loans,5400,25,5.8,Informational,dup-in-list,core,
+462,median calculator,median-calculator,Other & Misc,14800,41,0,Informational,new,adjacent,B (Copilot)
+463,after tax income calculator,after-tax-income-calculator,Finance & Loans,12100,76,2.19,"Informational, Commercial",new,core,B (Copilot)
+464,exponent calculator,exponent-calculator,Math & Science,14800,58,0.41,Informational,new,off,
+465,va paycheck calculator,va-paycheck-calculator,Finance & Loans,4400,16,7.77,Informational,dup-in-list,core,
+466,hours to decimal calculator,hours-to-decimal-calculator,Date & Time,5400,20,5.02,Informational,new,core,A (me)
+467,soil calculator,soil-calculator,Home & Construction,14800,44,0.04,Informational,new,core,A (me)
+468,fers retirement calculator,fers-retirement-calculator,Finance & Loans,12100,42,0.56,Informational,new,core,B (Copilot)
+469,azure pricing calculator,azure-pricing-calculator,Other & Misc,12100,58,1.16,"Navigational, Transactional",new,off,
+470,cap rate calculator,cap-rate-calculator,Finance & Loans,9900,24,0.68,Informational,new,core,B (Copilot)
+471,car refinance calculator,car-refinance-calculator,Finance & Loans,12100,58,1.14,Commercial,new,core,A (me)
+472,nevada paycheck calculator,nevada-paycheck-calculator,Finance & Loans,4400,24,9.07,Informational,dup-in-list,core,
+473,moving cost calculator,moving-cost-calculator,Other & Misc,5400,37,7.24,Commercial,exists,core,
+474,matrix multiplication calculator,matrix-multiplication-calculator,Math & Science,14800,44,0,Informational,new,off,
+475,days between dates calculator,days-between-dates-calculator,Date & Time,18100,66,0,"Informational, Transactional",new,core,B (Copilot)
+476,golf handicap calculator,golf-handicap-calculator,Other & Misc,9900,43,1.36,Informational,new,adjacent,A (me)
+477,saturn return calculator,saturn-return-calculator,Other & Misc,12100,23,0,Informational,new,off,
+478,gold price calculator,gold-price-calculator,Other & Misc,12100,37,0.33,Transactional,new,off,
+479,motorcycle loan calculator,motorcycle-loan-calculator,Finance & Loans,12100,54,0.88,Commercial,new,core,B (Copilot)
+480,federal income tax calculator,federal-income-tax-calculator,Finance & Loans,18100,82,0.36,Commercial,new,core,A (me)
+481,share incentive plan calculator,share-incentive-plan-calculator,Other & Misc,6600,5,1.64,Informational,new,adjacent,B (Copilot)
+482,paypal fees calculator,paypal-fees-calculator,Finance & Loans,5400,48,8.87,Informational,new,core,B (Copilot)
+483,stone calculator,stone-calculator,Home & Construction,9900,18,0.39,Informational,new,core,B (Copilot)
+484,amortization schedule calculator,amortization-schedule-calculator,Finance & Loans,14800,74,0.79,Informational,new,core,B (Copilot)
+485,mpg calculator,mpg-calculator,Home & Construction,9900,66,2.7,Informational,new,core,A (me)
+486,return on investment calculator,return-on-investment-calculator,Finance & Loans,12100,70,1.57,"Informational, Transactional",new,core,A (me)
+487,mn paycheck calculator,mn-paycheck-calculator,Finance & Loans,4400,31,9.87,Informational,dup-in-list,core,
+488,alcohol calculator,alcohol-calculator,Health & Fitness,8100,42,2.48,Informational,new,adjacent,B (Copilot)
+489,rocket mortgage calculator,rocket-mortgage-calculator,Finance & Loans,8100,55,3.54,Navigational,new,core,A (me)
+490,stair stringer calculator,stair-stringer-calculator,Home & Construction,9900,33,0.85,Informational,new,core,A (me)
+491,sod calculator,sod-calculator,Home & Construction,6600,19,2.39,Informational,new,core,A (me)
+492,nutrition calculator,nutrition-calculator,Other & Misc,14800,86,1.22,Informational,new,adjacent,A (me)
+493,commercial mortgage calculator,commercial-mortgage-calculator,Finance & Loans,9900,54,1.79,Commercial,new,core,B (Copilot)
+494,rock calculator,rock-calculator,Home & Construction,9900,20,0.39,Informational,new,core,B (Copilot)
+495,meld score calculator,meld-score-calculator,Health & Fitness,8100,60,3.84,Informational,new,off,
+496,debt calculator,debt-calculator,Finance & Loans,9900,75,3.18,Commercial,new,core,A (me)
+497,lottery annuity calculator,lottery-annuity-calculator,Finance & Loans,6600,50,5.14,Informational,new,off,
+498,hypotenuse calculator,hypotenuse-calculator,Math & Science,14800,49,0,Informational,new,off,
+499,home equity calculator,home-equity-calculator,Finance & Loans,8100,61,3.84,Commercial,exists,core,
+500,wordle calculator,wordle-calculator,Other & Misc,12100,28,0,Commercial,new,off,

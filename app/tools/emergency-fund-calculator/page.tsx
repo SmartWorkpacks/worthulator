@@ -5,7 +5,7 @@ import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
+import { HYSA_APY } from "@/lib/calculators/emergencyFundEngine";
 
 export const metadata: Metadata = {
   title: "Emergency Fund Calculator 2026 – How Much Do You Need?",
@@ -145,7 +145,6 @@ export default function EmergencyFundCalculatorPage() {
         cards={CONTENT_CARDS}
       />
 
-            <InsightTable slug="emergency-fund-calculator" />
       <SEOTextBlock
         title="How the Emergency Fund Calculator Works"
         formula={`Total Monthly Expenses = Rent + Food + Utilities + Transport + Insurance + Subscriptions + Other
@@ -167,6 +166,7 @@ Months to Goal = Amount Still Needed / Monthly Savings Rate`}
         paragraphs={[
           "The key insight of this calculator is that your emergency fund target is personal — it's based on YOUR expenses, not a generic national average. A person with $800/month in expenses needs a very different fund than someone paying $3,000/month in rent alone.",
           "The progress chart shows exactly when you'll hit your goal at your current savings rate. Use the What-If buttons to see how increasing your monthly contribution by $100 or $200 cuts months off your timeline.",
+          `Because an emergency fund sits in cash, inflation matters too. The calculator pulls the live CPI inflation rate and compares the yearly interest your target would earn in a ~${HYSA_APY}% high-yield savings account against the inflation drift on that target — so you can see whether your safety net is holding its real value or quietly shrinking.`,
         ]}
       />
 

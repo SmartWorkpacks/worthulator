@@ -1,0 +1,36 @@
+#!/bin/sh
+# ─── Worthulator protected-files guard ───────────────────────────────────────
+# Blocks commits that modify Owner-A (Cursor-only) files unless ALLOW_PROTECTED=1.
+# This is a safety net against accidental edits — see AGENTS.md → "Protected files".
+#
+# If you are NOT Cursor: unstage the file(s) and ask Owner A for the change.
+# If you ARE Cursor: re-run the commit with the override, e.g.
+#     ALLOW_PROTECTED=1 git commit -m "…"
+#     (PowerShell:  $env:ALLOW_PROTECTED=1; git commit -m "…"; $env:ALLOW_PROTECTED=$null)
+
+if [ "$ALLOW_PROTECTED" = "1" ]; then
+  exit 0
+fi
+
+protected='^(src/|lib/datasets/|lib/dataStore\.ts|scripts/|\.githooks/|\.github/workflows/|\.github/copilot-instructions\.md|docs/FLAGSHIP-CALCULATOR-STANDARD\.md|docs/PHASE2-ROLLOUT-BRIEFS\.md|docs/research/|docs/briefs/|AGENTS\.md|CLAUDE\.md)'
+
+blocked=$(git diff --cached --name-only | grep -E "$protected")
+
+if [ -n "$blocked" ]; then
+  echo ""
+  echo "  ⛔  Protected (Owner A / Cursor-only) files are staged:"
+  echo "$blocked" | sed 's/^/        /'
+  echo ""
+  echo "  These are owned by Cursor (Owner A). See AGENTS.md -> \"Protected files\"."
+  echo ""
+  echo "  If you are NOT Cursor:"
+  echo "      git restore --staged <file>   # then ask Owner A for the change"
+  echo ""
+  echo "  If you ARE Cursor (and this change is intended):"
+  echo "      ALLOW_PROTECTED=1 git commit ...        # macOS/Linux"
+  echo "      \$env:ALLOW_PROTECTED=1; git commit ...   # PowerShell"
+  echo ""
+  exit 1
+fi
+
+exit 0

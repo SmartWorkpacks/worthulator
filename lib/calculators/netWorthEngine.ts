@@ -1,3 +1,5 @@
+import { getNetWorthPercentile, type NetWorthPercentile } from "@/lib/datasets/netWorthPercentiles";
+
 export interface NetWorthInputs {
   // Assets
   cashSavings: number;
@@ -39,9 +41,19 @@ export interface NetWorthResult {
   assetBreakdown: AssetBreakdownItem[];
   liabilityBreakdown: AssetBreakdownItem[];
   growthSeries: { year: number; netWorth: number; milestone: string }[];
+  // Age-based comparison (SCF 2022 reference dataset)
+  percentile: number;
+  bracketLabel: string;
+  bracketMedian: number;
+  medianMultiple: number;
 }
 
-export function calculateNetWorth(inputs: NetWorthInputs): NetWorthResult {
+export interface NetWorthDeps {
+  /** Percentile lookup — injectable for testing; defaults to the SCF dataset. */
+  percentileFn?: (age: number, netWorth: number) => NetWorthPercentile;
+}
+
+export function calculateNetWorth(inputs: NetWorthInputs, deps: NetWorthDeps = {}): NetWorthResult {
   const {
     cashSavings, checkingAccounts, investments, retirementAccounts,
     homeValue, otherRealEstate, vehicles, otherAssets,
@@ -123,10 +135,14 @@ export function calculateNetWorth(inputs: NetWorthInputs): NetWorthResult {
     { category: "Other debt",        amount: otherDebt,       colorClass: "bg-rose-400"   },
   ], totalLiabilities);
 
+  const percentileFn = deps.percentileFn ?? getNetWorthPercentile;
+  const { percentile, bracketLabel, bracketMedian, medianMultiple } = percentileFn(age, netWorth);
+
   return {
     totalAssets, totalLiabilities, netWorth, debtToAssetRatio,
     milestoneLabel, milestoneColor,
     projectedNetWorth, yearsToMillion,
     assetBreakdown, liabilityBreakdown, growthSeries,
+    percentile, bracketLabel, bracketMedian, medianMultiple,
   };
 }

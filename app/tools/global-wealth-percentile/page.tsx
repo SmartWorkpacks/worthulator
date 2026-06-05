@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Global Wealth Percentile Calculator 2026 – Where Do You Rank?",
@@ -45,30 +44,52 @@ const RELATED_CALCS = [
   { icon: "📈", accent: "bg-emerald-500/10", title: "Compound Interest",          description: "See how wealth compounds over decades.",            href: "/tools/compound-interest-calculator" },
 ];
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      name: "Global Wealth Percentile Calculator",
+      url: "https://worthulator.com/tools/global-wealth-percentile",
+      applicationCategory: "FinanceApplication",
+      description: "Estimate where your net worth and income rank among the world's adults using log-normal models of the global distribution.",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    },
+    {
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((f) => ({
+        "@type": "Question",
+        name: f.q,
+        acceptedAnswer: { "@type": "Answer", text: f.a },
+      })),
+    },
+  ],
+};
+
 export default function GlobalWealthPercentile() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <SimpleCalculatorHero
         eyebrowIcon="🌍"
         eyebrowText="Wealth Rank"
         title="Global Wealth Percentile Calculator"
-        description="Enter your net worth and annual income to see where you rank among all 8 billion people on Earth. Most people in developed countries are surprised by how high they rank globally."
+        description="Enter your net worth and annual income to see where you rank among the world's adults. Most people in developed countries are surprised by how high they rank globally."
         chips={["Wealth percentile", "Income percentile", "Daily income equivalent"]}
       >
-        <CalculatorEngineLoader slug="global-wealth-percentile" />
+        <EngineWithInsights slug="global-wealth-percentile" />
       </SimpleCalculatorHero>
       <InsightStrip text="Over half the world's adults have a net worth under $10,000. Your position may be more global-top-tier than you realise." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The global wealth picture" cards={CONTENT_CARDS} />
-      <InsightTable slug="global-wealth-percentile" />
       <SEOTextBlock
         title="How the global percentile is estimated"
-        formula={`Percentile ≈ log-normal approximation of global wealth distribution
-Source: Credit Suisse Global Wealth Report + World Bank income data
-Higher income → higher percentile (0 = lowest, 100 = wealthiest)`}
+        formula={`Percentile = Φ( (ln value − μ) / σ ) × 100
+Wealth:  μ = ln(8,654), σ = 2.0   (≈ $100k → top 10%, $1M → top 1%)
+Income:  μ = ln(3,000), σ = 1.05  (≈ $34k → top 1%)`}
         paragraphs={[
-          "Estimates are based on Credit Suisse Global Wealth Report and World Bank income distribution data. The calculation uses a logarithmic approximation of the global wealth distribution curve.",
-          "Results are estimates — precise global data on individual wealth is not available. The calculator gives a reasonable indication based on publicly available distributional data.",
+          "Each rank uses a log-normal approximation of the global distribution, calibrated to published anchors from the Credit Suisse Global Wealth Report and common global income thresholds. Φ is the standard normal cumulative distribution — so doubling your wealth moves you up the curve, not linearly.",
+          "Results are nominal-USD estimates — precise per-individual global data does not exist, and Purchasing Power Parity would shift the rankings. The figures give a reasonable, well-anchored indication of your global standing.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

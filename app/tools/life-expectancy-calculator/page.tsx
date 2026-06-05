@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Life Expectancy Calculator 2026 – How Many Years Do You Have Left?",
@@ -60,7 +59,6 @@ export default function LifeExpectancyCalculator() {
       <InsightStrip text="Regular exercise adds 3–7 years of life expectancy. Not smoking adds 10. The choices compound just like money does." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What actually determines how long you live" cards={CONTENT_CARDS} />
-      <InsightTable slug="life-expectancy-calculator" />
       <SEOTextBlock
         title="How the estimate is calculated"
         formula={`Base Estimate  = 78.5 years (US average)

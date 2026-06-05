@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculatePto } from "@/calculations/work/pto";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -19,6 +20,10 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// ── Step 5c: worked example derived from the live calculation module ─────────
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX = calculatePto({ hourlyRate: 35, ptoHoursRemaining: 80, hoursPerDay: 8 });
+
 const FAQS = [
   {
     q: "Do employers have to pay out unused PTO?",
@@ -26,7 +31,7 @@ const FAQS = [
   },
   {
     q: "How do you calculate the cash value of PTO?",
-    a: "Multiply your hourly rate by the number of PTO hours remaining. If you earn $35/hour and have 80 hours of PTO, it's worth $2,800. If you're salaried, divide your annual salary by 2,080 to get your hourly rate.",
+    a: `Multiply your hourly rate by the number of PTO hours remaining. If you earn $35/hour and have 80 hours of PTO, it's worth ${usd(EX.cashValue)} (${EX.daysRemaining} days). If you're salaried, divide your annual salary by 2,080 to get your hourly rate.`,
   },
   {
     q: "What is the difference between PTO and vacation days?",
@@ -108,7 +113,7 @@ export default function PtoCalculatorPage() {
         description="Calculate the cash value of your unused PTO or vacation days — enter your hourly rate and remaining hours for an instant result."
         chips={["Cash value of PTO", "Days remaining", "Weekly earning rate"]}
       >
-        <CalculatorEngineLoader slug="pto-calculator" />
+        <EngineWithInsights slug="pto-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text='Unused PTO is compensation you already earned — <span class="font-semibold text-gray-900">if you don&apos;t use it and it isn&apos;t paid out, you worked for less than agreed.</span>' />
       <StatChipsRow stats={STATS} />

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -119,7 +119,7 @@ export default function CommuteTimeValuePage() {
         description="Find out how many hours and dollars your commute quietly steals from your salary each year — and what your real effective hourly rate is once travel time is included."
         chips={["Hours lost per year", "Salary % consumed", "True effective hourly rate"]}
       >
-        <CalculatorEngineLoader slug="commute-time-value" />
+        <EngineWithInsights slug="commute-time-value" />
       </SimpleCalculatorHero>
       <InsightStrip text='Your commute isn&apos;t free time — <span class="font-semibold text-gray-900">every unpaid hour in transit is a reduction in your real hourly rate, hiding in plain sight.</span>' />
       <StatChipsRow stats={STATS} />

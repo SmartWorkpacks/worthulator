@@ -1,5 +1,6 @@
 import type { Insight } from "../index";
 import type { InsightVisualization } from "../types";
+import { costBenchmarks } from "@/lib/datasets/costs/costBenchmarks";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -96,6 +97,11 @@ export function mealPrepInsights(
       benchmarkValue: takeoutCost,
       benchmarkLabel,
       format:         "currency",
+      caption: {
+        text: `${regionPrefix} ${styleLabel} cost`,
+        asOf: costBenchmarks.currentPeriodLabel,
+        live: true,
+      },
     } satisfies InsightVisualization,
   });
 

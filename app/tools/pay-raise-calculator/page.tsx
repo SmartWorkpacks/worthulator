@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Pay Raise Calculator 2026 – See Your New Salary Instantly",
@@ -116,7 +115,6 @@ export default function PayRaiseCalculatorPage() {
       <ContentCardGrid title="What your raise really means" subtitle="Context that makes the number matter." cards={CONTENT_CARDS}
       />
 
-      <InsightTable slug="pay-raise" />
       <SEOTextBlock
         title="How the Pay Raise Calculator Works"
         formula={`New Salary      = Current Salary × (1 + Raise% ÷ 100)

@@ -1,0 +1,501 @@
+﻿A=Rank	B=Calculator Keyword	C=Category	D=Monthly Volume (US)	E=KD	F=CPC (USD)	G=Search Intent	H=SERP Features
+A=1	B=bmi calculator	C=Health & Fitness	D=4090000	E=95	F=0.18	G=Informational	H=AI Overview, Video, Related searches
+A=2	B=mortgage calculator	C=Finance & Loans	D=2740000	E=88	F=0.69	G=Commercial	H=Sitelinks, Video, Related searches, Things to know, Ads bottom
+A=3	B=calorie calculator	C=Health & Fitness	D=2240000	E=100	F=0.99	G=Informational	H=Video, Related searches
+A=4	B=age calculator	C=Date & Time	D=823000	E=76	F=1.58	G=Navigational	H=Sitelinks, Video, Related searches
+A=5	B=loan calculator	C=Finance & Loans	D=823000	E=83	F=1.03	G=Commercial	H=Video, Related searches
+A=6	B=tip calculator	C=Other & Misc	D=673000	E=49	F=0.37	G=Informational	H=Video, People also ask, Related searches
+A=7	B=paycheck calculator	C=Finance & Loans	D=450000	E=87	F=5.33	G=Informational, Commercial	H=Video, People also ask, Related searches
+A=8	B=compound interest calculator	C=Finance & Loans	D=673000	E=65	F=0.33	G=Informational	H=Video, Related searches
+A=9	B=concrete calculator	C=Home & Construction	D=368000	E=28	F=1.36	G=Informational	H=Image pack, Video, Related searches
+A=10	B=grade calculator	C=Education & Grades	D=673000	E=55	F=0	G=Informational	H=Video, Related searches
+A=11	B=percentage calculator	C=Math & Science	D=450000	E=87	F=3.19	G=Informational	H=Instant answer, Image pack, Video, Related searches
+A=12	B=time calculator	C=Date & Time	D=550000	E=84	F=1.3	G=Informational, Transactional	H=Video, Related searches
+A=13	B=inflation calculator	C=Finance & Loans	D=450000	E=86	F=1.67	G=Informational	H=Video, Related searches, Ads bottom
+A=14	B=car loan calculator	C=Finance & Loans	D=550000	E=81	F=0.33	G=Informational	H=Sitelinks, Video, Related searches
+A=15	B=investment calculator	C=Finance & Loans	D=450000	E=67	F=0.39	G=Informational	H=Video, Related searches
+A=16	B=fraction calculator	C=Math & Science	D=368000	E=58	F=0.76	G=Informational	H=Video, Related searches
+A=17	B=tdee calculator	C=Health & Fitness	D=368000	E=50	F=0.33	G=Informational	H=Video, People also ask, Related searches
+A=18	B=scientific calculator	C=Other & Misc	D=368000	E=69	F=0.76	G=Informational	H=Sitelinks, Instant answer, Video, Related searches
+A=19	B=car payment calculator	C=Finance & Loans	D=450000	E=80	F=0.25	G=Informational	H=Sitelinks, Video, Related searches
+A=20	B=date calculator	C=Date & Time	D=368000	E=83	F=0.83	G=Informational, Transactional	H=Video, Related searches
+A=21	B=due date calculator	C=Pregnancy & Baby	D=368000	E=69	F=0.12	G=Informational	H=Sitelinks, Video, Related searches
+A=22	B=love calculator	C=Other & Misc	D=301000	E=52	F=0.05	G=Informational	H=Video, Related searches
+A=23	B=bac calculator	C=Health & Fitness	D=135000	E=48	F=4.4	G=Informational	H=Image pack, Video, Related searches
+A=24	B=snow day calculator	C=Other & Misc	D=246000	E=31	F=0	G=Informational	H=Video, Related searches
+A=25	B=retirement calculator	C=Finance & Loans	D=246000	E=76	F=1.27	G=Commercial	H=Video, Short videos, Related searches, Ads top, Ads bottom
+A=26	B=hours calculator	C=Date & Time	D=201000	E=82	F=2.72	G=Informational	H=Video, People also ask, Related searches
+A=27	B=cd calculator	C=Finance & Loans	D=165000	E=42	F=1.48	G=Informational	H=Video, People also ask, Related searches
+A=28	B=amortization calculator	C=Finance & Loans	D=246000	E=70	F=0.79	G=Informational	H=Video, Knowledge panel, Related searches, Ads top, Ads bottom
+A=29	B=margin calculator	C=Finance & Loans	D=110000	E=49	F=4.12	G=Informational	H=Video, Related searches
+A=30	B=calorie deficit calculator	C=Health & Fitness	D=246000	E=79	F=0.48	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=31	B=salary calculator	C=Finance & Loans	D=165000	E=80	F=2.16	G=Informational, Commercial	H=Sitelinks, AI Overview, Video, Related searches
+A=32	B=pregnancy calculator	C=Pregnancy & Baby	D=201000	E=63	F=0.3	G=Informational	H=Sitelinks, Image, Video, People also ask, Related searches
+A=33	B=ovulation calculator	C=Pregnancy & Baby	D=165000	E=73	F=1.19	G=Informational	H=Image, Video, People also ask, Related searches
+A=34	B=mortgage payment calculator	C=Finance & Loans	D=201000	E=81	F=0.6	G=Commercial	H=Sitelinks, Video, Related searches, Ads top, Ads bottom
+A=35	B=interest calculator	C=Finance & Loans	D=165000	E=73	F=1.1	G=Transactional	H=Video, People also ask, Related searches
+A=36	B=dynasty trade calculator	C=Other & Misc	D=135000	E=45	F=0.79	G=Informational	H=Sitelinks, Video, Related searches
+A=37	B=time card calculator	C=Date & Time	D=110000	E=61	F=2.68	G=Informational	H=Video, Related searches
+A=38	B=percent change calculator	C=Math & Science	D=74000	E=62	F=7.83	G=Informational	H=Video, People also ask, Related searches
+A=39	B=percentage increase calculator	C=Math & Science	D=74000	E=52	F=5.99	G=Informational	H=AI Overview, Video, Related searches
+A=40	B=cpm calculator	C=Other & Misc	D=27100	E=29	F=36.48	G=Informational	H=Image pack, People also ask, Related searches
+A=41	B=tax calculator	C=Finance & Loans	D=165000	E=78	F=0.82	G=Informational, Commercial	H=Video, Related searches
+A=42	B=peptide calculator	C=Other & Misc	D=110000	E=50	F=1.23	G=Informational	H=Video, Related searches
+A=43	B=401k calculator	C=Finance & Loans	D=135000	E=49	F=0.37	G=Informational	H=Video, People also ask, Related searches
+A=44	B=height calculator	C=Other & Misc	D=90500	E=55	F=2.39	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=45	B=final grade calculator	C=Education & Grades	D=135000	E=45	F=0	G=Informational	H=Video, Related searches
+A=46	B=integral calculator	C=Math & Science	D=110000	E=43	F=0.41	G=Informational	H=Sitelinks, Instant answer, Video, Related searches
+A=47	B=tire size calculator	C=Other & Misc	D=110000	E=67	F=1.27	G=Informational	H=Video, Related searches
+A=48	B=time clock calculator	C=Date & Time	D=90500	E=66	F=2.25	G=Informational	H=Video, Related searches
+A=49	B=sales tax calculator	C=Finance & Loans	D=90500	E=64	F=2.1	G=Transactional	H=Video, Related searches
+A=50	B=parlay calculator	C=Other & Misc	D=74000	E=82	F=5.81	G=Informational	H=Video, Related searches
+A=51	B=hour calculator	C=Other & Misc	D=90500	E=79	F=2.72	G=Informational	H=Video, Related searches
+A=52	B=personal loan calculator	C=Finance & Loans	D=60500	E=65	F=3	G=Commercial	H=People also ask, Related searches
+A=53	B=time duration calculator	C=Math & Science	D=110000	E=40	F=0	G=Informational	H=Video, Related searches, Ads bottom
+A=54	B=odds calculator	C=Other & Misc	D=49500	E=82	F=12.3	G=Informational	H=Video, Related searches
+A=55	B=bah calculator	C=Other & Misc	D=74000	E=49	F=1.68	G=Informational	H=Video, Related searches
+A=56	B=loan payment calculator	C=Finance & Loans	D=110000	E=80	F=1.01	G=Informational	H=AI Overview, Related searches
+A=57	B=bmr calculator	C=Health & Fitness	D=135000	E=74	F=0.05	G=Informational	H=Video, People also ask, Related searches
+A=58	B=pace calculator	C=Health & Fitness	D=90500	E=68	F=1.19	G=Commercial	H=Sitelinks, Video, Related searches
+A=59	B=va disability calculator	C=Other & Misc	D=110000	E=51	F=0	G=Informational	H=Sitelinks, Video, Video carousel, People also ask, Related searches
+A=60	B=trade calculator	C=Other & Misc	D=60500	E=43	F=1.81	G=Informational	H=Sitelinks, Video, Related searches
+A=61	B=percentage difference calculator	C=Math & Science	D=40500	E=49	F=5.99	G=Informational	H=AI Overview, Video, People also ask, Related searches, Questions and answers
+A=62	B=timecard calculator	C=Date & Time	D=60500	E=62	F=2.68	G=Informational	H=Video, Related searches
+A=63	B=heloc calculator	C=Finance & Loans	D=49500	E=62	F=4.73	G=Informational	H=Sitelinks, AI Overview, Video, People also ask, Related searches, Ads top, Ads middle
+A=64	B=standard deviation calculator	C=Math & Science	D=60500	E=57	F=2.25	G=Informational	H=Video, Short videos, People also ask, Related searches
+A=65	B=chipotle nutrition calculator	C=Other & Misc	D=90500	E=45	F=0	G=Navigational	H=Sitelinks, Video, People also ask, Related searches
+A=66	B=sleep calculator	C=Health & Fitness	D=74000	E=68	F=1.5	G=Informational	H=Video, Related searches
+A=67	B=birth chart calculator	C=Other & Misc	D=90500	E=72	F=0.67	G=Informational	H=Video, Related searches, Ads top, Ads bottom
+A=68	B=home equity loan calculator	C=Finance & Loans	D=49500	E=68	F=4.83	G=Commercial	H=Sitelinks, People also ask, Related searches, Ads bottom
+A=69	B=bra size calculator	C=Conversion & Units	D=74000	E=51	F=0.65	G=Informational	H=Sitelinks, Image pack, Video, People also ask, Related searches
+A=70	B=square footage calculator	C=Date & Time	D=74000	E=42	F=0.29	G=Informational	H=Video, People also ask, Related searches
+A=71	B=ascvd risk calculator	C=Other & Misc	D=49500	E=47	F=2.26	G=Informational	H=Image, Video, People also ask, Related searches
+A=72	B=macro calculator	C=Health & Fitness	D=90500	E=76	F=0.43	G=Informational	H=People also ask, Related searches
+A=73	B=subnet calculator	C=Other & Misc	D=49500	E=61	F=3.01	G=Informational	H=Sitelinks, Video, Related searches
+A=74	B=rmd calculator	C=Other & Misc	D=74000	E=50	F=0.31	G=Informational	H=AI Overview, Video, People also ask, Related searches
+A=75	B=derivative calculator	C=Math & Science	D=74000	E=52	F=0.36	G=Informational	H=Instant answer, Video, Related searches
+A=76	B=home loan calculator	C=Finance & Loans	D=74000	E=79	F=1.31	G=Commercial	H=Related searches, Ads bottom
+A=77	B=income tax calculator	C=Finance & Loans	D=90500	E=79	F=0.35	G=Informational	H=Video, Related searches
+A=78	B=weight loss calculator	C=Health & Fitness	D=60500	E=62	F=1.15	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=79	B=chronological age calculator	C=Date & Time	D=40500	E=29	F=1.66	G=Informational	H=Image pack, Video, Related searches
+A=80	B=take home pay calculator	C=Other & Misc	D=60500	E=94	F=2.84	G=Informational, Commercial	H=Sitelinks, Video, Related searches
+A=81	B=maintenance calorie calculator	C=Health & Fitness	D=74000	E=54	F=0.06	G=Informational	H=Sitelinks, Related searches
+A=82	B=period calculator	C=Pregnancy & Baby	D=49500	E=38	F=0.83	G=Informational	H=Video, Related searches
+A=83	B=tire calculator	C=Other & Misc	D=49500	E=61	F=1.65	G=Informational, Commercial	H=Sitelinks, Video, Related searches
+A=84	B=average calculator	C=Date & Time	D=74000	E=59	F=0	G=Transactional	H=Video, People also ask, Related searches
+A=85	B=1 rep max calculator	C=Health & Fitness	D=60500	E=38	F=0.01	G=Informational	H=Video, People also ask, Related searches
+A=86	B=fantasy trade calculator	C=Other & Misc	D=60500	E=44	F=0	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=87	B=timesheet calculator	C=Date & Time	D=40500	E=65	F=2.74	G=Informational	H=Image, Video, Related searches
+A=88	B=conception calculator	C=Pregnancy & Baby	D=60500	E=63	F=0.47	G=Informational	H=Sitelinks, Image, Video, People also ask, Related searches
+A=89	B=body fat calculator	C=Health & Fitness	D=60500	E=62	F=0.44	G=Informational	H=Video, Related searches
+A=90	B=math calculator	C=Other & Misc	D=90500	E=100	F=0.27	G=Informational	H=Sitelinks, Instant answer, Video, People also ask, Related searches
+A=91	B=tax return calculator	C=Finance & Loans	D=60500	E=70	F=0.67	G=Commercial	H=Video, People also ask, Related searches
+A=92	B=usps shipping calculator	C=Other & Misc	D=60500	E=58	F=0.29	G=Navigational, Transactional	H=Sitelinks, Video, People also ask, Related searches
+A=93	B=one rep max calculator	C=Health & Fitness	D=74000	E=68	F=0.01	G=Informational	H=Video, Short videos, Related searches
+A=94	B=dividend calculator	C=Finance & Loans	D=33100	E=35	F=2.05	G=Informational	H=Sitelinks, Video, Related searches
+A=95	B=savings calculator	C=Finance & Loans	D=49500	E=58	F=0.92	G=Informational	H=Sitelinks, AI Overview, Video, Related searches
+A=96	B=gravel calculator	C=Home & Construction	D=40500	E=44	F=1.22	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=97	B=1rm calculator	C=Health & Fitness	D=60500	E=50	F=0.01	G=Informational	H=Video, Related searches
+A=98	B=high yield savings account calculator	C=Finance & Loans	D=33100	E=47	F=2.6	G=Commercial	H=Video, People also ask, Related searches, Ads bottom
+A=99	B=calendar calculator	C=Other & Misc	D=49500	E=69	F=1.25	G=Informational	H=Video, Video carousel, People also ask, Related searches
+A=100	B=sip calculator	C=Other & Misc	D=49500	E=77	F=1.64	G=Informational	H=Video, People also ask, Related searches
+A=101	B=apy calculator	C=Finance & Loans	D=40500	E=61	F=1.93	G=Commercial	H=Video, People also ask, Related searches
+A=102	B=square foot calculator	C=Other & Misc	D=49500	E=43	F=0.29	G=Informational	H=Video, People also ask, Related searches
+A=103	B=refinance calculator	C=Finance & Loans	D=40500	E=75	F=2.59	G=Commercial	H=Sitelinks, Video, People also ask, Related searches, Ads bottom
+A=104	B=cost of living calculator	C=Other & Misc	D=49500	E=77	F=1.38	G=Informational	H=Video, Related searches
+A=105	B=car loan payment calculator	C=Finance & Loans	D=60500	E=77	F=0.43	G=Commercial	H=Sitelinks, Video, People also ask, Related searches
+A=106	B=creatinine clearance calculator	C=Health & Fitness	D=27100	E=42	F=3	G=Informational	H=Image, Video, People also ask, Related searches
+A=107	B=pythagorean theorem calculator	C=Math & Science	D=33100	E=37	F=1.3	G=Informational	H=Instant answer, Video, Video carousel, People also ask, Knowledge panel, Related searches, See results about
+A=108	B=mortgage payoff calculator	C=Finance & Loans	D=49500	E=65	F=0.63	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=109	B=asphalt calculator	C=Home & Construction	D=22200	E=19	F=2.72	G=Informational	H=Video, People also ask, Related searches, Ads bottom
+A=110	B=cubic feet calculator	C=Finance & Loans	D=27100	E=42	F=2.81	G=Informational	H=Sitelinks, Instant answer, Video, People also ask, Related searches
+A=111	B=future value calculator	C=Other & Misc	D=40500	E=37	F=0.36	G=Informational	H=Video, Related searches
+A=112	B=protein calculator	C=Health & Fitness	D=49500	E=57	F=0.3	G=Informational	H=Video, People also ask, Related searches
+A=113	B=annuity calculator	C=Finance & Loans	D=33100	E=60	F=2.3	G=Commercial	H=Video, People also ask, Related searches
+A=114	B=grow a garden calculator	C=Home & Construction	D=40500	E=24	F=0	G=Informational, Transactional	H=Video, Related searches
+A=115	B=ups shipping calculator	C=Other & Misc	D=49500	E=63	F=0.41	G=Navigational, Transactional	H=Video, People also ask, Related searches
+A=116	B=map calculator	C=Other & Misc	D=60500	E=69	F=0	G=Informational	H=Image, Image pack, Video, People also ask, Related searches
+A=117	B=crcl calculator	C=Other & Misc	D=22200	E=47	F=4.89	G=Informational	H=Video, Related searches
+A=118	B=mortgage affordability calculator	C=Finance & Loans	D=40500	E=71	F=1.53	G=Informational	H=Video, Related searches, Ads bottom
+A=119	B=gold calculator	C=Other & Misc	D=40500	E=40	F=0.34	G=Informational	H=Sitelinks, Video, Related searches
+A=120	B=car insurance calculator	C=Other & Misc	D=14800	E=52	F=14.31	G=Commercial	H=Video, People also ask, Related searches
+A=121	B=final exam calculator	C=Other & Misc	D=49500	E=50	F=0	G=Informational	H=Video, People also ask, Related searches
+A=122	B=time sheet calculator	C=Date & Time	D=33100	E=63	F=2.18	G=Informational	H=Video, Related searches
+A=123	B=work hours calculator	C=Date & Time	D=40500	E=78	F=1.76	G=Informational	H=Related searches
+A=124	B=life path calculator	C=Other & Misc	D=27100	E=50	F=2.72	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=125	B=credit card interest calculator	C=Finance & Loans	D=27100	E=58	F=3.2	G=Informational	H=Video, People also ask, Related searches
+A=126	B=life expectancy calculator	C=Other & Misc	D=33100	E=52	F=1.3	G=Informational	H=AI Overview, Video, People also ask, Related searches
+A=127	B=reverse mortgage calculator	C=Finance & Loans	D=14800	E=33	F=8.21	G=Informational	H=Sitelinks, AI Overview, People also ask, Related searches, Ads bottom
+A=128	B=betting odds calculator	C=Other & Misc	D=22200	E=79	F=8.59	G=Informational	H=Related searches
+A=129	B=car calculator	C=Other & Misc	D=49500	E=81	F=0.66	G=Informational	H=Sitelinks, Video, Related searches
+A=130	B=hourly to salary calculator	C=Finance & Loans	D=49500	E=67	F=0.24	G=Informational	H=Sitelinks, Video, Related searches
+A=131	B=mulch calculator	C=Home & Construction	D=33100	E=27	F=0.29	G=Informational	H=Video, Video carousel, Related searches
+A=132	B=financial calculator	C=Other & Misc	D=49500	E=81	F=0.57	G=Informational, Transactional	H=Sitelinks, Video, People also ask, Related searches, Things to know, Ads top
+A=133	B=loan amortization calculator	C=Finance & Loans	D=33100	E=71	F=2.12	G=Informational	H=Knowledge panel, Related searches, Ads bottom
+A=134	B=illinois paycheck calculator	C=Finance & Loans	D=14800	E=23	F=5.8	G=Informational	H=Related searches
+A=135	B=palworld breeding calculator	C=Other & Misc	D=40500	E=39	F=0	G=Informational	H=Sitelinks, Image, Image pack, Video, Related searches
+A=136	B=rent calculator	C=Finance & Loans	D=40500	E=59	F=0.48	G=Informational	H=Video, Related searches
+A=137	B=loan payoff calculator	C=Finance & Loans	D=27100	E=57	F=2.42	G=Commercial	H=Video, Related searches
+A=138	B=ebay fee calculator	C=Finance & Loans	D=22200	E=48	F=1.6	G=Informational, Transactional	H=Sitelinks, Video, People also ask, Knowledge panel, Related searches, Ads top, Ads bottom
+A=139	B=a1c calculator	C=Health & Fitness	D=18100	E=30	F=3.59	G=Informational	H=Video, People also ask, Related searches
+A=140	B=cd rate calculator	C=Finance & Loans	D=27100	E=46	F=1.56	G=Commercial	H=Video, People also ask, Related searches
+A=141	B=student loan calculator	C=Finance & Loans	D=27100	E=71	F=3.23	G=Commercial	H=People also ask, Related searches
+A=142	B=day calculator	C=Other & Misc	D=49500	E=66	F=0	G=Informational, Transactional	H=Video, People also ask, Related searches
+A=143	B=va loan calculator	C=Finance & Loans	D=22200	E=72	F=5.62	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=144	B=stair calculator	C=Home & Construction	D=22200	E=43	F=2.6	G=Informational	H=Video, Video carousel, Related searches
+A=145	B=long division calculator	C=Other & Misc	D=27100	E=44	F=1.35	G=Informational	H=Video, Related searches
+A=146	B=lottery calculator	C=Finance & Loans	D=33100	E=57	F=0.93	G=Informational	H=Video, Related searches
+A=147	B=aspect ratio calculator	C=Math & Science	D=14800	E=30	F=5.63	G=Informational	H=Sitelinks, Image pack, Video, People also ask, Related searches, Ads top
+A=148	B=heloc payment calculator	C=Finance & Loans	D=22200	E=64	F=4.24	G=Commercial	H=Sitelinks, People also ask, Related searches, Ads bottom
+A=149	B=gfr calculator	C=Health & Fitness	D=22200	E=40	F=2.17	G=Informational	H=Image, Video, Video carousel, People also ask, Related searches
+A=150	B=right triangle calculator	C=Math & Science	D=33100	E=66	F=1.22	G=Informational	H=AI Overview, Image pack, Video, Related searches
+A=151	B=compounding interest calculator	C=Finance & Loans	D=40500	E=63	F=0.33	G=Commercial	H=Related searches, Ads top, Ads bottom
+A=152	B=days calculator	C=Date & Time	D=49500	E=72	F=0	G=Informational, Transactional	H=Video, Related searches
+A=153	B=crypto calculator	C=Finance & Loans	D=27100	E=66	F=2.37	G=Informational	H=Video, Related searches
+A=154	B=payment calculator home equity line	C=Finance & Loans	D=22200	E=67	F=4.24	G=Commercial	H=Sitelinks, People also ask, Related searches
+A=155	B=credit card payoff calculator	C=Other & Misc	D=22200	E=37	F=1.83	G=Commercial	H=Video, People also ask, Related searches
+A=156	B=gas calculator	C=Other & Misc	D=27100	E=67	F=2.32	G=Transactional	H=Video, People also ask, Related searches
+A=157	B=molarity calculator	C=Math & Science	D=22200	E=40	F=1.85	G=Informational	H=Video, People also ask, Related searches
+A=158	B=powerball calculator	C=Other & Misc	D=18100	E=59	F=5.56	G=Informational	H=Video, Related searches
+A=159	B=discount calculator	C=Other & Misc	D=40500	E=55	F=0.01	G=Informational	H=Video, Video carousel, Related searches
+A=160	B=mortgage loan calculator	C=Finance & Loans	D=40500	E=83	F=0.79	G=Commercial	H=Sitelinks, People also ask, Related searches
+A=161	B=new york salary calculator	C=Finance & Loans	D=14800	E=51	F=7.58	G=Informational	H=Related searches
+A=162	B=strength calculator	C=Other & Misc	D=14800	E=24	F=3.85	G=Navigational	H=Sitelinks, Video, Related searches
+A=163	B=mortgage refinance calculator	C=Finance & Loans	D=27100	E=71	F=2.31	G=Commercial	H=Sitelinks, Video, People also ask, Related searches
+A=164	B=body fat percentage calculator	C=Health & Fitness	D=33100	E=55	F=0.52	G=Informational	H=Video, Related searches
+A=165	B=car finance calculator	C=Other & Misc	D=40500	E=75	F=0.46	G=Commercial	H=Video, Related searches
+A=166	B=ratio calculator	C=Math & Science	D=27100	E=48	F=1.04	G=Informational	H=Video, People also ask, Related searches
+A=167	B=bottleneck calculator	C=Other & Misc	D=40500	E=58	F=0	G=Informational	H=Sitelinks, Image, Video, Related searches
+A=168	B=slope calculator	C=Math & Science	D=27100	E=65	F=1.79	G=Informational	H=AI Overview, Video, People also ask, Related searches
+A=169	B=ohio paycheck calculator	C=Finance & Loans	D=12100	E=27	F=6.46	G=Informational	H=Related searches
+A=170	B=bitumen calculator	C=Other & Misc	D=14800	E=15	F=2.72	G=Informational	H=Video, People also ask, Related searches
+A=171	B=dilution calculator	C=Other & Misc	D=14800	E=33	F=4.31	G=Informational	H=Video, People also ask, Related searches
+A=172	B=chipotle calorie calculator	C=Health & Fitness	D=33100	E=39	F=0	G=Navigational	H=Sitelinks, Video, Related searches
+A=173	B=mileage calculator	C=Date & Time	D=27100	E=63	F=1.53	G=Commercial	H=AI Overview, Video, People also ask, Related searches
+A=174	B=apr calculator	C=Finance & Loans	D=27100	E=59	F=1.33	G=Informational	H=Video, People also ask, Related searches
+A=175	B=moon sign calculator	C=Other & Misc	D=27100	E=47	F=0.76	G=Informational	H=Video, People also ask, Related searches
+A=176	B=options profit calculator	C=Finance & Loans	D=22200	E=59	F=2.5	G=Transactional	H=Sitelinks, Video, People also ask, Related searches
+A=177	B=mortgage amortization calculator	C=Finance & Loans	D=33100	E=66	F=0.66	G=Informational, Transactional	H=Video, Related searches
+A=178	B=percent decrease calculator	C=Math & Science	D=12100	E=36	F=5.98	G=Informational	H=Video, People also ask, Related searches
+A=179	B=annual income calculator	C=Finance & Loans	D=40500	E=69	F=0.12	G=Informational	H=Video, People also ask, Related searches
+A=180	B=birthday calculator	C=Other & Misc	D=27100	E=65	F=1.48	G=Informational	H=Video, Related searches
+A=181	B=social security calculator	C=Finance & Loans	D=49500	E=92	F=0.11	G=Informational, Navigational	H=Video, People also ask, Related searches
+A=182	B=powerball annuity calculator	C=Finance & Loans	D=6600	E=44	F=35.46	G=Informational	H=Video, People also ask, Related searches
+A=183	B=hourly paycheck calculator	C=Finance & Loans	D=18100	E=48	F=3.19	G=Informational, Commercial	H=People also ask, Related searches
+A=184	B=interest rate calculator	C=Finance & Loans	D=33100	E=77	F=0.92	G=Commercial	H=Video, Related searches
+A=185	B=scrap gold calculator	C=Other & Misc	D=22200	E=40	F=1.18	G=Informational, Commercial	H=Sitelinks, Video, Related searches
+A=186	B=pay raise calculator	C=Finance & Loans	D=14800	E=36	F=3.92	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=187	B=system of equations calculator	C=Other & Misc	D=22200	E=43	F=1.26	G=Informational	H=Instant answer, Video, Related searches
+A=188	B=fha loan calculator	C=Finance & Loans	D=27100	E=74	F=1.72	G=Commercial	H=Video, People also ask, Related searches
+A=189	B=numerology calculator	C=Other & Misc	D=27100	E=55	F=0.84	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=190	B=bench press calculator	C=Other & Misc	D=27100	E=26	F=0.01	G=Informational	H=Video, Related searches
+A=191	B=tax refund calculator 2025	C=Finance & Loans	D=33100	E=62	F=0.35	G=Commercial	H=Video, People also ask, Related searches
+A=192	B=egfr calculator	C=Health & Fitness	D=18100	E=39	F=2.17	G=Informational	H=Video, People also ask, Related searches
+A=193	B=closing cost calculator	C=Finance & Loans	D=18100	E=36	F=1.93	G=Commercial	H=Video, People also ask, Related searches, Ads top
+A=194	B=paycheck tax calculator	C=Finance & Loans	D=27100	E=78	F=1.81	G=Commercial	H=Video, Related searches
+A=195	B=payroll calculator	C=Finance & Loans	D=40500	E=88	F=0.23	G=Commercial	H=Video, Related searches
+A=196	B=blood alcohol calculator	C=Health & Fitness	D=14800	E=45	F=4.4	G=Informational	H=Video, Related searches
+A=197	B=triangle calculator	C=Math & Science	D=40500	E=73	F=0	G=Informational, Transactional	H=Image pack, Video, Related searches
+A=198	B=mixed number calculator	C=Other & Misc	D=18100	E=27	F=1.32	G=Informational	H=Video, People also ask, Related searches
+A=199	B=overtime calculator	C=Finance & Loans	D=14800	E=35	F=3.2	G=Informational	H=Video, People also ask, Related searches
+A=200	B=home affordability calculator	C=Finance & Loans	D=27100	E=72	F=1.31	G=Informational	H=Sitelinks, Video, Related searches
+A=201	B=savings bond calculator	C=Finance & Loans	D=22200	E=55	F=1.52	G=Informational	H=Video, People also ask, Related searches
+A=202	B=boat loan calculator	C=Finance & Loans	D=27100	E=63	F=0.9	G=Commercial	H=Video, People also ask, Related searches
+A=203	B=voltage drop calculator	C=Date & Time	D=22200	E=28	F=0.44	G=Informational	H=Video, Related searches
+A=204	B=factoring calculator	C=Other & Misc	D=33100	E=56	F=0.04	G=Informational	H=Video, Related searches
+A=205	B=cubic yard calculator	C=Home & Construction	D=27100	E=49	F=0.38	G=Informational	H=Video, People also ask, Related searches
+A=206	B=square root calculator	C=Math & Science	D=33100	E=72	F=0.41	G=Informational	H=Instant answer, Video, People also ask, Related searches
+A=207	B=salary increase calculator	C=Finance & Loans	D=12100	E=24	F=3.92	G=Informational	H=Sitelinks, Video, Related searches
+A=208	B=pokemon damage calculator	C=Date & Time	D=27100	E=34	F=0	G=Navigational	H=Sitelinks, Video, Related searches
+A=209	B=mortgage rate calculator	C=Finance & Loans	D=33100	E=80	F=0.62	G=Commercial	H=Sitelinks, AI Overview, Video, Related searches
+A=210	B=finance calculator	C=Other & Misc	D=33100	E=80	F=0.57	G=Informational	H=Video, Related searches, Things to know
+A=211	B=dog age calculator	C=Date & Time	D=27100	E=42	F=0.12	G=Informational	H=Image pack, Video, People also ask, Related searches
+A=212	B=military pay calculator	C=Other & Misc	D=22200	E=65	F=1.79	G=Informational	H=Video, Related searches
+A=213	B=work time calculator	C=Date & Time	D=22200	E=65	F=1.76	G=Informational	H=Image, Related searches
+A=214	B=roofing calculator	C=Home & Construction	D=9900	E=33	F=7.61	G=Commercial	H=Sitelinks, Video, Video carousel, People also ask, Related searches, Ads bottom
+A=215	B=fuel cost calculator	C=Home & Construction	D=18100	E=69	F=3.71	G=Transactional	H=Video, People also ask, Related searches
+A=216	B=scientific notation calculator	C=Math & Science	D=22200	E=54	F=1.2	G=Informational	H=Video, People also ask, Related searches
+A=217	B=toll calculator	C=Other & Misc	D=18100	E=48	F=2.05	G=Informational	H=Image, Video, Related searches
+A=218	B=square feet calculator	C=Finance & Loans	D=27100	E=50	F=0.29	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=219	B=clock calculator	C=Other & Misc	D=22200	E=80	F=2.71	G=Informational, Transactional	H=Sitelinks, Video, Related searches
+A=220	B=rising sign calculator	C=Other & Misc	D=27100	E=58	F=0.51	G=Informational	H=Video, Related searches
+A=221	B=petrol expense calculator	C=Other & Misc	D=14800	E=48	F=3.71	G=Informational	H=Video, People also ask, Related searches
+A=222	B=volume calculator	C=Math & Science	D=27100	E=53	F=0.36	G=Informational	H=Video, People also ask, Related searches
+A=223	B=simplify calculator	C=Other & Misc	D=22200	E=34	F=0.4	G=Informational	H=Video, People also ask, Related searches
+A=224	B=starbucks calorie calculator	C=Health & Fitness	D=22200	E=18	F=0	G=Informational	H=Sitelinks, Image pack, Video, Related searches
+A=225	B=poker odds calculator	C=Other & Misc	D=12100	E=67	F=9.41	G=Informational	H=Video, Related searches
+A=226	B=markup calculator	C=Finance & Loans	D=18100	E=36	F=1.24	G=Informational	H=Video, People also ask, Related searches
+A=227	B=sq ft calculator	C=Other & Misc	D=27100	E=53	F=0.29	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=228	B=racine carree calculator	C=Other & Misc	D=18100	E=14	F=0.41	G=Informational	H=Image pack, Video, Video carousel, People also ask, Related searches
+A=229	B=nc paycheck calculator	C=Finance & Loans	D=9900	E=27	F=5.97	G=Informational	H=Related searches
+A=230	B=irs withholding calculator	C=Other & Misc	D=27100	E=82	F=1.28	G=Navigational, Transactional	H=Video, Related searches
+A=231	B=life path number calculator	C=Other & Misc	D=22200	E=54	F=1	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=232	B=budget calculator	C=Finance & Loans	D=18100	E=54	F=2.14	G=Informational	H=Sitelinks, Video, Related searches
+A=233	B=finding cubic feet calculator	C=Finance & Loans	D=12100	E=20	F=2.81	G=Informational	H=Sitelinks, AI Overview, Video, People also ask, Related searches
+A=234	B=sat score calculator	C=Other & Misc	D=18100	E=37	F=1.2	G=Informational, Commercial	H=Video, People also ask, Related searches
+A=235	B=freight class calculator	C=Other & Misc	D=12100	E=27	F=3.36	G=Informational	H=Image pack, Video, Related searches, Ads top, Ads bottom
+A=236	B=nj paycheck calculator	C=Finance & Loans	D=9900	E=36	F=7.03	G=Informational	H=Sitelinks, People also ask, Related searches
+A=237	B=mme calculator	C=Other & Misc	D=9900	E=41	F=7.89	G=Informational	H=
+A=238	B=coast fire calculator	C=Other & Misc	D=14800	E=23	F=1.5	G=Informational	H=Sitelinks, Video, People also ask, Related searches, Ads top, Ads bottom
+A=239	B=profit margin calculator	C=Finance & Loans	D=18100	E=51	F=1.83	G=Informational	H=People also ask, Related searches
+A=240	B=calories burned calculator	C=Health & Fitness	D=22200	E=52	F=0.83	G=Informational	H=Video, Related searches
+A=241	B=washington paycheck calculator	C=Finance & Loans	D=8100	E=24	F=8.67	G=Informational	H=Related searches
+A=242	B=cd interest calculator	C=Finance & Loans	D=18100	E=45	F=1.48	G=Commercial	H=Sitelinks, People also ask, Related searches, Ads bottom
+A=243	B=paycheckcity calculator	C=Finance & Loans	D=8100	E=29	F=9.61	G=Navigational	H=Sitelinks, Related searches
+A=244	B=chess calculator	C=Other & Misc	D=14800	E=33	F=2	G=Commercial	H=Image, Video, Related searches
+A=245	B=paint calculator	C=Home & Construction	D=22200	E=39	F=0.37	G=Informational	H=Video, People also ask, Related searches
+A=246	B=body shape calculator	C=Other & Misc	D=12100	E=19	F=2.5	G=Informational	H=Sitelinks, Video, Related searches
+A=247	B=va home loan calculator	C=Finance & Loans	D=14800	E=72	F=5.62	G=Informational	H=Sitelinks, People also ask, Related searches, Ads bottom
+A=248	B=roof pitch calculator	C=Other & Misc	D=14800	E=21	F=1.33	G=Informational	H=Image pack, Video, People also ask, Related searches, Ads bottom
+A=249	B=cars car payment calculator	C=Finance & Loans	D=33100	E=78	F=0.25	G=Informational	H=Sitelinks, Video, Related searches
+A=250	B=how much house can i afford	C=Finance & Loans	D=135000	E=68	F=1.53	G=Informational	H=Sitelinks, Video, People also ask, Discussions and forums, Related searches
+A=251	B=money calculator	C=Other & Misc	D=27100	E=95	F=1.7	G=Informational	H=Video, Related searches
+A=252	B=fantasy football trade calculator	C=Other & Misc	D=22200	E=44	F=0.48	G=Informational	H=Sitelinks, Video, Related searches
+A=253	B=adp hourly calculator	C=Other & Misc	D=9900	E=55	F=10.04	G=Navigational, Transactional	H=Video, Related searches
+A=254	B=board foot calculator	C=Other & Misc	D=22200	E=27	F=0.02	G=Informational	H=Video, People also ask, Related searches
+A=255	B=capital gains tax calculator	C=Finance & Loans	D=18100	E=51	F=1.62	G=Informational	H=Sitelinks, Video, Short videos, People also ask, Related searches
+A=256	B=rv loan calculator	C=Finance & Loans	D=22200	E=51	F=0.64	G=Commercial	H=People also ask, Related searches
+A=257	B=stock calculator	C=Other & Misc	D=18100	E=53	F=1.66	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=258	B=max bench calculator	C=Other & Misc	D=22200	E=28	F=0.01	G=Informational	H=Video, Related searches
+A=259	B=work calculator	C=Other & Misc	D=22200	E=72	F=1.44	G=Informational	H=Video, People also ask, Related searches, Ads bottom
+A=260	B=oregon paycheck calculator	C=Finance & Loans	D=8100	E=32	F=9.07	G=Informational	H=Related searches
+A=261	B=date and time calculator	C=Date & Time	D=40500	E=94	F=0	G=Informational, Transactional	H=Related searches
+A=262	B=roi calculator	C=Finance & Loans	D=18100	E=53	F=1.57	G=Informational	H=Video, People also ask, Related searches
+A=263	B=michigan paycheck calculator	C=Finance & Loans	D=8100	E=22	F=7.07	G=Informational	H=Related searches
+A=264	B=body type calculator	C=Other & Misc	D=12100	E=26	F=2.5	G=Informational	H=Sitelinks, Video, Related searches
+A=265	B=distance calculator	C=Other & Misc	D=27100	E=72	F=0.47	G=Informational	H=Video, People also ask, Related searches
+A=266	B=mixed fraction calculator	C=Math & Science	D=14800	E=29	F=1.32	G=Informational	H=Video, Video carousel, People also ask, Related searches
+A=267	B=blox fruits calculator	C=Other & Misc	D=22200	E=32	F=0	G=Informational	H=Image pack, Video, Related searches
+A=268	B=calorie calculator for weight loss	C=Health & Fitness	D=22200	E=59	F=0.71	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=269	B=bookmakers odds calculator	C=Other & Misc	D=12100	E=78	F=8.59	G=Informational	H=Related searches
+A=270	B=debt payoff calculator	C=Finance & Loans	D=14800	E=65	F=3.61	G=Commercial	H=Sitelinks, Video, Related searches
+A=271	B=ivf due date calculator	C=Pregnancy & Baby	D=18100	E=37	F=0.63	G=Informational	H=Image, Video, Related searches
+A=272	B=grading calculator	C=Other & Misc	D=27100	E=57	F=0	G=Informational	H=Video, People also ask, Related searches
+A=273	B=cagr calculator	C=Other & Misc	D=18100	E=50	F=1.12	G=Informational	H=Video, People also ask, Related searches
+A=274	B=colorado paycheck calculator	C=Finance & Loans	D=8100	E=30	F=7.33	G=Informational	H=Related searches
+A=275	B=bet calculator	C=Other & Misc	D=12100	E=85	F=9.49	G=Informational	H=Related searches
+A=276	B=abv calculator	C=Other & Misc	D=18100	E=28	F=0.33	G=Informational	H=Video, Related searches
+A=277	B=business loan calculator	C=Finance & Loans	D=14800	E=64	F=3.34	G=Commercial	H=Sitelinks, Video, People also ask, Related searches
+A=278	B=mortage calculator	C=Date & Time	D=27100	E=84	F=0.69	G=Commercial	H=Sitelinks, Video, Related searches, Things to know, Ads bottom
+A=279	B=aws cost calculator	C=Other & Misc	D=9900	E=25	F=3.68	G=Informational	H=Video, Short videos, People also ask, Related searches
+A=280	B=calorie burn calculator	C=Health & Fitness	D=18100	E=58	F=1.35	G=Informational	H=Video, Related searches
+A=281	B=tax withholding calculator	C=Finance & Loans	D=22200	E=79	F=1.29	G=Informational, Commercial	H=Video, People also ask, Related searches
+A=282	B=cash out refinance calculator	C=Finance & Loans	D=12100	E=55	F=4.34	G=Commercial	H=Video, People also ask, Related searches
+A=283	B=house payment calculator	C=Finance & Loans	D=27100	E=83	F=0.57	G=Commercial	H=Sitelinks, Related searches
+A=284	B=percent off calculator	C=Math & Science	D=22200	E=40	F=0.01	G=Informational, Transactional	H=Video, People also ask, Related searches
+A=285	B=mathematical calculators	C=Other & Misc	D=33100	E=95	F=0.27	G=Commercial	H=Sitelinks, Instant answer, Video, Video carousel, People also ask, Related searches
+A=286	B=change as a percentage calculator	C=Math & Science	D=9900	E=59	F=7.83	G=Informational	H=Video, People also ask, Related searches
+A=287	B=hedge calculator	C=Other & Misc	D=8100	E=59	F=12.7	G=Informational	H=Video, People also ask, Related searches
+A=288	B=probability calculator	C=Math & Science	D=14800	E=42	F=1.51	G=Informational	H=Video, People also ask, Related searches
+A=289	B=change calculator	C=Other & Misc	D=8100	E=52	F=10.49	G=Informational	H=Video, People also ask, Related searches
+A=290	B=pa paycheck calculator	C=Finance & Loans	D=8100	E=22	F=5.2	G=Informational	H=People also ask, Related searches
+A=291	B=virginia paycheck calculator	C=Finance & Loans	D=6600	E=17	F=7.77	G=Informational	H=Video, Related searches
+A=292	B=dew point calculator	C=Other & Misc	D=12100	E=54	F=3.86	G=Informational	H=Video, People also ask, Related searches
+A=293	B=loan repayment calculator	C=Finance & Loans	D=18100	E=68	F=1.61	G=Commercial	H=Video, People also ask, Related searches
+A=294	B=pay stub calculator ny	C=Other & Misc	D=8100	E=39	F=7.58	G=Informational	H=Related searches
+A=295	B=protein intake calculator	C=Health & Fitness	D=22200	E=50	F=0.14	G=Informational	H=Video, People also ask, Related searches
+A=296	B=maryland paycheck calculator	C=Finance & Loans	D=6600	E=17	F=7.56	G=Informational	H=Related searches
+A=297	B=damage calculator	C=Date & Time	D=8100	E=27	F=5.65	G=Informational	H=Sitelinks, Video, Video carousel, Related searches
+A=298	B=final calculator	C=Other & Misc	D=22200	E=44	F=0	G=Informational	H=Video, Related searches
+A=299	B=ideal body weight calculator	C=Health & Fitness	D=18100	E=57	F=1.02	G=Informational	H=Sitelinks, Image pack, Video, People also ask, Related searches
+A=300	B=subnet mask calculator	C=Other & Misc	D=14800	E=69	F=3.01	G=Informational	H=Sitelinks, Image pack, Video, People also ask, Related searches
+A=301	B=calculate tip calculator	C=Other & Misc	D=18100	E=39	F=0.37	G=Informational	H=Video, Short videos, People also ask, Related searches
+A=302	B=aws pricing calculator	C=Other & Misc	D=12100	E=44	F=2.69	G=Navigational	H=Sitelinks, Video, People also ask, Related searches, Ads bottom
+A=303	B=time and a half calculator	C=Date & Time	D=9900	E=29	F=3.16	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=304	B=limit calculator	C=Other & Misc	D=18100	E=39	F=0.33	G=Informational	H=Video, Related searches
+A=305	B=time to decimal calculator	C=Date & Time	D=8100	E=27	F=5.02	G=Informational	H=Video, Related searches
+A=306	B=function graph and calculator	C=Math & Science	D=22200	E=64	F=0.35	G=Informational	H=Sitelinks, AI Overview, Video, Video carousel, Related searches, Questions and answers
+A=307	B=hours worked calculator	C=Date & Time	D=18100	E=77	F=1.76	G=Informational	H=Video, Related searches
+A=308	B=heloc loan calculator	C=Finance & Loans	D=12100	E=70	F=4.83	G=Commercial	H=Sitelinks, People also ask, Related searches, Ads bottom
+A=309	B=how much water to drink a day calculator	C=Other & Misc	D=22200	E=58	F=0.17	G=Informational	H=AI Overview, People also ask, Related searches
+A=310	B=running pace calculator	C=Health & Fitness	D=18100	E=62	F=0.99	G=Commercial	H=Sitelinks, Video, Related searches
+A=311	B=home mortgage calculator	C=Finance & Loans	D=22200	E=82	F=0.88	G=Commercial	H=Sitelinks, Related searches
+A=312	B=home insurance calculator	C=Other & Misc	D=8100	E=46	F=7.43	G=Informational	H=Sitelinks, AI Overview, Video, People also ask, Related searches
+A=313	B=rent affordability calculator	C=Finance & Loans	D=14800	E=23	F=0.38	G=Informational	H=Video, People also ask, Related searches
+A=314	B=betting calculator	C=Other & Misc	D=9900	E=79	F=9.49	G=Informational	H=Video, Related searches
+A=315	B=income calculator	C=Finance & Loans	D=18100	E=77	F=1.63	G=Informational, Commercial	H=Video, Related searches
+A=316	B=no vig calculator	C=Other & Misc	D=5400	E=17	F=10.27	G=Informational, Commercial	H=Video, Related searches
+A=317	B=apush score calculator	C=Other & Misc	D=14800	E=8	F=0	G=Informational, Commercial	H=Video, Related searches
+A=318	B=usps postage calculator	C=Date & Time	D=22200	E=60	F=0.16	G=Navigational, Transactional	H=Sitelinks, Video, People also ask, Related searches
+A=319	B=crypto profit calculator	C=Finance & Loans	D=9900	E=33	F=2.99	G=Informational	H=Video, Related searches
+A=320	B=options calculator	C=Other & Misc	D=12100	E=47	F=2.4	G=Informational	H=Sitelinks, Video, Related searches
+A=321	B=land loan calculator	C=Finance & Loans	D=14800	E=49	F=1.26	G=Commercial	H=People also ask, Related searches
+A=322	B=lottery tax calculator	C=Finance & Loans	D=18100	E=60	F=0.8	G=Commercial	H=Video, Related searches
+A=323	B=cost per impression calculator	C=Other & Misc	D=2900	E=10	F=36.48	G=Informational	H=AI Overview, Video, People also ask, Related searches
+A=324	B=no tax on overtime calculator	C=Finance & Loans	D=9900	E=27	F=2.47	G=Informational	H=Sitelinks, AI Overview, Video, Short videos, People also ask, Related searches
+A=325	B=pregnancy due date calculator	C=Pregnancy & Baby	D=22200	E=63	F=0.2	G=Informational	H=Sitelinks, Related searches
+A=326	B=sqft calculator	C=Other & Misc	D=22200	E=67	F=0.29	G=Informational	H=Video, People also ask, Related searches
+A=327	B=net income calculator	C=Finance & Loans	D=14800	E=77	F=2.88	G=Informational, Commercial	H=Video, People also ask, Related searches
+A=328	B=credit card payment calculator	C=Finance & Loans	D=9900	E=43	F=3.71	G=Commercial	H=Video, People also ask, Related searches, Ads bottom
+A=329	B=graph calculator	C=Math & Science	D=22200	E=70	F=0.35	G=Informational	H=Sitelinks, AI Overview, Video, Related searches, Things to know
+A=330	B=percent reduction calculator	C=Math & Science	D=8100	E=41	F=5.98	G=Informational	H=Video, People also ask, Related searches
+A=331	B=bench calculator	C=Other & Misc	D=18100	E=34	F=0.01	G=Informational	H=Video, Related searches
+A=332	B=macros calculator	C=Health & Fitness	D=18100	E=51	F=0.43	G=Informational	H=People also ask, Related searches
+A=333	B=usps calculator	C=Other & Misc	D=22200	E=63	F=0.16	G=Navigational, Transactional	H=Sitelinks, Video, People also ask, Related searches
+A=334	B=fire calculator	C=Other & Misc	D=12100	E=34	F=1.44	G=Commercial	H=Sitelinks, Video, Related searches, Ads top, Ads bottom
+A=335	B=my internet speed calculator	C=Other & Misc	D=22200	E=90	F=0.98	G=Informational	H=Instant answer, Video, People also ask, Related searches
+A=336	B=weighted grade calculator	C=Health & Fitness	D=18100	E=35	F=0	G=Informational	H=Video, Related searches
+A=337	B=morgage calculator	C=Date & Time	D=22200	E=83	F=0.69	G=Commercial	H=Sitelinks, Video, Video carousel, Related searches, Things to know
+A=338	B=new york paycheck calculator	C=Finance & Loans	D=6600	E=31	F=7.58	G=Informational	H=Related searches
+A=339	B=student loan repayment calculator	C=Finance & Loans	D=12100	E=81	F=5.19	G=Informational	H=Video, Related searches
+A=340	B=army pay calculator	C=Other & Misc	D=14800	E=64	F=1.79	G=Informational	H=Video, People also ask, Related searches
+A=341	B=monthly payment calculator	C=Finance & Loans	D=22200	E=78	F=0.5	G=Transactional	H=Sitelinks, People also ask, Related searches
+A=342	B=fedex shipping calculator	C=Other & Misc	D=14800	E=50	F=1.07	G=Navigational, Transactional	H=Video, People also ask, Related searches
+A=343	B=rounding calculator	C=Math & Science	D=18100	E=37	F=0	G=Informational	H=Video, People also ask, Related searches
+A=344	B=wage calculator	C=Finance & Loans	D=18100	E=88	F=1.84	G=Informational, Commercial	H=Video, Related searches
+A=345	B=lease calculator	C=Finance & Loans	D=14800	E=58	F=1.4	G=Commercial	H=Video, People also ask, Related searches
+A=346	B=interest only loan calculator	C=Finance & Loans	D=12100	E=52	F=2.3	G=Commercial	H=People also ask, Related searches
+A=347	B=etg calculator	C=Other & Misc	D=9900	E=19	F=1.62	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=348	B=georgia paycheck calculator	C=Finance & Loans	D=6600	E=29	F=6.9	G=Informational	H=Related searches
+A=349	B=matrix calculator	C=Math & Science	D=22200	E=60	F=0	G=Informational	H=Sitelinks, Instant answer, Video, Related searches
+A=350	B=rent vs buy calculator	C=Finance & Loans	D=22200	E=63	F=0.06	G=Commercial	H=Video, Related searches
+A=351	B=pay increase calculator	C=Other & Misc	D=8100	E=29	F=3.92	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=352	B=taxable social security benefits calculator	C=Finance & Loans	D=14800	E=33	F=0.39	G=Informational	H=AI Overview, Video, People also ask, Related searches
+A=353	B=parlay odds calculator	C=Other & Misc	D=9900	E=79	F=7.66	G=Informational	H=Related searches
+A=354	B=mortgage loan calculator va	C=Finance & Loans	D=9900	E=66	F=5.62	G=Informational	H=Sitelinks, Video, Related searches
+A=355	B=credit card calculator	C=Other & Misc	D=12100	E=52	F=2.16	G=Commercial	H=Video, Related searches
+A=356	B=va mortgage calculator	C=Finance & Loans	D=12100	E=67	F=3.27	G=Informational	H=Video, Related searches
+A=357	B=net worth calculator	C=Finance & Loans	D=18100	E=56	F=0.39	G=Informational	H=Video, People also ask, Related searches
+A=358	B=factor calculator	C=Other & Misc	D=22200	E=64	F=0.04	G=Informational	H=Video, Related searches
+A=359	B=army body fat calculator	C=Health & Fitness	D=18100	E=40	F=0	G=Informational, Transactional	H=Video, Related searches
+A=360	B=cpi calculator	C=Other & Misc	D=18100	E=92	F=1.88	G=Informational	H=Video, People also ask, Related searches
+A=361	B=shipping cost calculator	C=Other & Misc	D=12100	E=58	F=0.63	G=Commercial	H=Video, People also ask, Related searches, Ads bottom
+A=362	B=puppy weight calculator	C=Health & Fitness	D=12100	E=17	F=0.51	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=363	B=insurance calculator	C=Other & Misc	D=6600	E=60	F=12.92	G=Commercial	H=Video, People also ask, Related searches, Ads bottom
+A=364	B=conduit fill calculator	C=Other & Misc	D=12100	E=26	F=0.8	G=Informational	H=Video, People also ask, Related searches
+A=365	B=mit living wage calculator	C=Finance & Loans	D=8100	E=31	F=3.85	G=Navigational	H=Sitelinks, Video, People also ask, Related searches
+A=366	B=schedule 1 calculator	C=Other & Misc	D=14800	E=20	F=0	G=Navigational	H=Sitelinks, Video, Related searches
+A=367	B=savings account calculator	C=Finance & Loans	D=12100	E=57	F=2.32	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=368	B=indiana paycheck calculator	C=Finance & Loans	D=6600	E=21	F=5.06	G=Informational	H=Video, People also ask, Related searches
+A=369	B=nj salary calculator	C=Finance & Loans	D=6600	E=35	F=7.03	G=Informational	H=Related searches
+A=370	B=test grade calculator	C=Education & Grades	D=22200	E=65	F=0	G=Informational	H=Video, Related searches
+A=371	B=fantasy calculator	C=Other & Misc	D=18100	E=43	F=0	G=Informational	H=Sitelinks, Video, Related searches
+A=372	B=ebay charges calculator	C=Other & Misc	D=12100	E=46	F=1.6	G=Informational	H=Sitelinks, Video, People also ask, Knowledge panel, Related searches, Ads bottom
+A=373	B=missouri paycheck calculator	C=Finance & Loans	D=5400	E=21	F=8.29	G=Informational	H=Related searches
+A=374	B=net pay calculator	C=Other & Misc	D=14800	E=88	F=2.88	G=Navigational	H=Sitelinks, People also ask, Related searches
+A=375	B=calorie intake calculator	C=Health & Fitness	D=18100	E=58	F=0.32	G=Informational	H=Video, Related searches
+A=376	B=neb tm calculator	C=Other & Misc	D=5400	E=26	F=9.02	G=Navigational	H=Sitelinks, Video, Related searches
+A=377	B=kcal weight loss calculator	C=Health & Fitness	D=18100	E=71	F=0.71	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=378	B=raise calculator	C=Finance & Loans	D=6600	E=23	F=5	G=Informational	H=People also ask, Related searches
+A=379	B=home equity line of credit calculator	C=Finance & Loans	D=9900	E=65	F=4.73	G=Informational	H=Sitelinks, AI Overview, Video, People also ask, Related searches, Ads bottom
+A=380	B=wisconsin paycheck calculator	C=Finance & Loans	D=5400	E=20	F=7.66	G=Informational	H=Related searches
+A=381	B=trig calculator	C=Other & Misc	D=14800	E=65	F=1.32	G=Informational	H=Sitelinks, Instant answer, Video, Related searches
+A=382	B=conception date calculator	C=Pregnancy & Baby	D=18100	E=69	F=0.61	G=Informational	H=Sitelinks, Image, Video, People also ask, Related searches
+A=383	B=quadratic equation calculator	C=Math & Science	D=14800	E=61	F=1.13	G=Informational	H=AI Overview, Instant answer, Video, Related searches
+A=384	B=satisfactory calculator	C=Other & Misc	D=18100	E=46	F=0	G=Informational	H=Sitelinks, Video, Related searches
+A=385	B=blood alcohol level calculator	C=Health & Fitness	D=8100	E=42	F=4.4	G=Informational	H=Video, People also ask, Related searches
+A=386	B=finals calculator	C=Other & Misc	D=18100	E=47	F=0	G=Informational	H=Video, People also ask, Related searches
+A=387	B=auto lease calculator	C=Finance & Loans	D=12100	E=56	F=1.94	G=Commercial	H=Video, Related searches
+A=388	B=commercial loan calculator	C=Finance & Loans	D=12100	E=55	F=1.88	G=Commercial	H=Sitelinks, Related searches
+A=389	B=sba loan calculator	C=Finance & Loans	D=9900	E=52	F=3.18	G=Commercial	H=Sitelinks, Video, People also ask, Related searches
+A=390	B=pft calculator	C=Other & Misc	D=14800	E=26	F=0	G=Informational	H=Related searches
+A=391	B=mean calculator	C=Other & Misc	D=18100	E=48	F=0	G=Informational	H=Video, People also ask, Related searches
+A=392	B=pokemon type calculator	C=Other & Misc	D=18100	E=48	F=0	G=Navigational	H=Sitelinks, Image pack, Video, Related searches
+A=393	B=blooket calculator	C=Other & Misc	D=14800	E=27	F=0	G=Informational	H=Sitelinks, Video, Related searches
+A=394	B=loan interest calculator	C=Finance & Loans	D=18100	E=80	F=0.89	G=Commercial	H=People also ask, Related searches, Ads top, Ads bottom
+A=395	B=federal tax calculator	C=Finance & Loans	D=22200	E=85	F=0.33	G=Informational	H=Video, Related searches
+A=396	B=antiderivative calculator	C=Math & Science	D=12100	E=19	F=0.32	G=Informational	H=Video, Related searches
+A=397	B=investment growth calculator	C=Finance & Loans	D=18100	E=65	F=0.38	G=Informational	H=Video, People also ask, Related searches
+A=398	B=tvm calculator	C=Other & Misc	D=12100	E=47	F=1.32	G=Informational	H=Video, People also ask, Related searches
+A=399	B=drywall calculator	C=Home & Construction	D=12100	E=27	F=0.53	G=Informational	H=Video, People also ask, Related searches
+A=400	B=construction calculator	C=Other & Misc	D=12100	E=48	F=1.35	G=Commercial	H=Sitelinks, Video, Related searches, Popular products, Ads bottom
+A=401	B=annual salary calculator	C=Finance & Loans	D=22200	E=78	F=0.12	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=402	B=log calculator	C=Math & Science	D=18100	E=64	F=0.32	G=Informational	H=Instant answer, Image pack, Video, Related searches
+A=403	B=figure simple interest calculator	C=Finance & Loans	D=14800	E=71	F=1.38	G=Commercial	H=Video, Related searches, Ads bottom
+A=404	B=date duration calculator	C=Math & Science	D=22200	E=73	F=0	G=Informational	H=Video, People also ask, Related searches
+A=405	B=sig fig calculator	C=Math & Science	D=18100	E=51	F=0	G=Informational	H=Video, Related searches
+A=406	B=ga paycheck calculator	C=Finance & Loans	D=5400	E=21	F=6.9	G=Informational	H=Related searches
+A=407	B=reverse tax calculator	C=Finance & Loans	D=4400	E=14	F=9.71	G=Commercial	H=Video, Related searches
+A=408	B=debt to income ratio calculator	C=Finance & Loans	D=18100	E=69	F=0.42	G=Informational	H=Video, People also ask, Related searches
+A=409	B=529 calculator	C=Other & Misc	D=12100	E=35	F=0.73	G=Informational	H=Video, People also ask, Related searches, Ads middle
+A=410	B=natal chart calculator	C=Other & Misc	D=18100	E=74	F=0.57	G=Informational	H=Video, Related searches
+A=411	B=pool salt calculator	C=Home & Construction	D=6600	E=9	F=2.86	G=Informational	H=Sitelinks, AI Overview, Image pack, Video, People also ask, Related searches, Ads bottom
+A=412	B=gas mileage calculator	C=Date & Time	D=12100	E=73	F=2.7	G=Transactional	H=Video, People also ask, Related searches
+A=413	B=kaiser sepsis calculator	C=Other & Misc	D=4400	E=40	F=16.75	G=Navigational	H=Sitelinks, Image, Video, People also ask, Related searches
+A=414	B=ap score calculator	C=Other & Misc	D=14800	E=31	F=0	G=Commercial	H=Sitelinks, Video, Related searches
+A=415	B=calculator for payroll tax	C=Finance & Loans	D=9900	E=57	F=6.14	G=Commercial	H=Video, People also ask, Related searches
+A=416	B=student loan payment calculator	C=Finance & Loans	D=9900	E=77	F=5.19	G=Informational	H=Video, People also ask, Related searches
+A=417	B=fidelity ira minimum distribution calculator	C=Finance & Loans	D=8100	E=70	F=7.33	G=Navigational, Transactional	H=Video, People also ask, Related searches
+A=418	B=usps price calculator	C=Other & Misc	D=18100	E=60	F=0.13	G=Navigational, Transactional	H=Sitelinks, Image, Video, People also ask, Related searches
+A=419	B=life insurance calculator	C=Other & Misc	D=6600	E=45	F=6.8	G=Informational	H=AI Overview, Video, People also ask, Related searches, Ads bottom
+A=420	B=weight calculator	C=Health & Fitness	D=18100	E=84	F=0.84	G=Informational	H=Video, Related searches
+A=421	B=decimal calculator	C=Other & Misc	D=12100	E=40	F=0.82	G=Informational	H=Video, Related searches
+A=422	B=yearly salary calculator	C=Finance & Loans	D=18100	E=60	F=0.12	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=423	B=p value calculator	C=Other & Misc	D=9900	E=44	F=2.08	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=424	B=inherited ira rmd calculator	C=Finance & Loans	D=9900	E=50	F=2.47	G=Informational	H=People also ask, Related searches
+A=425	B=fence calculator	C=Home & Construction	D=8100	E=25	F=2.24	G=Informational	H=Video, Related searches
+A=426	B=acft calculator	C=Other & Misc	D=14800	E=33	F=0	G=Informational	H=Image pack, Video, People also ask, Related searches
+A=427	B=pay stub calculator nj	C=Other & Misc	D=5400	E=26	F=7.03	G=Informational	H=Sitelinks, Related searches
+A=428	B=compound calculator	C=Finance & Loans	D=18100	E=70	F=0.34	G=Informational	H=Video, Related searches
+A=429	B=concrete slab calculator	C=Home & Construction	D=12100	E=38	F=0.69	G=Informational	H=Video, People also ask, Related searches
+A=430	B=whole life insurance calculator	C=Other & Misc	D=6600	E=40	F=5.76	G=Informational	H=AI Overview, Video, People also ask, Related searches, Ads bottom
+A=431	B=wheel offset calculator	C=Other & Misc	D=9900	E=28	F=1.15	G=Informational	H=Image pack, Video, People also ask, Related searches
+A=432	B=option profit calculator	C=Finance & Loans	D=9900	E=52	F=2.5	G=Transactional	H=Sitelinks, Video, Related searches
+A=433	B=present value calculator	C=Other & Misc	D=12100	E=58	F=1.53	G=Informational	H=Video, Related searches
+A=434	B=nj wage calculator	C=Finance & Loans	D=5400	E=27	F=7.03	G=Informational	H=Sitelinks, Related searches
+A=435	B=height percentile calculator	C=Math & Science	D=12100	E=62	F=1.73	G=Informational, Commercial	H=Sitelinks, Related searches
+A=436	B=va rating calculator	C=Other & Misc	D=14800	E=54	F=0.47	G=Informational, Transactional	H=Sitelinks, Video, Related searches
+A=437	B=increase calculator	C=Other & Misc	D=9900	E=66	F=3.55	G=Informational	H=Video, People also ask, Related searches
+A=438	B=ip subnet calculator	C=Other & Misc	D=9900	E=60	F=3.02	G=Informational	H=Sitelinks, Video, Related searches
+A=439	B=power supply calculator	C=Other & Misc	D=18100	E=60	F=0.04	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=440	B=psu calculator	C=Other & Misc	D=18100	E=60	F=0.04	G=Informational	H=Sitelinks, Video, Video carousel, Related searches
+A=441	B=interest only calculator	C=Finance & Loans	D=9900	E=51	F=2.3	G=Commercial	H=Video, Related searches
+A=442	B=wage calculator az	C=Finance & Loans	D=5400	E=25	F=6.39	G=Informational	H=Related searches
+A=443	B=increased by percent calculator	C=Math & Science	D=18100	E=59	F=0	G=Informational	H=AI Overview, Video, People also ask, Related searches
+A=444	B=subway nutrition calculator	C=Other & Misc	D=14800	E=40	F=0.05	G=Informational, Transactional	H=Video, People also ask, Related searches
+A=445	B=reducing percentage calculator	C=Math & Science	D=6600	E=45	F=5.98	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=446	B=business day calculator	C=Math & Science	D=18100	E=60	F=0	G=Informational	H=Related searches
+A=447	B=integration calculator	C=Math & Science	D=14800	E=55	F=0.41	G=Informational	H=Instant answer, Video, Related searches
+A=448	B=federal income tax rate calculator	C=Finance & Loans	D=14800	E=50	F=0.27	G=Informational	H=Video, People also ask, Related searches
+A=449	B=property tax calculator	C=Finance & Loans	D=12100	E=43	F=0.71	G=Informational	H=Sitelinks, Video, Related searches
+A=450	B=utah paycheck calculator	C=Finance & Loans	D=4400	E=15	F=8.09	G=Informational	H=Related searches
+A=451	B=ap lang score calculator	C=Other & Misc	D=12100	E=17	F=0	G=Informational	H=Sitelinks, Video, Related searches
+A=452	B=calculator net calculator	C=Other & Misc	D=18100	E=61	F=0	G=Navigational	H=Sitelinks, Video, People also ask, Related searches
+A=453	B=correlation coefficient calculator	C=Other & Misc	D=6600	E=37	F=4.73	G=Informational	H=Video, Video carousel, People also ask, Related searches
+A=454	B=ffmi calculator	C=Other & Misc	D=12100	E=18	F=0.01	G=Informational	H=Video, Related searches
+A=455	B=cost of petrol calculator	C=Other & Misc	D=8100	E=50	F=3.71	G=Informational	H=Sitelinks, Video, Related searches
+A=456	B=silca tire pressure calculator	C=Other & Misc	D=8100	E=28	F=2	G=Informational, Transactional	H=Sitelinks, Image, Video, Video carousel, People also ask, Related searches
+A=457	B=cpi inflation calculator	C=Finance & Loans	D=14800	E=89	F=1.74	G=Informational	H=Video, Related searches
+A=458	B=board feet calculator	C=Finance & Loans	D=12100	E=19	F=0.02	G=Informational	H=Image, Video, People also ask, Related searches
+A=459	B=recipe calorie calculator	C=Health & Fitness	D=12100	E=55	F=1.13	G=Informational	H=Video, People also ask
+A=460	B=car affordability calculator	C=Finance & Loans	D=12100	E=59	F=1.28	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=461	B=salary calculator illinois	C=Finance & Loans	D=5400	E=25	F=5.8	G=Informational	H=Sitelinks, Related searches
+A=462	B=median calculator	C=Other & Misc	D=14800	E=41	F=0	G=Informational	H=Video, People also ask, Related searches
+A=463	B=after tax income calculator	C=Finance & Loans	D=12100	E=76	F=2.19	G=Informational, Commercial	H=Video, Related searches
+A=464	B=exponent calculator	C=Math & Science	D=14800	E=58	F=0.41	G=Informational	H=Sitelinks, Instant answer, Video, People also ask, Related searches
+A=465	B=va paycheck calculator	C=Finance & Loans	D=4400	E=16	F=7.77	G=Informational	H=Video, Related searches
+A=466	B=hours to decimal calculator	C=Date & Time	D=5400	E=20	F=5.02	G=Informational	H=Video, Related searches
+A=467	B=soil calculator	C=Home & Construction	D=14800	E=44	F=0.04	G=Informational	H=Video, Related searches
+A=468	B=fers retirement calculator	C=Finance & Loans	D=12100	E=42	F=0.56	G=Informational	H=Sitelinks, AI Overview, Video, People also ask, Related searches
+A=469	B=azure pricing calculator	C=Other & Misc	D=12100	E=58	F=1.16	G=Navigational, Transactional	H=Sitelinks, Video, Video carousel, People also ask, Related searches, Ads top, Ads bottom
+A=470	B=cap rate calculator	C=Finance & Loans	D=9900	E=24	F=0.68	G=Informational	H=Sitelinks, AI Overview, Video, People also ask, Related searches
+A=471	B=car refinance calculator	C=Finance & Loans	D=12100	E=58	F=1.14	G=Commercial	H=People also ask, Related searches, Ads bottom
+A=472	B=nevada paycheck calculator	C=Finance & Loans	D=4400	E=24	F=9.07	G=Informational	H=People also ask, Related searches
+A=473	B=moving cost calculator	C=Other & Misc	D=5400	E=37	F=7.24	G=Commercial	H=Sitelinks, Video, People also ask, Related searches, Ads top, Ads bottom
+A=474	B=matrix multiplication calculator	C=Math & Science	D=14800	E=44	F=0	G=Informational	H=Video, Related searches
+A=475	B=days between dates calculator	C=Date & Time	D=18100	E=66	F=0	G=Informational, Transactional	H=Related searches
+A=476	B=golf handicap calculator	C=Other & Misc	D=9900	E=43	F=1.36	G=Informational	H=AI Overview, Video, Video carousel, People also ask, Related searches
+A=477	B=saturn return calculator	C=Other & Misc	D=12100	E=23	F=0	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=478	B=gold price calculator	C=Other & Misc	D=12100	E=37	F=0.33	G=Transactional	H=Sitelinks, Video, Related searches
+A=479	B=motorcycle loan calculator	C=Finance & Loans	D=12100	E=54	F=0.88	G=Commercial	H=People also ask, Related searches
+A=480	B=federal income tax calculator	C=Finance & Loans	D=18100	E=82	F=0.36	G=Commercial	H=Related searches
+A=481	B=share incentive plan calculator	C=Other & Misc	D=6600	E=5	F=1.64	G=Informational	H=AI Overview, Video, People also ask, Related searches
+A=482	B=paypal fees calculator	C=Finance & Loans	D=5400	E=48	F=8.87	G=Informational	H=Video, People also ask, Related searches
+A=483	B=stone calculator	C=Home & Construction	D=9900	E=18	F=0.39	G=Informational	H=Video, Related searches
+A=484	B=amortization schedule calculator	C=Finance & Loans	D=14800	E=74	F=0.79	G=Informational	H=Sitelinks, Video, Knowledge panel, Related searches
+A=485	B=mpg calculator	C=Home & Construction	D=9900	E=66	F=2.7	G=Informational	H=Video, People also ask, Related searches
+A=486	B=return on investment calculator	C=Finance & Loans	D=12100	E=70	F=1.57	G=Informational, Transactional	H=Video, People also ask, Related searches
+A=487	B=mn paycheck calculator	C=Finance & Loans	D=4400	E=31	F=9.87	G=Informational	H=Related searches
+A=488	B=alcohol calculator	C=Health & Fitness	D=8100	E=42	F=2.48	G=Informational	H=Video, Related searches
+A=489	B=rocket mortgage calculator	C=Finance & Loans	D=8100	E=55	F=3.54	G=Navigational	H=Video, People also ask, Related searches
+A=490	B=stair stringer calculator	C=Home & Construction	D=9900	E=33	F=0.85	G=Informational	H=Image pack, Video, Video carousel, People also ask, Related searches
+A=491	B=sod calculator	C=Home & Construction	D=6600	E=19	F=2.39	G=Informational	H=Sitelinks, Video, People also ask, Related searches
+A=492	B=nutrition calculator	C=Other & Misc	D=14800	E=86	F=1.22	G=Informational	H=Video, People also ask, Related searches
+A=493	B=commercial mortgage calculator	C=Finance & Loans	D=9900	E=54	F=1.79	G=Commercial	H=People also ask, Related searches
+A=494	B=rock calculator	C=Home & Construction	D=9900	E=20	F=0.39	G=Informational	H=Sitelinks, Video, Related searches
+A=495	B=meld score calculator	C=Health & Fitness	D=8100	E=60	F=3.84	G=Informational	H=Image, People also ask, Related searches
+A=496	B=debt calculator	C=Finance & Loans	D=9900	E=75	F=3.18	G=Commercial	H=Sitelinks, Video, People also ask, Related searches
+A=497	B=lottery annuity calculator	C=Finance & Loans	D=6600	E=50	F=5.14	G=Informational	H=AI Overview, Video, Related searches
+A=498	B=hypotenuse calculator	C=Math & Science	D=14800	E=49	F=0	G=Informational	H=AI Overview, Instant answer, Video, People also ask, Knowledge panel, Related searches, See results about
+A=499	B=home equity calculator	C=Finance & Loans	D=8100	E=61	F=3.84	G=Commercial	H=Sitelinks, Video, People also ask, Related searches
+A=500	B=wordle calculator	C=Other & Misc	D=12100	E=28	F=0	G=Commercial	H=Video, Related searches

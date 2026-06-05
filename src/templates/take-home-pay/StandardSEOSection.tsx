@@ -10,8 +10,9 @@
  *   SEOTextBlock     – Structured explainer with optional formula block + steps
  *   RelatedCalcCards – Curated internal link cards for related calculators
  *
- * Visual rhythm: InsightStrip → StatChipsRow → ContentCardGrid form a dark zone
- * (bg-gray-950). SEOTextBlock returns to white. FAQ on gray-50. RelatedCalcCards on white.
+ * Visual rhythm (light theme): InsightStrip (emerald wash) → StatChipsRow (white)
+ * → ContentCardGrid (gray-50) → SEOTextBlock (white) → FAQ (gray-50) →
+ * RelatedCalcCards (white). Alternating tints keep the long page readable.
  *
  * ─────────────────────────────────────────────────────────────────────────────
  * USAGE
@@ -58,12 +59,17 @@ interface InsightStripProps {
 
 export function InsightStrip({ text }: InsightStripProps) {
   return (
-    <div className="border-t border-gray-100 bg-emerald-50 px-5 py-8 sm:px-8 lg:px-16">
-      <div className="mx-auto max-w-3xl flex items-start gap-4">
-        {/* Left emerald accent bar */}
-        <div className="shrink-0 mt-1 w-0.75 self-stretch rounded-full bg-emerald-500" />
+    <div className="border-t border-gray-100 bg-linear-to-r from-emerald-50 to-emerald-50/40 px-5 py-8 sm:px-8 lg:px-16">
+      <div className="mx-auto flex max-w-3xl items-start gap-4">
+        {/* Insight badge */}
+        <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 ring-1 ring-inset ring-emerald-500/20">
+          <svg className="h-3.5 w-3.5 text-emerald-600" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+            <path d="M8 1.5a4.5 4.5 0 0 0-2.6 8.17c.37.27.6.7.6 1.16v.17h4v-.17c0-.46.23-.89.6-1.16A4.5 4.5 0 0 0 8 1.5Z" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" />
+            <path d="M6.5 13.5h3M7 14.5h2" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+          </svg>
+        </span>
         <p
-          className="text-[1rem] font-medium leading-relaxed text-gray-600"
+          className="text-[1.0625rem] font-medium leading-relaxed text-gray-700"
           dangerouslySetInnerHTML={{ __html: text }}
         />
       </div>

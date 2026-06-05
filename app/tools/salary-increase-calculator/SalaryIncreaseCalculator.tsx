@@ -18,8 +18,13 @@ import {
   CalcDisclaimer,
 } from "@/src/templates/take-home-pay";
 import { calculateSalaryIncrease } from "@/lib/calculators/salaryIncreaseEngine";
+import { getCpiInflationYoY, fredBenchmarks } from "@/lib/datasets/finance/fredBenchmarks";
 
 function fmt(v: number) { return "$" + Math.round(Math.abs(v)).toLocaleString(); }
+
+// Live US CPI year-over-year inflation — the smart default so the real-raise
+// figure reflects the actual current inflation rate, not a stale guess.
+const LIVE_CPI = getCpiInflationYoY();
 
 const CALC_STEPS = [
   "Reading your salary inputs…",
@@ -37,7 +42,7 @@ export default function SalaryIncreaseCalculator() {
   const [years,        setYears]        = useState(10);
   const [yearsInput,   setYearsInput]   = useState("10");
   const [taxPct,       setTaxPct]       = useState(22);
-  const [inflationPct, setInflationPct] = useState(2.5);
+  const [inflationPct, setInflationPct] = useState(LIVE_CPI);
   const [repeatRaise,  setRepeatRaise]  = useState(false);
   const [annualBonus,  setAnnualBonus]  = useState(0);
   const [bonusInput,   setBonusInput]   = useState("0");
@@ -95,6 +100,13 @@ export default function SalaryIncreaseCalculator() {
     }
     setTimeout(() => { prevRef.current = 0; setCalculating(false); setCalculated(true); }, CALC_STEPS.length * dur);
   }
+
+  // Hybrid auto-reveal: play the staged loader once on mount, then update live
+  // as inputs change (matches the flagship standard — no empty gap, no gate).
+  useEffect(() => {
+    handleCalculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const raisePct = salary > 0 ? Math.round((result.raiseAmount / salary) * 100) : 0;
 
@@ -196,7 +208,7 @@ export default function SalaryIncreaseCalculator() {
           value={taxPct} min={0} max={50} step={1} unit="%" minLabel="0%" maxLabel="50%"
           onChange={setTaxPct} />
 
-        <RangeSliderCard label="Inflation rate" hint="Reduces real purchasing power of the raise"
+        <RangeSliderCard label="Inflation rate" hint={`Reduces the real value of the raise · defaults to live US CPI (${LIVE_CPI}%, ${fredBenchmarks.currentPeriodLabel})`}
           value={inflationPct} min={0} max={8} step={0.1} unit="%" minLabel="0%" maxLabel="8%"
           onChange={setInflationPct} />
 
@@ -342,7 +354,7 @@ export default function SalaryIncreaseCalculator() {
                 { label: "-2% raise",   sentiment: "neg", onClick: () => { if (raiseType === "percentage") { const v = Math.max(0.5, raiseValue - 2); setRaiseValue(v); setRaiseInput(String(v)); } } },
                 { label: "+5 years",    sentiment: "pos", onClick: () => { const v = Math.min(40, years + 5); setYears(v); setYearsInput(String(v)); } },
                 { label: "Compound on", sentiment: "pos", onClick: () => setRepeatRaise(true) },
-                { label: "Reset",       sentiment: "neutral", onClick: () => { setSalary(60000); setSalaryInput("60000"); setRaiseType("percentage"); setRaiseValue(5); setRaiseInput("5"); setYears(10); setYearsInput("10"); setTaxPct(22); setInflationPct(2.5); setRepeatRaise(false); setAnnualBonus(0); setBonusInput("0"); } },
+                { label: "Reset",       sentiment: "neutral", onClick: () => { setSalary(60000); setSalaryInput("60000"); setRaiseType("percentage"); setRaiseValue(5); setRaiseInput("5"); setYears(10); setYearsInput("10"); setTaxPct(22); setInflationPct(LIVE_CPI); setRepeatRaise(false); setAnnualBonus(0); setBonusInput("0"); } },
               ]}
             />
 

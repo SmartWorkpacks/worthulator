@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,28 +9,27 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
-  title: "Flooring Cost Calculator 2026 – Materials & Labour Estimate",
+  title: "Flooring Cost Calculator 2026 – Materials & Labor Estimate",
   description:
-    "Calculate the total cost of new flooring including materials and installation labour. Enter room dimensions and material cost per square foot to get your full estimate.",
-  keywords: ["flooring cost calculator", "floor installation cost calculator", "how much does flooring cost", "hardwood flooring cost calculator", "laminate flooring cost calculator"],
+    "Estimate the full installed cost of new flooring. Enter room size, material price per square foot, and a labor rate to get material, labor, and total project cost with a waste allowance.",
+  keywords: ["flooring cost calculator", "floor installation cost calculator", "how much does flooring cost", "hardwood flooring cost calculator", "laminate flooring cost calculator", "lvp cost per square foot"],
   alternates: { canonical: "https://worthulator.com/tools/flooring-cost-calculator" },
 };
 
 const FAQS = [
   {
     q: "How much does flooring cost per square foot?",
-    a: "Material costs vary widely by type: laminate ($1–5/sq ft), vinyl/LVP ($2–7/sq ft), engineered hardwood ($4–12/sq ft), solid hardwood ($5–15/sq ft), ceramic tile ($1–20/sq ft depending on grade), porcelain tile ($3–35/sq ft), carpet ($2–8/sq ft for materials). Labour typically adds 50–100% of material cost for installation (40% used in this calculator as a baseline). Total installed cost for mid-range flooring: $5–15/sq ft all-in is common.",
+    a: "Material costs vary widely by type: laminate ($1–5/sq ft), vinyl/LVP ($2–7/sq ft), engineered hardwood ($4–12/sq ft), solid hardwood ($5–15/sq ft), ceramic tile ($1–20/sq ft depending on grade), porcelain tile ($3–35/sq ft), carpet ($2–8/sq ft for materials). This calculator prices material and labor independently, so you set each rate yourself instead of relying on a fixed multiplier. Total installed cost for mid-range flooring of $5–15/sq ft all-in is common.",
   },
   {
-    q: "What is included in flooring installation labour costs?",
-    a: "Labour covers: removal of existing flooring (if applicable), subfloor prep and levelling, underlayment installation, flooring installation, transitions and trim, and cleanup. Labour rate is affected by flooring type (hardwood costs more to install than laminate), subfloor condition (levelling and repairs add cost), layout complexity (diagonal or herringbone patterns require more time), and regional labour market rates.",
+    q: "What is included in flooring installation labor costs?",
+    a: "Labor covers: removal of existing flooring (if applicable), subfloor prep and leveling, underlayment installation, flooring installation, transitions and trim, and cleanup. The labor rate is affected by flooring type (hardwood costs more to install than laminate), subfloor condition (leveling and repairs add cost), layout complexity (diagonal or herringbone patterns require more time), and regional labor market rates. Enter the labor price per square foot your contractor quoted — or set it to 0 for a DIY estimate.",
   },
   {
     q: "Should I include a waste factor in my flooring estimate?",
-    a: "Yes — always add 10% for waste to your measured area before calculating cost. This calculator uses your room dimensions directly; to be safe, increase your length or width by 5–10% to account for waste in cutting, spoilage, and off-cuts. Diagonal installations require a 15–20% waste factor. Herringbone requires 20–25%.",
+    a: "Yes — this calculator has a waste allowance slider that adds to the material quantity (labor is charged on the actual installed area). Use 10% for standard straight-lay installations, 15–20% for diagonal layouts, and 20–25% for herringbone, which generates the most off-cuts. Waste covers cutting, spoilage, and keeping a few spare planks for future repairs.",
   },
   {
     q: "What flooring type is best value for money?",
@@ -43,9 +42,9 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "40%", color: "text-emerald-600", accent: "bg-emerald-500", label: "of material cost is the baseline labour estimate used in this calculator" },
-  { stat: "$3–8", color: "text-blue-600", accent: "bg-blue-500", label: "per sq ft installed is the sweet spot for luxury vinyl plank — the best value flooring" },
-  { stat: "+10%", color: "text-amber-600", accent: "bg-amber-500", label: "waste factor recommended — add to your measured area before ordering materials" },
+  { stat: "$3–8", color: "text-emerald-600", accent: "bg-emerald-500", label: "per sq ft installed is the sweet spot for luxury vinyl plank — the best value flooring" },
+  { stat: "$2–6", color: "text-blue-600", accent: "bg-blue-500", label: "per sq ft is a typical installation labor rate — set yours separately from materials" },
+  { stat: "+10%", color: "text-amber-600", accent: "bg-amber-500", label: "waste allowance recommended on materials — more for diagonal and herringbone layouts" },
 ];
 
 const CONTENT_CARDS = [
@@ -106,18 +105,20 @@ export default function FlooringCostCalculator() {
         description="Enter room dimensions and material cost per square foot to get a full estimate including materials, labour, and total project cost."
         chips={["Material cost shown", "Labour included", "Total project cost"]}
       >
-        <CalculatorEngineLoader slug="flooring-cost-calculator" />
+        <EngineWithInsights slug="flooring-cost-calculator" />
       </SimpleCalculatorHero>
-      <InsightStrip text="Labour typically adds <span class='font-semibold text-gray-900'>40–100% on top of material cost</span> — budget for the full installed price, not just the material price per square foot." />
+      <InsightStrip text="Price material and labor <span class='font-semibold text-gray-900'>separately</span> — a fixed 'labor = X% of materials' rule hides huge swings between LVP and hardwood. Budget for the full installed price." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Planning your flooring project" cards={CONTENT_CARDS} />
-      <InsightTable slug="flooring-cost-calculator" />
       <SEOTextBlock
         title="How the Flooring Cost Calculator Works"
-        formula="Area = Room Length × Room Width\nMaterial Cost = Area × Cost Per Sq Ft\nLabour Cost = Material Cost × 40%\nTotal Cost = Material Cost + Labour Cost"
+        formula={`Area = Room Length × Room Width
+Material Cost = Area × (1 + Waste %) × Material $/ft²
+Labor Cost = Area × Labor $/ft²
+Total Cost = Material Cost + Labor Cost`}
         paragraphs={[
-          "Enter room length and width in feet and the material cost per square foot for your chosen flooring. The calculator multiplies area by unit cost for material total, then adds 40% for labour as a baseline estimate.",
-          "Labour at 40% of materials is a conservative starting estimate. Actual labour varies by flooring type, subfloor condition, and regional rates — get contractor quotes for a more accurate figure. Always add a 10% waste allowance to your measured area before ordering materials.",
+          "Enter room length and width in feet, the material price per square foot for your chosen flooring, and the labor price per square foot. Material cost includes your waste allowance (extra material for cuts and breakage); labor is charged on the actual installed area.",
+          "Pricing material and labor independently is more honest than a one-size-fits-all multiplier — laminate installs cheaply while hardwood labor is far higher. Set labor to 0 for a DIY (materials-only) estimate, and remember that subfloor prep, removal of old flooring, transitions, and trim are not included here.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

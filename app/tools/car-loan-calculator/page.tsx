@@ -1,18 +1,43 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import CarLoanWithInsights from "@/components/worthcore/CarLoanWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
+import { calculateCarLoan } from "@/calculations/finance/carLoan";
+import { getAutoLoanNewAPR } from "@/lib/datasets/finance/fredBenchmarks";
+import {
+  NATIONAL_AVG_SALES_TAX,
+  SALES_TAX_RATE_BY_NAME,
+} from "@/lib/datasets/tax/salesTaxRates";
+
+/* ── Step 5c: derive every number in the copy from live FRED APR + Tax
+   Foundation rates so the worked examples auto-refresh on data updates. ───── */
+const APR = getAutoLoanNewAPR();
+const usd0 = (n: number) => `$${Math.round(n).toLocaleString()}`;
+const usd2 = (n: number) => `$${n.toFixed(2)}`;
+const carLoan = (o: Partial<Parameters<typeof calculateCarLoan>[0]>) =>
+  calculateCarLoan(
+    { vehiclePrice: 28000, downPayment: 3000, tradeIn: 0, interestRate: APR, termMonths: 60, state: "US Average", ...o },
+    { salesTaxRate: NATIONAL_AVG_SALES_TAX, tradeInReducesTax: true },
+  );
+const EX = carLoan({});
+const EX48 = carLoan({ termMonths: 48 });
+const EX72 = carLoan({ termMonths: 72 });
+const TX_RATE = SALES_TAX_RATE_BY_NAME["Texas"] ?? 8.2;
+const CA_RATE = SALES_TAX_RATE_BY_NAME["California"] ?? 8.85;
+const TX_TRADE_TAX = Math.round((28000 - 8000) * (TX_RATE / 100)); // trade-in credit
+const CA_FULL_TAX = Math.round(28000 * (CA_RATE / 100)); // no trade-in credit
+const TERM_INTEREST_GAP = EX72.totalInterest - EX48.totalInterest;
+const STRETCH_SAVING = EX.monthlyPayment - EX72.monthlyPayment;
+const STRETCH_INTEREST = EX72.totalInterest - EX.totalInterest;
 
 export const metadata: Metadata = {
-  title: "Car Loan Calculator 2026 – Monthly Payment & Total Interest",
+  title: "Car Loan Calculator 2026 – True Out-the-Door Payment with Sales Tax",
   description:
-    "Calculate your exact monthly car payment, total interest paid, and the true cost of any vehicle loan. Supports loan terms from 24 to 84 months.",
-  keywords: ["car loan calculator", "auto loan calculator", "monthly car payment calculator", "car payment estimator", "auto loan payment"],
+    "Calculate your real monthly car payment including your state's live sales tax, financed at the current FRED auto-loan APR. Sees the out-the-door cost other calculators miss — with the trade-in tax credit applied automatically.",
+  keywords: ["car loan calculator", "auto loan calculator", "out the door car price", "car sales tax calculator", "monthly car payment calculator", "trade in tax credit", "car payment with tax"],
   alternates: { canonical: "https://worthulator.com/tools/car-loan-calculator" },
   robots: { index: true, follow: true },
 };
@@ -20,47 +45,51 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "How is a car loan payment calculated?",
-    a: "Monthly Payment = Loan Amount × [r × (1+r)^n] / [(1+r)^n − 1], where r is the monthly interest rate (APR ÷ 12) and n is the number of months. The loan amount is the vehicle price minus your down payment and any trade-in credit.",
+    a: `First the out-the-door price is built: Out-the-Door = Vehicle Price + Sales Tax, where tax is your state's combined rate applied to the price (minus trade-in in most states). Then Loan Amount = Out-the-Door − Down Payment − Trade-In, and Monthly Payment = Loan × [r × (1+r)^n] / [(1+r)^n − 1], with r = APR ÷ 12 and n = months. Example: a $28,000 car at the ${NATIONAL_AVG_SALES_TAX}% US-average rate adds ${usd0(EX.salesTax)} sales tax → ${usd0(EX.outTheDoorPrice)} out-the-door. With $3,000 down you finance ${usd0(EX.loanAmount)}; at the live ${APR}% new-car APR over 60 months that's ${usd2(EX.monthlyPayment)}/month.`,
   },
   {
-    q: "Should I choose a 60-month or 72-month loan?",
-    a: "A longer term lowers your monthly payment but significantly increases total interest paid. A 60-month vs 72-month loan on $25,000 at 7% APR: the 60-month costs $4,561 in interest; the 72-month costs $5,491 — $930 more for the same car. Choose the shortest term you can comfortably afford.",
+    q: "Why does this calculator add sales tax to the loan?",
+    a: `Because almost everyone finances it. Most calculators quote a payment on the sticker price and ignore tax — then your real payment is higher at the dealer. On the $28,000 default, the ${NATIONAL_AVG_SALES_TAX}% US-average rate adds ${usd0(EX.salesTax)}, and because it's rolled into the loan it accrues about ${usd0(EX.taxFinancedInterest)} of interest over 5 years. We pull each state's live combined rate (Tax Foundation 2026) so the out-the-door number is the real one.`,
+  },
+  {
+    q: "How does a trade-in lower my sales tax?",
+    a: `In roughly 42 states your trade-in reduces the amount you're taxed on, not just the loan. On a $28,000 car with an $8,000 trade-in in Texas (${TX_RATE}%), tax applies to $20,000 → ${usd0(TX_TRADE_TAX)}. In California — one of the few states with no trade-in tax credit — you'd pay ${CA_RATE}% on the full $28,000 → ${usd0(CA_FULL_TAX)}. The calculator applies your state's rule automatically, so the trade-in credit can be worth ${usd0(CA_FULL_TAX - TX_TRADE_TAX)}+ on its own.`,
   },
   {
     q: "What is a good APR for a car loan in 2026?",
-    a: "For borrowers with excellent credit (750+), new car loan APRs in 2026 typically range from 5–7%. For good credit (700–749), expect 7–9%. For fair credit (650–699), 9–14%. Used car loans generally carry rates 1–3% higher than new car loans for the same credit profile.",
+    a: `The calculator defaults to the live FRED 48-month new-car commercial-bank average (~${APR}%). For excellent credit (750+), new-car APRs typically run 5–7%; good credit (700–749) 7–9%; fair credit (650–699) 9–14%. Used-car rates run about 3 points higher than new for the same credit profile.`,
   },
   {
-    q: "How does a trade-in affect my loan?",
-    a: "Your trade-in value is applied directly to the purchase price, reducing the loan amount. A $5,000 trade-in on a $30,000 vehicle reduces your loan to $25,000 (minus down payment). This reduces both your monthly payment and total interest paid.",
+    q: "Should I choose a 60-month or 72-month loan?",
+    a: `A longer term lowers the payment but adds real interest. On the ${usd0(EX.loanAmount)} default loan at ${APR}% APR: 48 months is ${usd2(EX48.monthlyPayment)}/mo (${usd0(EX48.totalInterest)} interest), 60 months is ${usd2(EX.monthlyPayment)}/mo (${usd0(EX.totalInterest)} interest), and 72 months is ${usd2(EX72.monthlyPayment)}/mo (${usd0(EX72.totalInterest)} interest). Stretching from 60 to 72 months saves ${usd0(STRETCH_SAVING)}/month but costs ${usd0(STRETCH_INTEREST)} more in interest — and keeps you underwater longer. Choose the shortest term you can comfortably afford.`,
   },
   {
     q: "How much car can I actually afford?",
-    a: "A common rule of thumb: your total monthly car payment should not exceed 10–15% of your monthly take-home pay. A separate rule: the total cost of owning a car (payment + insurance + fuel + maintenance) should stay under 20% of take-home pay. Use the calculator to check if a vehicle fits within those guardrails.",
+    a: "A common rule: your total monthly car payment should stay under 10–15% of monthly take-home pay, and total cost of ownership (payment + insurance + fuel + maintenance) under 20%. Because this tool includes financed sales tax, the payment it shows is the one your budget actually has to absorb — use it to check the real number, not the sticker estimate.",
   },
 ];
 
 const STATS = [
-  { stat: "$735",   color: "text-red-600",    accent: "bg-red-500",    label: "Average monthly new car payment in the US — up significantly from pre-2020 levels" },
-  { stat: "68 mo",  color: "text-amber-600",  accent: "bg-amber-500",  label: "Average loan term for new vehicles — the drift toward longer terms increases total interest paid" },
-  { stat: "~7%",    color: "text-emerald-600",accent: "bg-emerald-500",label: "Approximate average APR for new car loans in 2026 for borrowers with good credit" },
+  { stat: usd0(EX.salesTax), color: "text-red-600",    accent: "bg-red-500",    label: `Sales tax on a $28,000 car at the ${NATIONAL_AVG_SALES_TAX}% US-average rate — financed into the loan and quietly earning ~${usd0(EX.taxFinancedInterest)} of interest` },
+  { stat: `${APR}%`,         color: "text-amber-600",  accent: "bg-amber-500",  label: "Live FRED 48-month new-car APR used as the default rate" },
+  { stat: "42",              color: "text-emerald-600",accent: "bg-emerald-500",label: "States that grant a trade-in sales-tax credit, cutting the taxable price by your trade-in value" },
 ];
 
 const CONTENT_CARDS = [
   {
-    icon: "📊",
-    title: "Longer terms cost more — always",
-    body: "Stretching a car loan from 48 to 72 months reduces your monthly payment but adds thousands in total interest. On a $28,000 loan at 7% APR, the difference between 48 and 72 months is over $1,500 in extra interest. Run the numbers before choosing convenience.",
-  },
-  {
-    icon: "💰",
-    title: "Down payment cuts both payment and interest",
-    body: "A larger down payment reduces the principal — which reduces both the monthly payment and total interest over the life of the loan. It also improves your loan-to-value ratio, which can qualify you for a lower APR. Aim for at least 10–20% down on a new vehicle.",
+    icon: "🧾",
+    title: "Sales tax is the line most calculators skip",
+    body: `Your state's combined rate is applied to the price and rolled into the loan. On the $28,000 default at the ${NATIONAL_AVG_SALES_TAX}% US average, that's ${usd0(EX.salesTax)} added to the out-the-door price — and because it's financed, it accrues about ${usd0(EX.taxFinancedInterest)} of extra interest over 5 years. This tool pulls each state's live rate so the payment you see is the real one.`,
   },
   {
     icon: "🔄",
-    title: "Your trade-in is a silent down payment",
-    body: "Many buyers focus on the new car's price and forget that their trade-in is effectively cash. A $6,000 trade-in reduces your loan principal by $6,000 — the equivalent of a $6,000 down payment. Negotiate the trade-in value and purchase price separately to maximise both.",
+    title: "Your trade-in can cut the tax, not just the loan",
+    body: `In ~42 states a trade-in reduces the taxable price. An $8,000 trade-in on a $28,000 car in Texas is taxed on just $20,000 (${usd0(TX_TRADE_TAX)}) — but in California, which gives no trade-in credit, you'd pay on the full $28,000 (${usd0(CA_FULL_TAX)}). The calculator applies your state's rule automatically, so the credit can be worth ${usd0(CA_FULL_TAX - TX_TRADE_TAX)}+ before it even touches the loan.`,
+  },
+  {
+    icon: "📊",
+    title: "Longer terms cost more — always",
+    body: `On the ${usd0(EX.loanAmount)} default loan at ${APR}% APR, going from 48 to 72 months drops the payment from ${usd2(EX48.monthlyPayment)} to ${usd2(EX72.monthlyPayment)} — but interest climbs from ${usd0(EX48.totalInterest)} to ${usd0(EX72.totalInterest)}. That's ${usd0(TERM_INTEREST_GAP)} more for the same car, plus more years underwater. Pick the shortest term your budget can absorb.`,
   },
 ];
 
@@ -103,7 +132,7 @@ export default function CarLoanCalculatorPage() {
       name: "Car Loan Calculator",
       applicationCategory: "FinanceApplication",
       operatingSystem: "Web",
-      description: "Calculate monthly car loan payment, total interest paid, and true vehicle cost for any loan term and APR.",
+      description: "Calculate your true out-the-door monthly car payment including live state sales tax, financed at the current FRED auto-loan APR, with the trade-in tax credit applied automatically.",
       url: "https://worthulator.com/tools/car-loan-calculator",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
@@ -128,14 +157,14 @@ export default function CarLoanCalculatorPage() {
         eyebrowIcon="🚗"
         eyebrowText="Auto Finance · Loans"
         title="Car Loan Calculator"
-        description="Enter the vehicle price, down payment, trade-in, interest rate, and loan term to see your exact monthly payment and total interest."
-        chips={["Monthly payment", "Total interest paid", "True cost of vehicle"]}
+        description="Pick your state to load its live sales tax rate, then enter the price, down payment, trade-in, and term. We finance the tax at the live FRED auto-loan APR to show your true out-the-door payment."
+        chips={["Live state sales tax", "Live FRED auto APR", "True out-the-door payment"]}
       >
-        <CalculatorEngineLoader slug="car-loan-calculator" afterResults={<InsightsSection slug="car-loan-calculator" />} />
+        <CarLoanWithInsights />
       </SimpleCalculatorHero>
 
       <InsightStrip
-        text='The sticker price is just the beginning. <span class="font-semibold text-gray-900">Interest on a typical 60-month car loan adds $3,000–$6,000 to the real cost.</span> Know the number before you sign.'
+        text={`The sticker price is just the start. <span class="font-semibold text-gray-900">Sales tax adds ~${usd0(EX.salesTax)} to a $28,000 car and, once financed, quietly earns the lender another ~${usd0(EX.taxFinancedInterest)} in interest.</span> Know the out-the-door number before you sign.`}
       />
 
       <StatChipsRow stats={STATS} />
@@ -145,28 +174,34 @@ export default function CarLoanCalculatorPage() {
         subtitle="Monthly payment is only one number. Here are the three that actually matter."
         cards={CONTENT_CARDS}
       />
-      <InsightTable slug="car-loan-calculator" />
 
       <SEOTextBlock
         title="How the Car Loan Calculator Works"
-        formula={`Loan Amount = Vehicle Price − Down Payment − Trade-In
+        formula={`Taxable Price = Vehicle Price − Trade-In   (− Trade-In only in trade-in-credit states)
+Sales Tax     = Taxable Price × State Combined Rate
+Out-the-Door  = Vehicle Price + Sales Tax
 
-r = Annual Interest Rate / 100 / 12   (monthly rate)
+Loan Amount   = Out-the-Door − Down Payment − Trade-In
+
+r = APR / 100 / 12   (monthly rate)
 n = Loan Term (months)
-
 Monthly Payment = Loan × [r × (1+r)^n] / [(1+r)^n − 1]
 
 Total Interest = (Monthly Payment × n) − Loan Amount
-Total Cost     = (Monthly Payment × n) + Down Payment + Trade-In`}
+Total Cash Cost = (Monthly Payment × n) + Down Payment
+
+Worked example — $28,000 car, US-average ${NATIONAL_AVG_SALES_TAX}% tax, $3,000 down, ${APR}% APR, 60 mo:
+Sales Tax = ${usd0(EX.salesTax)} · Out-the-Door = ${usd0(EX.outTheDoorPrice)} · Loan = ${usd0(EX.loanAmount)}
+Monthly = ${usd2(EX.monthlyPayment)} · Interest = ${usd0(EX.totalInterest)} · Total Cash Cost = ${usd0(EX.totalCost)}`}
         steps={[
-          { label: "Enter the vehicle price", description: "The agreed purchase price, not MSRP. Negotiate the price first, then discuss financing." },
-          { label: "Add down payment and trade-in", description: "Both reduce the loan principal. The trade-in value shows as a separate line on the deal sheet." },
-          { label: "Set the APR and term", description: "Get a pre-approval from a bank or credit union before visiting the dealer — it gives you a rate benchmark." },
-          { label: "Read the three outputs", description: "Monthly payment, total interest paid, and the true total cost of the vehicle over the life of the loan." },
+          { label: "Pick your state", description: "Loads the live combined sales tax rate (Tax Foundation 2026) and whether your state grants a trade-in tax credit." },
+          { label: "Enter price, down payment, and trade-in", description: "In most states the trade-in lowers both the taxable price and the loan; the down payment lowers only the loan." },
+          { label: "Set the APR and term", description: "The APR defaults to the live FRED 48-month new-car average (used cars run ~3 points higher)." },
+          { label: "Read the out-the-door numbers", description: "Monthly payment, financed sales tax, amount financed, total interest, and total cash cost over the life of the loan." },
         ]}
         paragraphs={[
-          "Car dealers are highly skilled at focusing your attention on the monthly payment while obscuring the total cost. A dealer who stretches your loan from 60 to 72 months drops your monthly payment by ~$80 — but adds over $1,000 in total interest and keeps you underwater on the loan longer.",
-          "The best position to negotiate from: get pre-approved at your bank or a credit union before you go to the dealer. Walk in with a rate in hand. The dealer can then try to beat it — or you use your pre-approval. This separates the purchase price negotiation from the financing negotiation.",
+          `Most car payment calculators quote the sticker price and ignore sales tax — so the payment you plan around is lower than the one you sign for. This tool builds the out-the-door price first: it applies your state's live combined rate (and the trade-in credit where your state allows it), then finances that tax along with the car. On the $28,000 default, the ${NATIONAL_AVG_SALES_TAX}% US-average rate adds ${usd0(EX.salesTax)} and accrues roughly ${usd0(EX.taxFinancedInterest)} of interest over five years.`,
+          "Two live data layers keep it honest: state sales tax from the Tax Foundation and the new-car APR from the St. Louis Fed (FRED), refreshed automatically. Getting pre-approved at a bank or credit union before you shop separates the price negotiation from the financing negotiation and gives you a real rate benchmark to beat.",
         ]}
       />
 

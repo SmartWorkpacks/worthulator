@@ -1,92 +1,211 @@
-import type { Insight } from "../index";
+// ─── WorthCore Insight Engine — Procrastination Cost Generator ───────────────
+//
+// PURPOSE:
+//   State-aware visual insights for the procrastination-cost calculator. Uses
+//   BLS median wage, workplace benchmark comparison, compound projection,
+//   and marginal improvement delta-card.
+//
+// RULES:
+//   ✅ Pure TypeScript — synchronous, deterministic, no side effects
+//   ✅ Live median wage carries provenance caption
+//   ❌ Never import React · never call fetch()
+//
+// ─────────────────────────────────────────────────────────────────────────────
 
-interface ProcrastinationInputs {
-  hoursPerDay:  number;
-  hourlyRate:   number;
-  daysPerYear:  number;
+import type { Insight, InsightVisualization } from "@/lib/insights/types";
+import { formatCurrency } from "@/lib/insights/benchmarks";
+import { futureValueAnnuity } from "@/lib/insights/projections";
+import { usStateMedianWageDataset } from "@/lib/datasets/regional/usStateMedianWages";
+
+/** Salary.com 2012: employees waste avg 2.09 hrs/day. */
+const US_AVG_PROCRASTINATION = 2.09;
+
+export interface ProcrastinationInputs {
+  hoursPerDay: number;
+  daysPerYear: number;
+  state: string;
+  /** Optional user-entered hourly rate; when > 0 it overrides the state median. */
+  hourlyRateOverride?: number;
 }
 
-interface ProcrastinationOutputs {
-  annualLoss?:  number;
-  weeklyLoss?:  number;
-  tenYearLoss?: number;
-  dailyLoss?:   number;
-  monthlyLoss?: number;
-  careerLoss?:  number;
+export interface ProcrastinationOutputs {
+  dailyLoss: number;
+  weeklyLoss: number;
+  monthlyLoss: number;
+  annualLoss: number;
+  tenYearLoss: number;
+  careerLoss: number;
+  stateMedianWage: number;
+  halfHourSaving: number;
+  excessHoursPerDay: number;
+  excessAnnualLoss: number;
+  annualHoursLost: number;
+  daysLostPerYear: number;
 }
 
 export function procrastinationCostInsights(
   inputs: ProcrastinationInputs,
-  outputs: ProcrastinationOutputs
+  outputs: ProcrastinationOutputs,
 ): Insight[] {
-  const results: Insight[] = [];
+  const insights: Insight[] = [];
 
-  const hours   = Number(inputs.hoursPerDay);
-  const rate    = Number(inputs.hourlyRate);
-  const days    = Number(inputs.daysPerYear);
-  const annual  = outputs.annualLoss  ?? 0;
-  const weekly  = outputs.weeklyLoss  ?? 0;
-  const tenYear = outputs.tenYearLoss ?? 0;
-  const daily   = outputs.dailyLoss   ?? 0;
-  const monthly = outputs.monthlyLoss ?? 0;
-  const career  = outputs.careerLoss  ?? 0;
+  const { hoursPerDay, daysPerYear, state } = inputs;
+  const {
+    dailyLoss,
+    annualLoss,
+    monthlyLoss,
+    tenYearLoss,
+    careerLoss,
+    stateMedianWage,
+    halfHourSaving,
+    excessHoursPerDay,
+    excessAnnualLoss,
+    annualHoursLost,
+    daysLostPerYear,
+  } = outputs;
 
-  // 1. Daily cost — always show
-  results.push({
-    id: "procrastination.daily-cost",
-    type: "warning",
-    message: `${hours}h of daily procrastination at $${rate}/hr costs $${daily.toLocaleString()}/day — $${weekly.toLocaleString()}/week.`,
-    detail: `Most people underestimate the daily cost because it's diffuse — a few minutes here, an hour there. This is what it totals.`,
+  if (hoursPerDay <= 0) return insights;
+
+  const isCustomRate = (inputs.hourlyRateOverride ?? 0) > 0;
+  const stateLabel =
+    state && state !== "National" ? state : "the US average";
+  const isSpecificState = state && state !== "National";
+  // When the user supplies their own rate, the value isn't BLS-sourced — say so.
+  const rateLabel = isCustomRate ? "your rate" : `${stateLabel}'s median wage`;
+
+  const liveCaption = isCustomRate
+    ? {
+        text: `Your entered rate $${stateMedianWage.toFixed(2)}/hr`,
+        asOf: usStateMedianWageDataset.currentPeriodLabel,
+        live: false,
+      }
+    : {
+        text: `${stateLabel} median wage $${stateMedianWage.toFixed(2)}/hr (BLS OEWS)`,
+        asOf: usStateMedianWageDataset.currentPeriodLabel,
+        live: true,
+      };
+
+  // ── 1. Annual cost — benchmark-bar vs workplace avg ─────────────────────
+  insights.push({
+    id: "procrastination.annual",
+    severity: annualLoss > 15000 ? "warning" : "neutral",
+    category: "time-loss",
+    title: `${formatCurrency(annualLoss)}/year — ${annualHoursLost} hours, ${daysLostPerYear} full days`,
+    body: `At ${rateLabel} of $${stateMedianWage.toFixed(2)}/hr, ${hoursPerDay} hours/day × ${daysPerYear} working days costs ${formatCurrency(dailyLoss)}/day — ${formatCurrency(annualLoss)}/year. Salary.com research found employees average 2.09 hours of procrastination per day, costing US employers an estimated $544 billion annually.`,
+    metric: { label: "Annual cost", value: formatCurrency(annualLoss) },
+    visualization: {
+      type: "benchmark-bar",
+      userValue: hoursPerDay,
+      userLabel: "Your procrastination",
+      benchmarkValue: US_AVG_PROCRASTINATION,
+      benchmarkLabel: "Workplace avg (2.1hr)",
+      format: "number",
+      caption: liveCaption,
+    } satisfies InsightVisualization,
   });
 
-  // 2. Annual earnings lost
-  if (annual > 5_000) {
-    results.push({
-      id: "procrastination.annual-loss",
-      type: "warning",
-      message: `$${annual.toLocaleString()}/year in lost earnings. Over 12 months, that's a salary-level sum simply left on the table.`,
-      detail: `Reducing procrastination by 30 minutes/day would recover $${Math.round(annual / (hours / 0.5)).toLocaleString()}/year.`,
+  // ── 2. 10-year and career compound cost — projection-line ───────────────
+  if (annualLoss > 2000) {
+    insights.push({
+      id: "procrastination.compound",
+      severity: "neutral",
+      category: "opportunity-cost",
+      title: `${formatCurrency(tenYearLoss)} over 10 years — ${formatCurrency(careerLoss)} over a 20-year career`,
+      body: `${formatCurrency(annualLoss)}/year invested at 7% instead of being wasted grows to ${formatCurrency(tenYearLoss)} in 10 years and ${formatCurrency(careerLoss)} in 20. This isn't hypothetical — it's the compounding value of hours spent on low-value avoidance rather than productive output.`,
+      visualization: {
+        type: "projection-line",
+        points: [1, 3, 5, 10, 15, 20].map((yr) => ({
+          label: `Yr ${yr}`,
+          value: Math.round(futureValueAnnuity(annualLoss, yr)),
+        })),
+        format: "currency",
+        yLabel: "Invested value of time wasted",
+        color: "#f97316",
+        caption: liveCaption,
+      } satisfies InsightVisualization,
     });
   }
 
-  // 3. Monthly framing — actionable
-  results.push({
-    id: "procrastination.monthly",
-    type: "info",
-    message: `$${monthly.toLocaleString()}/month is the cost of this habit — enough to fund a Roth IRA in ${Math.ceil(500 / monthly)} months.`,
-    detail: `Monthly framing makes the habit feel real. It's a recurring bill you're paying without getting anything in return.`,
-  });
-
-  // 4. 10-year compound loss
-  if (tenYear > 50_000) {
-    results.push({
-      id: "procrastination.ten-year",
-      type: "milestone",
-      message: `Invested at 7%, that $${annual.toLocaleString()}/year becomes $${tenYear.toLocaleString()} over 10 years — the true compound cost.`,
-      detail: `This isn't just lost earnings — it's the wealth those earnings could have built. Procrastination has a compound price.`,
+  // ── 3. 30-minute improvement — delta-card ───────────────────────────────
+  if (hoursPerDay >= 1) {
+    insights.push({
+      id: "procrastination.marginal",
+      severity: "positive",
+      category: "habit",
+      title: `Cut 30 minutes/day → ${formatCurrency(halfHourSaving)}/year reclaimed`,
+      body: `30 minutes less procrastination per day — at $${stateMedianWage.toFixed(2)}/hr — reclaims ${formatCurrency(halfHourSaving)}/year. That's ${formatCurrency(Math.round(halfHourSaving / 12))}/month without changing working hours. The 2-minute rule (do anything under 2 minutes immediately) is one of the most effective ways to shave this time.`,
+      visualization: {
+        type: "delta-card",
+        before: { label: "Current / yr", value: formatCurrency(annualLoss) },
+        after: {
+          label: "Minus 30min/day",
+          value: formatCurrency(annualLoss - halfHourSaving),
+        },
+        delta: {
+          label: "Recovered / yr",
+          value: formatCurrency(halfHourSaving),
+          positive: true,
+        },
+      } satisfies InsightVisualization,
     });
   }
 
-  // 5. Career-scale loss
-  if (career > 100_000) {
-    results.push({
-      id: "procrastination.career-loss",
-      type: "warning",
-      message: `Over a 20-year career, the same $${annual.toLocaleString()}/year invested at 7% would be $${career.toLocaleString()} — a retirement-defining number.`,
-      detail: `The scale of this is hard to grasp daily but impossible to ignore over decades. Procrastination is a tax on your future self.`,
+  // ── 4. Above-average procrastinator ─────────────────────────────────────
+  if (excessHoursPerDay > 0 && excessAnnualLoss > 0) {
+    insights.push({
+      id: "procrastination.above-average",
+      severity: "warning",
+      category: "comparison",
+      title: `${excessHoursPerDay}hr/day above the workplace average — ${formatCurrency(excessAnnualLoss)}/year extra`,
+      body: `The average employee procrastinates 2.09 hours/day (Salary.com). Your ${hoursPerDay}hr is ${excessHoursPerDay}hr more. At $${stateMedianWage.toFixed(2)}/hr, those excess hours cost ${formatCurrency(excessAnnualLoss)}/year beyond what even average procrastination costs. Cutting just the excess would be a major win.`,
+      metric: {
+        label: "Excess cost/yr",
+        value: formatCurrency(excessAnnualLoss),
+      },
     });
   }
 
-  // 6. Minimum-effective-dose nudge
-  if (hours >= 2) {
-    const halfHourSave = Math.round((annual / hours) * 0.5);
-    results.push({
-      id: "procrastination.msd-nudge",
-      type: "opportunity",
-      message: `Cutting procrastination by just 30 minutes/day would save $${halfHourSave.toLocaleString()}/year — with almost no lifestyle change required.`,
-      detail: `The Pomodoro Technique, time-boxing, or a single weekly review often reduces unstructured distraction time by 30–60 minutes without feeling like deprivation.`,
+  // ── 5. Monthly framing — Roth IRA comparison ───────────────────────────
+  if (monthlyLoss > 200) {
+    const monthsToRoth = Math.ceil(7000 / monthlyLoss);
+    insights.push({
+      id: "procrastination.monthly",
+      severity: "neutral",
+      category: "spending",
+      title: `${formatCurrency(monthlyLoss)}/month — a max Roth IRA in ${monthsToRoth} months`,
+      body: `${formatCurrency(annualLoss)}/year is ${formatCurrency(monthlyLoss)}/month. The 2024 max Roth IRA contribution is $7,000 — at your procrastination rate, you lose that equivalent in ${monthsToRoth} months. Treating procrastination cost like a recurring bill makes the number impossible to ignore.`,
+      metric: {
+        label: "Monthly procrastination cost",
+        value: formatCurrency(monthlyLoss),
+      },
     });
   }
 
-  return results;
+  // ── 6. State wage context ──────────────────────────────────────────────
+  // Skip when a custom rate overrides the state median — the comparison
+  // to the national median would be meaningless.
+  if (isSpecificState && !isCustomRate) {
+    const nationalLoss = Math.round(
+      hoursPerDay * usStateMedianWageDataset.national * daysPerYear,
+    );
+    const diff = annualLoss - nationalLoss;
+    if (Math.abs(diff) > 500) {
+      insights.push({
+        id: "procrastination.state-context",
+        severity: "neutral",
+        category: "comparison",
+        title:
+          diff > 0
+            ? `${state}'s higher wages make procrastination cost ${formatCurrency(diff)}/year more`
+            : `${state}'s lower wages reduce procrastination cost by ${formatCurrency(Math.abs(diff))}/year`,
+        body: `${state}'s median wage of $${stateMedianWage.toFixed(2)}/hr ${diff > 0 ? "exceeds" : "falls below"} the national median of $${usStateMedianWageDataset.national.toFixed(2)}/hr. In a higher-wage state, every wasted hour costs more — making time management proportionally more valuable here.`,
+        metric: {
+          label: `${state} median wage`,
+          value: `$${stateMedianWage.toFixed(2)}/hr`,
+        },
+      });
+    }
+  }
+
+  return insights;
 }

@@ -55,12 +55,12 @@ function currencySymbol(unit?: string): string | undefined {
   return undefined;
 }
 
-/** Generic calc step labels — work for any calculator. */
+/** Warm, generic calc step labels — work for any calculator. */
 const CALC_STEPS = [
-  "Reading your inputs...",
-  "Running the numbers...",
-  "Building your results...",
-  "Done!",
+  "Reading your inputs…",
+  "Crunching the numbers…",
+  "Building your breakdown…",
+  "Done — here are your results",
 ];
 
 // â”€â”€ Inner engine â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -78,13 +78,19 @@ function CalculatorEngineInner({
 }) {
   const { values, setValue, outputs } = useCalculator(config, defaults);
 
+  // Per-calculator loader copy, falling back to the warm generic sequence.
+  const calcSteps = config.calcSteps ?? CALC_STEPS;
+
   // Per-input raw text string (drives the number input box in SliderInputCard)
   const [rawValues, setRawValues] = useState<Record<string, string>>(() =>
     Object.fromEntries(config.inputs.map((i) => [i.name, String(defaults?.[i.name] ?? i.default)]))
   );
 
   const [calculated,   setCalculated]   = useState(false);
-  const [calculating,  setCalculating]  = useState(false);
+  // Start in the loader so the result/insights auto-reveal on mount (hybrid:
+  // one fun reveal, then live updates as inputs change — no empty gap, and the
+  // default-state visuals are present for crawlers/first-time visitors).
+  const [calculating,  setCalculating]  = useState(true);
   const [calcStep,     setCalcStep]     = useState(0);
   const [calcProgress, setCalcProgress] = useState(0);
   const [flash,        setFlash]        = useState(false);
@@ -125,22 +131,28 @@ function CalculatorEngineInner({
     prevPrimaryRef.current = primaryValue;
   }, [primaryValue, calculated]);
 
+  // Auto-reveal once on mount: play the staged loader, then settle into live mode.
+  useEffect(() => {
+    handleCalculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   function handleCalculate() {
     setCalculating(true);
     setCalcStep(0);
     setCalcProgress(0);
     const stepDuration = 350;
-    for (let i = 0; i < CALC_STEPS.length; i++) {
+    for (let i = 0; i < calcSteps.length; i++) {
       setTimeout(() => {
         setCalcStep(i);
-        setCalcProgress(Math.round(((i + 1) / CALC_STEPS.length) * 100));
+        setCalcProgress(Math.round(((i + 1) / calcSteps.length) * 100));
       }, i * stepDuration);
     }
     setTimeout(() => {
       prevPrimaryRef.current = 0; // ensures delta shows on first calculate
       setCalculating(false);
       setCalculated(true);
-    }, CALC_STEPS.length * stepDuration);
+    }, calcSteps.length * stepDuration);
   }
 
   function handleInputChange(name: string, numVal: number, rawStr: string) {
@@ -163,7 +175,7 @@ function CalculatorEngineInner({
     <div className="grid gap-8 lg:grid-cols-[2fr_3fr] lg:gap-10">
 
       {/* â”€â”€ INPUTS â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */}
-      <div className="flex flex-col gap-6 lg:sticky lg:top-6 lg:self-start">
+      <div className="flex flex-col gap-6 lg:sticky lg:top-20 lg:self-start">
 
         {config.inputs.map((input) => {
           const sym  = currencySymbol(input.unit);
@@ -307,14 +319,13 @@ function CalculatorEngineInner({
         })}
 
         {/* Calculate button â€” only shown before first calculate */}
-        {!calculated && (
+        {!calculated && !calculating && (
           <button
             type="button"
             onClick={handleCalculate}
-            disabled={calculating}
-            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98]"
           >
-            {calculating ? "Calculating..." : `Calculate ${config.label} →`}
+            {`Calculate ${config.label} →`}
           </button>
         )}
       </div>
@@ -324,7 +335,7 @@ function CalculatorEngineInner({
 
         {calculating && (
           <WorthulatorProgressLoader
-            steps={CALC_STEPS}
+            steps={calcSteps}
             step={calcStep}
             progress={calcProgress}
             subtitle={`Calculating your ${config.label.toLowerCase()}`}

@@ -1,89 +1,105 @@
-import type { Insight } from "../index";
+// ─── WorthCore Insight Engine — Vaping Cost Generator ─────────────────────────
+//
+// PURPOSE:
+//   Deterministic, visual insight rules for the "vaping-cost-calculator".
+//   Surfaces annual spend, investment cost, cut-saving, and vaping vs smoking.
+//
+// RULES:
+//   ✅ Pure TypeScript — synchronous, deterministic, no side effects
+//   ❌ Never import React · never call fetch()
+//
+// ─────────────────────────────────────────────────────────────────────────────
 
-interface VapingInputs {
-  dailyCost: number;
+import { formatCurrency } from "@/lib/insights/benchmarks";
+import { futureValueAnnuity } from "@/lib/insights/projections";
+import type { Insight, InsightVisualization } from "@/lib/insights/types";
+
+// ─── Input / Output types ─────────────────────────────────────────────────────
+
+export interface VapingInsightInputs {
+  dailyCost:  number;
+  cutDailyBy: number;
 }
 
-interface VapingOutputs {
-  yearlyCost?:   number;
-  fiveYear?:     number;
-  invested?:     number;
-  weeklySpend?:  number;
-  monthlySpend?: number;
-  tenYear?:      number;
-  invested10yr?: number;
+export interface VapingInsightOutputs {
+  yearlyCost:        number;
+  monthlyCost:       number;
+  tenYearCost:       number;
+  investedValue10yr: number;
+  investedValue20yr: number;
+  cutYearlySaving:   number;
+  cutInvested10yr:   number;
+  reducedYearlyCost: number;
+  smokingAnnual:     number;
+  vsSmokingDiff:     number;
 }
 
-export function vapingCostInsights(
-  inputs: VapingInputs,
-  outputs: VapingOutputs
+// ─── Generator ────────────────────────────────────────────────────────────────
+
+export function generateVapingCostInsights(
+  inputs: VapingInsightInputs,
+  outputs: VapingInsightOutputs,
 ): Insight[] {
-  const results: Insight[] = [];
+  if (inputs.dailyCost <= 0) return [];
 
-  const daily   = Number(inputs.dailyCost);
-  const yearly  = outputs.yearlyCost   ?? 0;
-  const five    = outputs.fiveYear     ?? 0;
-  const ten     = outputs.tenYear      ?? 0;
-  const inv5    = outputs.invested     ?? 0;
-  const inv10   = outputs.invested10yr ?? 0;
-  const weekly  = outputs.weeklySpend  ?? 0;
-  const monthly = outputs.monthlySpend ?? 0;
+  const insights: Insight[] = [];
+  const yearly = outputs.yearlyCost;
 
-  // 1. Core daily habit framing
-  results.push({
-    id: "vaping.daily-habit",
-    type: "info",
-    message: `$${daily}/day on vaping is $${weekly}/week, $${monthly}/month, $${yearly.toLocaleString()}/year.`,
-    detail: `A habit that feels small daily adds up to a significant annual expense.`,
+  // ── 1. Vaping vs Smoking — benchmark-bar ──────────────────────────────────
+  const cheaper = outputs.vsSmokingDiff >= 0 ? "vaping" : "smoking";
+  insights.push({
+    id:       "vaping.vs-smoking",
+    severity: "neutral",
+    category: "comparison",
+    title:    outputs.vsSmokingDiff >= 0
+      ? `Vaping saves ${formatCurrency(outputs.vsSmokingDiff)}/year vs smoking.`
+      : `Vaping costs ${formatCurrency(Math.abs(outputs.vsSmokingDiff))}/year more than smoking.`,
+    body:     `Your vaping costs ${formatCurrency(yearly)}/year. A 1 pack/day cigarette habit at the US average of $10/pack costs ${formatCurrency(outputs.smokingAnnual)}/year. ${cheaper === "vaping" ? `Vaping is ${formatCurrency(outputs.vsSmokingDiff)} cheaper` : `Vaping actually costs ${formatCurrency(Math.abs(outputs.vsSmokingDiff))} more`} — but neither is free.`,
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      yearly,
+      userLabel:      "Vaping / yr",
+      benchmarkValue: outputs.smokingAnnual,
+      benchmarkLabel: "Smoking / yr",
+      format:         "currency",
+    } satisfies InsightVisualization,
   });
 
-  // 2. Five-year milestone
-  if (five > 2_000) {
-    results.push({
-      id: "vaping.five-year",
-      type: "warning",
-      message: `Over 5 years, this habit costs $${five.toLocaleString()} — enough to fully fund an emergency fund and more.`,
-      detail: `5 years is the typical window where habit costs become undeniable. $${five.toLocaleString()} is real money with real alternatives.`,
-    });
-  }
-
-  // 3. Investment alternative — 5yr
-  if (inv5 > five) {
-    results.push({
-      id: "vaping.investment-5yr",
-      type: "opportunity",
-      message: `Invested at 7%, $${yearly.toLocaleString()}/year becomes $${inv5.toLocaleString()} over 5 years.`,
-      detail: `Every pod or bottle you buy is a small trade against your future self. Compound interest doesn't care about the reason you didn't invest.`,
-    });
-  }
-
-  // 4. Ten-year framing
-  if (ten > 5_000) {
-    results.push({
-      id: "vaping.ten-year",
-      type: "warning",
-      message: `Over 10 years, the total habit cost is $${ten.toLocaleString()} — or $${inv10.toLocaleString()} if that money had been invested.`,
-      detail: `$${(inv10 - ten).toLocaleString()} is the true opportunity cost — the compound growth you gave up.`,
-    });
-  }
-
-  // 5. Health cost framing
-  if (daily >= 5) {
-    results.push({
-      id: "vaping.health-context",
-      type: "warning",
-      message: `Nicotine dependency carries long-term health costs that don't appear in this calculator — medical bills, reduced productivity, and insurance premiums.`,
-      detail: `The financial cost shown here is only the direct spend. Add health cost estimates and the real figure is substantially higher.`,
-    });
-  }
-
-  // 6. Quitting reframe
-  results.push({
-    id: "vaping.quit-reframe",
-    type: "opportunity",
-    message: `Quitting today redirects $${yearly.toLocaleString()}/year. In 10 years, that's $${inv10.toLocaleString()} invested — a life-changing number for a daily habit.`,
-    detail: `The payoff of quitting is immediate in cash flow and compounds indefinitely in investment value.`,
+  // ── 2. Investment opportunity cost — projection-line ──────────────────────
+  insights.push({
+    id:       "vaping.compound",
+    severity: "neutral",
+    category: "projection",
+    title:    `${formatCurrency(yearly)}/year invested at 7% grows to ${formatCurrency(outputs.investedValue10yr)} in 10 years.`,
+    body:     `Over 10 years you'd spend ${formatCurrency(outputs.tenYearCost)} on vaping. Invested instead, ${formatCurrency(yearly)}/year at 7% becomes ${formatCurrency(outputs.investedValue10yr)} in 10 years and ${formatCurrency(outputs.investedValue20yr)} in 20.`,
+    visualization: {
+      type:   "projection-line",
+      points: [1, 3, 5, 10, 15, 20].map((yr) => ({
+        label: `Yr ${yr}`,
+        value: Math.round(futureValueAnnuity(yearly, yr)),
+      })),
+      format: "currency",
+      yLabel: "Invested value",
+      color:  "#8b5cf6",
+    } satisfies InsightVisualization,
   });
 
-  return results;
+  // ── 3. Cut-saving — delta-card ────────────────────────────────────────────
+  if (outputs.cutYearlySaving > 0) {
+    insights.push({
+      id:       "vaping.cut-saving",
+      severity: "positive",
+      category: "savings",
+      title:    `Cut $${inputs.cutDailyBy}/day to save ${formatCurrency(outputs.cutYearlySaving)}/year.`,
+      body:     `Reducing your daily vaping spend from $${inputs.dailyCost} to $${inputs.dailyCost - inputs.cutDailyBy} saves ${formatCurrency(outputs.cutYearlySaving)}/year. Invested at 7%, that's ${formatCurrency(outputs.cutInvested10yr)} over 10 years. Switch from disposables to a refillable system to cut cost without cutting nicotine.`,
+      visualization: {
+        type:   "delta-card",
+        before: { label: "Current / yr",   value: formatCurrency(yearly) },
+        after:  { label: "After cut / yr",  value: formatCurrency(outputs.reducedYearlyCost) },
+        delta:  { label: "Saved / yr",      value: formatCurrency(outputs.cutYearlySaving), positive: true },
+      } satisfies InsightVisualization,
+    });
+  }
+
+  return insights;
 }

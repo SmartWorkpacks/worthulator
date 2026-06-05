@@ -20,7 +20,7 @@ const QUICK_ACTIONS = [
   { label: "Save Money",   emoji: "💰", href: "/tools/savings-calculator"            },
   { label: "Pay Off Debt", emoji: "💳", href: "/tools/debt-payoff-calculator"        },
   { label: "Buy a House",  emoji: "🏠", href: "/tools/house-affordability-calculator" },
-  { label: "Track Time",   emoji: "⏱️", href: "/tools/time-clock-calculator"          },
+  { label: "Track Time",   emoji: "⏱️", href: "/tools/work-hours-calculator"          },
 ];
 
 // ── Framer-motion variants ───────────────────────────────────────────────────

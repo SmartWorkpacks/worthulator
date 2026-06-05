@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateCreditCardInterest } from "@/calculations/finance/creditCardInterest";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -26,6 +27,17 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// ── Step 5c: worked examples derived from the live calculation module ────────
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX_MIN = calculateCreditCardInterest({ balance: 3000, apr: 22, monthlyPayment: 60 });
+const EX_100 = calculateCreditCardInterest({ balance: 3000, apr: 22, monthlyPayment: 100 });
+const EX_200 = calculateCreditCardInterest({ balance: 3000, apr: 22, monthlyPayment: 200 });
+const EX_DRAIN = calculateCreditCardInterest({ balance: 5000, apr: 22, monthlyPayment: 200 });
+const DAILY_PCT = (22 / 365).toFixed(3);
+const DRAIN_MONTHLY = Math.round(5000 * 0.22 / 12);
+const DRAIN_YEARLY = Math.round(5000 * 0.22);
+const DOUBLE_SAVING = EX_100.totalInterest - EX_200.totalInterest;
+
 const FAQS = [
   {
     q: "How is credit card interest calculated?",
@@ -33,7 +45,7 @@ const FAQS = [
   },
   {
     q: "What happens if I only make minimum payments?",
-    a: "Minimum payments are typically 1–3% of your balance. At a 22% APR, a $3,000 balance with $60 minimum payments takes over 8 years to clear and costs more than $2,500 in interest alone — nearly doubling the original debt. This calculator shows exactly how much time and money different payment amounts save.",
+    a: `Minimum payments are typically 1–3% of your balance. At a 22% APR, a $3,000 balance with a low $60/month payment takes ${EX_MIN.payoffYears} years to clear and costs ${usd(EX_MIN.totalInterest)} in interest alone — far more than the original debt. This calculator shows exactly how much time and money different payment amounts save.`,
   },
   {
     q: "What is a good monthly payment to make?",
@@ -51,7 +63,7 @@ const FAQS = [
 
 const STATS = [
   { stat: "22%",   color: "text-red-600",    accent: "bg-red-500",    label: "Average credit card APR in the US in 2026 — among the highest consumer borrowing rates" },
-  { stat: "8 yrs", color: "text-amber-600",  accent: "bg-amber-500",  label: "How long a $3,000 balance takes to clear on minimum payments at 22% APR" },
+  { stat: `${EX_MIN.payoffYears} yrs`, color: "text-amber-600",  accent: "bg-amber-500",  label: "How long a $3,000 balance takes to clear paying only $60/month at 22% APR" },
   { stat: "2×",    color: "text-emerald-600", accent: "bg-emerald-500", label: "Typical total amount paid vs original balance when only making minimum payments" },
 ];
 
@@ -59,12 +71,12 @@ const CONTENT_CARDS = [
   {
     icon: "📈",
     title: "Daily compounding makes APR brutal",
-    body: "At 22% APR, you're paying 0.060% per day on your balance. That sounds tiny — but on a $5,000 balance it's $3/day, $90/month, $1,100/year in pure interest before you've paid down a single dollar of the original debt. The only way to stop it is to pay faster than interest accrues.",
+    body: `At 22% APR, you're paying ${DAILY_PCT}% per day on your balance. That sounds tiny — but on a $5,000 balance it's $${EX_DRAIN.dailyInterestCost.toFixed(2)}/day, ${usd(DRAIN_MONTHLY)}/month, ${usd(DRAIN_YEARLY)}/year in pure interest before you've paid down a single dollar of the original debt. The only way to stop it is to pay faster than interest accrues.`,
   },
   {
     icon: "💡",
     title: "Doubling your payment has a massive effect",
-    body: "If you're paying $100/month on a $3,000 balance at 22% APR, increasing to $200/month cuts the repayment time from 46 months to 18 months — saving 28 months and over $900 in interest. Small payment increases have a disproportionately large impact because of how compound interest works in reverse.",
+    body: `If you're paying $100/month on a $3,000 balance at 22% APR, increasing to $200/month cuts the repayment time from ${EX_100.monthsToPayoff} months to ${EX_200.monthsToPayoff} months — saving ${EX_100.monthsToPayoff - EX_200.monthsToPayoff} months and ${usd(DOUBLE_SAVING)} in interest. Small payment increases have a disproportionately large impact because of how compound interest works in reverse.`,
   },
   {
     icon: "🎯",
@@ -120,9 +132,9 @@ export default function CreditCardInterestPage() {
         description="Enter your balance, APR, and monthly payment to see exactly how long payoff takes and how much interest you'll pay in total."
         chips={["Months to pay off", "Total interest cost", "Warning if payment is too low"]}
       >
-        <CalculatorEngineLoader slug="credit-card-interest" />
+        <EngineWithInsights slug="credit-card-interest" />
       </SimpleCalculatorHero>
-      <InsightStrip text='At 22% APR, a $3,000 balance on minimum payments costs over <span class="font-semibold text-gray-900">$2,500 in interest</span> and takes 8 years to clear.' />
+      <InsightStrip text={`At 22% APR, a $3,000 balance on a low $60/month payment costs <span class="font-semibold text-gray-900">${usd(EX_MIN.totalInterest)} in interest</span> and takes ${EX_MIN.payoffYears} years to clear.`} />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid
         title="Why credit card debt is so expensive"

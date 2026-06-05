@@ -60,7 +60,7 @@ export default function NetWorthCalculator() {
   const [projYears,   setProjYears]   = useState(20);
 
   const [calculated,   setCalculated]   = useState(false);
-  const [calculating,  setCalculating]  = useState(false);
+  const [calculating,  setCalculating]  = useState(true);
   const [calcStep,     setCalcStep]     = useState(0);
   const [calcProgress, setCalcProgress] = useState(0);
   const [flash,        setFlash]        = useState(false);
@@ -94,6 +94,12 @@ export default function NetWorthCalculator() {
     }
     setTimeout(() => { prevRef.current = 0; setCalculating(false); setCalculated(true); }, CALC_STEPS.length * dur);
   }
+
+  // Hybrid auto-reveal: play the loader once on mount, then update live as inputs change.
+  useEffect(() => {
+    handleCalculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function mkSlider(
     id: string, label: string, hint: string,
@@ -179,10 +185,10 @@ export default function NetWorthCalculator() {
           value={growthPct} min={0} max={15} step={0.5} unit="%" minLabel="0%" maxLabel="15%"
           onChange={setGrowthPct} />
 
-        {!calculated && (
-          <button type="button" onClick={handleCalculate} disabled={calculating}
-            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed">
-            {calculating ? "Calculating…" : "Calculate net worth →"}
+        {!calculated && !calculating && (
+          <button type="button" onClick={handleCalculate}
+            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98]">
+            Calculate net worth →
           </button>
         )}
       </div>
@@ -223,6 +229,36 @@ export default function NetWorthCalculator() {
                   : "Adjust growth rate to project $1M timeline",
               ]}
             />
+
+            {/* Age-based percentile (SCF 2022 reference) */}
+            <div className="rounded-2xl border border-blue-200 bg-blue-50/60 p-5 shadow-sm">
+              <div className="flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600">
+                    Where you rank · ages {result.bracketLabel}
+                  </p>
+                  <p className="mt-1 text-sm text-gray-700 leading-relaxed">
+                    Your net worth is higher than about{" "}
+                    <span className="font-bold text-blue-700">{result.percentile}%</span> of US households your age, and{" "}
+                    <span className="font-semibold">
+                      {result.medianMultiple >= 1
+                        ? `${result.medianMultiple.toFixed(2)}× the ${fmt(result.bracketMedian)} median`
+                        : `${Math.round(result.medianMultiple * 100)}% of the ${fmt(result.bracketMedian)} median`}
+                    </span>{" "}
+                    for your bracket.
+                  </p>
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-3xl font-bold tracking-tight text-blue-700">{result.percentile}<span className="text-base align-top">th</span></p>
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-blue-400">percentile</p>
+                </div>
+              </div>
+              {/* percentile bar */}
+              <div className="mt-3 h-2 rounded-full bg-blue-100 overflow-hidden">
+                <div className="h-full rounded-full bg-blue-500" style={{ width: `${result.percentile}%` }} />
+              </div>
+              <p className="mt-2 text-[11px] text-gray-400">Federal Reserve Survey of Consumer Finances (2022) · approximate</p>
+            </div>
 
             {/* Asset vs liability summary */}
             <div className="grid grid-cols-2 gap-3">

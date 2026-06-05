@@ -16,8 +16,13 @@ import {
   CalcDisclaimer,
 } from "@/src/templates/take-home-pay";
 import { calculateDebtPayoff, type DebtEntry } from "@/lib/calculators/debtPayoffEngine";
+import { getCreditCardAPR, fredBenchmarks } from "@/lib/datasets/finance/fredBenchmarks";
 
 function fmt(v: number) { return "$" + Math.round(Math.abs(v)).toLocaleString(); }
+
+// Live FRED commercial-bank credit-card APR — the seeded card opens at the
+// current national average, not a stale guess. User overrides per row.
+const LIVE_CC_APR = getCreditCardAPR();
 
 const STRATEGIES = [
   { value: "avalanche", label: "Avalanche — highest interest first (saves most money)" },
@@ -33,8 +38,8 @@ const CALC_STEPS = [
 ];
 
 const DEFAULT_DEBTS: DebtEntry[] = [
-  { id: "1", name: "Credit card", balance: 5000,  interestRate: 19.99, minimumPayment: 100 },
-  { id: "2", name: "Car loan",    balance: 12000, interestRate: 6.5,   minimumPayment: 220 },
+  { id: "1", name: "Credit card", balance: 5000,  interestRate: LIVE_CC_APR, minimumPayment: 100 },
+  { id: "2", name: "Car loan",    balance: 12000, interestRate: 6.5,         minimumPayment: 220 },
 ];
 
 let nextId = 3;
@@ -48,7 +53,9 @@ export default function DebtPayoffCalculator() {
   const [strategy,   setStrategy]   = useState<"avalanche" | "snowball" | "minimum">("avalanche");
 
   const [calculated,   setCalculated]   = useState(false);
-  const [calculating,  setCalculating]  = useState(false);
+  // Start in the loader so results auto-reveal on mount (hybrid: one fun reveal,
+  // then live updates as inputs change — matches the shared CalculatorEngine).
+  const [calculating,  setCalculating]  = useState(true);
   const [calcStep,     setCalcStep]     = useState(0);
   const [calcProgress, setCalcProgress] = useState(0);
   const [flash,        setFlash]        = useState(false);
@@ -67,6 +74,12 @@ export default function DebtPayoffCalculator() {
     const t = setTimeout(() => setFlash(false), 500);
     return () => clearTimeout(t);
   }, [result.debtFreeMonths, calculated]);
+
+  // Auto-reveal once on mount: play the staged loader, then settle into live mode.
+  useEffect(() => {
+    handleCalculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function handleCalculate() {
     setCalculating(true);
@@ -115,6 +128,13 @@ export default function DebtPayoffCalculator() {
             <div>
               <p className="text-sm font-semibold text-gray-700">Your debts</p>
               <p className="text-xs text-gray-400 mt-0.5">Add up to 6 debts</p>
+              <span className="mt-1 inline-flex items-center gap-1.5 text-[10px] font-medium text-gray-400">
+                <span className="relative flex h-1.5 w-1.5" aria-hidden="true">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                </span>
+                <span>Card APR default {LIVE_CC_APR}% · FRED avg · as of {fredBenchmarks.currentPeriodLabel} · Live</span>
+              </span>
             </div>
             <button type="button" onClick={addDebt} disabled={debts.length >= 6}
               className="rounded-xl bg-gray-950 px-3 py-1.5 text-xs font-bold text-white transition-all hover:bg-gray-800 disabled:opacity-40">
@@ -200,10 +220,10 @@ export default function DebtPayoffCalculator() {
             onSelect={(v) => { setLump(v); setLumpInput(String(v)); }} />
         </SliderInputCard>
 
-        {!calculated && (
-          <button type="button" onClick={handleCalculate} disabled={calculating}
-            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed">
-            {calculating ? "Calculating…" : "Calculate payoff date →"}
+        {!calculated && !calculating && (
+          <button type="button" onClick={handleCalculate}
+            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98]">
+            Calculate payoff date →
           </button>
         )}
       </div>

@@ -39,6 +39,10 @@
 import InsightCard from "@/components/worthcore/InsightCard";
 import {
   generateCommuteInsights,
+  generateRoadTripCostInsights,
+  generateLaundryCostInsights,
+  generateGroceryUnitPriceInsights,
+  generateTipInsights,
   generateSmokingInsights,
   generateLatteInsights,
   generateCarLoanInsights,
@@ -59,11 +63,17 @@ import {
   generateBurnoutInsights,
   generateSalaryNegotiationInsights,
   generateInflationImpactInsights,
+  generateFutureValueInsights,
+  generateSavingsGrowthInsights,
+  generateRetirement401kInsights,
   generateHomeEquityInsights,
   generateClosingCostInsights,
   generateDownPaymentInsights,
   generateSolarRoiInsights,
   generateApplianceEnergyInsights,
+  generateEvChargingInsights,
+  generateHeatingCostInsights,
+  generateWaterBillInsights,
   fireInsights,
   millionaireInsights,
   missedInvestmentInsights,
@@ -73,14 +83,17 @@ import {
   jobOfferComparisonInsights,
   sideHustleInsights,
   screenTimeInsights,
-  alcoholCostInsights,
-  vapingCostInsights,
+  streamingTimeInsights,
+  phoneAddictionInsights,
+  generateAlcoholCostInsights,
+  generateVapingCostInsights,
   gamblingLossInsights,
   socialMediaTimeInsights,
   biologicalAgeInsights,
   lifeInWeeksInsights,
   lifeExpectancyInsights,
   procrastinationCostInsights,
+  meetingCostInsights,
   cryptoLossInsights,
   budgetInsights,
   subscriptionAuditorInsights,
@@ -89,6 +102,24 @@ import {
   weddingCostInsights,
   mealPrepInsights,
   generateSalesTaxInsights,
+  profitMarginInsights,
+  markupInsights,
+  carAffordabilityInsights,
+  childSupportInsights,
+  commuteTimeValueInsights,
+  generateGpaInsights,
+  generateWorkHoursInsights,
+  generateWorkingDaysInsights,
+  generateTimeBetweenInsights,
+  generatePomodoroInsights,
+  generateProteinInsights,
+  generateExpenseSplitInsights,
+  generateTileInsights,
+  generateFlooringInsights,
+  generateMovingInsights,
+  generateTaxBracketInsights,
+  generatePayrollInsights,
+  generateGlobalWealthPercentileInsights,
 } from "@/lib/insights";
 import type { Insight, InsightContext } from "@/lib/insights/types";
 import type { CalculatorValues, CalculatorOutputs } from "@/components/calculator-engine/types";
@@ -112,34 +143,155 @@ type GeneratorFn = (
 
 const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
   // ── commute-cost ──────────────────────────────────────────────────────────
-  "commute-cost": (values, outputs, context) =>
+  "commute-cost": (values, outputs) =>
     generateCommuteInsights(
       {
-        milesOneWay:     n(values.milesOneWay,     15),
-        mpg:             n(values.mpg,             28),
-        gasPrice:        n(values.gasPrice,        3.85),
-        workDaysPerYear: n(values.workDaysPerYear, 250),
+        state:             String(values.state ?? "National"),
+        milesOneWay:       n(values.milesOneWay,       15),
+        mpg:               n(values.mpg,               28),
+        officeDaysPerWeek: n(values.officeDaysPerWeek,  5),
+        weeksPerYear:      n(values.weeksPerYear,      49),
+        gasPriceOverride:  n(values.gasPriceOverride,   0),
       },
       {
-        annualCost:  outputs.annualCost  ?? 0,
-        monthlyCost: outputs.monthlyCost ?? 0,
-        costPerDay:  outputs.costPerDay  ?? 0,
+        annualFuelCost:          outputs.annualFuelCost          ?? 0,
+        monthlyCost:             outputs.monthlyCost             ?? 0,
+        costPerDay:              outputs.costPerDay              ?? 0,
+        annualMiles:             outputs.annualMiles             ?? 0,
+        fuelCostPerMile:         outputs.fuelCostPerMile         ?? 0,
+        wearCostPerYear:         outputs.wearCostPerYear         ?? 0,
+        totalCostPerYear:        outputs.totalCostPerYear        ?? 0,
+        effectiveDaysPerYear:    outputs.effectiveDaysPerYear    ?? 0,
+        fiveDay52AnnualFuelCost: outputs.fiveDay52AnnualFuelCost ?? 0,
+        wfhSavingVs5Days:        outputs.wfhSavingVs5Days        ?? 0,
+        tenYearInflatedCost:     outputs.tenYearInflatedCost     ?? 0,
+        gasPrice:                outputs.gasPrice                ?? 0,
       },
-      context,
+    ),
+
+  // ── road-trip-cost ────────────────────────────────────────────────────────
+  "road-trip-cost": (values, outputs) =>
+    generateRoadTripCostInsights(
+      {
+        state:         String(values.state ?? "National"),
+        distanceMiles: n(values.distanceMiles, 300),
+        mpg:           n(values.mpg,           28),
+        highwayPct:    n(values.highwayPct,    85),
+        tolls:         n(values.tolls,          0),
+        passengers:    n(values.passengers,     1),
+        gasPriceOverride: n(values.gasPriceOverride, 0),
+      },
+      {
+        effectiveMpg:      outputs.effectiveMpg      ?? 0,
+        gallonsOneWay:     outputs.gallonsOneWay      ?? 0,
+        gallonsRoundTrip:  outputs.gallonsRoundTrip   ?? 0,
+        oneWayFuelCost:    outputs.oneWayFuelCost     ?? 0,
+        roundTripFuelCost: outputs.roundTripFuelCost  ?? 0,
+        totalTripCost:     outputs.totalTripCost      ?? 0,
+        costPerPerson:     outputs.costPerPerson      ?? 0,
+        costPerMile:       outputs.costPerMile        ?? 0,
+        allHighwayCost:    outputs.allHighwayCost     ?? 0,
+        allCityCost:       outputs.allCityCost        ?? 0,
+        gasPrice:          outputs.gasPrice           ?? 0,
+      },
+    ),
+
+  // ── laundry-cost-calculator ─────────────────────────────────────────────
+  "laundry-cost-calculator": (values, outputs) =>
+    generateLaundryCostInsights(
+      {
+        state:         String(values.state ?? "National"),
+        loadsPerWeek:  n(values.loadsPerWeek,  5),
+        machineType:   String(values.machineType ?? "standard"),
+        waterTemp:     String(values.waterTemp ?? "warm"),
+        detergentCost: n(values.detergentCost, 0.25),
+        electricRateOverride: n(values.electricRateOverride, 0),
+      },
+      {
+        costPerLoad:            outputs.costPerLoad            ?? 0,
+        weeklyCost:             outputs.weeklyCost             ?? 0,
+        annualCost:             outputs.annualCost             ?? 0,
+        electricityCostPerLoad: outputs.electricityCostPerLoad ?? 0,
+        electricityPct:         outputs.electricityPct         ?? 0,
+        waterCostPerLoad:       outputs.waterCostPerLoad       ?? 0,
+        detergentCostPerLoad:   outputs.detergentCostPerLoad   ?? 0,
+        annualKwh:              outputs.annualKwh              ?? 0,
+        totalKwhPerLoad:        outputs.totalKwhPerLoad        ?? 0,
+        washerKwhAdj:           outputs.washerKwhAdj           ?? 0,
+        dryerKwh:               outputs.dryerKwh               ?? 0,
+        electricRate:           outputs.electricRate            ?? 0,
+        heFrontColdAnnual:      outputs.heFrontColdAnnual      ?? 0,
+        laundromatAnnual:       outputs.laundromatAnnual       ?? 0,
+      },
+    ),
+
+  // ── grocery-unit-price ──────────────────────────────────────────────────
+  "grocery-unit-price": (values, outputs) =>
+    generateGroceryUnitPriceInsights(
+      {
+        item1Price:       n(values.item1Price,       3.50),
+        item1Size:        n(values.item1Size,        16),
+        item2Price:       n(values.item2Price,       8.00),
+        item2Size:        n(values.item2Size,        48),
+        purchasesPerYear: n(values.purchasesPerYear, 24),
+      },
+      {
+        unitPriceA:      outputs.unitPriceA      ?? 0,
+        unitPriceB:      outputs.unitPriceB      ?? 0,
+        savingsPct:      outputs.savingsPct       ?? 0,
+        savingsPerUnit:  outputs.savingsPerUnit   ?? 0,
+        winner:          outputs.winner            ?? 0,
+        annualSavings:   outputs.annualSavings    ?? 0,
+        annualCostA:     outputs.annualCostA      ?? 0,
+        annualCostB:     outputs.annualCostB      ?? 0,
+        tenStapleSaving: outputs.tenStapleSaving  ?? 0,
+      },
+    ),
+
+  // ── tip-calculator ──────────────────────────────────────────────────────
+  "tip-calculator": (values, outputs) =>
+    generateTipInsights(
+      {
+        bill:             n(values.bill,            60),
+        tipPct:           n(values.tipPct,           20),
+        people:           n(values.people,           2),
+        diningFrequency:  n(values.diningFrequency,  8),
+      },
+      {
+        tipAmount:       outputs.tipAmount       ?? 0,
+        totalBill:       outputs.totalBill       ?? 0,
+        tipPerPerson:    outputs.tipPerPerson     ?? 0,
+        totalPerPerson:  outputs.totalPerPerson   ?? 0,
+        roundedTotal:    outputs.roundedTotal     ?? 0,
+        roundUpCost:     outputs.roundUpCost      ?? 0,
+        annualTipSpend:  outputs.annualTipSpend   ?? 0,
+        annualDining:    outputs.annualDining     ?? 0,
+        tip15:           outputs.tip15            ?? 0,
+        tip20:           outputs.tip20            ?? 0,
+        tip25:           outputs.tip25            ?? 0,
+      },
     ),
 
   // ── quit-smoking ──────────────────────────────────────────────────────────
   "quit-smoking": (values, outputs) =>
     generateSmokingInsights(
       {
+        state:         String(values.state ?? "National"),
         packsPerDay:   n(values.packsPerDay,   1),
-        packCost:      n(values.packCost,      9.2),
+        packCost:      n(values.packCost,      10),
         daysSinceQuit: n(values.daysSinceQuit, 365),
       },
       {
-        moneySaved:         outputs.moneySaved         ?? 0,
-        cigarettesAvoided:  outputs.cigarettesAvoided  ?? 0,
-        daysOfLifeRegained: outputs.daysOfLifeRegained ?? 0,
+        moneySaved:           outputs.moneySaved           ?? 0,
+        cigarettesAvoided:    outputs.cigarettesAvoided    ?? 0,
+        daysOfLifeRegained:   outputs.daysOfLifeRegained   ?? 0,
+        annualSaving:         outputs.annualSaving          ?? 0,
+        investedValue10yr:    outputs.investedValue10yr     ?? 0,
+        investedValue20yr:    outputs.investedValue20yr     ?? 0,
+        totalContributed10yr: outputs.totalContributed10yr  ?? 0,
+        compoundGrowth10yr:   outputs.compoundGrowth10yr    ?? 0,
+        stateAvgPackPrice:    outputs.stateAvgPackPrice     ?? 0,
+        vsStateAvgPct:        outputs.vsStateAvgPct         ?? 0,
       },
     ),
 
@@ -148,13 +300,19 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
     generateLatteInsights(
       {
         dailySpend:   n(values.dailySpend,   6),
+        daysPerWeek:  n(values.daysPerWeek,  5),
+        costGrowth:   n(values.costGrowth,   3),
         annualReturn: n(values.annualReturn, 7),
         years:        n(values.years,        30),
       },
       {
-        investedValue: outputs.investedValue ?? 0,
-        totalSpent:    outputs.totalSpent    ?? 0,
-        growth:        outputs.growth        ?? 0,
+        investedValue:     outputs.investedValue     ?? 0,
+        totalSpent:        outputs.totalSpent         ?? 0,
+        compoundGrowth:    outputs.compoundGrowth     ?? 0,
+        growthPct:         outputs.growthPct           ?? 0,
+        annualSpendNow:    outputs.annualSpendNow     ?? 0,
+        annualSpendFinal:  outputs.annualSpendFinal   ?? 0,
+        halfHabitInvested: outputs.halfHabitInvested  ?? 0,
       },
     ),
 
@@ -165,8 +323,10 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         vehiclePrice:  n(values.vehiclePrice,  28000),
         downPayment:   n(values.downPayment,   3000),
         tradeIn:       n(values.tradeIn,       0),
-        interestRate:  n(values.interestRate,  7.1),
+        interestRate:  n(values.interestRate,  7.9),
         termMonths:    n(values.termMonths,    60),
+        state:         String(values.state ?? "US Average"),
+        salesTaxOverride: n(values.salesTaxOverride, 0),
       },
       {
         monthlyPayment:      outputs.monthlyPayment      ?? 0,
@@ -174,9 +334,12 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         totalCost:           outputs.totalCost           ?? 0,
         interestPct:         outputs.interestPct         ?? 0,
         loanAmount:          outputs.loanAmount          ?? 0,
-        downPaymentRatio:    outputs.downPaymentRatio    as number | undefined,
-        interestMultiplier:  outputs.interestMultiplier  as number | undefined,
-        annualPaymentBurden: outputs.annualPaymentBurden as number | undefined,
+        salesTax:            outputs.salesTax            ?? 0,
+        outTheDoorPrice:     outputs.outTheDoorPrice     ?? 0,
+        downPaymentRatio:    outputs.downPaymentRatio    ?? 0,
+        annualPaymentBurden: outputs.annualPaymentBurden ?? 0,
+        taxFinancedInterest: outputs.taxFinancedInterest ?? 0,
+        resolvedRate:        outputs.resolvedRate        as number | undefined,
       },
     ),
 
@@ -184,21 +347,25 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
   "ev-vs-gas": (values, outputs) =>
     generateEvVsGasInsights(
       {
-        milesPerYear:  n(values.milesPerYear,  12000),
-        mpg:           n(values.mpg,           28),
-        gasPrice:      n(values.gasPrice,      3.85),
-        kwhPer100mi:   n(values.kwhPer100mi,   30),
-        electricRate:  n(values.electricRate,  0.15),
+        state:             String(values.state ?? "National"),
+        milesPerYear:      n(values.milesPerYear,      12000),
+        mpg:               n(values.mpg,               28),
+        kwhPer100mi:       n(values.kwhPer100mi,        30),
+        publicChargingPct: n(values.publicChargingPct,  10),
+        gasPriceOverride:     n(values.gasPriceOverride,     0),
+        electricRateOverride: n(values.electricRateOverride, 0),
       },
       {
-        annualSavings:   outputs.annualSavings  ?? 0,
-        annualGasCost:   outputs.annualGasCost  ?? 0,
-        annualEvCost:    outputs.annualEvCost   ?? 0,
-        fiveYearSavings: outputs.fiveYearSavings as number | undefined,
-        tenYearSavings:  outputs.tenYearSavings  as number | undefined,
-        breakEvenYears:  outputs.breakEvenYears  as number | undefined,
-        gasCostPerMile:  outputs.gasCostPerMile  as number | undefined,
-        evCostPerMile:   outputs.evCostPerMile   as number | undefined,
+        annualSavings:    outputs.annualSavings    ?? 0,
+        annualGasCost:    outputs.annualGasCost    ?? 0,
+        annualEvCost:     outputs.annualEvCost     ?? 0,
+        gasCostPerMile:   outputs.gasCostPerMile   ?? 0,
+        evCostPerMile:    outputs.evCostPerMile    ?? 0,
+        effectiveKwhRate: outputs.effectiveKwhRate ?? 0,
+        gasPrice:         outputs.gasPrice         ?? 0,
+        homeElectricRate: outputs.homeElectricRate ?? 0,
+        tenYearSavings:           outputs.tenYearSavings           as number | undefined,
+        breakEvenYears:           outputs.breakEvenYears           as number | undefined,
         fuelInflationSavings10yr: outputs.fuelInflationSavings10yr as number | undefined,
         maintenanceSavings10yr:   outputs.maintenanceSavings10yr   as number | undefined,
         totalAdvantage10yr:       outputs.totalAdvantage10yr       as number | undefined,
@@ -260,6 +427,9 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         coastShortfall: outputs.coastShortfall as number | undefined,
         coastSurplus:   outputs.coastSurplus   as number | undefined,
         coastRatio:     outputs.coastRatio     as number | undefined,
+        requiredNowNominal: outputs.requiredNowNominal as number | undefined,
+        inflationPenalty:   outputs.inflationPenalty   as number | undefined,
+        realRatePct:        outputs.realRatePct         as number | undefined,
       },
     ),
 
@@ -282,26 +452,6 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
       },
     ),
 
-  // ── savings-goal-calculator ──────────────────────────────────────────
-  "savings-goal-calculator": (values, outputs) =>
-    generateSavingsGoalInsights(
-      {
-        goalAmount:     n(values.goalAmount,     20000),
-        currentSavings: n(values.currentSavings, 2000),
-        years:          n(values.years,          3),
-        annualReturn:   n(values.annualReturn,   4),
-      },
-      {
-        monthlyContribution: outputs.monthlyContribution ?? 0,
-        totalContributed:    outputs.totalContributed    ?? 0,
-        interestEarned:      outputs.interestEarned      ?? 0,
-        interestSharePct:    outputs.interestSharePct    ?? 0,
-        interestToContribRatio: outputs.interestToContribRatio as number | undefined,
-        annualSavingsRequired:  outputs.annualSavingsRequired  as number | undefined,
-        goalYears:              outputs.goalYears              as number | undefined,
-      },
-    ),
-
   // ── drip-calculator ───────────────────────────────────────────────
   "drip-calculator": (values, outputs) =>
     generateDripInsights(
@@ -319,6 +469,10 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         returnMultiple:       outputs.returnMultiple       as number | undefined,
         annualDividendAtEnd:  outputs.annualDividendAtEnd  as number | undefined,
         doubleTimeYears:      outputs.doubleTimeYears      as number | undefined,
+        reinvestedDividends:  outputs.reinvestedDividends  as number | undefined,
+        noReinvestValue:      outputs.noReinvestValue      as number | undefined,
+        dripAdvantage:        outputs.dripAdvantage        as number | undefined,
+        realValue:            outputs.realValue            as number | undefined,
       },
     ),
 
@@ -491,16 +645,111 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
     generateInflationImpactInsights(
       {
         amount: n(values.amount, 10000),
-        rate:   n(values.rate,   3.5),
+        rate:   n(values.rate,   3.2),
         years:  n(values.years,  20),
       },
       {
-        futureValue:  outputs.futureValue  ?? 0,
-        loss:         outputs.loss         ?? 0,
-        lossPercent:  outputs.lossPercent  ?? 0,
-        realValueRatio: outputs.realValueRatio as number | undefined,
-        yearsToHalve:   outputs.yearsToHalve   as number | undefined,
-        dailyLoss:      outputs.dailyLoss       as number | undefined,
+        futureValue:        outputs.futureValue        ?? 0,
+        loss:               outputs.loss               ?? 0,
+        lossPercent:        outputs.lossPercent        ?? 0,
+        requiredFuture:     outputs.requiredFuture     ?? 0,
+        erosionMultiple:    outputs.erosionMultiple    ?? 0,
+        firstYearLoss:      outputs.firstYearLoss      ?? 0,
+        dailyLossFirstYear: outputs.dailyLossFirstYear ?? 0,
+        yearsToHalve:       outputs.yearsToHalve       ?? 0,
+        realValueRatio:     outputs.realValueRatio     ?? 0,
+        vsCurrentCpi:       outputs.vsCurrentCpi       ?? 0,
+      },
+    ),
+
+  // ── future-value ───────────────────────────────────────────────────────────
+  "future-value": (values, outputs) =>
+    generateFutureValueInsights(
+      {
+        initial: n(values.initial, 10000),
+        monthly: n(values.monthly, 500),
+        rate:    n(values.rate,    7),
+        years:   n(values.years,   20),
+      },
+      {
+        futureValue:        outputs.futureValue        ?? 0,
+        totalInvested:      outputs.totalInvested      ?? 0,
+        totalContributions: outputs.totalContributions ?? 0,
+        totalInterest:      outputs.totalInterest      ?? 0,
+        realFutureValue:    outputs.realFutureValue    ?? 0,
+        inflationLoss:      outputs.inflationLoss      ?? 0,
+        interestSharePct:   outputs.interestSharePct   ?? 0,
+        growthMultiple:     outputs.growthMultiple     ?? 0,
+        finalYearInterest:  outputs.finalYearInterest  ?? 0,
+        doublingYears:      outputs.doublingYears      ?? 0,
+      },
+    ),
+
+  // ── 401k-calculator ────────────────────────────────────────────────────────
+  "401k-calculator": (values, outputs) =>
+    generateRetirement401kInsights(
+      {
+        currentBalance:   n(values.currentBalance,   15000),
+        salary:           n(values.salary,           65000),
+        contributionPct:  n(values.contributionPct,  6),
+        employerMatchPct: n(values.employerMatchPct, 50),
+        matchLimitPct:    n(values.matchLimitPct,    6),
+        rate:             n(values.rate,             7),
+        years:            n(values.years,            30),
+        annualRaisePct:   n(values.annualRaisePct,   3),
+      },
+      {
+        balance:           outputs.balance           ?? 0,
+        yourContributions: outputs.yourContributions ?? 0,
+        employerMatch:     outputs.employerMatch     ?? 0,
+        growth:            outputs.growth            ?? 0,
+        realBalance:       outputs.realBalance       ?? 0,
+        firstYearMatch:    outputs.firstYearMatch    ?? 0,
+        matchLeftOnTable:  outputs.matchLeftOnTable  ?? 0,
+        fullMatchCaptured: outputs.fullMatchCaptured ?? 0,
+      },
+    ),
+
+  // ── savings-calculator ─────────────────────────────────────────────────────
+  "savings-calculator": (values, outputs) =>
+    generateSavingsGrowthInsights(
+      {
+        initial: n(values.initial, 5000),
+        monthly: n(values.monthly, 300),
+        rate:    n(values.rate,    4.5),
+        years:   n(values.years,   10),
+      },
+      {
+        balance:          outputs.balance          ?? 0,
+        totalDeposited:   outputs.totalDeposited   ?? 0,
+        interestEarned:   outputs.interestEarned   ?? 0,
+        realBalance:      outputs.realBalance      ?? 0,
+        inflationLoss:    outputs.inflationLoss    ?? 0,
+        interestSharePct: outputs.interestSharePct ?? 0,
+        realReturnPct:    outputs.realReturnPct    ?? 0,
+        beatsInflation:   outputs.beatsInflation   ?? 0,
+        hysaAdvantage:    outputs.hysaAdvantage    ?? 0,
+      },
+    ),
+
+  // ── savings-goal-calculator ────────────────────────────────────────────────
+  "savings-goal-calculator": (values, outputs) =>
+    generateSavingsGoalInsights(
+      {
+        goalAmount:     n(values.goalAmount,     20000),
+        currentSavings: n(values.currentSavings, 2000),
+        years:          n(values.years,          3),
+        annualReturn:   n(values.annualReturn,   4),
+      },
+      {
+        monthlyContribution:   outputs.monthlyContribution   ?? 0,
+        totalContributed:      outputs.totalContributed      ?? 0,
+        interestEarned:        outputs.interestEarned        ?? 0,
+        interestSharePct:      outputs.interestSharePct      ?? 0,
+        monthlyNoGrowth:       outputs.monthlyNoGrowth       ?? 0,
+        monthlySavedByGrowth:  outputs.monthlySavedByGrowth  ?? 0,
+        inflationAdjustedGoal: outputs.inflationAdjustedGoal ?? 0,
+        monthlyForRealGoal:    outputs.monthlyForRealGoal    ?? 0,
       },
     ),
 
@@ -546,6 +795,9 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         downPct:      n(values.downPct,      20),
         currentSaved: n(values.currentSaved, 5000),
         months:       n(values.months,       36),
+        appreciationPct: n(values.appreciationPct, 4),
+        hysaApyOverride: n(values.hysaApyOverride, 0),
+        closingCostPct:  n(values.closingCostPct, 0),
       },
       {
         monthlySavings: outputs.monthlySavings ?? 0,
@@ -554,6 +806,17 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         progressPercent:           outputs.progressPercent           as number | undefined,
         fasterMonthsWith200:       outputs.fasterMonthsWith200       as number | undefined,
         opportunityCostOfWaiting:  outputs.opportunityCostOfWaiting  as number | undefined,
+        monthlyNoInterest:         outputs.monthlyNoInterest         as number | undefined,
+        monthlyInterestSavings:    outputs.monthlyInterestSavings    as number | undefined,
+        targetDownToday:           outputs.targetDownToday           as number | undefined,
+        appreciationGap:           outputs.appreciationGap           as number | undefined,
+        futureHomePrice:           outputs.futureHomePrice           as number | undefined,
+        interestEarned:            outputs.interestEarned            as number | undefined,
+        closingCosts:              outputs.closingCosts              as number | undefined,
+        cashToClose:               outputs.cashToClose               as number | undefined,
+        avoidsPMI:                 outputs.avoidsPMI                 as number | undefined,
+        pmiShortfall:              outputs.pmiShortfall              as number | undefined,
+        realTargetDown:            outputs.realTargetDown            as number | undefined,
       },
     ),
 
@@ -585,18 +848,110 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
   "appliance-energy-cost": (values, outputs) =>
     generateApplianceEnergyInsights(
       {
-        watts:        n(values.watts,        200),
-        hoursPerDay:  n(values.hoursPerDay,  8),
-        electricRate: n(values.electricRate, 0.15),
+        state:       String(values.state ?? "National"),
+        watts:       n(values.watts,       200),
+        hoursPerDay: n(values.hoursPerDay, 8),
+        daysPerWeek: n(values.daysPerWeek, 7),
+        quantity:    n(values.quantity,    1),
+        electricRateOverride: n(values.electricRateOverride, 0),
       },
       {
-        dailyCost:   outputs.dailyCost   ?? 0,
-        monthlyCost: outputs.monthlyCost ?? 0,
-        annualCost:  outputs.annualCost  ?? 0,
-        tenYearCost:          outputs.tenYearCost          as number | undefined,
-        coffeeEquivalent:     outputs.coffeeEquivalent     as number | undefined,
-        asPercentMedianBill:  outputs.asPercentMedianBill  as number | undefined,
-        inflatedCost10yr:     outputs.inflatedCost10yr     as number | undefined,
+        dailyCost:         outputs.dailyCost         ?? 0,
+        weeklyCost:        outputs.weeklyCost        ?? 0,
+        monthlyCost:       outputs.monthlyCost       ?? 0,
+        annualCost:        outputs.annualCost        ?? 0,
+        kWhPerYear:        outputs.kWhPerYear        ?? 0,
+        tenYearCost:       outputs.tenYearCost       ?? 0,
+        inflatedCost10yr:  outputs.inflatedCost10yr  ?? 0,
+        asPercentHomeBill: outputs.asPercentHomeBill ?? 0,
+        efficientSavings:  outputs.efficientSavings  ?? 0,
+        electricRate:      outputs.electricRate      ?? 0,
+      },
+    ),
+
+  // ── heating-cost ─────────────────────────────────────────────────────────────
+  "heating-cost": (values, outputs) =>
+    generateHeatingCostInsights(
+      {
+        state:       String(values.state       ?? "National"),
+        heatingDays: n(values.heatingDays,  150),
+        homeSqFt:    n(values.homeSqFt,    1500),
+        heatSource:  String(values.heatSource  ?? "gas"),
+        insulation:  String(values.insulation  ?? "average"),
+        fuelPriceOverride: n(values.fuelPriceOverride, 0),
+      },
+      {
+        annualHeatingCost:       outputs.annualHeatingCost       ?? 0,
+        monthlyCost:             outputs.monthlyCost             ?? 0,
+        costPerHeatingDay:       outputs.costPerHeatingDay       ?? 0,
+        annualKBtu:              outputs.annualKBtu              ?? 0,
+        annualGasCost:           outputs.annualGasCost           ?? 0,
+        annualElecCost:          outputs.annualElecCost          ?? 0,
+        annualPropaneCost:       outputs.annualPropaneCost       ?? 0,
+        thermsEquivalent:        outputs.thermsEquivalent        ?? 0,
+        insulationUpgradeSaving: outputs.insulationUpgradeSaving ?? 0,
+        tenYearCost:             outputs.tenYearCost             ?? 0,
+        inflatedCost10yr:        outputs.inflatedCost10yr        ?? 0,
+        gasPrice:                outputs.gasPrice                ?? 0,
+        electricRate:            outputs.electricRate            ?? 0,
+      },
+    ),
+
+  // ── ev-charging-cost ─────────────────────────────────────────────────────────
+  "ev-charging-cost": (values, outputs) =>
+    generateEvChargingInsights(
+      {
+        state:             String(values.state             ?? "National"),
+        milesPerYear:      n(values.milesPerYear,      12000),
+        kwhPer100mi:       n(values.kwhPer100mi,       30),
+        publicChargingPct: n(values.publicChargingPct, 10),
+        touPlan:           String(values.touPlan        ?? "none") as "none" | "basic" | "ev_rate",
+        homeRateOverride:  n(values.homeRateOverride,   0),
+      },
+      {
+        annualTotalCost:      outputs.annualTotalCost      ?? 0,
+        homeAnnualCost:       outputs.homeAnnualCost       ?? 0,
+        publicAnnualCost:     outputs.publicAnnualCost     ?? 0,
+        monthlyCost:          outputs.monthlyCost          ?? 0,
+        costPerMileCents:     outputs.costPerMileCents     ?? 0,
+        noTouAnnualCost:      outputs.noTouAnnualCost      ?? 0,
+        touAnnualSaving:      outputs.touAnnualSaving      ?? 0,
+        homeOnlyAnnualCost:   outputs.homeOnlyAnnualCost   ?? 0,
+        publicOnlyAnnualCost: outputs.publicOnlyAnnualCost ?? 0,
+        effectiveHomeRate:    outputs.effectiveHomeRate     ?? 0,
+        homeRateRaw:          outputs.homeRateRaw           ?? 0,
+        inflatedCost10yr:     outputs.inflatedCost10yr      ?? 0,
+        tenYearCost:          outputs.tenYearCost           ?? 0,
+      },
+    ),
+
+  // ── water-bill-calculator ────────────────────────────────────────────────────
+  "water-bill-calculator": (values, outputs) =>
+    generateWaterBillInsights(
+      {
+        state:           String(values.state           ?? "National"),
+        householdSize:   n(values.householdSize,   3),
+        usageLevel:      String(values.usageLevel      ?? "average"),
+        outdoorWatering: String(values.outdoorWatering ?? "none"),
+        billingType:     String(values.billingType     ?? "combined"),
+        rateOverride:    n(values.rateOverride, 0),
+      },
+      {
+        annualWaterCost:   outputs.annualWaterCost   ?? 0,
+        monthlyCost:       outputs.monthlyCost       ?? 0,
+        dailyCost:         outputs.dailyCost         ?? 0,
+        gallonsPerDay:     outputs.gallonsPerDay     ?? 0,
+        annualGallons:     outputs.annualGallons     ?? 0,
+        effectiveRate:     outputs.effectiveRate     ?? 0,
+        costPerPerson:     outputs.costPerPerson     ?? 0,
+        lowUsageSaving:    outputs.lowUsageSaving    ?? 0,
+        leakFixSaving:     outputs.leakFixSaving     ?? 0,
+        nationalRefAnnual: outputs.nationalRefAnnual ?? 0,
+        vsNationalPct:     outputs.vsNationalPct     ?? 0,
+        tenYearCost:       outputs.tenYearCost       ?? 0,
+        inflatedCost10yr:  outputs.inflatedCost10yr  ?? 0,
+        indoorGallonsPct:  outputs.indoorGallonsPct  ?? 0,
+        combinedRate:      outputs.combinedRate      ?? 0,
       },
     ),
 
@@ -612,9 +967,9 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
       {
         fireNumber:         outputs.fireNumber         as number | undefined,
         yearsToFire:        outputs.yearsToFire        as number | undefined,
-        progressPercent:    outputs.progressPercent    as number | undefined,
+        savingsRate:        outputs.savingsRate         as number | undefined,
+        percentFunded:      outputs.percentFunded       as number | undefined,
         passiveIncomeNow:   outputs.passiveIncomeNow   as number | undefined,
-        annualReturnNow:    outputs.annualReturnNow    as number | undefined,
         yearsFasterWith500: outputs.yearsFasterWith500 as number | undefined,
       },
     ),
@@ -628,12 +983,15 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         annualReturn:   n(values.annualReturn,   7),
       },
       {
-        yearsToMillion:    outputs.yearsToMillion    as number | undefined,
-        totalContributed:  outputs.totalContributed  as number | undefined,
-        interestEarned:    outputs.interestEarned    as number | undefined,
-        progressPercent:   outputs.progressPercent   as number | undefined,
-        marketContribPct:  outputs.marketContribPct  as number | undefined,
+        yearsToMillion:     outputs.yearsToMillion     as number | undefined,
+        totalContributed:   outputs.totalContributed   as number | undefined,
+        interestEarned:     outputs.interestEarned     as number | undefined,
+        progressPercent:    outputs.progressPercent    as number | undefined,
+        marketContribPct:   outputs.marketContribPct   as number | undefined,
         yearsFasterWith200: outputs.yearsFasterWith200 as number | undefined,
+        realValueAtMillion: outputs.realValueAtMillion as number | undefined,
+        yearsToRealMillion: outputs.yearsToRealMillion as number | undefined,
+        extraYearsForReal:  outputs.extraYearsForReal  as number | undefined,
       },
     ),
 
@@ -755,55 +1113,136 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
       },
     ),
 
-  // ── screen-time-impact ──────────────────────────────────────────────────────
+  // ── screen-time-impact (live state wage data) ──────────────────────────────
   "screen-time-impact": (values, outputs) =>
     screenTimeInsights(
       {
-        hoursPerDay: n(values.hoursPerDay, 3),
-        hourlyRate:  n(values.hourlyRate,  30),
+        hoursPerDay: n(values.hoursPerDay, 4),
         yearsAhead:  n(values.yearsAhead,  10),
+        state:       String(values.state ?? "National"),
+        hourlyRateOverride: n(values.hourlyRateOverride, 0),
       },
       {
-        annualCost:             outputs.annualCost             as number | undefined,
-        weeklyHours:            outputs.weeklyHours            as number | undefined,
-        lifetimeDays:           outputs.lifetimeDays           as number | undefined,
-        totalCost:              outputs.totalCost              as number | undefined,
-        weeklyOpportunityCost:  outputs.weeklyOpportunityCost  as number | undefined,
-        investedValue:          outputs.investedValue          as number | undefined,
+        annualCost:          outputs.annualCost          ?? 0,
+        weeklyHours:         outputs.weeklyHours         ?? 0,
+        lifetimeDays:        outputs.lifetimeDays        ?? 0,
+        monthlyCost:         outputs.monthlyCost         ?? 0,
+        dailyCost:           outputs.dailyCost           ?? 0,
+        stateMedianWage:     outputs.stateMedianWage     ?? 23.11,
+        excessHoursPerDay:   outputs.excessHoursPerDay   ?? 0,
+        excessAnnualCost:    outputs.excessAnnualCost    ?? 0,
+        oneHourAnnualSaving: outputs.oneHourAnnualSaving ?? 0,
+        oneHourInvested10yr: outputs.oneHourInvested10yr ?? 0,
+        invested10yr:        outputs.invested10yr        ?? 0,
+        invested30yr:        outputs.invested30yr        ?? 0,
+        daysPerYear:         outputs.daysPerYear         ?? 0,
+      },
+    ),
+
+  // ── streaming-time-calculator ───────────────────────────────────────────────
+  "streaming-time-calculator": (values, outputs) =>
+    streamingTimeInsights(
+      {
+        hoursPerDay:    n(values.hoursPerDay, 3),
+        yearsAhead:     n(values.yearsAhead, 10),
+        monthlySubCost: n(values.monthlySubCost, 50),
+        state:          String(values.state ?? "National"),
+        hourlyRateOverride: n(values.hourlyRateOverride, 0),
+      },
+      {
+        annualCost:          outputs.annualCost          ?? 0,
+        monthlyCost:         outputs.monthlyCost         ?? 0,
+        dailyCost:           outputs.dailyCost           ?? 0,
+        weeklyHours:         outputs.weeklyHours         ?? 0,
+        yearlyHours:         outputs.yearlyHours         ?? 0,
+        daysPerYear:         outputs.daysPerYear         ?? 0,
+        lifetimeDays:        outputs.lifetimeDays        ?? 0,
+        stateMedianWage:     outputs.stateMedianWage     ?? 23.11,
+        annualSubCost:       outputs.annualSubCost       ?? 0,
+        subTotalCost:        outputs.subTotalCost        ?? 0,
+        costPerHourWatched:  outputs.costPerHourWatched  ?? 0,
+        combinedAnnualCost:  outputs.combinedAnnualCost  ?? 0,
+        excessHoursPerDay:   outputs.excessHoursPerDay   ?? 0,
+        excessAnnualCost:    outputs.excessAnnualCost    ?? 0,
+        oneHourAnnualSaving: outputs.oneHourAnnualSaving ?? 0,
+        oneHourInvested10yr: outputs.oneHourInvested10yr ?? 0,
+        invested10yr:        outputs.invested10yr        ?? 0,
+        invested30yr:        outputs.invested30yr        ?? 0,
+        subInvested10yr:     outputs.subInvested10yr     ?? 0,
+      },
+    ),
+
+  // ── phone-addiction-calculator ──────────────────────────────────────────────
+  "phone-addiction-calculator": (values, outputs) =>
+    phoneAddictionInsights(
+      {
+        hoursPerDay:   n(values.hoursPerDay, 4.5),
+        pickupsPerDay: n(values.pickupsPerDay, 86),
+        yearsAhead:    n(values.yearsAhead, 10),
+        state:         String(values.state ?? "National"),
+        hourlyRateOverride: n(values.hourlyRateOverride, 0),
+      },
+      {
+        annualCost:          outputs.annualCost          ?? 0,
+        monthlyCost:         outputs.monthlyCost         ?? 0,
+        dailyCost:           outputs.dailyCost           ?? 0,
+        yearlyHours:         outputs.yearlyHours         ?? 0,
+        weeklyHours:         outputs.weeklyHours         ?? 0,
+        daysPerYear:         outputs.daysPerYear         ?? 0,
+        lifetimeDays:        outputs.lifetimeDays        ?? 0,
+        stateMedianWage:     outputs.stateMedianWage     ?? 23.11,
+        wakingPct:           outputs.wakingPct           ?? 0,
+        pickupsPerYear:      outputs.pickupsPerYear      ?? 0,
+        minutesPerPickup:    outputs.minutesPerPickup    ?? 0,
+        excessHoursPerDay:   outputs.excessHoursPerDay   ?? 0,
+        excessAnnualCost:    outputs.excessAnnualCost    ?? 0,
+        oneHourAnnualSaving: outputs.oneHourAnnualSaving ?? 0,
+        oneHourInvested10yr: outputs.oneHourInvested10yr ?? 0,
+        invested10yr:        outputs.invested10yr        ?? 0,
+        invested30yr:        outputs.invested30yr        ?? 0,
       },
     ),
 
   // ── alcohol-cost-calculator ─────────────────────────────────────────────────
   "alcohol-cost-calculator": (values, outputs) =>
-    alcoholCostInsights(
+    generateAlcoholCostInsights(
       {
-        drinksPerWeek: n(values.drinksPerWeek, 5),
-        costPerDrink:  n(values.costPerDrink,  7),
+        drinksPerWeek:  n(values.drinksPerWeek,  10),
+        costPerDrink:   n(values.costPerDrink,    8),
+        reduceDrinksBy: n(values.reduceDrinksBy,  3),
       },
       {
-        yearlyCost:         outputs.yearlyCost         as number | undefined,
-        tenYearCost:        outputs.tenYearCost        as number | undefined,
-        investedValue:      outputs.investedValue      as number | undefined,
-        weeklySpend:        outputs.weeklySpend        as number | undefined,
-        dailyCost:          outputs.dailyCost          as number | undefined,
-        twentyYearInvested: outputs.twentyYearInvested as number | undefined,
+        weeklySpend:       outputs.weeklySpend        ?? 0,
+        yearlyCost:        outputs.yearlyCost         ?? 0,
+        monthlyCost:       outputs.monthlyCost        ?? 0,
+        tenYearCost:       outputs.tenYearCost        ?? 0,
+        dailyCost:         outputs.dailyCost          ?? 0,
+        investedValue10yr: outputs.investedValue10yr  ?? 0,
+        investedValue20yr: outputs.investedValue20yr  ?? 0,
+        cutYearlySaving:   outputs.cutYearlySaving    ?? 0,
+        cutInvested10yr:   outputs.cutInvested10yr    ?? 0,
+        reducedYearlyCost: outputs.reducedYearlyCost  ?? 0,
       },
     ),
 
   // ── vaping-cost-calculator ──────────────────────────────────────────────────
   "vaping-cost-calculator": (values, outputs) =>
-    vapingCostInsights(
+    generateVapingCostInsights(
       {
-        dailyCost: n(values.dailyCost, 5),
+        dailyCost:  n(values.dailyCost,  6),
+        cutDailyBy: n(values.cutDailyBy, 2),
       },
       {
-        yearlyCost:   outputs.yearlyCost   as number | undefined,
-        fiveYear:     outputs.fiveYear     as number | undefined,
-        invested:     outputs.invested     as number | undefined,
-        weeklySpend:  outputs.weeklySpend  as number | undefined,
-        monthlySpend: outputs.monthlySpend as number | undefined,
-        tenYear:      outputs.tenYear      as number | undefined,
-        invested10yr: outputs.invested10yr as number | undefined,
+        yearlyCost:        outputs.yearlyCost        ?? 0,
+        monthlyCost:       outputs.monthlyCost       ?? 0,
+        tenYearCost:       outputs.tenYearCost       ?? 0,
+        investedValue10yr: outputs.investedValue10yr  ?? 0,
+        investedValue20yr: outputs.investedValue20yr  ?? 0,
+        cutYearlySaving:   outputs.cutYearlySaving    ?? 0,
+        cutInvested10yr:   outputs.cutInvested10yr    ?? 0,
+        reducedYearlyCost: outputs.reducedYearlyCost  ?? 0,
+        smokingAnnual:     outputs.smokingAnnual      ?? 0,
+        vsSmokingDiff:     outputs.vsSmokingDiff      ?? 0,
       },
     ),
 
@@ -896,21 +1335,57 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
       },
     ),
 
-  // ── procrastination-cost ───────────────────────────────────────────────────────
+  // ── meeting-cost (live state wage data) ─────────────────────────────────────
+  "meeting-cost": (values, outputs) =>
+    meetingCostInsights(
+      {
+        attendees:       n(values.attendees, 8),
+        durationMinutes: n(values.durationMinutes, 60),
+        seniority:       String(values.seniority ?? "mixed"),
+        frequency:       String(values.frequency ?? "weekly"),
+        state:           String(values.state ?? "National"),
+        wageOverride:    n(values.wageOverride, 0),
+      },
+      {
+        totalCost:             outputs.totalCost             ?? 0,
+        costPerMinute:         outputs.costPerMinute         ?? 0,
+        costPerAttendee:       outputs.costPerAttendee       ?? 0,
+        annualizedCost:        outputs.annualizedCost        ?? 0,
+        loadedHourlyRate:      outputs.loadedHourlyRate      ?? 0,
+        attendeeHours:         outputs.attendeeHours         ?? 0,
+        trim15Saving:          outputs.trim15Saving          ?? 0,
+        dropOneAttendeeSaving: outputs.dropOneAttendeeSaving ?? 0,
+        asyncSaving:           outputs.asyncSaving           ?? 0,
+        meetingsPerYear:       outputs.meetingsPerYear       ?? 1,
+        refocusCostPerMeeting: outputs.refocusCostPerMeeting as number | undefined,
+        trueCostPerMeeting:    outputs.trueCostPerMeeting    as number | undefined,
+        trueAnnualizedCost:    outputs.trueAnnualizedCost    as number | undefined,
+        annualWorkdays:        outputs.annualWorkdays        as number | undefined,
+      },
+    ),
+
+  // ── procrastination-cost (live state wage data) ─────────────────────────────
   "procrastination-cost": (values, outputs) =>
     procrastinationCostInsights(
       {
-        hoursPerDay: n(values.hoursPerDay,  2),
-        hourlyRate:  n(values.hourlyRate,   40),
+        hourlyRateOverride: n(values.hourlyRateOverride, 0),
+        hoursPerDay: n(values.hoursPerDay, 2),
         daysPerYear: n(values.daysPerYear, 250),
+        state:       String(values.state ?? "National"),
       },
       {
-        annualLoss:  outputs.annualLoss  as number | undefined,
-        weeklyLoss:  outputs.weeklyLoss  as number | undefined,
-        tenYearLoss: outputs.tenYearLoss as number | undefined,
-        dailyLoss:   outputs.dailyLoss   as number | undefined,
-        monthlyLoss: outputs.monthlyLoss as number | undefined,
-        careerLoss:  outputs.careerLoss  as number | undefined,
+        dailyLoss:         outputs.dailyLoss         ?? 0,
+        weeklyLoss:        outputs.weeklyLoss        ?? 0,
+        monthlyLoss:       outputs.monthlyLoss       ?? 0,
+        annualLoss:        outputs.annualLoss        ?? 0,
+        tenYearLoss:       outputs.tenYearLoss       ?? 0,
+        careerLoss:        outputs.careerLoss        ?? 0,
+        stateMedianWage:   outputs.stateMedianWage   ?? 23.11,
+        halfHourSaving:    outputs.halfHourSaving    ?? 0,
+        excessHoursPerDay: outputs.excessHoursPerDay ?? 0,
+        excessAnnualLoss:  outputs.excessAnnualLoss  ?? 0,
+        annualHoursLost:   outputs.annualHoursLost   ?? 0,
+        daysLostPerYear:   outputs.daysLostPerYear   ?? 0,
       },
     ),
 
@@ -932,6 +1407,264 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
       },
     ),
 
+  // ── gpa-calculator ────────────────────────────────────────────────────────────
+  "gpa-calculator": (values, outputs) =>
+    generateGpaInsights(
+      {
+        currentGpa:       n(values.currentGpa,       3.2),
+        creditsDone:      n(values.creditsDone,       60),
+        remainingCredits: n(values.remainingCredits,  30),
+        targetGpa:        n(values.targetGpa,        3.5),
+      },
+      {
+        requiredGpa:         outputs.requiredGpa         ?? 0,
+        maxAchievableGpa:    outputs.maxAchievableGpa    ?? 0,
+        minPossibleGpa:      outputs.minPossibleGpa      ?? 0,
+        totalCredits:        outputs.totalCredits        ?? 0,
+        neededQualityPoints: outputs.neededQualityPoints ?? 0,
+        gpaGap:              outputs.gpaGap              ?? 0,
+        feasible:            outputs.feasible            ?? 0,
+        alreadyLocked:       outputs.alreadyLocked       ?? 0,
+      },
+    ),
+
+  // ── work-hours-calculator ───────────────────────────────────────────────────
+  "work-hours-calculator": (values, outputs) =>
+    generateWorkHoursInsights(
+      {
+        hoursPerDay: n(values.hoursPerDay, 8),
+        daysPerWeek: n(values.daysPerWeek, 5),
+        weeksWorked: n(values.weeksWorked, 52),
+        hourlyRate:  n(values.hourlyRate,  25),
+      },
+      {
+        totalHours:    outputs.totalHours    ?? 0,
+        weeklyHours:   outputs.weeklyHours   ?? 0,
+        daysWorked:    outputs.daysWorked    ?? 0,
+        regularHours:  outputs.regularHours  ?? 0,
+        overtimeHours: outputs.overtimeHours ?? 0,
+        regularPay:    outputs.regularPay    ?? 0,
+        overtimePay:   outputs.overtimePay   ?? 0,
+        grossPay:      outputs.grossPay      ?? 0,
+        fte:           outputs.fte           ?? 0,
+      },
+    ),
+
+  // ── working-days-calculator ─────────────────────────────────────────────────
+  "working-days-calculator": (values, outputs) =>
+    generateWorkingDaysInsights(
+      {
+        calendarDays:    n(values.calendarDays,    90),
+        holidays:        n(values.holidays,         0),
+        workDaysPerWeek: n(values.workDaysPerWeek,  5),
+      },
+      {
+        workingDays:     outputs.workingDays     ?? 0,
+        weekendDays:     outputs.weekendDays     ?? 0,
+        workingWeeks:    outputs.workingWeeks    ?? 0,
+        pctWorking:      outputs.pctWorking      ?? 0,
+        weekdayEstimate: outputs.weekdayEstimate ?? 0,
+      },
+    ),
+
+  // ── time-between-dates-calculator ───────────────────────────────────────────
+  "time-between-dates-calculator": (values, outputs) =>
+    generateTimeBetweenInsights(
+      { days: n(values.days, 90) },
+      {
+        weeks:         outputs.weeks         ?? 0,
+        months:        outputs.months        ?? 0,
+        years:         outputs.years         ?? 0,
+        businessDays:  outputs.businessDays  ?? 0,
+        hours:         outputs.hours         ?? 0,
+        fullWeeks:     outputs.fullWeeks     ?? 0,
+        remainderDays: outputs.remainderDays ?? 0,
+      },
+    ),
+
+  // ── pomodoro-calculator ─────────────────────────────────────────────────────
+  "pomodoro-calculator": (values, outputs) =>
+    generatePomodoroInsights(
+      {
+        hoursAvailable: n(values.hoursAvailable, 6),
+        sessionMinutes: n(values.sessionMinutes, 25),
+        breakMinutes:   n(values.breakMinutes,    5),
+        daysPerWeek:    n(values.daysPerWeek,      5),
+      },
+      {
+        sessions:        outputs.sessions        ?? 0,
+        deepWorkHours:   outputs.deepWorkHours    ?? 0,
+        deepWorkMinutes: outputs.deepWorkMinutes  ?? 0,
+        breakMinutes:    outputs.breakMinutes     ?? 0,
+        focusDensity:    outputs.focusDensity     ?? 0,
+        weeklySessions:  outputs.weeklySessions   ?? 0,
+        weeklyDeepHours: outputs.weeklyDeepHours  ?? 0,
+        longBreaks:      outputs.longBreaks       ?? 0,
+      },
+    ),
+
+  // ── protein-intake-calculator ───────────────────────────────────────────────
+  "protein-intake-calculator": (values, outputs) =>
+    generateProteinInsights(
+      {
+        weight:      n(values.weight,      160),
+        weightIsKg:  n(values.weightIsKg,    0),
+        multiplier:  n(values.multiplier,  1.6),
+        mealsPerDay: n(values.mealsPerDay,   4),
+      },
+      {
+        weightKg:            outputs.weightKg            ?? 0,
+        proteinGrams:        outputs.proteinGrams        ?? 0,
+        caloriesFromProtein: outputs.caloriesFromProtein ?? 0,
+        perMealGrams:        outputs.perMealGrams        ?? 0,
+        rangeLow:            outputs.rangeLow            ?? 0,
+        rangeHigh:           outputs.rangeHigh           ?? 0,
+        rdaMultiple:         outputs.rdaMultiple         ?? 0,
+      },
+    ),
+
+  // ── expense-split-calculator ────────────────────────────────────────────────
+  "expense-split-calculator": (values, outputs) =>
+    generateExpenseSplitInsights(
+      {
+        amount: n(values.amount, 200),
+        people: n(values.people,   4),
+        tipPct: n(values.tipPct,  18),
+        taxPct: n(values.taxPct,   0),
+      },
+      {
+        tip:              outputs.tip              ?? 0,
+        tax:              outputs.tax              ?? 0,
+        grandTotal:       outputs.grandTotal       ?? 0,
+        perPersonBase:    outputs.perPersonBase    ?? 0,
+        perPersonTotal:   outputs.perPersonTotal   ?? 0,
+        tipPerPerson:     outputs.tipPerPerson     ?? 0,
+        taxPerPerson:     outputs.taxPerPerson     ?? 0,
+        roundedPerPerson: outputs.roundedPerPerson ?? 0,
+        collectionBuffer: outputs.collectionBuffer ?? 0,
+      },
+    ),
+
+  // ── tile-calculator ──────────────────────────────────────────────────────────
+  "tile-calculator": (values, outputs) =>
+    generateTileInsights(
+      {
+        roomLength:   n(values.roomLength,   12),
+        roomWidth:    n(values.roomWidth,    10),
+        tileAreaSqFt: n(values.tileAreaSqFt,  1),
+        wastePct:     n(values.wastePct,     10),
+        pricePerTile: n(values.pricePerTile,  0),
+      },
+      {
+        roomArea:      outputs.roomArea      ?? 0,
+        areaWithWaste: outputs.areaWithWaste ?? 0,
+        baseTiles:     outputs.baseTiles     ?? 0,
+        tilesNeeded:   outputs.tilesNeeded   ?? 0,
+        wasteTiles:    outputs.wasteTiles    ?? 0,
+        materialCost:  outputs.materialCost  ?? 0,
+      },
+    ),
+
+  // ── flooring-cost-calculator ─────────────────────────────────────────────────
+  "flooring-cost-calculator": (values, outputs) =>
+    generateFlooringInsights(
+      {
+        roomLength:      n(values.roomLength,      15),
+        roomWidth:       n(values.roomWidth,       12),
+        materialPerSqFt: n(values.materialPerSqFt,  4),
+        laborPerSqFt:    n(values.laborPerSqFt,     3),
+        wastePct:        n(values.wastePct,        10),
+      },
+      {
+        area:                 outputs.area                 ?? 0,
+        areaWithWaste:        outputs.areaWithWaste        ?? 0,
+        materialCost:         outputs.materialCost         ?? 0,
+        laborCost:            outputs.laborCost            ?? 0,
+        totalCost:            outputs.totalCost            ?? 0,
+        costPerSqFtInstalled: outputs.costPerSqFtInstalled ?? 0,
+        laborShare:           outputs.laborShare           ?? 0,
+      },
+    ),
+
+  // ── moving-cost-calculator ───────────────────────────────────────────────────
+  "moving-cost-calculator": (values, outputs) =>
+    generateMovingInsights(
+      {
+        moversCost:  n(values.moversCost,  1200),
+        fuelCost:    n(values.fuelCost,     150),
+        packingCost: n(values.packingCost,  120),
+        storageCost: n(values.storageCost,    0),
+        miscCost:    n(values.miscCost,     180),
+        bufferPct:   n(values.bufferPct,     15),
+        miles:       n(values.miles,          0),
+      },
+      {
+        subtotal:         outputs.subtotal         ?? 0,
+        buffer:           outputs.buffer           ?? 0,
+        total:            outputs.total            ?? 0,
+        costPerMile:      outputs.costPerMile      ?? 0,
+        topLineItem:      outputs.topLineItem      ?? 0,
+        topLineItemShare: outputs.topLineItemShare ?? 0,
+      },
+    ),
+
+  // ── tax-bracket-calculator ───────────────────────────────────────────────────
+  "tax-bracket-calculator": (values, outputs) =>
+    generateTaxBracketInsights(
+      {
+        grossIncome:         n(values.grossIncome,         75000),
+        filingStatus:        String(values.filingStatus ?? "single"),
+        pretaxContributions: n(values.pretaxContributions,     0),
+      },
+      {
+        taxableIncome:      outputs.taxableIncome      ?? 0,
+        federalTax:         outputs.federalTax         ?? 0,
+        effectiveRate:      outputs.effectiveRate      ?? 0,
+        marginalRate:       outputs.marginalRate       ?? 0,
+        afterTaxIncome:     outputs.afterTaxIncome     ?? 0,
+        standardDeduction:  outputs.standardDeduction  ?? 0,
+        effectiveOnTaxable: outputs.effectiveOnTaxable ?? 0,
+      },
+    ),
+
+  // ── payroll-calculator ───────────────────────────────────────────────────────
+  "payroll-calculator": (values, outputs) =>
+    generatePayrollInsights(
+      {
+        employees:           n(values.employees,           10),
+        avgSalary:           n(values.avgSalary,         60000),
+        employerTaxPct:      n(values.employerTaxPct,        10),
+        benefitsPerEmployee: n(values.benefitsPerEmployee, 15000),
+        billableHours:       n(values.billableHours,      1800),
+      },
+      {
+        grossPayroll:        outputs.grossPayroll        ?? 0,
+        employerTaxes:       outputs.employerTaxes       ?? 0,
+        benefitsTotal:       outputs.benefitsTotal       ?? 0,
+        totalCost:           outputs.totalCost           ?? 0,
+        costPerEmployee:     outputs.costPerEmployee     ?? 0,
+        burdenPct:           outputs.burdenPct           ?? 0,
+        costPerBillableHour: outputs.costPerBillableHour ?? 0,
+      },
+    ),
+
+  // ── global-wealth-percentile ─────────────────────────────────────────────────
+  "global-wealth-percentile": (values, outputs) =>
+    generateGlobalWealthPercentileInsights(
+      {
+        netWorth:     n(values.netWorth,     250000),
+        annualIncome: n(values.annualIncome,  60000),
+      },
+      {
+        wealthPercentile:  outputs.wealthPercentile  ?? 0,
+        incomePercentile:  outputs.incomePercentile  ?? 0,
+        wealthTopPct:      outputs.wealthTopPct      ?? 0,
+        incomeTopPct:      outputs.incomeTopPct      ?? 0,
+        dailyIncome:       outputs.dailyIncome       ?? 0,
+        adultsBelowWealth: outputs.adultsBelowWealth ?? 0,
+      },
+    ),
+
   // ── budget-calculator ────────────────────────────────────────────────────────
   "budget-calculator": (values, outputs) =>
     budgetInsights(
@@ -942,6 +1675,8 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         transport: n(values.transport,  400),
         debt:      n(values.debt,       300),
         other:     n(values.other,      500),
+        state:     String(values.state ?? "US Average"),
+        rateOverride: n(values.rateOverride, 0),
       },
       {
         leftover:          outputs.leftover          as number | undefined,
@@ -951,6 +1686,11 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
         housingRatio:      outputs.housingRatio       as number | undefined,
         debtRatio:         outputs.debtRatio          as number | undefined,
         tenYearIfInvested: outputs.tenYearIfInvested  as number | undefined,
+        needsRatio:        outputs.needsRatio         as number | undefined,
+        wantsRatio:        outputs.wantsRatio         as number | undefined,
+        salesTaxAnnual:    outputs.salesTaxAnnual     as number | undefined,
+        salesTaxMonthly:   outputs.salesTaxMonthly    as number | undefined,
+        resolvedRate:      outputs.resolvedRate       as number | undefined,
       },
     ),
 
@@ -958,19 +1698,30 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
   "subscription-auditor": (values, outputs) =>
     subscriptionAuditorInsights(
       {
-        streaming:  n(values.streaming,  45),
-        software:   n(values.software,   30),
-        fitness:    n(values.fitness,    40),
-        newsMedia:  n(values.newsMedia,  15),
-        other:      n(values.other,      20),
+        streaming:    n(values.streaming,    45),
+        software:     n(values.software,     30),
+        fitness:      n(values.fitness,      40),
+        newsMedia:    n(values.newsMedia,    15),
+        other:        n(values.other,        20),
+        annualReturn: n(values.annualReturn,  7),
       },
       {
-        monthlyTotal:    outputs.monthlyTotal   as number | undefined,
-        annualTotal:     outputs.annualTotal    as number | undefined,
-        twentyYearCost:  outputs.twentyYearCost as number | undefined,
-        investedValue10: outputs.investedValue10 as number | undefined,
-        investedValue20: outputs.investedValue20 as number | undefined,
-        dailyCost:       outputs.dailyCost      as number | undefined,
+        monthlyTotal:          outputs.monthlyTotal          ?? 0,
+        annualTotal:           outputs.annualTotal           ?? 0,
+        twentyYearCost:        outputs.twentyYearCost        ?? 0,
+        investedValue10:       outputs.investedValue10       ?? 0,
+        investedValue20:       outputs.investedValue20       ?? 0,
+        dailyCost:             outputs.dailyCost             ?? 0,
+        cutTwentyAnnualSaving: outputs.cutTwentyAnnualSaving ?? 0,
+        cutTwentyInvested10:   outputs.cutTwentyInvested10   ?? 0,
+        vsAvgMonthly:          outputs.vsAvgMonthly          ?? 0,
+        vsAvgPct:              outputs.vsAvgPct              ?? 0,
+        streamingPct:          outputs.streamingPct          ?? 0,
+        softwarePct:           outputs.softwarePct           ?? 0,
+        fitnessPct:            outputs.fitnessPct            ?? 0,
+        newsMediaPct:          outputs.newsMediaPct          ?? 0,
+        otherPct:              outputs.otherPct              ?? 0,
+        annualReturn:          outputs.annualReturn          ?? 0,
       },
     ),
 
@@ -1053,19 +1804,102 @@ const GENERATOR_REGISTRY: Partial<Record<string, GeneratorFn>> = {
       },
     ),
 
-  // ── sales-tax ─────────────────────────────────────────────────────────────
+  // ── sales-tax (live state data) ──────────────────────────────────────────
   "sales-tax": (values, outputs) =>
     generateSalesTaxInsights(
       {
         price:        n(values.price,        100),
         taxRate:      outputs.resolvedRate   ?? n(values.taxRate, 7.12),
         monthlySpend: n(values.monthlySpend, 800),
+        state:        String(values.state ?? "US Average"),
+        rateOverride: n(values.rateOverride, 0),
       },
       {
-        totalPrice:       outputs.totalPrice       ?? 0,
-        taxAmount:        outputs.taxAmount        ?? 0,
-        monthlyTaxBurden: outputs.monthlyTaxBurden ?? 0,
-        annualTaxBurden:  outputs.annualTaxBurden  ?? 0,
+        totalPrice:          outputs.totalPrice          ?? 0,
+        taxAmount:           outputs.taxAmount           ?? 0,
+        monthlyTaxBurden:    outputs.monthlyTaxBurden    ?? 0,
+        annualTaxBurden:     outputs.annualTaxBurden     ?? 0,
+        resolvedRate:        outputs.resolvedRate        ?? 0,
+        neighborAvgRate:     outputs.neighborAvgRate     ?? 0,
+        vsNeighborsDelta:    outputs.vsNeighborsDelta    ?? 0,
+        grocerySaving:       outputs.grocerySaving       ?? 0,
+        effectiveOnGroceries: outputs.effectiveOnGroceries ?? 0,
+        dailyTaxBurden:      outputs.dailyTaxBurden      ?? 0,
+        annualIfInvested10yr: outputs.annualIfInvested10yr ?? 0,
+      },
+    ),
+
+  // ── profit-margin ──────────────────────────────────────────────────────────
+  "profit-margin": (values, outputs) =>
+    profitMarginInsights(
+      {
+        revenue: n(values.revenue, 10000),
+        cost:    n(values.cost,     7000),
+      },
+      {
+        grossProfit:   outputs.grossProfit   ?? 0,
+        marginPercent: outputs.marginPercent ?? 0,
+        markupPercent: outputs.markupPercent ?? 0,
+      },
+    ),
+
+  // ── markup-calculator ────────────────────────────────────────────────────────
+  "markup-calculator": (values, outputs) =>
+    markupInsights(
+      {
+        costPrice:     n(values.costPrice,     50),
+        markupPercent: n(values.markupPercent, 50),
+      },
+      {
+        sellingPrice:  outputs.sellingPrice  ?? 0,
+        profitAmount:  outputs.profitAmount  ?? 0,
+        marginPercent: outputs.marginPercent ?? 0,
+      },
+    ),
+
+  // ── car-affordability ────────────────────────────────────────────────────────
+  "car-affordability": (values, outputs) =>
+    carAffordabilityInsights(
+      {
+        monthlyIncome:  n(values.monthlyIncome,  6000),
+        loanTermMonths: n(values.loanTermMonths, 60),
+        annualRate:     n(values.annualRate,     7),
+      },
+      {
+        maxMonthlyPayment:   outputs.maxMonthlyPayment   ?? 0,
+        maxLoanAmount:       outputs.maxLoanAmount       ?? 0,
+        recommendedCarPrice: outputs.recommendedCarPrice ?? 0,
+      },
+    ),
+
+  // ── child-support-calculator ─────────────────────────────────────────────────
+  "child-support-calculator": (values, outputs) =>
+    childSupportInsights(
+      {
+        payerIncome:    n(values.payerIncome,    5000),
+        receiverIncome: n(values.receiverIncome, 3000),
+        children:       n(values.children,       2),
+        custodySplit:   n(values.custodySplit,   50),
+      },
+      {
+        support:       outputs.support       ?? 0,
+        annualSupport: outputs.annualSupport ?? 0,
+      },
+    ),
+
+  // ── commute-time-value ───────────────────────────────────────────────────────
+  "commute-time-value": (values, outputs) =>
+    commuteTimeValueInsights(
+      {
+        dailyMins:  n(values.dailyMins,  45),
+        hourlyWage: n(values.hourlyWage, 30),
+        workDays:   n(values.workDays,   235),
+      },
+      {
+        annualHours:         outputs.annualHours         ?? 0,
+        annualCost:          outputs.annualCost          ?? 0,
+        salaryLostPct:       outputs.salaryLostPct       ?? 0,
+        effectiveHourlyRate: outputs.effectiveHourlyRate ?? 0,
       },
     ),
 };
@@ -1104,7 +1938,7 @@ export default function LiveInsightBlock({
   return (
     <div className="flex flex-col gap-3">
       <p className="text-xs font-semibold uppercase tracking-widest text-gray-400">
-        WorthCore Insights
+        Insights
       </p>
       {insights.map((insight) => (
         <InsightCard key={insight.id} insight={insight} />

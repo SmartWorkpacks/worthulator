@@ -5,13 +5,12 @@ import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
-  title: "Net Worth Calculator 2026 – Track Your Total Financial Picture",
+  title: "Net Worth Calculator 2026 – See Your Percentile By Age",
   description:
-    "Calculate your exact net worth across all assets and liabilities. See your milestone status, debt-to-asset ratio, years to $1M, and wealth projection chart.",
-  keywords: ["net worth calculator", "how to calculate net worth", "total assets and liabilities", "wealth tracker", "net worth by age"],
+    "Calculate your net worth across all assets and liabilities, then see exactly where you rank for your age using Federal Reserve (SCF 2022) data — plus milestone status, debt ratio, and a wealth projection.",
+  keywords: ["net worth calculator", "net worth by age", "net worth percentile", "how do I compare net worth", "average net worth by age", "wealth tracker"],
   alternates: { canonical: "https://worthulator.com/tools/net-worth-calculator" },
   robots: { index: true, follow: true },
 };
@@ -23,11 +22,15 @@ const FAQS = [
   },
   {
     q: "What is a good net worth by age?",
-    a: "A common benchmark is to have a net worth equal to your annual salary by age 30, 3× your salary by 40, 6× by 50, and 8× by 60. However, these are rough guides — location, career, and starting point all vary enormously. The most important metric is consistent growth from wherever you start.",
+    a: "The Federal Reserve's Survey of Consumer Finances (2022) gives median net worth by age: about $39,000 under 35, $135,600 for 35–44, $247,200 for 45–54, $364,500 for 55–64, and $409,900 for 65–74. This calculator places your number on that distribution and estimates your percentile for your age bracket, so 'good' is measured against real peers rather than a generic rule of thumb.",
+  },
+  {
+    q: "How is my net worth percentile calculated?",
+    a: "We take your age bracket's net-worth distribution from the Federal Reserve SCF (2022) and interpolate where your figure falls between the published percentile anchors. The result is an approximate ranking — e.g. the default example (~$42,000 at age 30) lands around the 51st percentile for under-35 households, just above that bracket's $39,000 median.",
   },
   {
     q: "Should I include my home value in net worth?",
-    a: "Yes and no. Including your primary home inflates your net worth but overstates your liquid wealth — you can't easily spend home equity without selling or refinancing. Many financial planners calculate both an 'including primary home' and 'excluding primary home' net worth. This calculator includes it, but you can set home value to $0 to see your investable net worth.",
+    a: "Yes and no. Including your primary home inflates your net worth but overstates your liquid wealth — you can't easily spend home equity without selling or refinancing. Many financial planners track both an 'including primary home' and an 'excluding primary home' net worth, since home equity isn't easily spendable without selling or refinancing.",
   },
   {
     q: "How often should I calculate my net worth?",
@@ -40,21 +43,21 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "$192k",  color: "text-blue-600",    accent: "bg-blue-500",    label: "Median US net worth (2023) — skewed heavily by the top 10%" },
-  { stat: "$1M",    color: "text-emerald-600", accent: "bg-emerald-500", label: "The millionaire threshold — reachable for most with consistent investing over 20–30 years" },
-  { stat: "Age 35", color: "text-amber-600",   accent: "bg-amber-500",   label: "When compounding begins to work meaningfully — the later you start, the more it costs" },
+  { stat: "$192.7k", color: "text-blue-600",    accent: "bg-blue-500",    label: "Median US household net worth (Federal Reserve SCF 2022) — skewed heavily by the top 10%" },
+  { stat: "$39k",    color: "text-amber-600",   accent: "bg-amber-500",   label: "Median net worth for households under 35 — the bracket benchmark this tool ranks you against" },
+  { stat: "$1M",     color: "text-emerald-600", accent: "bg-emerald-500", label: "The millionaire threshold — reachable for most with consistent investing over 20–30 years" },
 ];
 
 const CONTENT_CARDS = [
   {
     icon: "📊",
-    title: "Net worth is the only financial score that matters",
-    body: "Income is not wealth. Someone earning $300k with $400k in debt and no investments is in a worse position than someone earning $60k with $200k invested and zero debt. Net worth is the ultimate measure of financial progress.",
+    title: "See where you actually rank",
+    body: "A net worth number means little without context. This calculator places yours on the Federal Reserve's SCF (2022) distribution for your age bracket and estimates your percentile — so you know whether you're ahead of, at, or behind your real peers, not a generic rule of thumb.",
   },
   {
     icon: "🏠",
     title: "The home equity misconception",
-    body: "Many Americans have most of their net worth tied up in their home — illiquid and highly leveraged. Investable net worth (excluding primary residence) is often the more useful figure for retirement planning. Track both.",
+    body: "Many Americans have most of their net worth tied up in their home — illiquid and highly leveraged. Investable net worth (excluding primary residence) is often the more useful figure for retirement planning. Set home value to $0 to see it.",
   },
   {
     icon: "📈",
@@ -127,14 +130,14 @@ export default function NetWorthCalculatorPage() {
         eyebrowIcon="💰"
         eyebrowText="Wealth · Financial Snapshot"
         title="Net Worth Calculator"
-        description="Add up everything you own and owe. See your real financial picture — including milestone status, debt ratio, and projected trajectory."
-        chips={["Asset & liability breakdown", "Wealth milestone status", "Years-to-millionaire projection"]}
+        description="Add up everything you own and owe, then see exactly where you rank for your age using Federal Reserve data — plus milestone status, debt ratio, and your projected trajectory."
+        chips={["Percentile rank by age", "Asset & liability breakdown", "Years-to-millionaire projection"]}
       >
         <NetWorthCalculatorLoader />
       </SimpleCalculatorHero>
 
       <InsightStrip
-        text='Net worth is not how much you earn — it&apos;s how much you <span class="font-semibold text-gray-900">keep and grow</span>. Income is a tool. Net worth is the score.'
+        text='Net worth is not how much you earn — it&apos;s how much you <span class="font-semibold text-gray-900">keep and grow</span>. This tool shows where yours ranks against real households your age.'
       />
 
       <StatChipsRow stats={STATS} />
@@ -144,29 +147,25 @@ export default function NetWorthCalculatorPage() {
         subtitle="The number that actually measures financial progress."
         cards={CONTENT_CARDS}
       />
-
-
-      <InsightTable slug="net-worth-calculator" />
       <SEOTextBlock
         title="How the Net Worth Calculator Works"
         formula={`Net Worth = Total Assets − Total Liabilities
-
 Total Assets = Cash + Investments + Real Estate + Vehicles + Other
-
 Total Liabilities = Mortgage + Car Loans + Student Loans + Credit Cards + Other Debt
-
 Debt-to-Asset Ratio = (Total Liabilities / Total Assets) × 100
+Projected Net Worth (Year N) = Assets × (1 + growth%)^N − Liabilities × (0.95)^N
 
-Projected Net Worth (Year N) = Assets × (1 + growth%)^N − Liabilities × (0.95)^N`}
+Percentile = interpolated rank of your net worth within your
+             age bracket's Federal Reserve SCF (2022) distribution`}
         steps={[
           { label: "Enter all your assets",      description: "Cash, investments, retirement accounts, property, vehicles." },
           { label: "Enter all your liabilities", description: "Mortgage, car loans, student loans, credit cards, other debt." },
-          { label: "Set your age and growth rate",description: "Used to project your net worth trajectory over time." },
-          { label: "Hit Calculate",              description: "See your net worth, milestone label, debt ratio, and projection chart." },
+          { label: "Set your age and growth rate",description: "Age picks your SCF comparison bracket; growth rate drives the projection." },
+          { label: "Read your rank",             description: "Your net worth, percentile for your age, milestone label, debt ratio, and projection chart." },
         ]}
         paragraphs={[
-          "This calculator gives you a complete snapshot across all categories of assets and liabilities — not just a single number. The milestone labels put your net worth in context, and the projection chart shows where you're heading if you keep your current trajectory.",
-          "The 'years to $1 million' figure is calculated by projecting asset growth at your chosen rate and debt amortisation at ~5% per year. It's a motivational target, not a guarantee — but it makes the abstract feel concrete.",
+          "This calculator gives you a complete snapshot across all categories of assets and liabilities — not just a single number. It then ranks you against your peers: using the Federal Reserve's Survey of Consumer Finances (2022), it estimates your percentile within your age bracket. The default example — roughly $42,000 in net worth at age 30 — lands around the 51st percentile for under-35 households, just above that group's $39,000 median.",
+          "The 'years to $1 million' figure projects asset growth at your chosen rate and debt amortisation at ~5% per year. It's a motivational target, not a guarantee — but combined with your percentile rank, it turns an abstract number into a clear sense of where you stand and where you're heading.",
         ]}
       />
 

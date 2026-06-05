@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     "Get intelligent cost estimates for home services, consumer electronics, luxury watches, and sneakers. Powered by formula models and live market data.",
   alternates: { canonical: "https://worthulator.com/value-engine" },
-  robots: { index: true, follow: true },
+  robots: { index: false, follow: false },
 };
 
 export default function ValueEnginePage() {

@@ -1,191 +1,207 @@
 // ─── WorthCore Insight Engine — Commute Cost Generator ───────────────────────
 //
 // PURPOSE:
-//   Deterministic insight rules for the "commute-cost" engine calculator.
-//   Consumes commute inputs + outputs and produces structured Insight objects.
-//
-// CALCULATOR OUTPUT SCHEMA (from calculatorConfigs.ts "commute-cost"):
-//   inputs:  milesOneWay, mpg, gasPrice, workDaysPerYear
-//   outputs: annualCost, monthlyCost, costPerDay
+//   Deterministic, visual insight rules for the "commute-cost" engine calculator.
+//   Surfaces the annual fuel cost, per-mile cost vs the national average (live),
+//   the WFH/hybrid saving vs full-time in-office, a 10-year inflation-adjusted
+//   projection, and the true cost once wear & tear is included.
 //
 // RULES:
 //   ✅ Pure TypeScript — synchronous, deterministic, no side effects
-//   ✅ Consumes outputs — NEVER runs new core calculations
-//   ✅ All thresholds are constants with comments explaining source
-//   ✅ All insight IDs are stable and unique: "commute.<rule-name>"
-//   ❌ Never import React
-//   ❌ Never call fetch() or async operations
+//   ✅ Live gas price carries a provenance caption with its vintage
+//   ❌ Never import React · never call fetch()
 //
 // ─────────────────────────────────────────────────────────────────────────────
 
+import { formatCurrency, formatCurrencyPrecise } from "@/lib/insights/benchmarks";
+import type { Insight, InsightVisualization } from "@/lib/insights/types";
 import {
-  compareToNationalFuelAverage,
-  compareToStateFuelAverage,
-  formatCurrency,
-  formatCurrencyPrecise,
-} from "@/lib/insights/benchmarks";
-import { futureValueAnnuity } from "@/lib/insights/projections";
-import { getEnergyValue }     from "@/lib/dataStore";
-import type { Insight, InsightContext } from "@/lib/insights/types";
+  GAS_INFLATION,
+  WEAR_COST_PER_MILE,
+  NATIONAL_AVG_MPG,
+} from "@/calculations/work/commuteCost";
+import { usStateFuelDataset } from "@/lib/datasets/usStateFuelPrices";
 
-// ─── Module-level WorthCore defaults ─────────────────────────────────────────
-// WorthCore rule: getEnergyValue() MUST be called at module level only.
-const ELECTRICITY_RATE = getEnergyValue("electricityPriceUs"); // 0.17 $/kWh
-
-// ─── Rule thresholds (documented with sources) ───────────────────────────────
-/** Above $4,000/yr → heavy commuter. Source: US commute cost studies. */
-const ANNUAL_COST_HEAVY = 4_000;
-/** Below $1,200/yr → light commuter (short distance or high MPG). */
-const ANNUAL_COST_LIGHT = 1_200;
-/** ±10% from national/state average → "above/below average" threshold. */
-const FUEL_PRICE_DIFF_THRESHOLD = 10;
-/** ±8% from state average → state comparison fires. */
-const STATE_DIFF_THRESHOLD = 8;
-/** Below 20 MPG → fuel economy drag insight. */
-const LOW_MPG_THRESHOLD = 20;
-/** EV savings must exceed $500/yr to be actionable. */
-const EV_SAVINGS_MIN = 500;
-/** Standard EV efficiency assumption. Source: EPA average 2024. */
-const EV_KWH_PER_100_MILES = 30;
+// ── Rule thresholds (documented) ──────────────────────────────────────────────
+/** Above $1,800/yr fuel → heavy commuter. */
+const ANNUAL_COST_HEAVY = 1_800;
+/** Below $600/yr fuel → light/efficient commute. */
+const ANNUAL_COST_LIGHT = 600;
+/** Below 22 MPG → fuel-economy upgrade insight fires. */
+const LOW_MPG_THRESHOLD = 22;
+/** Benchmark MPG a low-MPG driver might upgrade to. */
+const UPGRADE_MPG = 32;
 
 // ─── Input / Output types ─────────────────────────────────────────────────────
-// Mirrors the "commute-cost" config exactly.
 
 export interface CommuteInputs {
-  milesOneWay:    number;
-  mpg:            number;
-  gasPrice:       number;
-  workDaysPerYear: number;
+  state:             string;
+  milesOneWay:       number;
+  mpg:               number;
+  officeDaysPerWeek: number;
+  weeksPerYear:      number;
+  /** Optional user-entered $/gal; when > 0 it overrides the live state price. */
+  gasPriceOverride?: number;
 }
 
 export interface CommuteOutputs {
-  annualCost:  number;
-  monthlyCost: number;
-  costPerDay:  number;
+  annualFuelCost:          number;
+  monthlyCost:             number;
+  costPerDay:              number;
+  annualMiles:             number;
+  fuelCostPerMile:         number;
+  wearCostPerYear:         number;
+  totalCostPerYear:        number;
+  effectiveDaysPerYear:    number;
+  fiveDay52AnnualFuelCost: number;
+  wfhSavingVs5Days:        number;
+  tenYearInflatedCost:     number;
+  gasPrice:                number;
 }
 
 // ─── Generator ────────────────────────────────────────────────────────────────
 
-/**
- * Generate all applicable commute cost insights for a given set of inputs
- * and outputs. Returns an empty array if no rules fire.
- *
- * @param inputs   Calculator inputs (mirrors commute-cost config)
- * @param outputs  Calculator outputs (annualCost, monthlyCost, costPerDay)
- * @param context  Optional — provides state for regional comparisons
- */
 export function generateCommuteInsights(
   inputs: CommuteInputs,
   outputs: CommuteOutputs,
-  context?: InsightContext,
 ): Insight[] {
-  if (outputs.annualCost <= 0) return [];
+  if (outputs.annualFuelCost <= 0) return [];
 
   const insights: Insight[] = [];
-  const totalMilesPerYear = inputs.milesOneWay * 2 * inputs.workDaysPerYear;
+  const customPrice = (inputs.gasPriceOverride ?? 0) > 0;
+  const stateLabel = inputs.state && inputs.state !== "National" ? inputs.state : "the US average";
+  const priceLabel = customPrice ? "your gas price" : `${stateLabel} prices`;
 
-  // ── Rule 1: Annual cost tier ───────────────────────────────────────────────
-  if (outputs.annualCost >= ANNUAL_COST_HEAVY) {
-    insights.push({
-      id:       "commute.high-annual-cost",
-      category: "spending",
-      severity: "warning",
-      title:    "Heavy commuter fuel spend",
-      body:     `Your commute costs ${formatCurrency(outputs.annualCost)}/year in fuel — above the $${ANNUAL_COST_HEAVY.toLocaleString()} threshold for high-cost commuters. At ${formatCurrency(outputs.monthlyCost)}/month, this is a significant fixed expense worth reviewing.`,
-      metric:   { label: "Annual fuel cost", value: formatCurrency(outputs.annualCost) },
-    });
-  } else if (outputs.annualCost <= ANNUAL_COST_LIGHT) {
-    insights.push({
-      id:       "commute.low-annual-cost",
-      category: "savings",
-      severity: "positive",
-      title:    "Efficient commute",
-      body:     `At ${formatCurrency(outputs.annualCost)}/year your commute fuel cost is well below average. Your ${inputs.milesOneWay}-mile one-way distance and ${inputs.mpg} MPG vehicle are an effective combination.`,
-      metric:   { label: "Annual fuel cost", value: formatCurrency(outputs.annualCost) },
-    });
-  }
+  const liveCaption = customPrice
+    ? {
+        text: `Your gas $${outputs.gasPrice.toFixed(2)}/gal`,
+        asOf: usStateFuelDataset.currentPeriodLabel,
+        live: false,
+      }
+    : {
+        text: `${stateLabel} gas $${outputs.gasPrice.toFixed(2)}/gal`,
+        asOf: usStateFuelDataset.currentPeriodLabel,
+        live: true,
+      };
 
-  // ── Rule 2: Gas price vs national average ──────────────────────────────────
-  const vsNational = compareToNationalFuelAverage(inputs.gasPrice);
-  const natAbsDiff  = Math.abs(vsNational.absoluteDiff);
-  const annualImpact = Math.round((natAbsDiff / inputs.gasPrice) * outputs.annualCost);
-
-  if (vsNational.direction === "above" && vsNational.percentDiff >= FUEL_PRICE_DIFF_THRESHOLD) {
-    insights.push({
-      id:       "commute.above-national-fuel",
-      category: "comparison",
-      severity: "warning",
-      title:    "Above-average fuel price",
-      body:     `You're paying ${formatCurrencyPrecise(inputs.gasPrice)}/gal — ${vsNational.percentDiff.toFixed(0)}% above the national average of ${formatCurrencyPrecise(vsNational.reference)}. That extra cost adds roughly ${formatCurrency(annualImpact)}/year compared to an average-price driver on the same commute.`,
-      metric:   { label: "vs. national avg", value: `+${vsNational.percentDiff.toFixed(0)}%` },
-    });
-  } else if (vsNational.direction === "below" && Math.abs(vsNational.percentDiff) >= FUEL_PRICE_DIFF_THRESHOLD) {
-    insights.push({
-      id:       "commute.below-national-fuel",
-      category: "comparison",
-      severity: "positive",
-      title:    "Below-average fuel price",
-      body:     `You're paying ${formatCurrencyPrecise(inputs.gasPrice)}/gal — ${Math.abs(vsNational.percentDiff).toFixed(0)}% below the national average of ${formatCurrencyPrecise(vsNational.reference)}. That saves roughly ${formatCurrency(annualImpact)}/year versus a driver paying the national average.`,
-      metric:   { label: "vs. national avg", value: `-${Math.abs(vsNational.percentDiff).toFixed(0)}%` },
-    });
-  }
-
-  // ── Rule 3: Gas price vs selected state average ────────────────────────────
-  if (context?.state && context.state !== "National") {
-    const vsState  = compareToStateFuelAverage(inputs.gasPrice, context.state);
-    if (vsState.direction === "above" && vsState.percentDiff >= STATE_DIFF_THRESHOLD) {
-      const stateImpact = Math.round((Math.abs(vsState.absoluteDiff) / inputs.gasPrice) * outputs.annualCost);
-      insights.push({
-        id:       "commute.above-state-fuel",
-        category: "comparison",
-        severity: "neutral",
-        title:    `Above ${context.state} average`,
-        body:     `${context.state}'s average is ${formatCurrencyPrecise(vsState.reference)}/gal — you're paying ${vsState.percentDiff.toFixed(0)}% more. Finding a station closer to the state average could save ~${formatCurrency(stateImpact)}/year.`,
-        metric:   { label: `${context.state} avg`, value: formatCurrencyPrecise(vsState.reference) },
-      });
-    }
-  }
-
-  // ── Rule 4: EV switch opportunity ─────────────────────────────────────────
-  const annualEvCost   = Math.round((totalMilesPerYear / 100) * EV_KWH_PER_100_MILES * ELECTRICITY_RATE);
-  const evAnnualSavings = Math.round(outputs.annualCost - annualEvCost);
-
-  if (evAnnualSavings > EV_SAVINGS_MIN) {
-    insights.push({
-      id:       "commute.ev-opportunity",
-      category: "opportunity-cost",
-      severity: "neutral",
-      title:    "EV switch potential",
-      body:     `Switching to an EV on this commute could reduce your fuel cost from ${formatCurrency(outputs.annualCost)} to ~${formatCurrency(annualEvCost)}/year (home charging at ${formatCurrencyPrecise(ELECTRICITY_RATE)}/kWh, 30 kWh/100mi). That's ${formatCurrency(evAnnualSavings)}/year in savings.`,
-      metric:   { label: "Potential annual savings", value: formatCurrency(evAnnualSavings) },
-    });
-  }
-
-  // ── Rule 5: 10-year opportunity cost ──────────────────────────────────────
-  const tenYearFV      = Math.round(futureValueAnnuity(outputs.annualCost, 10));
-  const tenYearGain    = tenYearFV - outputs.annualCost * 10;
-
+  // ── 1. Annual fuel cost headline ──────────────────────────────────────────
   insights.push({
-    id:       "commute.opportunity-cost-10yr",
-    category: "opportunity-cost",
-    severity: "neutral",
-    title:    "10-year opportunity cost",
-    body:     `Your annual fuel spend of ${formatCurrency(outputs.annualCost)} invested in an index fund would grow to ${formatCurrency(tenYearFV)} over 10 years — ${formatCurrency(Math.round(tenYearGain))} in compound gains above contributions.`,
-    metric:   { label: "10-yr investment value", value: formatCurrency(tenYearFV) },
+    id:       "commute.annual-cost",
+    severity: outputs.annualFuelCost >= ANNUAL_COST_HEAVY ? "warning" : outputs.annualFuelCost <= ANNUAL_COST_LIGHT ? "positive" : "neutral",
+    category: "spending",
+    title:    `Your commute burns ${formatCurrency(outputs.annualFuelCost)} of fuel a year.`,
+    body:     `Driving ${inputs.milesOneWay} miles each way at ${inputs.mpg} MPG and ${formatCurrencyPrecise(outputs.gasPrice)}/gal, ${outputs.effectiveDaysPerYear} commute days a year works out to ${formatCurrency(outputs.annualFuelCost)} in fuel — ${formatCurrency(outputs.monthlyCost)} a month, or ${formatCurrencyPrecise(outputs.costPerDay)} every day you drive in.`,
+    metric:   { label: "Annual fuel", value: formatCurrency(outputs.annualFuelCost) },
   });
 
-  // ── Rule 6: Low MPG drag ──────────────────────────────────────────────────
-  if (inputs.mpg < LOW_MPG_THRESHOLD) {
-    const hypotheticalAnnual = Math.round((inputs.milesOneWay * 2 / 30) * inputs.gasPrice * inputs.workDaysPerYear);
-    const mpgSavings         = outputs.annualCost - hypotheticalAnnual;
+  // ── 2. Per-mile cost vs national average — benchmark-bar (live) ───────────
+  const nationalPerMile = Math.round((usStateFuelDataset.national / NATIONAL_AVG_MPG) * 1000) / 1000;
+  if (outputs.fuelCostPerMile > 0 && nationalPerMile > 0) {
+    const cheaper = outputs.fuelCostPerMile < nationalPerMile;
     insights.push({
-      id:       "commute.low-mpg",
-      category: "warning",
-      severity: "warning",
-      title:    "Fuel economy drag",
-      body:     `At ${inputs.mpg} MPG your vehicle is below the 20 MPG efficiency threshold. Upgrading to a 30 MPG vehicle on this same commute would cost ~${formatCurrency(hypotheticalAnnual)}/year in fuel — saving ${formatCurrency(Math.round(mpgSavings))}/year.`,
-      metric:   { label: "Current fuel economy", value: `${inputs.mpg} MPG` },
+      id:       "commute.cost-per-mile",
+      severity: cheaper ? "positive" : "neutral",
+      category: "comparison",
+      title:    cheaper
+        ? `You drive cheaper than the average commuter, per mile.`
+        : `Each mile you commute costs ${formatCurrencyPrecise(outputs.fuelCostPerMile)}.`,
+      body:     `At ${priceLabel} and ${inputs.mpg} MPG, your fuel cost is ${formatCurrencyPrecise(outputs.fuelCostPerMile)}/mile versus a national-average driver at ${formatCurrencyPrecise(nationalPerMile)}/mile (${usStateFuelDataset.national.toFixed(2)}/gal ÷ ${NATIONAL_AVG_MPG} MPG). Across your ${outputs.annualMiles.toLocaleString()} commute miles a year, that difference is what moves the bill.`,
+      visualization: {
+        type:           "benchmark-bar",
+        userValue:      outputs.fuelCostPerMile,
+        userLabel:      "You / mile",
+        benchmarkValue: nationalPerMile,
+        benchmarkLabel: "US avg / mile",
+        format:         "currency",
+        caption:        liveCaption,
+      } satisfies InsightVisualization,
     });
+  }
+
+  // ── 3. WFH / hybrid saving — delta-card ───────────────────────────────────
+  if (outputs.wfhSavingVs5Days > 0) {
+    const perOfficeDayPerYear = Math.round(outputs.costPerDay * inputs.weeksPerYear);
+    insights.push({
+      id:       "commute.wfh-saving",
+      severity: "positive",
+      category: "savings",
+      title:    `Your schedule already saves ${formatCurrency(outputs.wfhSavingVs5Days)}/yr vs full-time in-office.`,
+      body:     `Commuting 5 days a week, 52 weeks a year would cost ${formatCurrency(outputs.fiveDay52AnnualFuelCost)} in fuel. Your ${inputs.officeDaysPerWeek}-day, ${inputs.weeksPerYear}-week schedule comes in at ${formatCurrency(outputs.annualFuelCost)}. Each office day you drop saves about ${formatCurrency(perOfficeDayPerYear)} a year.`,
+      visualization: {
+        type:   "delta-card",
+        before: { label: "5 days / wk", value: formatCurrency(outputs.fiveDay52AnnualFuelCost) },
+        after:  { label: "Your schedule", value: formatCurrency(outputs.annualFuelCost) },
+        delta:  { label: "Saved / yr", value: formatCurrency(outputs.wfhSavingVs5Days), positive: true },
+      } satisfies InsightVisualization,
+    });
+  } else {
+    // Full-time in-office: frame the upside of going hybrid instead.
+    const oneDayWfhSaving = Math.round(outputs.costPerDay * inputs.weeksPerYear);
+    insights.push({
+      id:       "commute.wfh-upside",
+      severity: "neutral",
+      category: "opportunity-cost",
+      title:    `One work-from-home day a week would save ${formatCurrency(oneDayWfhSaving)}/yr.`,
+      body:     `You're commuting close to full-time. Dropping a single office day each week cuts roughly ${formatCurrency(oneDayWfhSaving)} of fuel a year; two days nearly doubles that — before counting wear, parking, and reclaimed time.`,
+      metric:   { label: "Per WFH day/wk", value: `${formatCurrency(oneDayWfhSaving)}/yr` },
+    });
+  }
+
+  // ── 4. 10-year inflation-adjusted projection — projection-line (live) ─────
+  {
+    const sampleYears = [1, 2, 3, 5, 7, 10];
+    let cumulative = 0;
+    const cumByYear: number[] = [];
+    for (let y = 1; y <= 10; y++) {
+      cumulative += outputs.annualFuelCost * Math.pow(1 + GAS_INFLATION, y - 1);
+      cumByYear[y] = cumulative;
+    }
+    const points = sampleYears.map((y) => ({ label: `Yr ${y}`, value: Math.round(cumByYear[y]) }));
+    const inflationExtra = Math.round(outputs.tenYearInflatedCost - outputs.annualFuelCost * 10);
+
+    insights.push({
+      id:       "commute.ten-year-projection",
+      severity: outputs.tenYearInflatedCost > 15_000 ? "warning" : "neutral",
+      category: "projection",
+      title:    `Over 10 years this commute costs about ${formatCurrency(outputs.tenYearInflatedCost)} in fuel.`,
+      body:     `At today's price the flat 10-year fuel cost is ${formatCurrency(Math.round(outputs.annualFuelCost * 10))}. Factoring in ~${Math.round(GAS_INFLATION * 100)}%/yr gas inflation — the long-run US average — it rises to ${formatCurrency(outputs.tenYearInflatedCost)}, about ${formatCurrency(inflationExtra)} more. A shorter commute or higher MPG compounds in your favour the same way.`,
+      visualization: {
+        type:    "projection-line",
+        points,
+        format:  "currency",
+        yLabel:  "Cumulative fuel cost",
+        color:   "#ef4444",
+        caption: { text: `${customPrice ? "Your gas" : `${stateLabel} gas`} · assumes ${Math.round(GAS_INFLATION * 100)}%/yr inflation`, asOf: usStateFuelDataset.currentPeriodLabel, live: !customPrice },
+      } satisfies InsightVisualization,
+    });
+  }
+
+  // ── 5. True cost once wear & tear is added ────────────────────────────────
+  if (outputs.wearCostPerYear >= 150) {
+    insights.push({
+      id:       "commute.true-cost",
+      severity: "neutral",
+      category: "hidden-cost",
+      title:    `Add wear & tear and the real cost is ${formatCurrency(outputs.totalCostPerYear)}/yr.`,
+      body:     `Fuel is only part of it. At the IRS/AAA estimate of ${formatCurrencyPrecise(WEAR_COST_PER_MILE)}/mile for tires, oil, and brakes, your ${outputs.annualMiles.toLocaleString()} commute miles add ${formatCurrency(outputs.wearCostPerYear)} a year — pushing the true cost to ${formatCurrency(outputs.totalCostPerYear)}, before insurance or depreciation.`,
+      metric:   { label: "True annual cost", value: formatCurrency(outputs.totalCostPerYear) },
+    });
+  }
+
+  // ── 6. Low-MPG upgrade opportunity ────────────────────────────────────────
+  if (inputs.mpg < LOW_MPG_THRESHOLD) {
+    const upgradeAnnual = Math.round((inputs.milesOneWay * 2 / UPGRADE_MPG) * outputs.gasPrice * outputs.effectiveDaysPerYear);
+    const mpgSaving = Math.round(outputs.annualFuelCost - upgradeAnnual);
+    if (mpgSaving > 100) {
+      insights.push({
+        id:       "commute.low-mpg",
+        severity: "warning",
+        category: "opportunity-cost",
+        title:    `A ${UPGRADE_MPG} MPG car would cut fuel by ${formatCurrency(mpgSaving)}/yr.`,
+        body:     `At ${inputs.mpg} MPG your vehicle is below the ~22 MPG efficiency line. Driving the same commute in a ${UPGRADE_MPG} MPG car would cost about ${formatCurrency(upgradeAnnual)} in fuel a year — saving ${formatCurrency(mpgSaving)} annually at ${customPrice ? "your" : `${stateLabel}'s`} ${formatCurrencyPrecise(outputs.gasPrice)}/gal.`,
+        metric:   { label: "Current economy", value: `${inputs.mpg} MPG` },
+      });
+    }
   }
 
   return insights;

@@ -53,7 +53,7 @@ const REGIONAL_FILE = path.resolve(
   "../lib/datasets/regional/usRegionalBenchmarks.ts",
 );
 
-const APIFY_TOKEN = process.env.APIFY_TOKEN ?? undefined;
+const APIFY_TOKEN = process.env.APIFY_TOKEN ?? process.env.APIFY_API_TOKEN ?? undefined;
 
 /**
  * Representative US cities for Expatistan averaging.

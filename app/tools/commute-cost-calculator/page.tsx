@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import CommuteCostWithInsights from "@/components/worthcore/CommuteCostWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,13 +9,23 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
+import { calculateCommuteCost } from "@/calculations/work/commuteCost";
+import { getUSStateFuelPrice, usStateFuelDataset } from "@/lib/datasets/usStateFuelPrices";
+
+// ─── Live worked example (national-average commute — refreshes with the data) ─
+const LIVE_GAS = getUSStateFuelPrice("National");
+const AS_OF = usStateFuelDataset.currentPeriodLabel;
+const usd = (n: number) => `$${Math.round(n).toLocaleString()}`;
+const usd2 = (n: number) => `$${n.toFixed(2)}`;
+const EX = calculateCommuteCost(
+  { milesOneWay: 16, mpg: 28, officeDaysPerWeek: 5, weeksPerYear: 49 },
+  { gasPrice: LIVE_GAS },
+);
 
 export const metadata: Metadata = {
   title: "Commute Cost Calculator 2026 – Annual Fuel Cost of Your Drive",
   description:
-    "Calculate the true annual fuel cost of your daily commute. Enter your one-way miles, MPG, gas price, and work days for an instant breakdown.",
+    "Calculate the true annual cost of your commute using your state's live gas price. Set your route and office schedule for fuel, wear & tear, and work-from-home savings.",
   keywords: ["commute cost calculator", "driving to work cost", "commute fuel cost", "how much does my commute cost", "annual commute cost"],
   alternates: { canonical: "https://worthulator.com/tools/commute-cost-calculator" },
   robots: { index: true, follow: true },
@@ -24,47 +34,47 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "How much does the average commute cost per year?",
-    a: "The average US commuter drives about 30 miles round trip per day. At 28 MPG and $3.50/gallon, that's about $1,340/year in fuel alone. Add wear and tear ($0.08–0.12/mile), insurance, and parking, and total commute costs often exceed $3,000–5,000/year.",
+    a: `The average US commuter drives about 16 miles each way — 32 miles round trip. At 28 MPG and the current ${usd2(LIVE_GAS)}/gallon national average (${AS_OF}), 5 days a week over 49 weeks (${EX.effectiveDaysPerYear} commute days) is roughly ${usd(EX.annualFuelCost)}/year in fuel. Add wear and tear at $0.10/mile (~${usd(EX.wearCostPerYear)}) and the true cost is closer to ${usd(EX.totalCostPerYear)} — before insurance, parking, or depreciation.`,
   },
   {
     q: "Does this calculator include wear and tear?",
-    a: "No — this calculator covers fuel costs only. The IRS standard mileage rate (67 cents/mile in 2024) is a comprehensive estimate that includes fuel, oil, tires, maintenance, insurance, and depreciation. Multiply your annual miles by ~$0.10–0.12 for wear and tear alone.",
+    a: "Yes. Alongside the fuel cost, it shows a 'true annual cost' that adds wear and tear at $0.10/mile — the IRS/AAA estimate covering tires, oil, and brakes (it excludes insurance and depreciation). The IRS standard mileage rate (67 cents/mile in 2024) is the broader all-in figure if you want to include everything.",
   },
   {
     q: "How do I calculate my commute cost per day?",
-    a: "Round trip miles ÷ MPG × gas price = daily fuel cost. For 30 miles round trip at 28 MPG and $3.50/gallon: 30 ÷ 28 × $3.50 = $3.75/day. Over 250 work days, that's $937.50/year in fuel.",
+    a: `Round-trip miles ÷ MPG × your gas price = daily fuel cost. For 32 miles round trip at 28 MPG and ${usd2(LIVE_GAS)}/gallon: 32 ÷ 28 × ${usd2(LIVE_GAS)} = ${usd2(EX.costPerDay)}/day. Over ${EX.effectiveDaysPerYear} commute days (5 days × 49 weeks) that's about ${usd(EX.annualFuelCost)}/year in fuel.`,
   },
   {
-    q: "Is it cheaper to take public transit?",
-    a: "In most US cities, yes. A monthly transit pass ($50–150) is almost always cheaper than driving. But factor in time — public transit often takes 1.5–2× longer each way. Assign a dollar value to your time and include it in the comparison.",
+    q: "How much does a commute cost over 10 years?",
+    a: `Quite a lot once gas inflation is included. The average 16-mile commute above runs about ${usd(EX.tenYearInflatedCost)} in fuel over a decade at ~3%/year gas inflation — not counting wear, parking, or the value of the time spent. A shorter drive or a higher-MPG car compounds in your favour the same way.`,
   },
   {
-    q: "How does remote work affect commute cost?",
-    a: "Dramatically. One remote day per week saves 20% of annual commute costs. Two days saves 40%. Many workers who switched to hybrid work during 2020–2023 saved $1,500–3,000/year in commuting costs alone — not counting wear on the car or reclaimed time.",
+    q: "How does hybrid or remote work change the result?",
+    a: "It's driven by office days per week × weeks per year. Dropping from 5 to 4 office days cuts a full-time commute's fuel cost by 20%; a 3-day hybrid week cuts it by 40%. Each office day you remove saves a whole year's worth of that day's fuel — and the calculator shows exactly how much.",
   },
 ];
 
 const STATS = [
-  { stat: "27min", color: "text-emerald-600", accent: "bg-emerald-500", label: "Average US one-way commute time in 2026 — 54 minutes per day, 225 hours per year" },
-  { stat: "$3k+",  color: "text-blue-600",    accent: "bg-blue-500",    label: "Average total annual commute cost including fuel, wear, and parking" },
-  { stat: "1 day", color: "text-amber-600",   accent: "bg-amber-500",   label: "One remote day per week cuts commute costs by 20% instantly" },
+  { stat: "16 mi", color: "text-emerald-600", accent: "bg-emerald-500", label: "Average US one-way commute distance (Census ACS) — about 32 miles round trip" },
+  { stat: "$0.10/mi", color: "text-blue-600", accent: "bg-blue-500",    label: "Wear & tear beyond fuel — tires, oil, and brakes (IRS/AAA estimate)" },
+  { stat: "1 day", color: "text-amber-600",   accent: "bg-amber-500",   label: "Dropping one office day per week cuts a 5-day commute's fuel cost by 20%" },
 ];
 
 const CONTENT_CARDS = [
   {
-    icon: "⏱️",
-    title: "Time is the hidden cost",
-    body: "A 30-minute one-way commute costs 250 hours per year — over 10 full 24-hour days. At $35/hour, that's $8,750 in time value annually. Most people never count this, but it's often larger than the fuel cost.",
+    icon: "📍",
+    title: "Your state sets the price",
+    body: "Gas isn't one national number. California regularly runs over $4.50/gallon while Gulf Coast and Mountain states sit far lower. This calculator pulls your state's live average, so an identical 30-mile commute can cost hundreds more or less depending on where you fill up.",
   },
   {
-    icon: "🔋",
-    title: "Electric vehicles change the math",
-    body: "An EV costs about $0.03–0.05/mile to charge vs $0.10–0.15/mile in gas. On a 30-mile daily round trip, EVs save $400–800/year in fuel alone. Over 5 years, that offsets much of the premium purchase price.",
+    icon: "🔧",
+    title: "Wear & tear is the silent half",
+    body: `Fuel gets the attention, but tires, oil, and brakes cost roughly $0.10/mile (the IRS/AAA estimate). On a 16-mile one-way commute (5 days a week) that's ~${usd(EX.wearCostPerYear)}/year on top of fuel — which is why we show fuel and true cost side by side.`,
   },
   {
     icon: "🏠",
-    title: "Commute vs higher rent",
-    body: "Living closer to work costs more in rent — but a 30-minute shorter commute saves 125 hours/year. Only you can decide what your time is worth, but for many workers an extra $200–300/month in rent to halve their commute is easily worth it.",
+    title: "The hybrid math is bigger than it looks",
+    body: "Office days per week × weeks per year is your real commute count. A 3-day hybrid week over 49 weeks is 147 commute days, not 250 — and each office day you drop saves a full week's worth of that day's fuel every year.",
   },
 ];
 
@@ -107,32 +117,32 @@ export default function CommuteCostCalculatorPage() {
         eyebrowIcon="🚗"
         eyebrowText="Work · Productivity"
         title="Commute Cost Calculator"
-        description="Enter your one-way miles, MPG, gas price, and work days to see your annual fuel cost — and what working from home one day saves."
-        chips={["Annual fuel cost", "Monthly & daily breakdown", "Gas price impact"]}
+        description="Pick your state for a live gas price, then set your route and office schedule. See your annual fuel cost, the true cost with wear & tear, and what each work-from-home day saves."
+        chips={["Live state gas prices", "Hybrid schedule aware", "Fuel + wear true cost"]}
       >
-        <CalculatorEngineLoader slug="commute-cost" afterResults={<InsightsSection slug="commute-cost" />} />
+        <CommuteCostWithInsights />
       </SimpleCalculatorHero>
       <InsightStrip text='Your commute costs money and time — <span class="font-semibold text-gray-900">most people underestimate both by a factor of 2 or more.</span>' />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="The real cost of getting to work" subtitle="Fuel is only part of what your commute takes from you." cards={CONTENT_CARDS}
       />
 
-      <InsightTable slug="commute-cost" />
       <SEOTextBlock
         title="How the Commute Cost Calculator Works"
-        formula={`Daily Miles    = Miles One Way × 2
-Cost Per Day   = (Daily Miles ÷ MPG) × Gas Price
-Annual Cost    = Cost Per Day × Work Days Per Year
-Monthly Cost   = Annual Cost ÷ 12`}
+        formula={`Commute Days/Yr = Office Days/Week × Weeks/Year
+Cost Per Day    = (Miles One Way × 2 ÷ MPG) × State Gas Price
+Annual Fuel     = Cost Per Day × Commute Days/Yr
+Wear & Tear     = Annual Miles × $0.10/mile
+True Annual     = Annual Fuel + Wear & Tear`}
         steps={[
-          { label: "Enter one-way miles", description: "Distance from home to office — the calculator doubles it for round trip." },
-          { label: "Enter your MPG", description: "Check your car's dashboard or the manufacturer's spec. City MPG is typically 15–20% lower than highway." },
-          { label: "Enter current gas price", description: "Use your local price per gallon — it varies significantly by region." },
-          { label: "Set work days per year", description: "250 is typical (5 days × 50 weeks). Adjust for hybrid schedules." },
+          { label: "Pick your state", description: "Loads the live average gas price for your state, so the result reflects where you actually fill up." },
+          { label: "Enter one-way miles", description: "Distance from home to office — the calculator doubles it for the round trip." },
+          { label: "Enter your MPG", description: "Check your dashboard or the manufacturer's spec. City MPG runs 15–20% below the highway figure." },
+          { label: "Set your office schedule", description: "Office days per week × weeks per year. A 3-day hybrid week over 49 weeks is 147 commute days, not 250." },
         ]}
         paragraphs={[
-          "This calculator covers fuel costs only. For total commute cost, add wear and tear (roughly $0.10/mile), parking fees, and the value of your time.",
-          "To estimate your hybrid savings: reduce work days by the number of remote days. If you work 3 days in office, use 150 work days instead of 250 — saving 40% of your annual commute cost.",
+          "Fuel is only part of the picture. We also add wear and tear at the IRS/AAA estimate of $0.10/mile (tires, oil, brakes) to show your true annual cost — before insurance, parking, or depreciation.",
+          "Because fuel uses your state's live gas price, two identical commutes can cost very different amounts: California gas runs far above Texas or the Gulf Coast. We also project the 10-year cost with ~3%/year gas inflation, so you can see how today's drive compounds.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} bg="bg-gray-50" />

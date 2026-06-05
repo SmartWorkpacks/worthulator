@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Home Equity Calculator 2026 – Equity & Borrowing Power",
@@ -60,7 +59,6 @@ export default function HomeEquityCalculator() {
       <InsightStrip text="Homeowners currently hold a record $32 trillion in equity — but most don't know exactly how much they own or what they could access." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Making the most of your home equity" cards={CONTENT_CARDS} />
-      <InsightTable slug="home-equity-calculator" />
       <SEOTextBlock
         title="How home equity and LTV are calculated"
         formula={`Equity          = Home Value − Mortgage Balance

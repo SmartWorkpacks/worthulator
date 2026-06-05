@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateSolarRoi } from "@/calculations/energy/solarRoi";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -18,11 +19,18 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://worthulator.com/tools/solar-roi" },
 };
 
+// ── Step 5c: worked examples derived from the live calculation module ────────
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX = calculateSolarRoi({ systemCost: 20000, monthlyBill: 150, solarOffset: 85, utilityInflation: 3 });
+const EX_NET = calculateSolarRoi({ systemCost: 14000, monthlyBill: 150, solarOffset: 85, utilityInflation: 3 });
+const BILL_10YR = Math.round(150 * Math.pow(1.03, 10));
+const PAYBACK_CUT = Math.round(EX.paybackYears - EX_NET.paybackYears);
+
 const FAQS = [
   {
     q: "How long does it take for solar panels to pay for themselves?",
     a:
-      "The average US solar payback period is 6–12 years. With a $20,000 system, $150/month electricity bill, 85% solar offset, and 3% annual utility inflation, you typically break even in around 8–10 years. After that, electricity savings are essentially free profit.",
+      `The average US solar payback period is 6–12 years. With a $20,000 system, $150/month electricity bill, 85% solar offset, and 3% annual utility inflation, you break even in about ${EX.paybackYears} years on the full cost — or roughly ${EX_NET.paybackYears} years once the 30% federal tax credit cuts the net cost to $14,000. After that, electricity savings are essentially free profit.`,
   },
   {
     q: "What is solar offset percentage?",
@@ -37,7 +45,7 @@ const FAQS = [
   {
     q: "How does utility rate inflation affect solar ROI?",
     a:
-      "Historically, US electricity rates have risen about 2–4% per year. As your utility rate rises, the value of the electricity your panels generate increases each year. A 3% annual increase on $150/month means you'd be paying ~$202/month in 10 years without solar — making your panels increasingly valuable over time.",
+      `Historically, US electricity rates have risen about 2–4% per year. As your utility rate rises, the value of the electricity your panels generate increases each year. A 3% annual increase on $150/month means you'd be paying ~$${BILL_10YR}/month in 10 years without solar — making your panels increasingly valuable over time.`,
   },
   {
     q: "What is the lifespan of solar panels?",
@@ -56,7 +64,7 @@ const CONTENT_CARDS = [
   {
     icon: "💰",
     title: "The 30% federal tax credit changes everything",
-    body: "The Inflation Reduction Act extended and expanded the solar ITC at 30% through at least 2032. On a $20,000 system, that's $6,000 off your taxes — not a deduction, but a direct credit. This single factor cuts payback time by 2–3 years for most homeowners.",
+    body: `The Inflation Reduction Act extended and expanded the solar ITC at 30% through at least 2032. On a $20,000 system, that's $6,000 off your taxes — not a deduction, but a direct credit. This single factor cuts payback time by about ${PAYBACK_CUT} years for most homeowners.`,
   },
   {
     icon: "🔋",
@@ -110,15 +118,16 @@ export default function SolarRoi() {
         description="Calculate your solar payback period, first-year savings, and 25-year total savings. Factors in utility inflation for an accurate long-term picture."
         chips={["Payback period", "Year 1 savings", "25-year total"]}
       >
-        <CalculatorEngineLoader slug="solar-roi" />
+        <EngineWithInsights slug="solar-roi" />
       </SimpleCalculatorHero>
-      <InsightStrip text="With the 30% federal tax credit, a typical solar system pays itself back in 6–9 years — then saves money for 15+ more." />
+      <InsightStrip text={`With the 30% federal tax credit, a typical solar system pays itself back in about ${EX_NET.paybackYears} years — then saves money for 15+ more.`} />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Understanding solar ROI"  cards={CONTENT_CARDS} />
       <SEOTextBlock
         title="How the Solar ROI Calculator Works"
         paragraphs={[
           "Annual savings in year 1 = monthly bill × solar offset % × 12. Each subsequent year, savings grow by the utility inflation rate (compounding). Payback period = the year when cumulative savings first exceed system cost. 25-year savings = sum of all annual savings over 25 years.",
+          `Worked example: a $20,000 system saving ${usd(EX.year1Savings)} in year one (rising 3%/yr) pays back in ${EX.paybackYears} years and returns ${usd(EX.savings25yr)} over 25 years — about ${EX.roiMultiple}× the system cost.`,
           "This calculator does not include the 30% federal ITC automatically — subtract 30% from your system cost before entering it if you want to include the tax credit. It also does not account for panel degradation (~0.5%/year) or state/local incentives.",
         ]}
       />

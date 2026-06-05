@@ -15,6 +15,16 @@ export interface EmergencyFundInputs {
   monthlySavingsRate: number;
 }
 
+export interface EmergencyFundData {
+  /** Live annual inflation rate (%), injected from FRED CPI. */
+  annualInflationPct: number;
+  /** Optional user-entered HYSA APY (%); when > 0 it overrides the default. */
+  hysaApyPct?: number;
+}
+
+/** Documented benchmark: representative top high-yield savings APY (2026). */
+export const HYSA_APY = 4.4;
+
 export interface EmergencyFundResult {
   totalMonthlyExpenses: number;
   targetAmount: number;
@@ -26,6 +36,12 @@ export interface EmergencyFundResult {
   fundingPct: number;
   savingsProgress: { month: number; balance: number; target: number }[];
   expenseBreakdown: { category: string; amount: number; pct: number; colorClass: string }[];
+  /** Extra dollars needed next year to keep the same coverage at live inflation. */
+  inflationDriftPerYear: number;
+  /** Interest the target fund earns in a HYSA over a year. */
+  annualHysaInterest: number;
+  /** 1 if HYSA interest covers the inflation drift on the target, else 0. */
+  hysaCoversInflation: number;
 }
 
 const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
@@ -35,7 +51,10 @@ function formatDate(monthsFromNow: number): string {
   return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-export function calculateEmergencyFund(inputs: EmergencyFundInputs): EmergencyFundResult {
+export function calculateEmergencyFund(
+  inputs: EmergencyFundInputs,
+  data: EmergencyFundData = { annualInflationPct: 3.2 },
+): EmergencyFundResult {
   const { expenses, targetMonths, currentSavings, monthlySavingsRate } = inputs;
 
   const totalMonthlyExpenses =
@@ -85,10 +104,16 @@ export function calculateEmergencyFund(inputs: EmergencyFundInputs): EmergencyFu
     pct: totalMonthlyExpenses > 0 ? Math.round((i.amount / totalMonthlyExpenses) * 100) : 0,
   }));
 
+  const apy = data.hysaApyPct != null && data.hysaApyPct > 0 ? data.hysaApyPct : HYSA_APY;
+  const inflationDriftPerYear = Math.round(targetAmount * (Math.max(0, data.annualInflationPct) / 100));
+  const annualHysaInterest    = Math.round(targetAmount * (apy / 100));
+  const hysaCoversInflation   = annualHysaInterest >= inflationDriftPerYear ? 1 : 0;
+
   return {
     totalMonthlyExpenses, targetAmount, amountNeeded,
     currentCoverageMonths, isFullyFunded, monthsToGoal,
     completionDate, fundingPct, savingsProgress,
     expenseBreakdown: expenseItems,
+    inflationDriftPerYear, annualHysaInterest, hysaCoversInflation,
   };
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import InflationImpactWithInsights from "@/components/worthcore/InflationImpactWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,34 +9,46 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
+import { calculateInflationImpact } from "@/calculations/finance/inflationImpact";
+import { getCpiInflationYoY, fredBenchmarks } from "@/lib/datasets/finance/fredBenchmarks";
+
+/* ── Step 5c: derive every CPI-dependent number from the live FRED rate ───── */
+const CPI = getCpiInflationYoY();
+const AS_OF = fredBenchmarks.currentPeriodLabel;
+const usd0 = (n: number) => `$${Math.round(n).toLocaleString()}`;
+const EX = calculateInflationImpact(
+  { amount: 10000, rate: CPI, years: 20 },
+  { currentCpiRate: CPI },
+);
+const HALVE = EX.yearsToHalve;
 
 export const metadata: Metadata = {
-  title: "Inflation Impact Calculator 2026 – Purchasing Power Calculator",
-  description: "Why $100 feels like $50 lately. See how much of your paycheck has evaporated since last year.",
-  keywords: ["inflation calculator", "purchasing power calculator", "inflation impact calculator", "what is my money worth", "inflation over time"],
+  title: "Inflation Impact Calculator 2026 – Live CPI Purchasing Power",
+  description: "See how inflation erodes your money's buying power — defaulting to the live FRED CPI rate. Shows future purchasing power, the amount you'd need to keep pace, and how fast your cash halves.",
+  keywords: ["inflation calculator", "purchasing power calculator", "inflation impact calculator", "what is my money worth", "CPI calculator", "inflation over time"],
   alternates: { canonical: "https://worthulator.com/tools/inflation-impact-calculator" },
+  robots: { index: true, follow: true },
 };
 
 const FAQS = [
-  { q: "What has average US inflation been historically?", a: "The US Federal Reserve targets 2% annually. The 20-year average before 2020 was ~2.2%. Post-pandemic inflation peaked at 9.1% in 2022 and has since moderated. Over very long periods, 3–3.5% is a reasonable planning assumption." },
-  { q: "How does inflation affect savings accounts?", a: "If your savings earn 1% interest and inflation is 3%, your real return is -2%. Your balance goes up in dollars but buys less each year. Only returns that exceed the inflation rate grow real wealth." },
-  { q: "What is the 'real' rate of return?", a: "Real return = nominal return − inflation rate. If your investment returns 8% and inflation is 3%, your real return is 5%. This is the return that actually matters for long-term planning." },
-  { q: "What assets protect against inflation?", a: "Historically: equities, real estate, TIPS (Treasury Inflation-Protected Securities), commodities, and I Bonds have tended to at least keep pace with inflation. Cash and fixed-rate bonds are most vulnerable." },
-  { q: "How does the Federal Reserve control inflation?", a: "Primarily through interest rates. Raising rates makes borrowing more expensive, slows spending, and cools inflation. Lowering rates stimulates growth but can increase inflation risk." },
+  { q: "What inflation rate does this calculator use?", a: `It defaults to the live US CPI rate from the St. Louis Fed (FRED) — currently ${CPI}% year-over-year (${AS_OF}), refreshed automatically. For context, the 20-year pre-2020 average was ~2.2%, post-pandemic inflation peaked at 9.1% in 2022, and ~3.3% is a reasonable long-run planning assumption.` },
+  { q: "What does 'amount needed to keep pace' mean?", a: `It's the mirror of buying power. At ${CPI}% inflation, $10,000 today only buys ${usd0(EX.futureValue)} worth of goods in 20 years — but flipping it around, you'd need ${usd0(EX.requiredFuture)} in 20 years to buy what $10,000 buys today. That second number is the income or nest-egg target inflation quietly raises on you.` },
+  { q: "How fast does inflation halve my money?", a: `At a steady ${CPI}%, purchasing power halves in about ${HALVE} years (exactly ln(2) ÷ ln(1 + ${CPI}%)). The Rule of 72 gives a quick mental estimate: 72 ÷ ${CPI} ≈ ${Math.round(72 / CPI)} years. At 7% it's about 10 years; at 9.1% (the 2022 peak) under 8 years.` },
+  { q: "How does inflation affect savings accounts?", a: `If your savings earn 1% and inflation is ${CPI}%, your real return is ${(1 - CPI).toFixed(1)}%. The balance rises in dollars but buys less each year. Only returns above the inflation rate grow real wealth — which is why the calculator flags the break-even return you need.` },
+  { q: "What is the 'real' rate of return?", a: `Real return = nominal return − inflation rate. If your investment returns 8% and inflation is ${CPI}%, your real return is ${(8 - CPI).toFixed(1)}%. This is the number that actually matters for long-term planning.` },
+  { q: "What assets protect against inflation?", a: "Historically equities, real estate, TIPS (Treasury Inflation-Protected Securities), commodities, and I Bonds have tended to at least keep pace with inflation. Cash and fixed-rate bonds are the most vulnerable to erosion." },
 ];
 
 const STATS = [
-  { stat: "3.4%",  color: "text-amber-600",   accent: "bg-amber-500",   label: "US 20-year average annual inflation rate" },
-  { stat: "34%",   color: "text-rose-600",    accent: "bg-rose-500",    label: "of value lost at 3.5% inflation over 10 years" },
-  { stat: "$0.42", color: "text-emerald-600", accent: "bg-emerald-500", label: "what $1 from 1985 buys today, inflation-adjusted" },
+  { stat: `${CPI}%`,    color: "text-amber-600",   accent: "bg-amber-500",   label: `Live US CPI inflation, year-over-year (FRED, ${AS_OF}) — the calculator's default rate` },
+  { stat: usd0(EX.requiredFuture), color: "text-rose-600",    accent: "bg-rose-500",    label: `What you'd need in 20 years to match $10,000 today at ${CPI}% inflation` },
+  { stat: `~${Math.round(HALVE)} yr`,  color: "text-emerald-600", accent: "bg-emerald-500", label: `How long until your cash loses half its buying power at ${CPI}% inflation` },
 ];
 
 const CONTENT_CARDS = [
   { icon: "👁️", title: "The invisible tax", body: "Inflation doesn't announce itself — it slowly erodes the value of cash held in low-yield accounts. A $50,000 emergency fund earning 0.5% loses real purchasing power every year at 3%+ inflation." },
   { icon: "📅", title: "Inflation and long-term planning", body: "Retirement calculators that don't account for inflation dramatically understate the savings required. A $3,000/month budget today will need $5,400+/month in 20 years at just 3% inflation." },
-  { icon: "🔢", title: "The 72 rule", body: "Divide 72 by the inflation rate to find how many years it takes to cut purchasing power in half. At 3%: 24 years. At 7%: about 10 years. At 9.1% (2022 peak): less than 8 years." },
+  { icon: "🔢", title: "The Rule of 72", body: `Divide 72 by the inflation rate to estimate how many years it takes to halve purchasing power. At the current ${CPI}%: about ${Math.round(72 / CPI)} years. At 7%: roughly 10 years. At 9.1% (the 2022 peak): under 8 years. The calculator shows the exact figure using logarithms.` },
 ];
 
 const RELATED_CALCS = [
@@ -47,29 +59,60 @@ const RELATED_CALCS = [
 ];
 
 export default function InflationImpactCalculator() {
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      name: "Inflation Impact Calculator",
+      applicationCategory: "FinanceApplication",
+      operatingSystem: "Web",
+      description: "See how inflation erodes purchasing power using the live FRED CPI rate, including the amount needed later to keep pace and how fast money halves.",
+      url: "https://worthulator.com/tools/inflation-impact-calculator",
+      offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: FAQS.map((faq) => ({
+        "@type": "Question",
+        name: faq.q,
+        acceptedAnswer: { "@type": "Answer", text: faq.a },
+      })),
+    },
+  ];
+
   return (
     <>
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
+
       <SimpleCalculatorHero
         eyebrowIcon="📉"
-        eyebrowText="Inflation"
+        eyebrowText="Inflation · Live CPI"
         title="Inflation Impact Calculator"
-        description="See how much your money is really worth in the future after inflation. Enter any amount, choose an inflation rate, and see your future purchasing power — and what you've silently lost."
-        chips={["Future buying power", "Purchasing power lost", "Value erosion %"]}
+        description="See what your money will really be worth after inflation — starting from the live FRED CPI rate. Get your future buying power, the amount you'd need to keep pace, and how fast your cash halves."
+        chips={["Live FRED CPI default", "Amount needed to keep pace", "Years to halve your money"]}
       >
-        <CalculatorEngineLoader slug="inflation-impact-calculator" afterResults={<InsightsSection slug="inflation-impact-calculator" />} />
+        <InflationImpactWithInsights />
       </SimpleCalculatorHero>
-      <InsightStrip text="At 3.5% inflation, $100,000 today will only buy $50,000 worth of goods in 20 years. Inflation is the tax nobody talks about." />
+      <InsightStrip text={`At the current ${CPI}% CPI, $10,000 today buys just ${usd0(EX.futureValue)} in 20 years — and you'd need ${usd0(EX.requiredFuture)} to keep pace. Inflation is the tax nobody talks about.`} />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What inflation is doing to your money right now" cards={CONTENT_CARDS} />
-      <InsightTable slug="inflation-impact-calculator" />
       <SEOTextBlock
         title="The purchasing power formula"
-        formula={`Future Buying Power = Amount ÷ (1 + Inflation Rate)^Years
+        formula={`Future Buying Power = Amount ÷ (1 + r)^Years
+Amount Needed Later = Amount × (1 + r)^Years     (the mirror — keep pace)
 Real Value Loss (%) = (1 − 1 ÷ (1 + r)^n) × 100
-Required Return     = Inflation Rate   (just to break even)`}
+Years to Halve      = ln(2) ÷ ln(1 + r)
+Break-even Return   = r   (just to stand still)
+
+Worked example — $10,000 at the live ${CPI}% CPI over 20 years:
+Buying power = ${usd0(EX.futureValue)} · Lost = ${usd0(EX.loss)} (${EX.lossPercent}%)
+Needed to keep pace = ${usd0(EX.requiredFuture)} · Halves in ~${Math.round(HALVE)} years`}
         paragraphs={[
-          "Future buying power = today's amount ÷ (1 + inflation rate)ⁿ. If you have $10,000 today and inflation averages 3.5% per year, in 20 years that $10,000 only buys $4,975 worth of goods.",
-          "To maintain purchasing power, your money must grow faster than inflation. Any savings vehicle returning less than the inflation rate is losing real value every year — even if the nominal balance rises.",
+          `Future buying power = today's amount ÷ (1 + inflation rate)ⁿ. With $10,000 today and inflation at the current ${CPI}% CPI, in 20 years that $10,000 only buys about ${usd0(EX.futureValue)} worth of goods — a ${EX.lossPercent}% loss in real value. Flip the formula and you get the mirror: you'd need ${usd0(EX.requiredFuture)} in 20 years to buy what $10,000 buys now.`,
+          "To maintain purchasing power, your money must grow faster than inflation. Any savings vehicle returning less than the inflation rate is losing real value every year — even if the nominal balance rises. The calculator defaults to the live FRED CPI rate so your starting point reflects today's economy.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

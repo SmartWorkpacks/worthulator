@@ -44,3 +44,6 @@ recon/node_modules
 recon/dist
 recon/.env
 next-env.d.ts
+
+.vercel
+.env*.local

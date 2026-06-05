@@ -51,10 +51,19 @@ export function generateTrueHourlyInsights(
   // ── 1. Rate ratio (always fires) ─────────────────────────────────────────
   insights.push({
     id:       "truehourly.rate-ratio",
-    type:     effectivePct >= 90 ? "positive" : effectivePct >= 75 ? "neutral" : "warning",
-    title:    `You only capture ${effectivePct}% of your advertised $${advertisedHourly.toFixed(2)}/hr`,
-    body:     `Once commute and decompression time are included, your true hourly drops from $${advertisedHourly.toFixed(2)} to $${trueHourly.toFixed(2)} — a $${hourlyLoss.toFixed(2)} gap. Over a year, that's ${extraHoursPerYear} hours of unpaid time (${timeRobbedWeeks} work weeks).`,
-    priority: 100,
+    severity: effectivePct >= 90 ? "positive" : effectivePct >= 75 ? "neutral" : "warning",
+    category: "hidden-cost",
+    title:    `True hourly: $${trueHourly.toFixed(2)} — ${effectivePct}% of the advertised $${advertisedHourly.toFixed(2)}/hr`,
+    body:     `Once commute and decompression time are included, your effective rate drops from $${advertisedHourly.toFixed(2)} to $${trueHourly.toFixed(2)} — a $${hourlyLoss.toFixed(2)}/hr reduction. Over a year, that is ${extraHoursPerYear} hours of job-related time that does not appear on your pay stub (${timeRobbedWeeks} work weeks).`,
+    metric:   { label: "True vs advertised", value: `${effectivePct}%` },
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      trueHourly,
+      userLabel:      "True hourly rate",
+      benchmarkValue: advertisedHourly,
+      benchmarkLabel: "Advertised hourly",
+      format:         "currency",
+    },
   });
 
   // ── 2. Large gap ──────────────────────────────────────────────────────────
@@ -62,10 +71,11 @@ export function generateTrueHourlyInsights(
     const annualLoss = Math.round(hourlyLoss * extraHoursPerYear);
     insights.push({
       id:       "truehourly.large-gap",
-      type:     "warning",
-      title:    `Commute and decompression cost you $${hourlyLoss.toFixed(2)}/hr`,
-      body:     `If you valued your extra ${extraHoursPerYear} work-related hours at your advertised rate, that's $${annualLoss.toLocaleString()}/year in uncompensated time. A remote or hybrid arrangement, or a shorter commute, could effectively give you a major raise.`,
-      priority: 95,
+      severity: "warning",
+      category: "hidden-cost",
+      title:    `${extraHoursPerYear} job-related hours/year at $0 — worth $${annualLoss.toLocaleString()} at your advertised rate`,
+      body:     `If those ${extraHoursPerYear} commute and decompression hours were compensated at your advertised rate, that is $${annualLoss.toLocaleString()}/year. A remote arrangement or shorter commute delivers this as an effective pay increase — no negotiation required.`,
+      metric:   { label: "Uncompensated hours value", value: `$${annualLoss.toLocaleString()}/yr` },
     });
   }
 
@@ -73,10 +83,11 @@ export function generateTrueHourlyInsights(
   if (hourlyLoss >= 5 && hourlyLoss <= 10) {
     insights.push({
       id:       "truehourly.moderate-gap",
-      type:     "neutral",
-      title:    `$${hourlyLoss.toFixed(2)}/hr hidden cost from job-related time`,
-      body:     `Your ${commuteHrsDay > 0 ? `${commuteHrsDay}hr commute` : ""}${commuteHrsDay > 0 && decompressHrs > 0 ? " and " : ""}${decompressHrs > 0 ? `${decompressHrs}hr decompression` : ""} adds up to ${extraHoursPerYear} hours annually. Negotiating even 2 remote days/week could recover a significant portion of this gap.`,
-      priority: 85,
+      severity: "neutral",
+      category: "hidden-cost",
+      title:    `$${hourlyLoss.toFixed(2)}/hr gap from job-related time`,
+      body:     `Your ${commuteHrsDay > 0 ? `${commuteHrsDay}hr commute` : ""}${commuteHrsDay > 0 && decompressHrs > 0 ? " and " : ""}${decompressHrs > 0 ? `${decompressHrs}hr decompression` : ""} adds ${extraHoursPerYear} hours annually to the job's real time cost. Two remote days per week typically recovers a significant portion of this gap.`,
+      metric:   { label: "Effective rate reduction", value: `$${hourlyLoss.toFixed(2)}/hr` },
     });
   }
 
@@ -84,10 +95,11 @@ export function generateTrueHourlyInsights(
   if (extraHoursPerYear > 200) {
     insights.push({
       id:       "truehourly.time-robbed",
-      type:     "warning",
-      title:    `${extraHoursPerYear} unpaid hours/year = ${timeRobbedWeeks} extra work weeks`,
-      body:     `That's more than ${Math.floor(timeRobbedWeeks)} full work weeks per year spent on job-adjacent activities with no pay. Remote-first roles, closer offices, or flex-time policies can reclaim this time — and it's worth factoring into any job comparison.`,
-      priority: 90,
+      severity: "warning",
+      category: "time-loss",
+      title:    `${extraHoursPerYear} unpaid job-adjacent hours/year — ${timeRobbedWeeks} extra work weeks`,
+      body:     `More than ${Math.floor(timeRobbedWeeks)} full work weeks per year spent on commuting and decompression — with no compensation. Remote-first roles, closer offices, or flex-time arrangements directly reclaim this time and should be factored into any job comparison as part of total compensation.`,
+      metric:   { label: "Unpaid weeks/yr", value: `${timeRobbedWeeks}wks` },
     });
   }
 
@@ -95,10 +107,11 @@ export function generateTrueHourlyInsights(
   if (commuteHrsDay === 0) {
     insights.push({
       id:       "truehourly.no-commute",
-      type:     "positive",
-      title:    `Zero commute — your true rate nearly matches advertised`,
-      body:     `With no commute, your true hourly of $${trueHourly.toFixed(2)} is very close to your advertised $${advertisedHourly.toFixed(2)}. Remote work is effectively a pay raise — the average US commute of 27 minutes each way costs workers ~$3–5/hr in true rate.`,
-      priority: 75,
+      severity: "positive",
+      category: "savings",
+      title:    `Zero commute — true rate $${trueHourly.toFixed(2)} vs advertised $${advertisedHourly.toFixed(2)}`,
+      body:     `With no commute, your true hourly is very close to your advertised rate. The average US commute of 27 minutes each way costs workers $3–5/hr in effective rate reduction — you avoid that entirely.`,
+      metric:   { label: "Rate efficiency", value: `${effectivePct}%` },
     });
   }
 
@@ -107,10 +120,11 @@ export function generateTrueHourlyInsights(
   if (trueAnnual < salary * 0.85) {
     insights.push({
       id:       "truehourly.annual-context",
-      type:     "neutral",
-      title:    `True economic value of your role: ~$${trueAnnual.toLocaleString()}/year`,
-      body:     `When job-related hours are priced at your true rate, your $${salary.toLocaleString()} salary has an effective economic value of ~$${trueAnnual.toLocaleString()}. Use this as a benchmark when comparing competing job offers — a $5k raise at a remote company is often worth much more.`,
-      priority: 65,
+      severity: "neutral",
+      category: "comparison",
+      title:    `True economic value: ~$${trueAnnual.toLocaleString()}/year vs $${salary.toLocaleString()} salary`,
+      body:     `When all job-related hours are priced at your true rate, the economic value of the role is ~$${trueAnnual.toLocaleString()}/year. Use this as the baseline when comparing offers — a $5,000 salary increase at a remote company is often worth significantly more in real terms.`,
+      metric:   { label: "True annual value", value: `$${trueAnnual.toLocaleString()}` },
     });
   }
 

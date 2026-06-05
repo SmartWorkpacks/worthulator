@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateMissedInvestment } from "@/calculations/finance/missedInvestment";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -25,10 +26,20 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
+// ── Step 5c: worked examples derived from the live calculation module ────────
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX_10Y = calculateMissedInvestment({ amount: 1000, yearsAgo: 10, annualReturn: 10 });
+const EX_25Y = calculateMissedInvestment({ amount: 1000, yearsAgo: 25, annualReturn: 10 });
+const EX_30Y = calculateMissedInvestment({ amount: 1000, yearsAgo: 30, annualReturn: 10 });
+const EX_29Y = calculateMissedInvestment({ amount: 1000, yearsAgo: 29, annualReturn: 10 });
+const EX_5K40 = calculateMissedInvestment({ amount: 5000, yearsAgo: 40, annualReturn: 7 });
+const EX_10K35 = calculateMissedInvestment({ amount: 10000, yearsAgo: 35, annualReturn: 7 });
+const YEAR30_GROWTH = EX_30Y.currentValue - EX_29Y.currentValue;
+
 const FAQS = [
   {
     q: "How does the missed investment calculator work?",
-    a: "It applies compound interest to any amount over a number of years. The formula is: Future Value = Amount × (1 + rate)^years. A $1,000 purchase 10 years ago at 10% annual return would be $2,594 today. The difference ($1,594) is the missed gain.",
+    a: `It applies compound interest to any amount over a number of years. The formula is: Future Value = Amount × (1 + rate)^years. A $1,000 purchase 10 years ago at 10% annual return would be ${usd(EX_10Y.currentValue)} today. The difference (${usd(EX_10Y.totalGain)}) is the missed gain.`,
   },
   {
     q: "What annual return should I use?",
@@ -40,7 +51,7 @@ const FAQS = [
   },
   {
     q: "What is opportunity cost in investing?",
-    a: "Opportunity cost is the value of the best alternative you didn't choose. Every dollar spent on a depreciating purchase is a dollar not compounding in the market. Over decades, this difference becomes dramatic — a $5,000 purchase at 25 is worth roughly $87,000 at 65 (at 7% real return).",
+    a: `Opportunity cost is the value of the best alternative you didn't choose. Every dollar spent on a depreciating purchase is a dollar not compounding in the market. Over decades, this difference becomes dramatic — a $5,000 purchase at 25 is worth roughly ${usd(EX_5K40.currentValue)} at 65 (at 7% real return).`,
   },
   {
     q: "How do I use this to make better financial decisions?",
@@ -49,16 +60,16 @@ const FAQS = [
 ];
 
 const STATS = [
-  { stat: "10×",   color: "text-emerald-600", accent: "bg-emerald-500", label: "$1,000 invested 25 years ago at 10% annual return is worth over $10,000 today" },
+  { stat: `${Math.floor(EX_25Y.multiplier)}×`, color: "text-emerald-600", accent: "bg-emerald-500", label: `$1,000 invested 25 years ago at 10% annual return is worth ${usd(EX_25Y.currentValue)} today` },
   { stat: "7%",    color: "text-blue-600",    accent: "bg-blue-500",    label: "Inflation-adjusted average real return of the S&P 500 — the conservative benchmark" },
-  { stat: "$87k",  color: "text-amber-600",   accent: "bg-amber-500",   label: "What a $5,000 impulse purchase at age 25 costs in retirement wealth at age 65 (7%)" },
+  { stat: `$${Math.round(EX_5K40.currentValue / 1000)}k`, color: "text-amber-600", accent: "bg-amber-500", label: "What a $5,000 impulse purchase at age 25 grows to in retirement wealth by age 65 (7%)" },
 ];
 
 const CONTENT_CARDS = [
   {
     icon: "⏳",
     title: "Compound interest is ruthlessly asymmetric",
-    body: "The first few years of compounding look modest. The last few years are explosive. A $1,000 investment at 10% grows by $100 in year 1, but by $1,746 in year 30 alone. This is why time in the market matters far more than timing the market — and why early spending is so much more expensive than it looks.",
+    body: `The first few years of compounding look modest. The last few years are explosive. A $1,000 investment at 10% grows by $100 in year 1, but by ${usd(YEAR30_GROWTH)} in year 30 alone. This is why time in the market matters far more than timing the market — and why early spending is so much more expensive than it looks.`,
   },
   {
     icon: "🎯",
@@ -68,7 +79,7 @@ const CONTENT_CARDS = [
   {
     icon: "💡",
     title: "Use it forwards, not just backwards",
-    body: "Don't just calculate what past purchases cost you — use it before future ones. Enter the purchase amount and your years until retirement. That's the true price tag. A $10,000 car upgrade at age 30 costs $76,000 in retirement wealth at a 7% real return over 35 years.",
+    body: `Don't just calculate what past purchases cost you — use it before future ones. Enter the purchase amount and your years until retirement. That's the true price tag. A $10,000 car upgrade at age 30 grows to ${usd(EX_10K35.currentValue)} in retirement wealth at a 7% real return over 35 years.`,
   },
 ];
 
@@ -118,9 +129,9 @@ export default function MissedInvestmentCalculatorPage() {
         description="Enter any past purchase and see what it would be worth today if you had invested it instead — powered by real compound interest math."
         chips={["Worth today", "Total gain missed", "Multiplier on original amount"]}
       >
-        <CalculatorEngineLoader slug="missed-investment" />
+        <EngineWithInsights slug="missed-investment" />
       </SimpleCalculatorHero>
-      <InsightStrip text='Every dollar spent is a dollar not compounding — <span class="font-semibold text-gray-900">at 10% annual return, $1,000 spent today costs you $17,000 over 30 years.</span>' />
+      <InsightStrip text={`Every dollar spent is a dollar not compounding — <span class="font-semibold text-gray-900">at 10% annual return, $1,000 spent today grows to ${usd(EX_30Y.currentValue)} over 30 years.</span>`} />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid
         title="The real price of every purchase"

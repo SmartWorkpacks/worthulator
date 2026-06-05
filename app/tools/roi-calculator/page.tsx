@@ -5,7 +5,6 @@ import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "ROI Calculator 2026 – Calculate Real Returns After Fees & Inflation",
@@ -146,7 +145,6 @@ export default function ROICalculatorPage() {
       />
 
 
-      <InsightTable slug="roi-calculator" />
       <SEOTextBlock
         title="How the ROI Calculator Works"
         formula={`Gross ROI = (Final Value − Total Invested) / Total Invested × 100
@@ -165,8 +163,8 @@ Real ROI = Net ROI adjusted for inflation:
           { label: "Compare to benchmark", description: "Default is 7% (S&P 500 inflation-adjusted avg). See if your investment beat the index." },
         ]}
         paragraphs={[
-          "This calculator models the compound erosion of fees and inflation on your returns — something most ROI tools ignore completely. The line chart shows all four curves simultaneously: gross, net, real, and benchmark.",
-          "CAGR (Compound Annual Growth Rate) is the most useful single number for comparing investments. A 100% ROI over 10 years is a 7.2% CAGR — very different from a 100% ROI over 2 years (41.4% CAGR).",
+          "This calculator models the compound erosion of fees and inflation on your returns — something most ROI tools ignore completely. The line chart shows all four curves simultaneously: gross, net, real, and benchmark. The inflation field defaults to the current US CPI rate from live Federal Reserve (FRED) data, so your real return starts from a current number rather than a stale assumption.",
+          "CAGR (Compound Annual Growth Rate) is the most useful single number for comparing investments. A 100% ROI over 10 years is a 7.2% CAGR — very different from a 100% ROI over 2 years (41.4% CAGR). And unlike many calculators, this one shows a genuine negative ROI when your final value is below what you put in — losses aren't quietly rounded up to zero.",
         ]}
       />
 

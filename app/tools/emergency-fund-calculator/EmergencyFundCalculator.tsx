@@ -15,9 +15,12 @@ import {
   WhatIfButtons,
   CalcDisclaimer,
 } from "@/src/templates/take-home-pay";
-import { calculateEmergencyFund, type MonthlyExpenses } from "@/lib/calculators/emergencyFundEngine";
+import { calculateEmergencyFund, HYSA_APY, type MonthlyExpenses } from "@/lib/calculators/emergencyFundEngine";
+import { getCpiInflationYoY } from "@/lib/datasets/finance/fredBenchmarks";
 
 function fmt(v: number) { return "$" + Math.round(Math.abs(v)).toLocaleString(); }
+
+const CPI_RATE = getCpiInflationYoY();
 
 function makeMarks(max: number): string[] {
   return [0, 0.25, 0.5, 0.75, 1].map((f) => {
@@ -47,15 +50,21 @@ export default function EmergencyFundCalculator() {
   const [savingsInput,    setSavingsInput]     = useState("2000");
   const [monthlySavings,  setMonthlySavings]   = useState(300);
   const [monthlyInput,    setMonthlyInput]     = useState("300");
+  const [hysaApyOverride, setHysaApyOverride]  = useState(0);
+  const [hysaApyInput,    setHysaApyInput]     = useState("0");
 
   const [calculated,   setCalculated]   = useState(false);
-  const [calculating,  setCalculating]  = useState(false);
+  const [calculating,  setCalculating]  = useState(true);
   const [calcStep,     setCalcStep]     = useState(0);
   const [calcProgress, setCalcProgress] = useState(0);
   const [flash,        setFlash]        = useState(false);
   const prevRef = useRef(0);
 
-  const result = calculateEmergencyFund({ expenses, targetMonths, currentSavings, monthlySavingsRate: monthlySavings });
+  const result = calculateEmergencyFund(
+    { expenses, targetMonths, currentSavings, monthlySavingsRate: monthlySavings },
+    { annualInflationPct: CPI_RATE, hysaApyPct: hysaApyOverride > 0 ? hysaApyOverride : undefined },
+  );
+  const effApy = hysaApyOverride > 0 ? hysaApyOverride : HYSA_APY;
 
   const display = useCountUp(result.targetAmount, calculated);
 
@@ -74,6 +83,12 @@ export default function EmergencyFundCalculator() {
     }
     setTimeout(() => { prevRef.current = 0; setCalculating(false); setCalculated(true); }, CALC_STEPS.length * dur);
   }
+
+  // Hybrid auto-reveal: play the loader once on mount, then update live as inputs change.
+  useEffect(() => {
+    handleCalculate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function setExpense(key: keyof MonthlyExpenses, value: number) {
     setExpenses((prev) => ({ ...prev, [key]: value }));
@@ -165,10 +180,24 @@ export default function EmergencyFundCalculator() {
             onSelect={(v) => { setMonthlySavings(v); setMonthlyInput(String(v)); }} />
         </SliderInputCard>
 
-        {!calculated && (
-          <button type="button" onClick={handleCalculate} disabled={calculating}
-            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed">
-            {calculating ? "Calculating…" : "Calculate emergency fund →"}
+        <SliderInputCard
+          id="hysaApy" label="Your savings APY (optional)" hint="Leave at 0 to use the live high-yield average"
+          symbol="%" value={hysaApyOverride} inputValue={hysaApyInput}
+          min={0} max={8} step={0.1}
+          marks={["0%", "2%", "4%", "6%", "8%"]}
+          onChange={(v) => { setHysaApyOverride(v); setHysaApyInput(String(v)); }}
+          onInputChange={(r) => { setHysaApyInput(r); const v = Math.max(0, Math.min(8, Number(r))); if (!isNaN(v)) setHysaApyOverride(v); }}
+          onInputBlur={() => setHysaApyInput(String(hysaApyOverride))}
+        >
+          <QuickChips symbol="%" values={[0, 4, 4.5, 5, 5.5]} active={hysaApyOverride}
+            labels={["Live", "4%", "4.5%", "5%", "5.5%"]}
+            onSelect={(v) => { setHysaApyOverride(v); setHysaApyInput(String(v)); }} />
+        </SliderInputCard>
+
+        {!calculated && !calculating && (
+          <button type="button" onClick={handleCalculate}
+            className="w-full rounded-2xl bg-gray-950 py-4 text-sm font-bold text-white tracking-wide shadow-lg transition-all duration-200 hover:bg-gray-800 hover:shadow-xl active:scale-[0.98]">
+            Calculate emergency fund →
           </button>
         )}
       </div>
@@ -226,6 +255,28 @@ export default function EmergencyFundCalculator() {
                 </div>
               ))}
             </div>
+
+            {/* Live: HYSA interest vs inflation drift */}
+            {result.targetAmount > 0 && (
+              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-5 shadow-sm">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="relative flex h-2 w-2">
+                    <span className="absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75 animate-ping" />
+                    <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+                  </span>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-700">
+                    Where to keep it · live CPI {CPI_RATE}%
+                  </p>
+                </div>
+                <p className="text-sm text-gray-700 leading-relaxed">
+                  Parked in a {effApy}% high-yield savings account, your {fmt(result.targetAmount)} target earns about{" "}
+                  <span className="font-semibold text-emerald-700">{fmt(result.annualHysaInterest)}/year</span>.{" "}
+                  {result.hysaCoversInflation
+                    ? <>That more than covers the <span className="font-semibold">{fmt(result.inflationDriftPerYear)}/year</span> inflation drift on your target — so your fund keeps its real coverage while it sits.</>
+                    : <>That falls short of the <span className="font-semibold">{fmt(result.inflationDriftPerYear)}/year</span> inflation drift on your target, so you'll need to top it up to keep the same months of coverage.</>}
+                </p>
+              </div>
+            )}
 
             {/* Breakdown */}
             <BreakdownTable

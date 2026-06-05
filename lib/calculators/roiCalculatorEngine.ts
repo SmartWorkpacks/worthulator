@@ -48,7 +48,9 @@ export function calculateROI(input: ROIInput): ROIResult {
   } = input;
 
   const totalInvested = initialInvestment + annualContribution * years;
-  const totalProfit = Math.max(0, finalValue - totalInvested);
+  // Profit/loss can be negative — a flagship ROI tool must show real losses,
+  // not clamp them to 0%. (Tax still only applies to gains, handled below.)
+  const totalProfit = finalValue - totalInvested;
   const grossROIPct = totalInvested > 0 ? (totalProfit / totalInvested) * 100 : 0;
 
   // Derive implied gross CAGR from final value
@@ -56,17 +58,19 @@ export function calculateROI(input: ROIInput): ROIResult {
     ? Math.pow(finalValue / initialInvestment, 1 / years) - 1
     : 0;
 
-  // Net CAGR after annual fees
-  const netRate = Math.max(0, impliedGrossRate - annualFeePct / 100);
+  // Net CAGR after annual fees — can be negative on a losing investment.
+  // Floored at -100%/yr so the growth factor (1 + netRate) never goes ≤ 0.
+  const netRate = Math.max(-0.99, impliedGrossRate - annualFeePct / 100);
 
   // Net final value
   let netFinalValue = initialInvestment;
   for (let y = 1; y <= years; y++) {
     netFinalValue = netFinalValue * (1 + netRate) + annualContribution;
   }
+  // Tax applies to gains only — never a "negative tax" on losses.
   const netProfit = Math.max(0, netFinalValue - totalInvested);
   const taxDragTotal = netProfit * (taxRatePct / 100);
-  const afterTaxNetFinalValue = totalInvested + netProfit - taxDragTotal;
+  const afterTaxNetFinalValue = netFinalValue - taxDragTotal;
   const netROIPct = totalInvested > 0 ? ((afterTaxNetFinalValue - totalInvested) / totalInvested) * 100 : 0;
 
   // Real (inflation-adjusted) purchasing power

@@ -1,13 +1,13 @@
 "use client";
-
-import CalculatorEngine from "@/components/calculator-engine/CalculatorEngine";
+import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
 import LiveInsightBlock from "@/components/worthcore/LiveInsightBlock";
+import type { CalculatorValues, CalculatorOutputs } from "@/components/calculator-engine/types";
 
-export function WfhSavingsWithInsights() {
+export default function WfhSavingsWithInsights() {
   return (
-    <CalculatorEngine
+    <CalculatorEngineLoader
       slug="wfh-savings-calculator"
-      afterResults={(outputs, values) => (
+      afterResults={(outputs: CalculatorOutputs, values: CalculatorValues) => (
         <LiveInsightBlock slug="wfh-savings-calculator" outputs={outputs} values={values} />
       )}
     />

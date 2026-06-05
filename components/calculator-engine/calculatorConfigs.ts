@@ -14,6 +14,110 @@ import type { CalculatorRegistry } from "./types";
 import { calculateConcreteBag, calculateConcreteVolume } from "@/calculations/construction/concrete";
 import { calculateGravel } from "@/calculations/construction/gravel";
 
+// ─── Calculation modules — finance / lifestyle ───────────────────────────────
+import { calculateFire } from "@/calculations/finance/fireCost";
+import { calculateMillionaire } from "@/calculations/finance/millionaire";
+import { calculateFutureValue } from "@/calculations/finance/futureValue";
+import { calculateSavingsGoal } from "@/calculations/finance/savingsGoal";
+import { calculateSavingsGrowth } from "@/calculations/finance/savingsGrowth";
+import { calculate401k } from "@/calculations/finance/retirement401k";
+import { calculateDrip } from "@/calculations/finance/drip";
+import { calculateCoastFire } from "@/calculations/finance/coastFire";
+import { calculateDownPayment } from "@/calculations/finance/downPayment";
+import { HYSA_APY } from "@/lib/calculators/emergencyFundEngine";
+import { calculateMealPrep } from "@/calculations/lifestyle/mealPrep";
+import { calculateEvVsGas } from "@/calculations/finance/evVsGas";
+import { calculateApplianceCost } from "@/calculations/energy/applianceCost";
+import { calculateCommuteCost } from "@/calculations/work/commuteCost";
+import { calculateJobOffer } from "@/calculations/work/jobOffer";
+import { calculateTrueHourlyWage } from "@/calculations/work/trueHourlyWage";
+import { calculateSideHustle } from "@/calculations/work/sideHustle";
+import { calculateWfhSavings } from "@/calculations/work/wfhSavings";
+import { calculateRoadTripCost } from "@/calculations/travel/roadTripCost";
+import { calculateLaundryCost } from "@/calculations/home/laundryCost";
+import type { MachineKey, WaterTempKey } from "@/calculations/home/laundryCost";
+import { calculateLatteFactor } from "@/calculations/finance/latteFactor";
+import { calculateGroceryUnitPrice } from "@/calculations/shopping/groceryUnitPrice";
+import { calculateTip } from "@/calculations/shopping/tipCalculator";
+import { calculateQuitSmoking } from "@/calculations/health/quitSmoking";
+import { calculateAlcoholCost } from "@/calculations/lifestyle/alcoholCost";
+import { calculateVapingCost } from "@/calculations/lifestyle/vapingCost";
+import { calculateCreditCardPayoff } from "@/calculations/finance/creditCardPayoff";
+import { calculateCreditCardInterest } from "@/calculations/finance/creditCardInterest";
+import { calculateMissedInvestment } from "@/calculations/finance/missedInvestment";
+import { calculateAirbnbProfit } from "@/calculations/finance/airbnbProfit";
+import { calculateSelfEmployedTax } from "@/calculations/finance/selfEmployedTax";
+import { calculateSolarRoi } from "@/calculations/energy/solarRoi";
+import { calculatePto } from "@/calculations/work/pto";
+import { calculateSalaryNegotiation } from "@/calculations/work/salaryNegotiation";
+import { calculateBurnout } from "@/calculations/work/burnout";
+import { calculateLifeInWeeks } from "@/calculations/lifestyle/lifeInWeeks";
+import { calculateBiologicalAge } from "@/calculations/health/biologicalAge";
+import { calculatePetCost } from "@/calculations/lifestyle/petCost";
+import { calculateGpa, gpaToLetter } from "@/calculations/education/gpa";
+import { calculateWorkHours } from "@/calculations/work/workHours";
+import { calculateWorkingDays } from "@/calculations/time/workingDays";
+import { calculateTimeBetween } from "@/calculations/time/timeBetweenDates";
+import { calculatePomodoro } from "@/calculations/work/pomodoro";
+import { calculateProtein } from "@/calculations/health/proteinIntake";
+import { calculateExpenseSplit } from "@/calculations/shopping/expenseSplit";
+import { calculateTile } from "@/calculations/home/tile";
+import { calculateFlooringCost } from "@/calculations/home/flooringCost";
+import { calculateMovingCost } from "@/calculations/home/movingCost";
+import { calculateTaxBracket, FilingStatus } from "@/calculations/finance/taxBracket";
+import { calculatePayroll } from "@/calculations/finance/payroll";
+import { calculateGlobalWealthPercentile } from "@/calculations/finance/globalWealthPercentile";
+
+// ─── Data layer — US · regional energy prices (EV vs Gas) ────────────────────
+import { getUSStateFuelPrice, US_STATE_LIST } from "@/lib/datasets/usStateFuelPrices";
+import { getUSStateElectricityPrice } from "@/lib/datasets/regional/usStateElectricityPrices";
+import { getUSStateCigarettePrice } from "@/lib/datasets/regional/usStateCigarettePrices";
+import { calculateEvChargingCost } from "@/calculations/energy/evChargingCost";
+import { calculateHeatingCost, US_PROPANE_NATIONAL_AVG } from "@/calculations/energy/heatingCost";
+import { getUSStateNaturalGasPrice } from "@/lib/datasets/regional/usStateNaturalGasPrices";
+import { calculateWaterBill } from "@/calculations/home/waterBill";
+import type { UsageLevel, OutdoorLevel, BillingType } from "@/calculations/home/waterBill";
+import { getUSStateWaterRate, usStateWaterRatesDataset } from "@/lib/datasets/regional/usStateWaterRates";
+import { calculateSubscriptionAuditor } from "@/calculations/finance/subscriptionAuditor";
+import { costBenchmarks } from "@/lib/datasets/costs/costBenchmarks";
+import { calculateSalesTax } from "@/calculations/shopping/salesTax";
+import {
+  SALES_TAX_STATE_OPTIONS,
+  SALES_TAX_RATE_BY_NAME,
+  SALES_TAX_RATES,
+  NATIONAL_AVG_SALES_TAX,
+} from "@/lib/datasets/tax/salesTaxRates";
+import { calculateScreenTime } from "@/calculations/lifestyle/screenTime";
+import { calculateStreamingTime } from "@/calculations/lifestyle/streamingTime";
+import { calculatePhoneAddiction } from "@/calculations/lifestyle/phoneAddiction";
+import { calculateProcrastinationCost } from "@/calculations/work/procrastinationCost";
+import { calculateMeetingCost } from "@/calculations/work/meetingCost";
+import { getUSStateMedianWage, US_WAGE_STATE_OPTIONS } from "@/lib/datasets/regional/usStateMedianWages";
+import { calculateCarLoan } from "@/calculations/finance/carLoan";
+import { calculateInflationImpact } from "@/calculations/finance/inflationImpact";
+import { calculateBudget } from "@/calculations/finance/budget";
+import { getAutoLoanNewAPR, getCpiInflationYoY, fredBenchmarks } from "@/lib/datasets/finance/fredBenchmarks";
+
+/**
+ * States that do NOT grant a sales-tax credit for a trade-in — buyers pay tax
+ * on the full vehicle price. Source: state DMV / dept. of revenue trade-in
+ * sales-tax rules. (No-sales-tax states are excluded since their rate is 0.)
+ */
+const NO_TRADE_IN_TAX_CREDIT = new Set([
+  "California",
+  "Hawaii",
+  "Kentucky",
+  "Maryland",
+  "Virginia",
+  "District of Columbia",
+]);
+
+/** State dropdown options for energy calculators: National first, then A-Z. */
+const US_ENERGY_STATE_OPTIONS: { label: string; value: string }[] = [
+  { label: "National average", value: "National" },
+  ...US_STATE_LIST.map((s) => ({ label: s, value: s })),
+];
+
 // ─── Data layer — US · construction ──────────────────────────────────────────
 import { US_BAG_YIELDS, INCHES_TO_FEET_DIVISOR, CU_FT_TO_CU_YD_DIVISOR, GRAVEL_DENSITY_LBS_PER_CU_YD, LBS_PER_SHORT_TON } from "@/data/us/construction/constants";
 import { US_CONSTRUCTION_PRICING } from "@/data/us/construction/pricing";
@@ -327,37 +431,31 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "tip-calculator": {
     id: "tip-calculator",
     category: "other",
-    description: "Split the bill and calculate exactly how much to tip, per person.",
+    description: "Split the bill, calculate the exact tip per person, round up for cash, and see your annual tipping spend.",
     label: "Tip Calculator",
     inputs: [
-      { name: "bill",    label: "Bill amount",       unit: "$", type: "slider", min: 5,  max: 500, step: 5,  default: 60,  quickPicks: [20, 40, 60, 100, 150] },
-      { name: "tipPct",  label: "Tip percentage",    unit: "%", type: "slider", min: 0,  max: 30,  step: 1,  default: 18,  quickPicks: [10, 15, 18, 20, 25]   },
-      { name: "people",  label: "Number of people",              type: "slider", min: 1,  max: 20,  step: 1,  default: 2,   hint: "Split evenly across the whole table" },
+      { name: "bill",             label: "Bill amount",          unit: "$", type: "slider", min: 5,  max: 500, step: 5,  default: 60,  quickPicks: [20, 40, 60, 100, 150] },
+      { name: "tipPct",           label: "Tip percentage",       unit: "%", type: "slider", min: 0,  max: 30,  step: 1,  default: 20,  quickPicks: [10, 15, 18, 20, 25]   },
+      { name: "people",           label: "Number of people",                type: "slider", min: 1,  max: 20,  step: 1,  default: 2,   hint: "Split evenly across the table" },
+      { name: "diningFrequency",  label: "Dining out per month",            type: "slider", min: 1,  max: 30,  step: 1,  default: 8,   hint: "8 ≈ twice a week — adjust to your actual frequency", quickPicks: [2, 4, 8, 12, 20] },
     ],
     outputs: [
-      { key: "tipAmount",          label: "Total tip",           format: "currency",                 sublabel: (i)    => `${i.tipPct}% of $${i.bill}` },
-      { key: "totalBill",          label: "Total to pay",        format: "currency",                 sublabel: (i)    => `Bill + ${i.tipPct}% tip` },
-      { key: "tipPerPerson",       label: "Tip per person",      format: "currency", highlight: true, sublabel: (i)   => `Split ${i.people} ${Number(i.people) === 1 ? "way" : "ways"}` },
-      { key: "totalPerPerson",     label: "Total per person",    format: "currency",                 sublabel: (i)    => `Each of ${i.people} ${Number(i.people) === 1 ? "person pays" : "people pays"}` },
-      { key: "roundedTipPerson",   label: "Rounded tip/person",  format: "currency",                 sublabel: ()     => "Rounded up — easy for cash" },
+      { key: "tipAmount",       label: "Total tip",            format: "currency",                  sublabel: (i) => `${i.tipPct}% of $${i.bill}` },
+      { key: "totalPerPerson",  label: "Total per person",     format: "currency", highlight: true, sublabel: (i) => `Split ${i.people} ${Number(i.people) === 1 ? "way" : "ways"}` },
+      { key: "roundedTotal",    label: "Cash-friendly total",  format: "currency",                  sublabel: () => "Rounded up to nearest $5" },
+      { key: "annualTipSpend",  label: "Annual tip spend",     format: "currency",                  sublabel: (i) => `Dining ${i.diningFrequency}×/mo at ${i.tipPct}%` },
     ],
     calculate: (inputs) => {
-      const bill   = Number(inputs.bill);
-      const tipPct = Number(inputs.tipPct);
-      const people = Math.max(1, Number(inputs.people));
-      const tipAmount  = bill * (tipPct / 100);
-      const totalBill  = bill + tipAmount;
-      return {
-        tipAmount,
-        totalBill,
-        tipPerPerson:      tipAmount / people,
-        totalPerPerson:    totalBill / people,
-        roundedTipPerson:  Math.ceil(tipAmount / people),
-      };
+      return calculateTip({
+        bill:             Number(inputs.bill),
+        tipPct:           Number(inputs.tipPct),
+        people:           Number(inputs.people),
+        diningFrequency:  Number(inputs.diningFrequency),
+      });
     },
     insight: (i, o) =>
-      `A ${i.tipPct}% tip on a $${i.bill} bill is $${o.tipAmount?.toFixed(2)} — ` +
-      `$${o.tipPerPerson?.toFixed(2)}/person. Rounded up for cash: $${o.roundedTipPerson?.toFixed(2)}/person.`,
+      `A ${i.tipPct}% tip on $${i.bill} = $${(o.tipAmount ?? 0).toFixed(2)} ($${(o.tipPerPerson ?? 0).toFixed(2)}/person). ` +
+      `At ${i.diningFrequency}×/mo, you spend $${(o.annualTipSpend ?? 0).toFixed(0)}/yr on tips alone.`,
   },
 
   // -- BMI Calculator ----------------------------------------------------------
@@ -430,22 +528,12 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "totalPaid",        label: "Total amount paid",         format: "currency",                 sublabel: (i) => `Original balance: $${i.balance}` },
       { key: "interestOfTotal",  label: "Interest share of payments", format: "decimal", decimalPlaces: 1, sublabel: () => "% of every dollar paid that goes to the bank" },
     ],
-    calculate: (inputs) => {
-      const balance     = Number(inputs.balance);
-      const monthlyRate = Number(inputs.apr) / 100 / 12;
-      const payment     = Number(inputs.monthlyPayment);
-      let remaining = balance, months = 0;
-      while (remaining > 0 && months < 600) {
-        const interest = remaining * monthlyRate;
-        if (payment <= interest) { months = 600; break; }
-        remaining = remaining + interest - payment;
-        months++;
-      }
-      const totalPaid      = months < 600 ? months * payment : 0;
-      const totalInterest  = months < 600 ? totalPaid - balance : 0;
-      const interestOfTotal = totalPaid > 0 ? (totalInterest / totalPaid) * 100 : 0;
-      return { monthsToPayoff: months, totalInterest, totalPaid, interestOfTotal };
-    },
+    calculate: (inputs) =>
+      calculateCreditCardInterest({
+        balance:        Number(inputs.balance),
+        apr:            Number(inputs.apr),
+        monthlyPayment: Number(inputs.monthlyPayment),
+      }),
     insight: (i, o) => {
       if ((o.monthsToPayoff ?? 0) >= 600)
         return `Your $${i.monthlyPayment}/mo payment does not cover the monthly interest at ${i.apr}% APR. Increase your payment.`;
@@ -474,20 +562,12 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "growthLostPct",     label: "Growth forfeited",       format: "decimal", decimalPlaces: 0, sublabel: () => "% gain you missed out on" },
       { key: "monthlyEquivalent", label: "Monthly opportunity cost", format: "currency",                sublabel: (i) => `Gain spread across ${i.yearsAgo}-year window` },
     ],
-    calculate: (inputs) => {
-      const amount  = Number(inputs.amount);
-      const rate    = Number(inputs.annualReturn) / 100;
-      const years   = Number(inputs.yearsAgo);
-      const fv      = amount * Math.pow(1 + rate, years);
-      const gain    = fv - amount;
-      return {
-        currentValue:      fv,
-        totalGain:         gain,
-        multiplier:        fv / amount,
-        growthLostPct:     (gain / amount) * 100,
-        monthlyEquivalent: gain / Math.max(years * 12, 1),
-      };
-    },
+    calculate: (inputs) =>
+      calculateMissedInvestment({
+        amount:       Number(inputs.amount),
+        yearsAgo:     Number(inputs.yearsAgo),
+        annualReturn: Number(inputs.annualReturn),
+      }),
     insight: (i, o) =>
       `$${i.amount} invested ${i.yearsAgo} years ago at ${i.annualReturn}% would be $${Math.round(o.currentValue ?? 0).toLocaleString()} today — ` +
       `a ${o.growthLostPct?.toFixed(0)}% gain (${o.multiplier?.toFixed(2)}x) you walked away from.`,
@@ -675,45 +755,43 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "annualReturn",   label: "Annual return",     unit: "%", type: "slider", min: 0,     max: 15,     step: 0.5,  default: 4,     hint: "High-yield savings: 4-5%  Stocks: 7-10%", quickPicks: [0, 2, 4, 7, 10] },
     ],
     outputs: [
-      { key: "monthlyContribution", label: "Monthly savings needed",   format: "currency",                  highlight: true, sublabel: (i) => `Over ${i.years} yr(s) at ${i.annualReturn}% return` },
-      { key: "totalContributed",    label: "Total you contribute",     format: "currency",                  sublabel: () => "Your out-of-pocket deposits" },
-      { key: "interestEarned",      label: "Interest earned",          format: "currency",                  sublabel: () => "Money your money makes" },
-      { key: "interestSharePct",    label: "Interest share of goal",   format: "decimal", decimalPlaces: 1, sublabel: () => "% of goal funded by returns, not deposits" },
+      { key: "monthlyContribution", label: "Monthly savings needed",  format: "currency",                  highlight: true, sublabel: (i) => `Over ${i.years} yr(s) at ${i.annualReturn}% return` },
+      { key: "interestEarned",      label: "Earned by your money",     format: "currency",                  sublabel: (i, o) => `${(o.interestSharePct ?? 0).toFixed(1)}% of the goal — not from your pocket` },
+      { key: "monthlySavedByGrowth",label: "Saved per month by growth",format: "currency",                  sublabel: () => "vs saving with 0% return" },
+      { key: "inflationAdjustedGoal",label: "Goal in future dollars",  format: "currency",                  sublabel: () => `Same buying power at live ${getCpiInflationYoY()}% CPI` },
+      { key: "monthlyForRealGoal",  label: "Monthly to keep pace",     format: "currency",                  sublabel: () => "To hit the inflation-adjusted goal" },
     ],
-    calculate: (inputs) => {
-      const fv  = Number(inputs.goalAmount);
-      const pv  = Number(inputs.currentSavings);
-      const r   = Number(inputs.annualReturn) / 100 / 12;
-      const n   = Number(inputs.years) * 12;
-      const pvGrown = pv * Math.pow(1 + r, n);
-      let mc: number;
-      if (r === 0) { mc = Math.max(0, (fv - pvGrown) / n); }
-      else { mc = Math.max(0, (fv - pvGrown) / ((Math.pow(1 + r, n) - 1) / r)); }
-      const totalContributed = mc * n;
-      const interestEarned   = Math.max(0, fv - pv - totalContributed);
-      return {
-        monthlyContribution: mc,
-        totalContributed,
-        interestEarned,
-        interestSharePct: fv > 0 ? (interestEarned / fv) * 100 : 0,
-      };
-    },
+    calculate: (i) =>
+      calculateSavingsGoal(
+        {
+          goalAmount:     Number(i.goalAmount),
+          currentSavings: Number(i.currentSavings),
+          years:          Number(i.years),
+          annualReturn:   Number(i.annualReturn),
+        },
+        { annualInflationPct: getCpiInflationYoY() },
+      ),
     insight: (i, o) =>
-      `To save $${i.goalAmount} in ${i.years} yr(s), deposit $${o.monthlyContribution?.toFixed(2)}/month. ` +
-      `You contribute $${o.totalContributed?.toFixed(0)} and earn $${o.interestEarned?.toFixed(0)} in interest (${o.interestSharePct?.toFixed(1)}% of your goal funded by returns).`,
+      `To save $${Number(i.goalAmount).toLocaleString()} in ${i.years} yr(s), deposit $${(o.monthlyContribution ?? 0).toFixed(0)}/month — ` +
+      `but $${Number(o.inflationAdjustedGoal ?? 0).toLocaleString()} will have the same buying power then, so $${(o.monthlyForRealGoal ?? 0).toFixed(0)}/mo truly keeps pace.`,
   },
 
   // -- Car Loan Calculator -----------------------------------------------------
   "car-loan-calculator": {
     id: "car-loan-calculator",
     category: "finance",
-    description: "Calculate your monthly car payment, total interest, and true cost of any vehicle loan.",
+    description: "Calculate your true out-the-door car payment — financing your state's live sales tax at the current FRED auto-loan APR, with the trade-in tax credit applied automatically.",
     label: "Car Loan Calculator",
     inputs: [
-      { name: "vehiclePrice",  label: "Vehicle price",         unit: "$", type: "slider", min: 5000, max: 100000, step: 500,  default: 28000, quickPicks: [15000, 20000, 28000, 40000, 60000] },
-      { name: "downPayment",   label: "Down payment",          unit: "$", type: "slider", min: 0,    max: 20000,  step: 500,  default: 3000,  hint: "Larger down = lower payments", quickPicks: [0, 1000, 3000, 5000, 10000] },
-      { name: "tradeIn",       label: "Trade-in value",        unit: "$", type: "slider", min: 0,    max: 20000,  step: 500,  default: 0,     quickPicks: [0, 2000, 5000, 8000] },
-      { name: "interestRate",  label: "Annual interest rate",  unit: "%", type: "slider", min: 0.5,  max: 25,     step: 0.5,  default: 7,     hint: "Avg new car APR 2026 is ~7-9%", quickPicks: [3, 5, 7, 9, 12] },
+      {
+        name: "state", label: "Your state", type: "dropdown", default: "US Average",
+        options: SALES_TAX_STATE_OPTIONS,
+        hint: "Loads your state's live combined sales tax rate — applied to the taxable vehicle price",
+      },
+      { name: "vehiclePrice",  label: "Vehicle price",         unit: "$", type: "slider", min: 5000, max: 100000, step: 500,  default: 28000, hint: "Sticker/negotiated price before tax & fees", quickPicks: [15000, 20000, 28000, 40000, 60000] },
+      { name: "downPayment",   label: "Down payment",          unit: "$", type: "slider", min: 0,    max: 50000,  step: 500,  default: 3000,  hint: "Cash down — lowers the loan but not the taxable price", maxFn: (i) => Number(i.vehiclePrice), quickPicks: [0, 1000, 3000, 5000, 10000] },
+      { name: "tradeIn",       label: "Trade-in value",        unit: "$", type: "slider", min: 0,    max: 50000,  step: 500,  default: 0,     hint: "In most states your trade-in reduces the amount you're taxed on", maxFn: (i) => Number(i.vehiclePrice), quickPicks: [0, 2000, 5000, 8000] },
+      { name: "interestRate",  label: "Annual interest rate (APR)",  unit: "%", type: "slider", min: 0.5,  max: 25,     step: 0.1,  default: getAutoLoanNewAPR(),  hint: "Defaults to the live FRED 48-mo new-car average (used cars run ~3 pts higher)", quickPicks: [3, 5, 7, 9, 12] },
       {
         name: "termMonths", label: "Loan term", unit: "months", type: "select", default: 60,
         options: [
@@ -722,190 +800,227 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
           { label: "72 months (6 yr)", value: 72 }, { label: "84 months (7 yr)", value: 84 },
         ],
       },
+      {
+        name: "salesTaxOverride", label: "Your sales tax rate (optional)", unit: "%", type: "slider",
+        min: 0, max: 12, step: 0.05, default: 0,
+        hint: "Leave at 0 to use your state's live combined rate.",
+        quickPicks: [0, 6, 7.25, 8.25, 9.5],
+      },
     ],
     outputs: [
-      { key: "monthlyPayment",  label: "Monthly payment",         format: "currency",                  highlight: true, sublabel: (i) => `Over ${i.termMonths} months at ${i.interestRate}% APR` },
+      { key: "monthlyPayment",  label: "Monthly payment",         format: "currency",                  highlight: true, sublabel: (i) => `Over ${i.termMonths} months at ${Number(i.interestRate).toFixed(1)}% APR` },
+      { key: "salesTax",        label: "Sales tax (financed)",    format: "currency",                  sublabel: (i, o) => `${(o.resolvedRate ?? 0).toFixed(2)}%${Number(i.salesTaxOverride) > 0 ? " (your rate)" : ` in ${i.state === "US Average" ? "the US" : i.state}`}` },
+      { key: "loanAmount",      label: "Amount financed",         format: "currency",                  sublabel: () => "Out-the-door price − down − trade-in" },
       { key: "totalInterest",   label: "Total interest paid",     format: "currency",                  sublabel: () => "Extra cost of financing" },
-      { key: "totalCost",       label: "Total cost of vehicle",   format: "currency",                  sublabel: (i) => `Loan + $${i.downPayment} down + $${i.tradeIn} trade-in` },
-      { key: "interestPct",     label: "Interest as % of total",  format: "decimal", decimalPlaces: 1, sublabel: () => "Of every dollar paid, this much is interest" },
+      { key: "totalCost",       label: "Total cash cost",         format: "currency",                  sublabel: (i) => `Payments + $${Number(i.downPayment).toLocaleString()} down` },
     ],
     calculate: (inputs) => {
-      const loanAmount = Math.max(0, Number(inputs.vehiclePrice) - Number(inputs.downPayment) - Number(inputs.tradeIn));
-      const r = Number(inputs.interestRate) / 100 / 12;
-      const n = Number(inputs.termMonths);
-      const mp = r === 0 ? loanAmount / n : loanAmount * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
-      const totalPaid     = mp * n;
-      const totalInterest = totalPaid - loanAmount;
-      const totalCost     = totalPaid + Number(inputs.downPayment) + Number(inputs.tradeIn);
-      return {
-        loanAmount, monthlyPayment: mp, totalInterest, totalCost,
-        interestPct: totalCost > 0 ? (totalInterest / totalCost) * 100 : 0,
-      };
+      const state = String(inputs.state ?? "US Average");
+      const taxOverride = Number(inputs.salesTaxOverride) || 0;
+      const rate = taxOverride > 0 ? taxOverride : (SALES_TAX_RATE_BY_NAME[state] ?? NATIONAL_AVG_SALES_TAX);
+      const tradeInReducesTax = !NO_TRADE_IN_TAX_CREDIT.has(state);
+
+      const r = calculateCarLoan(
+        {
+          vehiclePrice: Number(inputs.vehiclePrice),
+          downPayment:  Number(inputs.downPayment),
+          tradeIn:      Number(inputs.tradeIn),
+          interestRate: Number(inputs.interestRate),
+          termMonths:   Number(inputs.termMonths),
+          state,
+        },
+        { salesTaxRate: rate, tradeInReducesTax },
+      );
+      return { ...r, resolvedRate: rate };
     },
     insight: (i, o) =>
-      `A $${i.vehiclePrice} vehicle with $${i.downPayment} down over ${i.termMonths} months at ${i.interestRate}% ` +
-      `costs $${o.monthlyPayment?.toFixed(2)}/month. Interest is ${o.interestPct?.toFixed(1)}% of your total spend ($${o.totalInterest?.toFixed(0)}).`,
+      `A $${Number(i.vehiclePrice).toLocaleString()} vehicle in ${i.state === "US Average" ? "the US" : i.state} costs $${(o.monthlyPayment ?? 0).toFixed(2)}/month over ${i.termMonths} months at ${Number(i.interestRate).toFixed(1)}% APR. ` +
+      `That includes $${Math.round(o.salesTax ?? 0).toLocaleString()} of financed sales tax and $${Math.round(o.totalInterest ?? 0).toLocaleString()} of interest.`,
   },
 
   // -- Subscription Auditor ----------------------------------------------------
   "subscription-auditor": {
     id: "subscription-auditor",
     category: "finance",
-    description: "Add up your subscriptions, see your true annual cost, and the investment opportunity you're forfeiting.",
+    description: "Add up your subscriptions by category, compare to live national benchmarks, and see the investment opportunity you're forfeiting.",
     label: "Subscription Auditor",
     inputs: [
-      { name: "streaming",  label: "Streaming services",   unit: "$/mo", type: "slider", min: 0, max: 100, step: 1,  default: 45, hint: "Netflix, Disney+, Spotify, etc.", quickPicks: [0, 20, 45, 60, 80] },
-      { name: "software",   label: "Software & apps",      unit: "$/mo", type: "slider", min: 0, max: 100, step: 1,  default: 30, hint: "Adobe, Microsoft 365, cloud storage", quickPicks: [0, 15, 30, 50] },
-      { name: "fitness",    label: "Fitness & wellness",   unit: "$/mo", type: "slider", min: 0, max: 150, step: 5,  default: 40, hint: "Gym, Peloton, meditation apps", quickPicks: [0, 20, 40, 80, 120] },
-      { name: "newsMedia",  label: "News & media",         unit: "$/mo", type: "slider", min: 0, max: 50,  step: 1,  default: 15, hint: "Newspapers, magazines, newsletters", quickPicks: [0, 10, 15, 25] },
-      { name: "other",      label: "Other subscriptions",  unit: "$/mo", type: "slider", min: 0, max: 200, step: 5,  default: 20, hint: "Meal kits, boxes, anything else", quickPicks: [0, 20, 50, 100] },
+      { name: "streaming",  label: "Streaming services",   unit: "$/mo", type: "slider", min: 0, max: 150, step: 1,  default: 45, hint: "Netflix, Disney+, Spotify, etc.", quickPicks: [0, 20, 45, 60, 100] },
+      { name: "software",   label: "Software & apps",      unit: "$/mo", type: "slider", min: 0, max: 150, step: 1,  default: 30, hint: "Adobe, Microsoft 365, cloud storage", quickPicks: [0, 15, 30, 50, 80] },
+      { name: "fitness",    label: "Fitness & wellness",   unit: "$/mo", type: "slider", min: 0, max: 200, step: 5,  default: 40, hint: "Gym, Peloton, meditation apps", quickPicks: [0, 20, 40, 80, 120] },
+      { name: "newsMedia",  label: "News & media",         unit: "$/mo", type: "slider", min: 0, max: 80,  step: 1,  default: 15, hint: "Newspapers, magazines, newsletters", quickPicks: [0, 10, 15, 25, 40] },
+      { name: "other",      label: "Other subscriptions",  unit: "$/mo", type: "slider", min: 0, max: 250, step: 5,  default: 20, hint: "Meal kits, boxes, gaming, anything else", quickPicks: [0, 20, 50, 100, 150] },
+      {
+        name: "annualReturn", label: "Investment return assumption", unit: "%", type: "slider",
+        min: 3, max: 12, step: 0.5, default: 7,
+        hint: "Long-run stock market average ~7% — used for opportunity-cost projection",
+        quickPicks: [5, 6, 7, 8, 10],
+      },
     ],
     outputs: [
-      { key: "monthlyTotal",    label: "Monthly total",                  format: "currency",                  highlight: true, sublabel: () => "What subscriptions cost per month" },
-      { key: "annualTotal",     label: "Annual spend",                   format: "currency",                  sublabel: () => "Yearly subscription bill" },
-      { key: "twentyYearCost",  label: "20-year lifetime cost",          format: "currency",                  sublabel: () => "If prices never increase" },
-      { key: "investedValue10", label: "If invested instead (10 yr)",    format: "currency",                  sublabel: () => "Monthly compounded at 7% — opportunity cost" },
+      {
+        key: "monthlyTotal", label: "Monthly total", format: "currency", highlight: true,
+        sublabel: () => "All recurring subscriptions",
+      },
+      {
+        key: "annualTotal", label: "Annual spend", format: "currency",
+        sublabel: () => "Monthly × 12",
+      },
+      {
+        key: "dailyCost", label: "Daily cost", format: "currency",
+        sublabel: () => "Including days you use nothing",
+      },
+      {
+        key: "investedValue10", label: "If invested instead (10 yr)", format: "currency",
+        sublabel: (i) => `Monthly compounded at ${i.annualReturn}%`,
+      },
     ],
-    calculate: (inputs) => {
-      const monthly = Number(inputs.streaming) + Number(inputs.software) +
-                      Number(inputs.fitness) + Number(inputs.newsMedia) + Number(inputs.other);
-      const r = 0.07 / 12;
-      const n10 = 120;
-      const investedValue10 = monthly * ((Math.pow(1 + r, n10) - 1) / r);
-      return {
-        monthlyTotal:    monthly,
-        annualTotal:     monthly * 12,
-        twentyYearCost:  monthly * 12 * 20,
-        investedValue10,
-      };
-    },
-    insight: (_, o) =>
-      `$${o.monthlyTotal?.toFixed(0)}/month in subscriptions = $${o.annualTotal?.toFixed(0)}/year. ` +
-      `Over 20 years that's $${o.twentyYearCost?.toFixed(0)}. Invested at 7% instead, it would grow to $${o.investedValue10?.toFixed(0)} in just 10 years.`,
+    calculate: (inputs) =>
+      calculateSubscriptionAuditor(
+        {
+          streaming:    Number(inputs.streaming),
+          software:     Number(inputs.software),
+          fitness:      Number(inputs.fitness),
+          newsMedia:    Number(inputs.newsMedia),
+          other:        Number(inputs.other),
+          annualReturn: Number(inputs.annualReturn),
+        },
+        {
+          avgMonthlySubscriptions: costBenchmarks.subscriptionsMonthlyUs,
+          avgStreamingOnly:        costBenchmarks.streamingOnlyMonthlyUs,
+        },
+      ),
+    insight: (i, o) =>
+      `$${(o.monthlyTotal ?? 0).toFixed(0)}/month in subscriptions = $${(o.annualTotal ?? 0).toFixed(0)}/year ($${(o.dailyCost ?? 0).toFixed(2)}/day). ` +
+      `Invested at ${i.annualReturn}% instead, that grows to $${(o.investedValue10 ?? 0).toLocaleString()} in 10 years — vs $${(o.twentyYearCost ?? 0).toLocaleString()} spent over 20.`,
   },
 
   // -- Road Trip Cost Calculator -----------------------------------------------
   "road-trip-cost": {
     id: "road-trip-cost",
     category: "other",
-    description: "Calculate total fuel cost for any road trip including real-world efficiency, tolls, and per-person split.",
+    description: "Calculate real-world fuel cost for any road trip using your state's live gas price, highway/city blend, tolls, and per-person split.",
     label: "Road Trip Cost Calculator",
     inputs: [
-      { name: "distanceMiles", label: "One-way distance",    unit: "miles",  type: "slider", min: 10,  max: 3000, step: 10,   default: 300, hint: "One-way — we calculate both directions", quickPicks: [100, 200, 300, 500, 1000] },
-      { name: "mpg",           label: "Fuel efficiency",     unit: "MPG",    type: "slider", min: 10,  max: 60,   step: 1,    default: 30,  hint: "Use your real-world average (not EPA)", quickPicks: [15, 20, 25, 30, 35, 40] },
-      { name: "fuelPrice",     label: "Gas price",           unit: "$/gal",  type: "slider", min: 2,   max: 7,    step: 0.05, default: 3.5, hint: "Current average US gas price", quickPicks: [2.5, 3.0, 3.5, 4.0, 4.5] },
-      { name: "tolls",         label: "Estimated tolls",     unit: "$",      type: "slider", min: 0,   max: 100,  step: 5,    default: 0,   hint: "Round-trip toll estimate", quickPicks: [0, 10, 20, 40, 60] },
-      { name: "passengers",    label: "Passengers for split",               type: "slider", min: 1,   max: 6,    step: 1,    default: 1,   quickPicks: [1, 2, 3, 4] },
+      { name: "state",         label: "Your state",           type: "dropdown", default: "National", options: US_ENERGY_STATE_OPTIONS, hint: "Loads your state's live average gas price" },
+      { name: "distanceMiles", label: "One-way distance",     unit: "mi",  type: "slider", min: 10,  max: 3000, step: 10,  default: 300,  hint: "One-way distance — we double it for round trip", quickPicks: [50, 100, 200, 500, 1000] },
+      { name: "mpg",           label: "Fuel economy (EPA)",   unit: "MPG", type: "slider", min: 10,  max: 60,   step: 1,   default: 28,   hint: "Your car's EPA combined rating — we adjust for highway/city mix", quickPicks: [15, 20, 28, 35, 45] },
+      { name: "highwayPct",    label: "Highway driving",      unit: "%",   type: "slider", min: 50,  max: 100,  step: 5,   default: 85,   hint: "Road trips are ~85% highway — more highway means better MPG", quickPicks: [50, 70, 85, 95, 100] },
+      { name: "tolls",         label: "Estimated tolls",      unit: "$",   type: "slider", min: 0,   max: 200,  step: 5,   default: 0,    hint: "Round-trip toll total", quickPicks: [0, 10, 25, 50, 100] },
+      { name: "passengers",    label: "Passengers",                        type: "slider", min: 1,   max: 8,    step: 1,   default: 1,    hint: "Total cost split evenly — carpooling cuts per-person cost fast", quickPicks: [1, 2, 3, 4, 6] },
+      { name: "gasPriceOverride", label: "Your gas price (optional)", unit: "$/gal", type: "slider", min: 0, max: 8, step: 0.05, default: 0, hint: "Leave at $0 to use your state's live gas price.", quickPicks: [0, 3, 3.5, 4, 5] },
     ],
     outputs: [
-      { key: "roundTripCost",   label: "Round-trip fuel cost", format: "currency",                  highlight: true, sublabel: (i) => `${i.distanceMiles} miles each way` },
-      { key: "totalTripCost",   label: "Total trip cost",      format: "currency",                  sublabel: (i) => `Fuel + $${i.tolls} tolls` },
-      { key: "costPerPassenger", label: "Cost per person",     format: "currency",                  sublabel: (i) => `Split ${i.passengers} ${Number(i.passengers) === 1 ? "way" : "ways"}` },
-      { key: "costPerMile",     label: "Cost per mile",        format: "decimal", decimalPlaces: 3, sublabel: () => "Round trip, both directions" },
+      { key: "roundTripFuelCost", label: "Round-trip fuel cost", format: "currency", highlight: true, sublabel: (i, o) => `${i.distanceMiles} mi each way · ${(o.effectiveMpg ?? 0).toFixed(1)} eff. MPG · $${(o.gasPrice ?? 0).toFixed(2)}/gal${Number(i.gasPriceOverride) > 0 ? " (your price)" : ` in ${i.state === "National" ? "the US" : i.state}`}` },
+      { key: "oneWayFuelCost",    label: "One-way fuel cost",    format: "currency",                  sublabel: (_, o) => `${(o.gallonsOneWay ?? 0).toFixed(1)} gallons needed` },
+      { key: "totalTripCost",     label: "Total trip cost",      format: "currency",                  sublabel: (i) => `Fuel + $${i.tolls} tolls` },
+      { key: "costPerPerson",     label: "Cost per person",      format: "currency",                  sublabel: (i) => `Split ${i.passengers} ${Number(i.passengers) === 1 ? "way" : "ways"}` },
+      { key: "costPerMile",       label: "Cost per mile",        format: "decimal", decimalPlaces: 3, sublabel: () => "Fuel only, round trip" },
     ],
     calculate: (inputs) => {
-      const dist     = Number(inputs.distanceMiles);
-      const mpg      = Number(inputs.mpg) * 0.9; // 10% real-world degradation
-      const price    = Number(inputs.fuelPrice);
-      const tolls    = Number(inputs.tolls);
-      const pax      = Math.max(1, Number(inputs.passengers));
-      const roundGal = (dist * 2) / mpg;
-      const roundTripCost  = roundGal * price;
-      const totalTripCost  = roundTripCost + tolls;
-      return {
-        roundTripCost,
-        totalTripCost,
-        costPerPassenger: totalTripCost / pax,
-        costPerMile:      totalTripCost / (dist * 2),
-      };
+      const state = String(inputs.state ?? "National");
+      const gasOverride = Number(inputs.gasPriceOverride) || 0;
+      return calculateRoadTripCost(
+        {
+          distanceMiles: Number(inputs.distanceMiles),
+          mpg:           Number(inputs.mpg),
+          highwayPct:    Number(inputs.highwayPct),
+          tolls:         Number(inputs.tolls),
+          passengers:    Number(inputs.passengers),
+        },
+        { gasPrice: gasOverride > 0 ? gasOverride : getUSStateFuelPrice(state) },
+      );
     },
     insight: (i, o) =>
-      `A ${i.distanceMiles}-mile trip in a ${i.mpg} MPG car at $${i.fuelPrice}/gal (real-world -10%) ` +
-      `costs $${o.roundTripCost?.toFixed(2)} in fuel. Total with tolls: $${o.totalTripCost?.toFixed(2)} ($${o.costPerPassenger?.toFixed(2)}/person).`,
+      `A ${i.distanceMiles}-mile trip at ${(o.effectiveMpg ?? 0).toFixed(1)} effective MPG and $${(o.gasPrice ?? 0).toFixed(2)}/gal costs $${(o.roundTripFuelCost ?? 0).toFixed(2)} in fuel round trip — $${(o.costPerPerson ?? 0).toFixed(2)}/person split ${i.passengers} way(s).`,
   },
 
   // -- Laundry Cost Calculator -------------------------------------------------
   "laundry-cost-calculator": {
     id: "laundry-cost-calculator",
     category: "other",
-    description: "Calculate the true cost per load including electricity, water, and detergent — and your annual spend.",
+    description: "Calculate the true cost per load using your state's live electricity rate, machine type, water temperature, and detergent cost.",
     label: "Laundry Cost Calculator",
     inputs: [
-      { name: "loadsPerWeek",    label: "Loads per week",             type: "slider", min: 1,    max: 20,   step: 1,    default: 4,    hint: "Average US household does 5-8 loads/week", quickPicks: [2, 4, 6, 8, 10] },
-      { name: "electricityRate", label: "Electricity rate", unit: "$/kWh", type: "slider", min: 0.05, max: 0.40, step: 0.01, default: 0.16, hint: "US avg ~$0.16/kWh — check your bill", quickPicks: [0.10, 0.13, 0.16, 0.20, 0.25] },
-      { name: "detergentCost",   label: "Detergent per load", unit: "$", type: "slider", min: 0.10, max: 1.50, step: 0.05, default: 0.30, hint: "Bottle cost divided by number of loads", quickPicks: [0.15, 0.25, 0.30, 0.50, 0.75] },
+      { name: "state",         label: "Your state",         type: "dropdown", default: "National", options: US_ENERGY_STATE_OPTIONS, hint: "Loads your state's live residential electricity rate" },
+      { name: "loadsPerWeek",  label: "Loads per week",     type: "slider", min: 1,    max: 20,   step: 1,    default: 5,    hint: "Average US household does 5–8 loads/week (AHAM)", quickPicks: [2, 4, 6, 8, 10] },
       {
-        name: "machineType", label: "Machine efficiency", type: "select", default: 3.8,
+        name: "machineType", label: "Machine type", type: "select", default: "standard",
         options: [
-          { label: "Modern (efficient)", value: 2.8 },
-          { label: "Standard", value: 3.8 },
-          { label: "Older machine", value: 5.0 },
+          { label: "HE front-loader",       value: "he_front" },
+          { label: "Modern top-loader",     value: "modern" },
+          { label: "Standard",              value: "standard" },
+          { label: "Older / less efficient", value: "older" },
         ],
       },
+      {
+        name: "waterTemp", label: "Water temperature", type: "select", default: "warm",
+        options: [
+          { label: "Cold",  value: "cold" },
+          { label: "Warm",  value: "warm" },
+          { label: "Hot",   value: "hot" },
+        ],
+      },
+      { name: "detergentCost", label: "Detergent per load", unit: "$", type: "slider", min: 0.05, max: 1.50, step: 0.05, default: 0.25, hint: "Bottle price ÷ number of loads on label", quickPicks: [0.10, 0.15, 0.25, 0.40, 0.75] },
+      { name: "electricRateOverride", label: "Your electricity rate (optional)", unit: "$/kWh", type: "slider", min: 0, max: 0.6, step: 0.01, default: 0, hint: "Leave at $0 to use your state's live rate.", quickPicks: [0, 0.12, 0.16, 0.22, 0.3] },
     ],
     outputs: [
-      { key: "costPerLoad",      label: "Cost per load",      format: "currency",                  highlight: true, sublabel: () => "Electricity + water + detergent" },
-      { key: "weeklyLaundry",    label: "Weekly cost",        format: "currency",                  sublabel: (i) => `${i.loadsPerWeek} loads/week` },
-      { key: "annualLaundry",    label: "Annual cost",        format: "currency",                  sublabel: () => "52 weeks" },
-      { key: "electricityShare", label: "Electricity share",  format: "decimal", decimalPlaces: 1, sublabel: () => "% of per-load cost that is electricity" },
+      { key: "costPerLoad",            label: "Cost per load",      format: "currency", highlight: true, sublabel: (i, o) => `${(o.totalKwhPerLoad ?? 0).toFixed(1)} kWh × $${(o.electricRate ?? 0).toFixed(3)}/kWh${Number(i.electricRateOverride) > 0 ? " (your rate)" : ` in ${i.state === "National" ? "the US" : i.state}`}` },
+      { key: "weeklyCost",             label: "Weekly cost",        format: "currency",                  sublabel: (i) => `${i.loadsPerWeek} loads/week` },
+      { key: "annualCost",             label: "Annual cost",        format: "currency",                  sublabel: () => "52 weeks" },
+      { key: "electricityPct",         label: "Electricity share",  format: "decimal", decimalPlaces: 0, sublabel: () => "% of per-load cost" },
     ],
     calculate: (inputs) => {
-      const rate        = Number(inputs.electricityRate);
-      const loads       = Number(inputs.loadsPerWeek);
-      const detergent   = Number(inputs.detergentCost);
-      const kwh         = Number(inputs.machineType); // kWh per load
-      const waterCost   = 0.12; // ~30 gallons x $0.004/gal
-      const elecPerLoad = kwh * rate;
-      const costPerLoad = elecPerLoad + waterCost + detergent;
-      return {
-        costPerLoad,
-        weeklyLaundry:    costPerLoad * loads,
-        annualLaundry:    costPerLoad * loads * 52,
-        electricityShare: costPerLoad > 0 ? (elecPerLoad / costPerLoad) * 100 : 0,
-      };
+      const state = String(inputs.state ?? "National");
+      const elecOverride = Number(inputs.electricRateOverride) || 0;
+      return calculateLaundryCost(
+        {
+          loadsPerWeek:  Number(inputs.loadsPerWeek),
+          machineType:   String(inputs.machineType ?? "standard") as MachineKey,
+          waterTemp:     String(inputs.waterTemp ?? "warm") as WaterTempKey,
+          detergentCost: Number(inputs.detergentCost),
+        },
+        { electricRate: elecOverride > 0 ? elecOverride : getUSStateElectricityPrice(state) },
+      );
     },
     insight: (i, o) =>
-      `Each load costs $${o.costPerLoad?.toFixed(2)} — electricity is ${o.electricityShare?.toFixed(0)}% of that. ` +
-      `At ${i.loadsPerWeek} loads/week you spend $${o.annualLaundry?.toFixed(0)}/year on laundry.`,
+      `Each load costs $${(o.costPerLoad ?? 0).toFixed(2)} — electricity is ${(o.electricityPct ?? 0).toFixed(0)}% of that. At ${i.loadsPerWeek} loads/week you spend $${(o.annualCost ?? 0).toFixed(0)}/year on laundry in ${i.state === "National" ? "the US" : i.state}.`,
   },
 
   // -- Grocery Unit Price Calculator -------------------------------------------
   "grocery-unit-price": {
     id: "grocery-unit-price",
     category: "other",
-    description: "Compare two grocery items by price per oz to instantly find the better deal and your bulk savings.",
+    description: "Compare two grocery items by price per unit, find the better deal, and see your annual savings from choosing it consistently.",
     label: "Grocery Unit Price Calculator",
     inputs: [
-      { name: "item1Price", label: "Item A — price",       unit: "$",  type: "slider", min: 0.50, max: 20,  step: 0.25, default: 3.50, hint: "e.g. the smaller or standard size", quickPicks: [1, 2, 3.50, 5, 8, 10] },
-      { name: "item1Size",  label: "Item A — size",        unit: "oz", type: "slider", min: 1,    max: 128, step: 1,    default: 16,   quickPicks: [8, 12, 16, 24, 32, 64] },
-      { name: "item2Price", label: "Item B — price (bulk)", unit: "$", type: "slider", min: 0.50, max: 50,  step: 0.25, default: 8.00, hint: "e.g. the larger or bulk size", quickPicks: [4, 6, 8, 12, 20] },
-      { name: "item2Size",  label: "Item B — size",        unit: "oz", type: "slider", min: 1,    max: 256, step: 1,    default: 48,   quickPicks: [24, 32, 48, 64, 96, 128] },
+      { name: "item1Price",       label: "Item A — price",        unit: "$",  type: "slider", min: 0.25, max: 30,  step: 0.25, default: 3.50, hint: "e.g. the standard or smaller size",                    quickPicks: [1, 2, 3.50, 5, 8] },
+      { name: "item1Size",        label: "Item A — size",         unit: "oz", type: "slider", min: 1,    max: 128, step: 1,    default: 16,   quickPicks: [8, 12, 16, 24, 32] },
+      { name: "item2Price",       label: "Item B — price",        unit: "$",  type: "slider", min: 0.25, max: 60,  step: 0.25, default: 8.00, hint: "e.g. the bulk or larger size",                         quickPicks: [4, 6, 8, 12, 20] },
+      { name: "item2Size",        label: "Item B — size",         unit: "oz", type: "slider", min: 1,    max: 256, step: 1,    default: 48,   quickPicks: [24, 32, 48, 64, 128] },
+      { name: "purchasesPerYear", label: "Purchases per year",                type: "slider", min: 1,    max: 100, step: 1,    default: 24,   hint: "How often you buy this product — 24 ≈ every other week", quickPicks: [6, 12, 24, 36, 52] },
     ],
     outputs: [
-      { key: "pricePer1",  label: "Item A — price per oz", format: "decimal", decimalPlaces: 3, sublabel: (i) => `$${i.item1Price} / ${i.item1Size} oz` },
-      { key: "pricePer2",  label: "Item B — price per oz", format: "decimal", decimalPlaces: 3, sublabel: (i) => `$${i.item2Price} / ${i.item2Size} oz` },
+      { key: "unitPriceA",    label: "Item A — per unit",    format: "decimal", decimalPlaces: 3, sublabel: (i) => `$${i.item1Price} ÷ ${i.item1Size} oz` },
+      { key: "unitPriceB",    label: "Item B — per unit",    format: "decimal", decimalPlaces: 3, sublabel: (i) => `$${i.item2Price} ÷ ${i.item2Size} oz` },
       {
-        key: "savingsPct", label: "Bulk savings", unit: "%", format: "decimal", decimalPlaces: 1, highlight: true,
-        sublabel: (_, o) => o.pricePer1 <= o.pricePer2 ? "Item A is the better deal" : "Item B is the better deal (bulk wins)",
+        key: "savingsPct",    label: "Unit price difference", format: "decimal", decimalPlaces: 1, highlight: true,
+        sublabel: (_, o) => (o.winner ?? 0) === 1 ? "Item A is cheaper per unit" : (o.winner ?? 0) === 2 ? "Item B is cheaper per unit" : "Same price per unit",
       },
-      { key: "savingsPerOz", label: "Saving per oz", format: "decimal", decimalPlaces: 4, sublabel: () => "Dollar amount saved per ounce on the cheaper item" },
+      { key: "annualSavings", label: "Annual savings",        format: "currency", sublabel: (i) => `Choosing the cheaper item ${i.purchasesPerYear}×/yr` },
     ],
     calculate: (inputs) => {
-      const p1 = Number(inputs.item1Price) / Math.max(Number(inputs.item1Size), 1);
-      const p2 = Number(inputs.item2Price) / Math.max(Number(inputs.item2Size), 1);
-      const cheaper = Math.min(p1, p2);
-      const dearer  = Math.max(p1, p2);
-      return {
-        pricePer1:   p1,
-        pricePer2:   p2,
-        savingsPct:  cheaper > 0 ? ((dearer - cheaper) / dearer) * 100 : 0,
-        savingsPerOz: dearer - cheaper,
-      };
+      return calculateGroceryUnitPrice({
+        item1Price:       Number(inputs.item1Price),
+        item1Size:        Number(inputs.item1Size),
+        item2Price:       Number(inputs.item2Price),
+        item2Size:        Number(inputs.item2Size),
+        purchasesPerYear: Number(inputs.purchasesPerYear),
+      });
     },
-    insight: (_, o) => {
-      const winner = o.pricePer1 <= o.pricePer2 ? "Item A" : "Item B";
-      return `${winner} is cheaper at $${Math.min(o.pricePer1 ?? 0, o.pricePer2 ?? 0).toFixed(3)}/oz — ` +
-        `${o.savingsPct?.toFixed(1)}% cheaper, saving $${o.savingsPerOz?.toFixed(4)}/oz.`;
+    insight: (i, o) => {
+      const w = (o.winner ?? 0) === 1 ? "A" : (o.winner ?? 0) === 2 ? "B" : "neither";
+      return `Item ${w} is ${(o.savingsPct ?? 0).toFixed(1)}% cheaper per oz. Buying it ${i.purchasesPerYear}×/yr saves $${(o.annualSavings ?? 0).toFixed(2)}/year.`;
     },
   },
 
@@ -929,13 +1044,13 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
         quickPicks: [100, 250, 500, 1000, 2000],
       },
       {
-        name: "rate", label: "Annual return rate (%)", unit: "%", type: "slider",
+        name: "rate", label: "Annual return rate", unit: "%", type: "slider",
         min: 1, max: 15, step: 0.5, default: 7,
-        hint: "Historical S&P 500 avg — 7—10% inflation-adjusted",
+        hint: "S&P 500 long-run avg ≈ 10% nominal / ~7% after inflation",
         quickPicks: [3, 5, 7, 10, 12],
       },
       {
-        name: "years", label: "Time horizon (years)", unit: "years", type: "slider",
+        name: "years", label: "Time horizon", unit: "years", type: "slider",
         min: 1, max: 40, step: 1, default: 20,
         hint: "How long you'll let the investment grow",
         quickPicks: [5, 10, 20, 30, 40],
@@ -944,37 +1059,29 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     outputs: [
       {
         key: "futureValue", label: "Future value", format: "currency", highlight: true,
-        sublabel: (i) => `After ${i.years} years at ${i.rate}% annual return`,
+        sublabel: (i) => `Nominal · ${i.years} yrs at ${i.rate}% annual return`,
       },
       {
-        key: "totalInvested", label: "Total invested", format: "currency",
-        sublabel: (i) => `$${Number(i.initial).toLocaleString()} initial + $${i.monthly}/mo — ${i.years} yrs`,
+        key: "realFutureValue", label: "In today's dollars", format: "currency",
+        sublabel: () => `Adjusted for live ${getCpiInflationYoY()}% CPI inflation`,
       },
       {
-        key: "totalInterest", label: "Total interest earned", format: "currency",
-        sublabel: () => "Pure growth from compounding",
+        key: "totalInterest", label: "Compound growth", format: "currency",
+        sublabel: (i, o) => `${(o.interestSharePct ?? 0).toFixed(0)}% of your final balance`,
+      },
+      {
+        key: "growthMultiple", label: "Money multiple", format: "decimal", unit: "×", decimalPlaces: 2,
+        sublabel: (i) => `$${Number(i.initial).toLocaleString()} + $${i.monthly}/mo grows this many times`,
       },
     ],
-    calculate: (inputs) => {
-      const initial = Number(inputs.initial);
-      const monthly = Number(inputs.monthly);
-      const r = Number(inputs.rate) / 100 / 12;
-      const n = Number(inputs.years) * 12;
-      const fv =
-        r === 0
-          ? initial + monthly * n
-          : initial * Math.pow(1 + r, n) + monthly * ((Math.pow(1 + r, n) - 1) / r);
-      const totalContributions = monthly * n;
-      const totalInterest = fv - initial - totalContributions;
-      return {
-        futureValue:   Math.round(fv),
-        totalInvested: Math.round(initial + totalContributions),
-        totalInterest: Math.round(Math.max(0, totalInterest)),
-      };
-    },
+    calculate: (i) =>
+      calculateFutureValue(
+        { initial: Number(i.initial), monthly: Number(i.monthly), rate: Number(i.rate), years: Number(i.years) },
+        { annualInflationPct: getCpiInflationYoY() },
+      ),
     insight: (i, o) =>
-      `At ${i.rate}% for ${i.years} years, your $${Number(i.initial).toLocaleString()} grows to ` +
-      `$${(o.futureValue ?? 0).toLocaleString()} — $${(o.totalInterest ?? 0).toLocaleString()} in compound interest.`,
+      `At ${i.rate}% for ${i.years} years, $${Number(i.initial).toLocaleString()} + $${i.monthly}/mo grows to ` +
+      `$${(o.futureValue ?? 0).toLocaleString()} — about $${(o.realFutureValue ?? 0).toLocaleString()} in today's buying power.`,
   },
 
   // -- Savings Calculator -------------------------------------------------------
@@ -1012,37 +1119,33 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     outputs: [
       {
         key: "balance", label: "Final balance", format: "currency", highlight: true,
-        sublabel: (i) => `After ${i.years} years at ${i.rate}% interest`,
+        sublabel: (i) => `After ${i.years} years at ${i.rate}% APY`,
       },
       {
-        key: "totalDeposited", label: "Total deposited", format: "currency",
-        sublabel: (i) => `$${Number(i.initial).toLocaleString()} + $${i.monthly}/mo`,
+        key: "realBalance", label: "In today's dollars", format: "currency",
+        sublabel: () => `Adjusted for live ${getCpiInflationYoY()}% CPI inflation`,
       },
       {
         key: "interestEarned", label: "Interest earned", format: "currency",
-        sublabel: () => "Tax-free in an ISA or Roth IRA",
+        sublabel: (i, o) => `${(o.interestSharePct ?? 0).toFixed(0)}% of your final balance`,
+      },
+      {
+        key: "realReturnPct", label: "Real return", format: "decimal", unit: "%", decimalPlaces: 1,
+        sublabel: (i, o) =>
+          (o.beatsInflation ?? 0) === 1
+            ? `Your ${i.rate}% APY beats ${getCpiInflationYoY()}% inflation`
+            : `Your ${i.rate}% APY trails ${getCpiInflationYoY()}% inflation`,
       },
     ],
-    calculate: (inputs) => {
-      const initial = Number(inputs.initial);
-      const monthly = Number(inputs.monthly);
-      const r = Number(inputs.rate) / 100 / 12;
-      const n = Number(inputs.years) * 12;
-      const balance =
-        r === 0
-          ? initial + monthly * n
-          : initial * Math.pow(1 + r, n) + monthly * ((Math.pow(1 + r, n) - 1) / r);
-      const totalDeposited = initial + monthly * n;
-      return {
-        balance:        Math.round(balance),
-        totalDeposited: Math.round(totalDeposited),
-        interestEarned: Math.round(Math.max(0, balance - totalDeposited)),
-      };
-    },
+    calculate: (i) =>
+      calculateSavingsGrowth(
+        { initial: Number(i.initial), monthly: Number(i.monthly), rate: Number(i.rate), years: Number(i.years) },
+        { annualInflationPct: getCpiInflationYoY() },
+      ),
     insight: (i, o) =>
       `Saving $${i.monthly}/mo at ${i.rate}% for ${i.years} years turns ` +
-      `$${(o.totalDeposited ?? 0).toLocaleString()} deposited into ` +
-      `$${(o.balance ?? 0).toLocaleString()} — $${(o.interestEarned ?? 0).toLocaleString()} in interest.`,
+      `$${(o.totalDeposited ?? 0).toLocaleString()} into $${(o.balance ?? 0).toLocaleString()} — ` +
+      `worth about $${(o.realBalance ?? 0).toLocaleString()} in today's money after inflation.`,
   },
 
   // -- Pay Raise Calculator ----------------------------------------------------
@@ -1085,41 +1188,75 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       `$${(o.annualIncrease ?? 0).toLocaleString()}/year — $${(o.monthlyIncrease ?? 0).toLocaleString()} more every month.`,
   },
 
-  // -- Sales Tax Calculator ----------------------------------------------------
+  // -- Sales Tax Calculator (live state data) -----------------------------------
   "sales-tax": {
     id: "sales-tax",
     category: "finance",
-    description: "Calculate the sales tax amount and total price for any purchase.",
+    description: "Calculate sales tax, total price, and annual burden using your state's live combined rate — with neighbor comparisons and grocery exemption context.",
     label: "Sales Tax Calculator",
     inputs: [
       {
-        name: "price", label: "Price before tax", unit: "$", type: "slider",
-        min: 1, max: 5000, step: 5, default: 100,
-        hint: "The listed price before tax",
-        quickPicks: [25, 50, 100, 250, 500],
+        name: "state", label: "Your state", type: "dropdown", default: "US Average",
+        options: SALES_TAX_STATE_OPTIONS,
+        hint: "Loads your state's live combined sales tax rate (state + local average)",
       },
       {
-        name: "taxRate", label: "Tax rate", unit: "%", type: "slider",
-        min: 0, max: 15, step: 0.25, default: 8.5,
-        hint: "US average is 7.12%. Check your state rate.",
-        quickPicks: [0, 5, 7, 8.5, 10],
+        name: "price", label: "Purchase price", unit: "$", type: "slider",
+        min: 1, max: 5000, step: 5, default: 100,
+        hint: "The listed price before tax",
+        quickPicks: [25, 50, 100, 500, 1000],
+      },
+      {
+        name: "monthlySpend", label: "Monthly taxable spending", unit: "$", type: "slider",
+        min: 100, max: 5000, step: 50, default: 800,
+        hint: "Your typical monthly spending on taxable goods — US average ~$800",
+        quickPicks: [300, 500, 800, 1500, 3000],
+      },
+      {
+        name: "rateOverride", label: "Your combined rate (optional)", unit: "%", type: "slider",
+        min: 0, max: 12, step: 0.05, default: 0,
+        hint: "Leave at 0 to use your state's live combined rate.",
+        quickPicks: [0, 6, 7.25, 8.25, 9.5],
       },
     ],
     outputs: [
-      { key: "totalPrice", label: "Total price", format: "currency", highlight: true, sublabel: (i) => `Including ${i.taxRate}% tax` },
-      { key: "taxAmount",  label: "Tax amount",  format: "currency", sublabel: () => "Added to your bill" },
+      { key: "totalPrice",        label: "Total price",         format: "currency", highlight: true, sublabel: (_i, o) => `Including ${(o.resolvedRate ?? 0).toFixed(2)}% tax` },
+      { key: "taxAmount",         label: "Tax on this purchase", format: "currency", sublabel: () => "Added at checkout" },
+      { key: "annualTaxBurden",   label: "Annual tax burden",   format: "currency", sublabel: (_i, o) => `${(o.resolvedRate ?? 0).toFixed(2)}% on $${Number(_i.monthlySpend).toLocaleString()}/mo` },
+      { key: "vsNeighborsDelta",  label: "vs. neighbors",       format: "percent",  sublabel: (_i, o) => `Neighbor avg ${(o.neighborAvgRate ?? NATIONAL_AVG_SALES_TAX).toFixed(2)}%` },
+      { key: "grocerySaving",     label: "Grocery tax saving",  format: "currency", sublabel: (_i, o) => (o.grocerySaving ?? 0) > 0 ? "Groceries exempt in your state" : "Groceries taxed in your state" },
     ],
     calculate: (inputs) => {
-      const price   = Number(inputs.price);
-      const taxRate = Number(inputs.taxRate);
-      const tax = price * (taxRate / 100);
-      return {
-        totalPrice: Math.round((price + tax) * 100) / 100,
-        taxAmount:  Math.round(tax * 100) / 100,
-      };
+      const state = String(inputs.state ?? "US Average");
+      const override = Number(inputs.rateOverride) || 0;
+      const rate = override > 0 ? override : (SALES_TAX_RATE_BY_NAME[state] ?? NATIONAL_AVG_SALES_TAX);
+      const stateData = SALES_TAX_RATES.find((s) => s.name === state);
+
+      const neighborRates = (stateData?.neighbors ?? [])
+        .map((slug) => SALES_TAX_RATES.find((s) => s.slug === slug)?.combinedRate)
+        .filter((v): v is number => v != null);
+
+      return calculateSalesTax(
+        {
+          price: Number(inputs.price),
+          monthlySpend: Number(inputs.monthlySpend),
+          state,
+        },
+        {
+          combinedRate: rate,
+          stateRate: stateData?.stateRate ?? rate,
+          groceryExempt: stateData?.groceryExempt ?? false,
+          neighbors: stateData?.neighbors ?? [],
+          neighborRates,
+          localNote: stateData?.localNote ?? "",
+        },
+      );
     },
-    insight: (i, o) =>
-      `$${i.price} at ${i.taxRate}% tax = $${(o.taxAmount ?? 0).toFixed(2)} in tax — $${(o.totalPrice ?? 0).toFixed(2)} total.`,
+    insight: (_i, o) => {
+      const rate = (o.resolvedRate ?? NATIONAL_AVG_SALES_TAX).toFixed(2);
+      const annual = Math.round(o.annualTaxBurden ?? 0);
+      return `At ${rate}% combined rate, you pay ~$${annual}/year in sales tax on $${Number(_i.monthlySpend).toLocaleString()}/month of taxable spending.`;
+    },
   },
 
   // -- Profit Margin Calculator ------------------------------------------------
@@ -1236,29 +1373,22 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       },
     ],
     outputs: [
-      { key: "fireNumber",  label: "FIRE number",   format: "currency", highlight: true, sublabel: () => "25— annual expenses (4% rule)" },
-      { key: "yearsToFire", label: "Years to FIRE", format: "decimal",  sublabel: () => "At your current savings rate" },
+      { key: "fireNumber",         label: "FIRE number",       format: "currency", highlight: true, sublabel: (i) => `$${(Number(i.monthlyExpenses) * 12 * 25 / 1000).toFixed(0)}k = $${Number(i.monthlyExpenses).toLocaleString()}/mo × 12 × 25 (4% rule)` },
+      { key: "yearsToFire",        label: "Years to FIRE",     format: "decimal",  decimalPlaces: 1, sublabel: (i) => `At $${Number(i.monthlySavings).toLocaleString()}/mo invested at ${i.annualReturn}% return` },
+      { key: "savingsRate",        label: "Savings rate",      format: "decimal",  decimalPlaces: 1, sublabel: () => "investments ÷ (investments + expenses) — FIRE standard" },
+      { key: "percentFunded",      label: "Funded so far",     format: "decimal",  decimalPlaces: 1, sublabel: (i) => `$${(Number(i.currentSavings)/1000).toFixed(0)}k of $${(Number(i.monthlyExpenses)*300/1000).toFixed(0)}k FIRE target` },
+      { key: "yearsFasterWith500", label: "+$500/mo saves",    format: "decimal",  decimalPlaces: 1, sublabel: () => "Years faster by adding $500/month to investments" },
+      { key: "passiveIncomeNow",   label: "Passive income now",format: "currency",                   sublabel: (i) => `$${(Number(i.currentSavings)/1000).toFixed(0)}k savings × 4% ÷ 12 (passive today)` },
     ],
-    calculate: (inputs) => {
-      const monthly  = Number(inputs.monthlyExpenses);
-      const savings  = Number(inputs.currentSavings);
-      const contrib  = Number(inputs.monthlySavings);
-      const r        = Number(inputs.annualReturn) / 100 / 12;
-      const fireNum  = monthly * 12 * 25;
-      let balance    = savings;
-      let months     = 0;
-      while (balance < fireNum && months < 1200) {
-        balance = balance * (1 + r) + contrib;
-        months++;
-      }
-      return {
-        fireNumber:  Math.round(fireNum),
-        yearsToFire: months >= 1200 ? 100 : Math.round((months / 12) * 10) / 10,
-      };
-    },
+    calculate: (inputs) =>
+      calculateFire({
+        monthlyExpenses: Number(inputs.monthlyExpenses),
+        currentSavings:  Number(inputs.currentSavings),
+        monthlySavings:  Number(inputs.monthlySavings),
+        annualReturn:    Number(inputs.annualReturn),
+      }),
     insight: (i, o) =>
-      `Your FIRE number is $${(o.fireNumber ?? 0).toLocaleString()} (25— your $${Number(i.monthlyExpenses).toLocaleString()}/mo expenses). ` +
-      `At your current savings rate, you hit it in ${o.yearsToFire} years.`,
+      `Your FIRE number is $${(o.fireNumber ?? 0).toLocaleString()} — ${o.yearsToFire} years away at a ${o.savingsRate?.toFixed(1)}% savings rate ($${Number(i.monthlySavings).toLocaleString()}/mo invested at ${i.annualReturn}% return).`,
   },
 
   // -- Millionaire Calculator --------------------------------------------------
@@ -1288,30 +1418,23 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       },
     ],
     outputs: [
-      { key: "yearsToMillion",   label: "Years to $1M",       format: "decimal",  highlight: true, sublabel: () => "Time to reach $1,000,000" },
-      { key: "totalContributed", label: "Total contributed",   format: "currency", sublabel: () => "Your out-of-pocket total" },
-      { key: "interestEarned",   label: "Interest earned",     format: "currency", sublabel: () => "The market's contribution" },
+      { key: "yearsToMillion",     label: "Years to $1M",          format: "decimal",  highlight: true, sublabel: (i) => `At $${Number(i.monthlySavings).toLocaleString()}/mo invested` },
+      { key: "realValueAtMillion", label: "$1M will be worth",      format: "currency", sublabel: (_i, o) => `In today's money at live ${getCpiInflationYoY()}% inflation` },
+      { key: "interestEarned",     label: "Market's contribution",  format: "currency", sublabel: (_i, o) => `${(o.marketShare ?? 0).toFixed(0)}% of the million from compounding` },
+      { key: "yearsToRealMillion", label: "Years to a real $1M",    format: "decimal",  sublabel: (_i, o) => `+${(o.extraYearsForReal ?? 0).toFixed(1)} yrs for true buying power` },
     ],
-    calculate: (inputs) => {
-      const savings = Number(inputs.currentSavings);
-      const contrib = Number(inputs.monthlySavings);
-      const r       = Number(inputs.annualReturn) / 100 / 12;
-      let balance   = savings;
-      let months    = 0;
-      while (balance < 1_000_000 && months < 1200) {
-        balance = balance * (1 + r) + contrib;
-        months++;
-      }
-      const totalContributed = savings + contrib * months;
-      return {
-        yearsToMillion:   months >= 1200 ? 100 : Math.round((months / 12) * 10) / 10,
-        totalContributed: Math.round(totalContributed),
-        interestEarned:   Math.round(Math.max(0, balance - totalContributed)),
-      };
-    },
+    calculate: (inputs) =>
+      calculateMillionaire(
+        {
+          currentSavings: Number(inputs.currentSavings),
+          monthlySavings: Number(inputs.monthlySavings),
+          annualReturn:   Number(inputs.annualReturn),
+        },
+        { annualInflationPct: getCpiInflationYoY() },
+      ),
     insight: (i, o) =>
-      `Investing $${i.monthlySavings}/mo at ${i.annualReturn}% gets you to $1M in ${o.yearsToMillion} years. ` +
-      `You contribute $${(o.totalContributed ?? 0).toLocaleString()} — the market does the rest.`,
+      `Investing $${Number(i.monthlySavings).toLocaleString()}/mo at ${i.annualReturn}% reaches $1M in ${o.yearsToMillion} years — ` +
+      `but at ${getCpiInflationYoY()}% inflation that million will only buy what $${(o.realValueAtMillion ?? 0).toLocaleString()} buys today.`,
   },
 
   // -- Car Affordability Calculator --------------------------------------------
@@ -1415,101 +1538,115 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "meeting-cost": {
     id: "meeting-cost",
     category: "work",
-    description: "See the true dollar cost of any meeting based on attendees, salaries, and duration.",
+    description: "See the true loaded cost of any meeting using your state's live median wage, scaled by who's in the room and how often it recurs — the annual number nobody computes.",
     label: "Meeting Cost Calculator",
     inputs: [
       {
-        name: "attendees",       label: "Attendees",            type: "slider",
-        min: 2, max: 30, step: 1, default: 8,
-        hint: "Total people in the meeting",
-        quickPicks: [2, 4, 6, 8, 12],
+        name: "state", label: "Your state", type: "dropdown", default: "National",
+        options: US_WAGE_STATE_OPTIONS,
+        hint: "Loads your state's BLS median hourly wage as the baseline rate",
       },
       {
-        name: "avgHourlyWage",   label: "Avg hourly wage",      unit: "$", type: "slider",
-        min: 15, max: 200, step: 5, default: 50,
-        hint: "Average loaded rate including benefits (~1.3— salary)",
-        quickPicks: [25, 35, 50, 75, 100],
+        name: "attendees", label: "Attendees", type: "slider",
+        min: 2, max: 50, step: 1, default: 8,
+        hint: "Total people in the meeting — every added person multiplies the cost",
+        quickPicks: [3, 5, 8, 12, 20],
       },
       {
-        name: "durationMinutes", label: "Duration",             unit: "min", type: "slider",
-        min: 15, max: 480, step: 15, default: 60,
-        hint: "Total meeting time in minutes",
-        quickPicks: [15, 30, 60, 90, 120],
+        name: "seniority", label: "Who's in the room", type: "select", default: "mixed",
+        options: [
+          { label: "Mostly junior / early-career", value: "junior" },
+          { label: "Mixed team (typical)",          value: "mixed" },
+          { label: "Senior ICs / managers",         value: "senior" },
+          { label: "Leadership / executives",       value: "leadership" },
+        ],
+        hint: "Scales the state median wage to reflect who actually attends",
+      },
+      {
+        name: "durationMinutes", label: "Duration", unit: "min", type: "slider",
+        min: 15, max: 240, step: 15, default: 60,
+        hint: "Total meeting length — most decisions take far less than an hour",
+        quickPicks: [15, 30, 45, 60, 90],
+      },
+      {
+        name: "frequency", label: "How often it recurs", type: "select", default: "weekly",
+        options: [
+          { label: "One-off",   value: "one-off" },
+          { label: "Monthly",   value: "monthly" },
+          { label: "Bi-weekly", value: "biweekly" },
+          { label: "Weekly",    value: "weekly" },
+          { label: "Daily (standup)", value: "daily" },
+        ],
+        hint: "Recurring meetings annualize fast — a daily standup runs 260×/year",
+      },
+      {
+        name: "wageOverride", label: "Avg base hourly wage (optional)", unit: "$", type: "slider",
+        min: 0, max: 200, step: 1, default: 0,
+        hint: "Leave at $0 to use your state's live median wage.",
+        quickPicks: [0, 25, 40, 60, 100],
       },
     ],
     outputs: [
-      { key: "totalCost",          label: "Meeting cost",         format: "currency", highlight: true, sublabel: (i) => `${i.attendees} people — ${i.durationMinutes} min` },
-      { key: "costPerMinute",      label: "Cost per minute",      format: "currency", sublabel: () => "Every minute has a price" },
-      { key: "annualCostIfWeekly", label: "Annual (if weekly)",   format: "currency", sublabel: () => "If this meeting recurs weekly" },
+      { key: "totalCost",       label: "Cost per meeting",     format: "currency", highlight: true, sublabel: (_i, o) => `${_i.attendees} people at $${(o.loadedHourlyRate ?? 0).toFixed(0)}/hr loaded` },
+      { key: "annualizedCost",  label: "Annual cost",          format: "currency", sublabel: (_i, o) => `${o.meetingsPerYear ?? 1}× per year · ${(o.annualWorkdays ?? 0)} workdays of team time` },
+      { key: "trueAnnualizedCost", label: "True cost + refocus", format: "currency", sublabel: (_i, o) => `Adds the ~23 min/person context-switch tax (+$${Number(o.refocusCostPerMeeting ?? 0).toLocaleString()}/meeting)` },
+      { key: "trim15Saving",    label: "Trim 15 min saves",    format: "currency", sublabel: () => "Per year, if shortened 15 min" },
+      { key: "asyncSaving",     label: "Async instead saves",  format: "currency", sublabel: () => "If replaced by a written update" },
     ],
     calculate: (inputs) => {
-      const people  = Number(inputs.attendees);
-      const wage    = Number(inputs.avgHourlyWage);
-      const minutes = Number(inputs.durationMinutes);
-      const total   = people * wage * (minutes / 60);
-      return {
-        totalCost:          Math.round(total),
-        costPerMinute:      Math.round((total / minutes) * 100) / 100,
-        annualCostIfWeekly: Math.round(total * 52),
-      };
+      const state = String(inputs.state ?? "National");
+      const override = Number(inputs.wageOverride) || 0;
+      const wage = override > 0 ? override : getUSStateMedianWage(state);
+      return calculateMeetingCost(
+        {
+          attendees: Number(inputs.attendees),
+          durationMinutes: Number(inputs.durationMinutes),
+          seniority: String(inputs.seniority ?? "mixed"),
+          frequency: String(inputs.frequency ?? "weekly"),
+          state,
+        },
+        { medianWage: wage },
+      );
     },
-    insight: (i, o) =>
-      `A ${i.durationMinutes}-min meeting with ${i.attendees} people at $${i.avgHourlyWage}/hr costs ` +
-      `$${(o.totalCost ?? 0).toLocaleString()} — $${(o.annualCostIfWeekly ?? 0).toLocaleString()}/year if weekly.`,
+    insight: (_i, o) =>
+      `A ${_i.durationMinutes}-min meeting with ${_i.attendees} people costs $${(o.totalCost ?? 0).toLocaleString()} loaded — ` +
+      `$${(o.annualizedCost ?? 0).toLocaleString()}/year at this frequency.`,
   },
 
   // -- Commute Cost Calculator -------------------------------------------------
   "commute-cost": {
     id: "commute-cost",
     category: "work",
-    description: "Calculate the true annual fuel cost of your daily commute.",
+    description: "Calculate the true annual fuel cost of your daily commute using your state's live gas price.",
     label: "Commute Cost Calculator",
     inputs: [
-      {
-        name: "milesOneWay",    label: "Miles one way",       unit: "mi",  type: "slider",
-        min: 1, max: 100, step: 1, default: 15,
-        hint: "Distance from home to office (one direction)",
-        quickPicks: [5, 10, 15, 25, 40],
-      },
-      {
-        name: "mpg",            label: "Fuel economy",        unit: "mpg", type: "slider",
-        min: 10, max: 60, step: 1, default: 28,
-        hint: "Your car's miles per gallon",
-        quickPicks: [15, 20, 28, 35, 45],
-      },
-      {
-        name: "gasPrice",       label: "Gas price",           unit: "$",   type: "slider",
-        min: 2, max: 7, step: 0.1, default: 3.5,
-        hint: "Current price per gallon at your local station",
-        quickPicks: [2.5, 3, 3.5, 4, 5],
-      },
-      {
-        name: "workDaysPerYear", label: "Work days per year",              type: "slider",
-        min: 50, max: 260, step: 5, default: 250,
-        hint: "Typical is 250 (5 days — 50 weeks)",
-        quickPicks: [100, 150, 200, 250, 260],
-      },
+      { name: "state",             label: "Your state",              type: "dropdown", default: "National", options: US_ENERGY_STATE_OPTIONS, hint: "Loads live average gas price for your state" },
+      { name: "milesOneWay",       label: "Miles one way",           unit: "mi",  type: "slider", min: 1,  max: 100, step: 1,   default: 15, hint: "One-way distance — the calculator doubles it for round trip", quickPicks: [5, 10, 15, 25, 40] },
+      { name: "mpg",               label: "Fuel economy",            unit: "mpg", type: "slider", min: 10, max: 60,  step: 1,   default: 28, hint: "City MPG is 15–20% lower than highway — use your dashboard average", quickPicks: [15, 20, 28, 35, 45] },
+      { name: "officeDaysPerWeek", label: "Office days per week",    unit: "days",type: "slider", min: 1,  max: 5,   step: 1,   default: 5,  hint: "Days you physically drive to the office each week", quickPicks: [1, 2, 3, 4, 5] },
+      { name: "weeksPerYear",      label: "Weeks driving per year",  unit: "wks", type: "slider", min: 40, max: 52,  step: 1,   default: 49, hint: "52 minus vacation and holidays — most people drive ~49 weeks", quickPicks: [44, 46, 48, 49, 52] },
+      { name: "gasPriceOverride",  label: "Your gas price (optional)", unit: "$/gal", type: "slider", min: 0, max: 8, step: 0.05, default: 0, hint: "Leave at $0 to use your state's live gas price.", quickPicks: [0, 3, 3.5, 4, 5] },
     ],
     outputs: [
-      { key: "annualCost",  label: "Annual fuel cost",  format: "currency", highlight: true, sublabel: () => "Gas only — excludes insurance and wear" },
-      { key: "monthlyCost", label: "Monthly cost",      format: "currency", sublabel: () => "Per month" },
-      { key: "costPerDay",  label: "Cost per day",      format: "currency", sublabel: () => "Round trip" },
+      { key: "annualFuelCost", label: "Annual fuel cost",    format: "currency", highlight: true, sublabel: (i, o) => `${i.milesOneWay} mi each way · ${i.mpg} MPG · $${(o.gasPrice ?? 0).toFixed(2)}/gal${Number(i.gasPriceOverride) > 0 ? " (your price)" : ` in ${i.state === "National" ? "the US" : i.state}`}` },
+      { key: "monthlyCost",    label: "Monthly fuel cost",   format: "currency",                  sublabel: (i, o) => `${Number(i.officeDaysPerWeek) * Number(i.weeksPerYear)} commute days/yr` },
+      { key: "totalCostPerYear", label: "True annual cost",  format: "currency",                  sublabel: () => "Fuel + wear & tear ($0.10/mi)" },
     ],
     calculate: (inputs) => {
-      const miles  = Number(inputs.milesOneWay) * 2;
-      const mpg    = Number(inputs.mpg);
-      const price  = Number(inputs.gasPrice);
-      const days   = Number(inputs.workDaysPerYear);
-      const perDay = (miles / mpg) * price;
-      return {
-        annualCost:  Math.round(perDay * days),
-        monthlyCost: Math.round((perDay * days) / 12),
-        costPerDay:  Math.round(perDay * 100) / 100,
-      };
+      const state = String(inputs.state ?? "National");
+      const gasOverride = Number(inputs.gasPriceOverride) || 0;
+      return calculateCommuteCost(
+        {
+          milesOneWay:       Number(inputs.milesOneWay),
+          mpg:               Number(inputs.mpg),
+          officeDaysPerWeek: Number(inputs.officeDaysPerWeek),
+          weeksPerYear:      Number(inputs.weeksPerYear),
+        },
+        { gasPrice: gasOverride > 0 ? gasOverride : getUSStateFuelPrice(state) },
+      );
     },
     insight: (i, o) =>
-      `Driving ${i.milesOneWay} miles each way at ${i.mpg}mpg costs ` +
-      `$${(o.costPerDay ?? 0).toFixed(2)}/day — $${(o.annualCost ?? 0).toLocaleString()} per year in fuel.`,
+      `Driving ${i.milesOneWay} mi each way to the office ${Number(i.officeDaysPerWeek) * Number(i.weeksPerYear)} days/yr costs $${(o.annualFuelCost ?? 0).toLocaleString()} in fuel — $${(o.totalCostPerYear ?? 0).toLocaleString()} including wear at $${(o.gasPrice ?? 0).toFixed(2)}/gal.`,
   },
 
   // -- PTO Calculator ----------------------------------------------------------
@@ -1543,16 +1680,12 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "daysRemaining",     label: "Days remaining",        format: "decimal",  sublabel: (i) => `At ${i.hoursPerDay}h per day` },
       { key: "weeklyEarningRate", label: "Weekly earning rate",   format: "currency", sublabel: () => "PTO value accrued per 5-day week" },
     ],
-    calculate: (inputs) => {
-      const rate   = Number(inputs.hourlyRate);
-      const hours  = Number(inputs.ptoHoursRemaining);
-      const perDay = Number(inputs.hoursPerDay);
-      return {
-        cashValue:         Math.round(rate * hours),
-        daysRemaining:     Math.round((hours / perDay) * 10) / 10,
-        weeklyEarningRate: Math.round(rate * perDay * 5),
-      };
-    },
+    calculate: (inputs) =>
+      calculatePto({
+        hourlyRate:        Number(inputs.hourlyRate),
+        ptoHoursRemaining: Number(inputs.ptoHoursRemaining),
+        hoursPerDay:       Number(inputs.hoursPerDay),
+      }),
     insight: (i, o) =>
       `Your ${i.ptoHoursRemaining} hours of unused PTO is worth $${(o.cashValue ?? 0).toLocaleString()} ` +
       `— ${o.daysRemaining} days at $${i.hourlyRate}/hr.`,
@@ -1562,47 +1695,33 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "quit-smoking": {
     id: "quit-smoking",
     category: "health",
-    description: "See how much money you've saved and life you've regained since quitting smoking.",
+    description: "See how much money you've saved, life you've regained, and what it's worth invested — since quitting smoking.",
     label: "Quit Smoking Calculator",
     inputs: [
-      {
-        name: "packsPerDay",   label: "Packs per day",       unit: "pks", type: "slider",
-        min: 0.5, max: 3, step: 0.5, default: 1,
-        hint: "How many packs per day you used to smoke",
-        quickPicks: [0.5, 1, 1.5, 2, 3],
-      },
-      {
-        name: "packCost",      label: "Cost per pack",       unit: "$",   type: "slider",
-        min: 5, max: 20, step: 0.5, default: 10,
-        hint: "Average cigarette pack price in your area",
-        quickPicks: [6, 8, 10, 12, 15],
-      },
-      {
-        name: "daysSinceQuit", label: "Days since you quit",              type: "slider",
-        min: 1, max: 3650, step: 1, default: 365,
-        hint: "How many days have you been smoke-free?",
-        quickPicks: [30, 90, 180, 365, 730],
-      },
+      { name: "state",         label: "Your state",          type: "dropdown", default: "National", options: US_ENERGY_STATE_OPTIONS, hint: "Loads your state's live average cigarette pack price" },
+      { name: "packsPerDay",   label: "Packs per day",       unit: "pks", type: "slider", min: 0.5, max: 3,    step: 0.5, default: 1,   hint: "How many packs per day you used to smoke",          quickPicks: [0.5, 1, 1.5, 2, 3] },
+      { name: "packCost",      label: "Cost per pack",       unit: "$",   type: "slider", min: 5,   max: 20,   step: 0.50, default: Math.round(getUSStateCigarettePrice("National") * 2) / 2, hint: "Defaults to the live US-average pack price — set your own", quickPicks: [6, 8, 10, 12, 15] },
+      { name: "daysSinceQuit", label: "Days since you quit",              type: "slider", min: 1,   max: 3650, step: 1,   default: 365, hint: "How many days have you been smoke-free?",           quickPicks: [30, 90, 180, 365, 730] },
     ],
     outputs: [
-      { key: "moneySaved",         label: "Money saved",           format: "currency", highlight: true, sublabel: (i) => `Over ${i.daysSinceQuit} smoke-free days` },
-      { key: "cigarettesAvoided",  label: "Cigarettes avoided",    format: "integer",  sublabel: () => "Never smoked" },
-      { key: "daysOfLifeRegained", label: "Days of life regained", format: "decimal",  sublabel: () => "11 min per cigarette" },
+      { key: "moneySaved",         label: "Money saved",            format: "currency", highlight: true, sublabel: (i) => `Over ${i.daysSinceQuit} smoke-free days` },
+      { key: "cigarettesAvoided",  label: "Cigarettes avoided",     format: "integer",                  sublabel: () => "Never smoked" },
+      { key: "daysOfLifeRegained", label: "Life regained (days)",   format: "decimal",                  sublabel: () => "~11 min per cigarette" },
+      { key: "investedValue10yr",  label: "If invested (10 yr)",    format: "currency",                 sublabel: () => "Annual saving invested at 7%" },
     ],
     calculate: (inputs) => {
-      const packs = Number(inputs.packsPerDay);
-      const cost  = Number(inputs.packCost);
-      const days  = Number(inputs.daysSinceQuit);
-      const cigs  = packs * 20 * days;
-      return {
-        moneySaved:         Math.round(packs * cost * days),
-        cigarettesAvoided:  Math.round(cigs),
-        daysOfLifeRegained: Math.round((cigs * 11) / 60 / 24 * 10) / 10,
-      };
+      return calculateQuitSmoking(
+        {
+          packsPerDay:   Number(inputs.packsPerDay),
+          packCost:      Number(inputs.packCost),
+          daysSinceQuit: Number(inputs.daysSinceQuit),
+        },
+        { stateAvgPackPrice: getUSStateCigarettePrice(String(inputs.state ?? "National")) },
+      );
     },
     insight: (i, o) =>
-      `${i.daysSinceQuit} smoke-free days has saved you $${(o.moneySaved ?? 0).toLocaleString()} ` +
-      `and ${o.daysOfLifeRegained} days of life — keep going.`,
+      `${i.daysSinceQuit} smoke-free days saved $${(o.moneySaved ?? 0).toLocaleString()} and ${(o.daysOfLifeRegained ?? 0).toFixed(1)} days of life. ` +
+      `If invested at 7%, that habit money grows to $${(o.investedValue10yr ?? 0).toLocaleString()} in 10 years.`,
   },
 
   // -- Water Intake Calculator -------------------------------------------------
@@ -1686,76 +1805,279 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       `— a ${o.dailyDeficit} calorie daily deficit. 10 lbs takes ${o.weeksToLose10lbs} weeks at this rate.`,
   },
 
-  // -- Screen Time Impact Calculator ------------------------------------------
+  // -- Screen Time Impact Calculator (live state wage data) --------------------
   "screen-time-impact": {
     id: "screen-time-impact",
     category: "other",
-    description: "See the real cost of your daily screen habits in time, money, and years of life.",
+    description: "See the real cost of your daily screen habits using your state's live median hourly wage — in money, weekly hours, and years of life consumed.",
     label: "Screen Time Impact Calculator",
     inputs: [
       {
-        name: "hoursPerDay",  label: "Daily screen time (non-work)",  unit: "hrs",  type: "slider",
+        name: "state", label: "Your state", type: "dropdown", default: "National",
+        options: US_WAGE_STATE_OPTIONS,
+        hint: "Loads your state's BLS median hourly wage as the opportunity cost rate",
+      },
+      {
+        name: "hoursPerDay", label: "Daily screen time (non-work)", unit: "hrs", type: "slider",
         min: 1, max: 14, step: 0.5, default: 4,
-        hint: "Hours per day on social media, streaming, and apps (not work)",
+        hint: "Hours on social media, streaming, gaming — not work-related use",
         quickPicks: [2, 3, 4, 6, 8],
       },
       {
-        name: "hourlyRate",   label: "Your hourly value",             unit: "$",    type: "slider",
-        min: 10, max: 150, step: 5, default: 30,
-        hint: "Your hourly rate or the value you place on one hour of your time",
-        quickPicks: [15, 25, 35, 50, 75],
-      },
-      {
-        name: "yearsAhead",   label: "Years to project",                            type: "slider",
+        name: "yearsAhead", label: "Years to project", type: "slider",
         min: 1, max: 40, step: 1, default: 10,
         hint: "How many years into the future to calculate cumulative impact",
         quickPicks: [5, 10, 20, 30, 40],
       },
+      {
+        name: "hourlyRateOverride", label: "Your hourly rate (optional)", unit: "$", type: "slider",
+        min: 0, max: 200, step: 1, default: 0,
+        hint: "Leave at $0 to use your state's live median wage.",
+        quickPicks: [0, 25, 50, 75, 100],
+      },
     ],
     outputs: [
-      { key: "annualCost",     label: "Annual opportunity cost",  format: "currency", highlight: true,  sublabel: () => "Time — your hourly rate — 365 days" },
-      { key: "weeklyHours",    label: "Weekly hours on screens",  format: "decimal",  sublabel: (i) => `${i.hoursPerDay}h/day — 7 days` },
-      { key: "lifetimeDays",   label: "Days consumed over period",format: "decimal",  sublabel: (i) => `Over ${i.yearsAhead} years` },
+      { key: "annualCost",          label: "Annual opportunity cost",    format: "currency", highlight: true, sublabel: (i, o) => Number(i.hourlyRateOverride) > 0 ? `At your rate of $${(o.stateMedianWage ?? 0).toFixed(2)}/hr` : `At $${(o.stateMedianWage ?? 23.11).toFixed(2)}/hr median wage` },
+      { key: "weeklyHours",         label: "Weekly hours on screens",    format: "decimal",  sublabel: (i) => `${i.hoursPerDay}h/day × 7 days` },
+      { key: "lifetimeDays",        label: "Days consumed over period",  format: "decimal",  sublabel: (i) => `Over ${i.yearsAhead} years of daily use` },
+      { key: "oneHourAnnualSaving", label: "1-hour/day reduction",       format: "currency", sublabel: () => "Value of cutting 1 hour per day" },
+      { key: "excessAnnualCost",    label: "Above-average cost",         format: "currency", sublabel: () => "Cost of hours above the 4.4hr US average" },
     ],
     calculate: (inputs) => {
-      const hours = Number(inputs.hoursPerDay);
-      const rate  = Number(inputs.hourlyRate);
-      const years = Number(inputs.yearsAhead);
-      return {
-        annualCost:   Math.round(hours * 365 * rate),
-        weeklyHours:  Math.round(hours * 7 * 10) / 10,
-        lifetimeDays: Math.round((hours * 365 * years) / 24 * 10) / 10,
-      };
+      const state = String(inputs.state ?? "National");
+      const override = Number(inputs.hourlyRateOverride) || 0;
+      const wage = override > 0 ? override : getUSStateMedianWage(state);
+      return calculateScreenTime(
+        {
+          hoursPerDay: Number(inputs.hoursPerDay),
+          yearsAhead: Number(inputs.yearsAhead),
+          state,
+        },
+        { medianWage: wage },
+      );
     },
-    insight: (i, o) =>
-      `${i.hoursPerDay}h/day of screen time costs you $${(o.annualCost ?? 0).toLocaleString()}/year ` +
-      `in opportunity cost — and ${o.lifetimeDays} full days over ${i.yearsAhead} years.`,
+    insight: (_i, o) => {
+      const wage = (o.stateMedianWage ?? 23.11).toFixed(2);
+      const rateSource = Number(_i.hourlyRateOverride) > 0 ? "your rate" : "median wage";
+      return `${_i.hoursPerDay}h/day at $${wage}/hr (${rateSource}) = $${(o.annualCost ?? 0).toLocaleString()}/year opportunity cost — ${o.lifetimeDays} full days over ${_i.yearsAhead} years.`;
+    },
+  },
+
+  // -- Streaming Time Calculator (live state wage data) -------------------------
+  "streaming-time-calculator": {
+    id: "streaming-time-calculator",
+    category: "other",
+    description: "See what your streaming habit really costs — in days of life, opportunity cost at your state's live median wage, and subscription spend with a cost-per-hour value read.",
+    label: "Streaming Time Calculator",
+    inputs: [
+      {
+        name: "state", label: "Your state", type: "dropdown", default: "National",
+        options: US_WAGE_STATE_OPTIONS,
+        hint: "Loads your state's BLS median hourly wage as the opportunity cost rate",
+      },
+      {
+        name: "hoursPerDay", label: "Daily streaming", unit: "hrs", type: "slider",
+        min: 0.5, max: 12, step: 0.5, default: 3,
+        hint: "Time on Netflix, Disney+, YouTube, etc. — the US average is about 3.1 hrs/day",
+        quickPicks: [1, 2, 3, 4, 6],
+      },
+      {
+        name: "monthlySubCost", label: "Monthly subscriptions", unit: "$", type: "slider",
+        min: 0, max: 200, step: 5, default: 50,
+        hint: "Combined monthly cost of your streaming services",
+        quickPicks: [15, 30, 50, 80, 120],
+      },
+      {
+        name: "yearsAhead", label: "Years to project", type: "slider",
+        min: 1, max: 40, step: 1, default: 10,
+        hint: "How many years into the future to calculate cumulative impact",
+        quickPicks: [5, 10, 20, 30, 40],
+      },
+      {
+        name: "hourlyRateOverride", label: "Your hourly rate (optional)", unit: "$", type: "slider",
+        min: 0, max: 200, step: 1, default: 0,
+        hint: "Leave at $0 to use your state's live median wage.",
+        quickPicks: [0, 25, 50, 75, 100],
+      },
+    ],
+    outputs: [
+      { key: "annualCost",         label: "Annual opportunity cost", format: "currency", highlight: true, sublabel: (i, o) => Number(i.hourlyRateOverride) > 0 ? `At your rate of $${(o.stateMedianWage ?? 0).toFixed(2)}/hr` : `At $${(o.stateMedianWage ?? 23.11).toFixed(2)}/hr median wage` },
+      { key: "lifetimeDays",       label: "Days consumed over period", format: "decimal", sublabel: (i) => `Over ${i.yearsAhead} years of daily streaming` },
+      { key: "subTotalCost",       label: "Subscriptions over period", format: "currency", sublabel: (i, o) => `$${Number(o.annualSubCost ?? 0).toLocaleString()}/yr × ${i.yearsAhead} years` },
+      { key: "costPerHourWatched", label: "Subscription cost / hour", format: "currency", sublabel: () => "What you pay per hour actually watched" },
+      { key: "combinedAnnualCost", label: "All-in annual drain",      format: "currency", sublabel: () => "Time value + subscription spend" },
+    ],
+    calculate: (inputs) => {
+      const state = String(inputs.state ?? "National");
+      const override = Number(inputs.hourlyRateOverride) || 0;
+      const wage = override > 0 ? override : getUSStateMedianWage(state);
+      return calculateStreamingTime(
+        {
+          hoursPerDay: Number(inputs.hoursPerDay),
+          yearsAhead: Number(inputs.yearsAhead),
+          monthlySubCost: Number(inputs.monthlySubCost),
+        },
+        { medianWage: wage },
+      );
+    },
+    insight: (i, o) => {
+      const wage = (o.stateMedianWage ?? 23.11).toFixed(2);
+      const rateSource = Number(i.hourlyRateOverride) > 0 ? "your rate" : "median wage";
+      return `${i.hoursPerDay}h/day at $${wage}/hr (${rateSource}) = $${(o.annualCost ?? 0).toLocaleString()}/year in time value plus $${Number(o.annualSubCost ?? 0).toLocaleString()}/year in subscriptions — ${o.lifetimeDays} days over ${i.yearsAhead} years.`;
+    },
+  },
+
+  // -- Phone Addiction Calculator (live state wage data) ------------------------
+  "phone-addiction-calculator": {
+    id: "phone-addiction-calculator",
+    category: "other",
+    description: "See what your phone habit costs — days of life, share of your waking day, checking frequency, and opportunity cost at your state's live median wage.",
+    label: "Phone Addiction Calculator",
+    inputs: [
+      {
+        name: "state", label: "Your state", type: "dropdown", default: "National",
+        options: US_WAGE_STATE_OPTIONS,
+        hint: "Loads your state's BLS median hourly wage as the opportunity cost rate",
+      },
+      {
+        name: "hoursPerDay", label: "Daily phone screen time", unit: "hrs", type: "slider",
+        min: 0.5, max: 14, step: 0.5, default: 4.5,
+        hint: "Check Settings → Screen Time (iPhone) or Digital Wellbeing (Android). US average ≈ 4.5 hrs/day",
+        quickPicks: [2, 3, 4.5, 6, 8],
+      },
+      {
+        name: "pickupsPerDay", label: "Phone pickups per day", type: "slider",
+        min: 0, max: 300, step: 1, default: 86,
+        hint: "How many times you check your phone daily — the US average is about 86",
+        quickPicks: [30, 50, 86, 120, 200],
+      },
+      {
+        name: "yearsAhead", label: "Years to project", type: "slider",
+        min: 1, max: 40, step: 1, default: 10,
+        hint: "How many years into the future to calculate cumulative impact",
+        quickPicks: [5, 10, 20, 30, 40],
+      },
+      {
+        name: "hourlyRateOverride", label: "Your hourly rate (optional)", unit: "$", type: "slider",
+        min: 0, max: 200, step: 1, default: 0,
+        hint: "Leave at $0 to use your state's live median wage.",
+        quickPicks: [0, 25, 50, 75, 100],
+      },
+    ],
+    outputs: [
+      { key: "annualCost",       label: "Annual opportunity cost", format: "currency", highlight: true, sublabel: (i, o) => Number(i.hourlyRateOverride) > 0 ? `At your rate of $${(o.stateMedianWage ?? 0).toFixed(2)}/hr` : `At $${(o.stateMedianWage ?? 23.11).toFixed(2)}/hr median wage` },
+      { key: "wakingPct",        label: "Share of waking day",     format: "percent", sublabel: () => "Assuming ~16 waking hours" },
+      { key: "lifetimeDays",     label: "Days consumed over period", format: "decimal", sublabel: (i) => `Over ${i.yearsAhead} years of daily use` },
+      { key: "pickupsPerYear",   label: "Pickups per year",        format: "integer", sublabel: (i) => `${i.pickupsPerDay}× per day` },
+      { key: "minutesPerPickup", label: "Minutes per pickup",      format: "decimal", sublabel: () => "Average phone time between checks" },
+    ],
+    calculate: (inputs) => {
+      const state = String(inputs.state ?? "National");
+      const override = Number(inputs.hourlyRateOverride) || 0;
+      const wage = override > 0 ? override : getUSStateMedianWage(state);
+      return calculatePhoneAddiction(
+        {
+          hoursPerDay: Number(inputs.hoursPerDay),
+          pickupsPerDay: Number(inputs.pickupsPerDay),
+          yearsAhead: Number(inputs.yearsAhead),
+        },
+        { medianWage: wage },
+      );
+    },
+    insight: (i, o) => {
+      const wage = (o.stateMedianWage ?? 23.11).toFixed(2);
+      const rateSource = Number(i.hourlyRateOverride) > 0 ? "your rate" : "median wage";
+      return `${i.hoursPerDay}h/day (${(o.wakingPct ?? 0)}% of waking hours) at $${wage}/hr (${rateSource}) = $${(o.annualCost ?? 0).toLocaleString()}/year — ${o.lifetimeDays} days over ${i.yearsAhead} years.`;
+    },
+  },
+
+  // -- Procrastination Cost Calculator (live state wage data) -------------------
+  "procrastination-cost": {
+    id: "procrastination-cost",
+    category: "work",
+    description: "See the true annual cost of procrastination using your state's live median hourly wage — with 10-year compounding and marginal improvement framing.",
+    label: "Procrastination Cost Calculator",
+    inputs: [
+      {
+        name: "state", label: "Your state", type: "dropdown", default: "National",
+        options: US_WAGE_STATE_OPTIONS,
+        hint: "Loads your state's BLS median hourly wage as the cost rate",
+      },
+      {
+        name: "hoursPerDay", label: "Hours procrastinated per day", unit: "hrs", type: "slider",
+        min: 0.5, max: 6, step: 0.5, default: 2,
+        hint: "Salary.com: employees average 2.09 hours/day on non-productive activities",
+        quickPicks: [1, 1.5, 2, 3, 4],
+      },
+      {
+        name: "daysPerYear", label: "Working days per year", unit: "days", type: "slider",
+        min: 200, max: 365, step: 5, default: 250,
+        hint: "Standard: 50 weeks × 5 days = 250. Adjust for your schedule.",
+        quickPicks: [200, 220, 250, 260, 300],
+      },
+      {
+        name: "hourlyRateOverride", label: "Your hourly rate (optional)", unit: "$", type: "slider",
+        min: 0, max: 200, step: 1, default: 0,
+        hint: "Leave at $0 to use your state's live median wage.",
+        quickPicks: [0, 25, 50, 75, 100],
+      },
+    ],
+    outputs: [
+      { key: "annualLoss",      label: "Annual cost",            format: "currency", highlight: true, sublabel: (i, o) => Number(i.hourlyRateOverride) > 0 ? `At your rate of $${(o.stateMedianWage ?? 0).toFixed(2)}/hr` : `At $${(o.stateMedianWage ?? 23.11).toFixed(2)}/hr median wage` },
+      { key: "dailyLoss",       label: "Daily cost",             format: "currency", sublabel: () => "Every working day" },
+      { key: "halfHourSaving",  label: "30-min/day improvement", format: "currency", sublabel: () => "Annual value of cutting 30 minutes" },
+      { key: "tenYearLoss",     label: "10-year invested cost",  format: "currency", sublabel: () => "At 7% compound return" },
+      { key: "excessAnnualLoss",label: "Above-average cost",     format: "currency", sublabel: () => "Cost of hours above the 2.1hr workplace avg" },
+    ],
+    calculate: (inputs) => {
+      const state = String(inputs.state ?? "National");
+      const override = Number(inputs.hourlyRateOverride) || 0;
+      const wage = override > 0 ? override : getUSStateMedianWage(state);
+      return calculateProcrastinationCost(
+        {
+          hoursPerDay: Number(inputs.hoursPerDay),
+          daysPerYear: Number(inputs.daysPerYear),
+          state,
+        },
+        { medianWage: wage },
+      );
+    },
+    insight: (_i, o) => {
+      const wage = (o.stateMedianWage ?? 23.11).toFixed(2);
+      const rateSource = Number(_i.hourlyRateOverride) > 0 ? "your rate" : "median wage";
+      return `${_i.hoursPerDay}h/day at $${wage}/hr (${rateSource}) × ${_i.daysPerYear} days = $${(o.annualLoss ?? 0).toLocaleString()}/year in procrastination cost.`;
+    },
   },
 
   // ── Latte Factor / Coffee vs Investing ─────────────────────────────────────
   "latte-factor": {
     id: "latte-factor",
     category: "finance",
-    description: "See what your daily coffee habit would be worth if invested instead.",
+    description: "See what your daily habit would be worth invested — with real-world frequency and price inflation.",
     label: "Latte Factor Calculator",
     inputs: [
-      { name: "dailySpend",   label: "Daily spend",          unit: "$",   type: "slider", min: 1,  max: 20,     step: 0.5, default: 6,    hint: "Coffee, snacks, or any small daily habit",               quickPicks: [3, 5, 6, 8, 10] },
-      { name: "annualReturn", label: "Annual return",        unit: "%",   type: "slider", min: 3,  max: 12,     step: 0.5, default: 7,    hint: "Historical S&P 500 avg ~7% inflation-adjusted",           quickPicks: [4, 5, 7, 9, 10] },
-      { name: "years",        label: "Investment horizon",   unit: "yrs", type: "slider", min: 1,  max: 40,     step: 1,   default: 30,   hint: "How long you'd invest instead of spending",               quickPicks: [10, 15, 20, 30, 40] },
+      { name: "dailySpend",   label: "Spend per day",        unit: "$",   type: "slider", min: 1,   max: 25,  step: 0.5, default: 6,  hint: "Coffee, snacks, energy drinks, or any small daily habit",  quickPicks: [3, 5, 6, 8, 10] },
+      { name: "daysPerWeek",  label: "Days per week",        unit: "days",type: "slider", min: 1,   max: 7,   step: 1,   default: 5,  hint: "Most people buy on workdays (5) — adjust if it's every day", quickPicks: [3, 5, 6, 7] },
+      { name: "costGrowth",   label: "Annual price increase",unit: "%",   type: "slider", min: 0,   max: 8,   step: 0.5, default: 3,  hint: "Coffee CPI has averaged ~3%/yr — your $6 latte is next year's $6.18", quickPicks: [0, 2, 3, 4, 6] },
+      { name: "annualReturn", label: "Investment return",    unit: "%",   type: "slider", min: 0,   max: 12,  step: 0.5, default: 7,  hint: "S&P 500 real return ~7%/yr (inflation-adjusted)",         quickPicks: [4, 5, 7, 9, 10] },
+      { name: "years",        label: "Time horizon",         unit: "yrs", type: "slider", min: 1,   max: 40,  step: 1,   default: 30, hint: "How long you'd invest instead of spending",               quickPicks: [5, 10, 20, 30, 40] },
     ],
     outputs: [
-      { key: "investedValue", label: "If invested instead",  format: "currency", highlight: true, sublabel: (i) => `Over ${i.years} yrs at ${i.annualReturn}%` },
-      { key: "totalSpent",    label: "Total spent on habit", format: "currency",                  sublabel: (i) => `$${i.dailySpend}/day x ${i.years} years` },
-      { key: "growth",        label: "Compound gain",        format: "currency",                  sublabel: () => "Growth above total contributions" },
+      { key: "investedValue",    label: "If invested instead",  format: "currency", highlight: true, sublabel: (i) => `$${i.dailySpend}/day × ${i.daysPerWeek} days at ${i.annualReturn}% over ${i.years} yrs` },
+      { key: "totalSpent",       label: "Total spent on habit", format: "currency",                  sublabel: (i) => `Includes ${i.costGrowth}%/yr price increase` },
+      { key: "compoundGrowth",   label: "Compound gain",        format: "currency",                  sublabel: () => "Growth above total contributions" },
     ],
     calculate: (inputs) => {
-      const daily = Number(inputs.dailySpend), r = Number(inputs.annualReturn) / 100, yrs = Number(inputs.years);
-      const yearly = daily * 365;
-      const fv = r > 0 ? yearly * ((Math.pow(1 + r, yrs) - 1) / r) : yearly * yrs;
-      return { investedValue: Math.round(fv), totalSpent: Math.round(yearly * yrs), growth: Math.round(fv - yearly * yrs) };
+      return calculateLatteFactor({
+        dailySpend:   Number(inputs.dailySpend),
+        daysPerWeek:  Number(inputs.daysPerWeek),
+        costGrowth:   Number(inputs.costGrowth),
+        annualReturn: Number(inputs.annualReturn),
+        years:        Number(inputs.years),
+      });
     },
     insight: (i, o) =>
-      `Investing $${i.dailySpend}/day grows to $${(o.investedValue ?? 0).toLocaleString()} over ${i.years} years — $${(o.growth ?? 0).toLocaleString()} in compound gains.`,
+      `$${i.dailySpend}/day, ${i.daysPerWeek} days/week, invested at ${i.annualReturn}% for ${i.years} years grows to $${(o.investedValue ?? 0).toLocaleString()} — $${(o.compoundGrowth ?? 0).toLocaleString()} is compound gain.`,
   },
 
   // ── True Hourly Wage ────────────────────────────────────────────────────────
@@ -1775,11 +2097,13 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "advertisedHourly",  label: "Advertised rate",     format: "currency",                  sublabel: () => "Salary divided by contracted hours only" },
       { key: "extraHoursPerYear", label: "Unpaid hours/year",   format: "integer",                   sublabel: () => "Commute + decompression annually" },
     ],
-    calculate: (inputs) => {
-      const s = Number(inputs.salary), c = Number(inputs.hoursPerWeek) * 52;
-      const comm = Number(inputs.commuteHrsDay) * 2 * 5 * 52, dec = Number(inputs.decompressHrs) * 5 * 52;
-      return { trueHourly: Math.round(s / (c + comm + dec) * 100) / 100, advertisedHourly: Math.round(s / c * 100) / 100, extraHoursPerYear: Math.round(comm + dec) };
-    },
+    calculate: (inputs) =>
+      calculateTrueHourlyWage({
+        salary:        Number(inputs.salary),
+        hoursPerWeek:  Number(inputs.hoursPerWeek),
+        commuteHrsDay: Number(inputs.commuteHrsDay),
+        decompressHrs: Number(inputs.decompressHrs),
+      }),
     insight: (i, o) =>
       `Paid $${o.advertisedHourly}/hr on paper — true rate is $${o.trueHourly}/hr once ${o.extraHoursPerYear} unpaid hours/year are counted.`,
   },
@@ -1788,27 +2112,35 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "ev-vs-gas": {
     id: "ev-vs-gas",
     category: "finance",
-    description: "Compare annual fuel costs between an electric vehicle and a gas car.",
+    description: "Compare annual fuel costs between an electric vehicle and a gas car using live state gas and electricity prices.",
     label: "EV vs Gas Cost Calculator",
     inputs: [
-      { name: "milesPerYear", label: "Miles per year",       unit: "mi",        type: "slider", min: 1000, max: 30000, step: 500,  default: 12000, hint: "Average US driver ~13,500 miles/year",       quickPicks: [6000, 10000, 12000, 15000, 20000] },
-      { name: "mpg",          label: "Gas car MPG",                             type: "slider", min: 10,   max: 55,    step: 1,    default: 28,    hint: "Average new car ~28 MPG",                   quickPicks: [15, 22, 28, 35, 45] },
-      { name: "gasPrice",     label: "Gas price",            unit: "$/gal",     type: "slider", min: 2,    max: 6,     step: 0.1,  default: 3.5,   hint: "Current price per gallon",                  quickPicks: [2.5, 3.0, 3.5, 4.0, 4.5] },
-      { name: "kwhPer100mi",  label: "EV efficiency",        unit: "kWh/100mi", type: "slider", min: 20,   max: 50,    step: 1,    default: 30,    hint: "Most EVs use 25-35 kWh per 100 miles",      quickPicks: [24, 28, 30, 34, 40] },
-      { name: "electricRate", label: "Electricity rate",     unit: "$/kWh",     type: "slider", min: 0.08, max: 0.40,  step: 0.01, default: 0.15,  hint: "US avg ~$0.13-0.16/kWh",                   quickPicks: [0.10, 0.13, 0.15, 0.18, 0.25] },
+      { name: "state",             label: "Your state",          type: "dropdown", default: "National", options: US_ENERGY_STATE_OPTIONS, hint: "We use live state gas and home-electricity prices" },
+      { name: "milesPerYear",      label: "Miles per year",      unit: "mi",        type: "slider", min: 1000, max: 30000, step: 500, default: 12000, hint: "Average US driver ~13,500 miles/year",   quickPicks: [6000, 10000, 12000, 15000, 20000] },
+      { name: "mpg",               label: "Gas car MPG",                            type: "slider", min: 10,   max: 55,    step: 1,   default: 28,    hint: "The gas car you're comparing against",   quickPicks: [15, 22, 28, 35, 45] },
+      { name: "kwhPer100mi",       label: "EV efficiency",       unit: "kWh/100mi", type: "slider", min: 20,   max: 50,    step: 1,   default: 30,    hint: "Most EVs use 25-35 kWh per 100 miles",   quickPicks: [24, 28, 30, 34, 40] },
+      { name: "publicChargingPct", label: "Charging on public fast chargers", unit: "%", type: "slider", min: 0, max: 100, step: 5, default: 10, hint: "Public DC fast charging costs ~3x home charging", quickPicks: [0, 10, 25, 50, 80] },
+      { name: "gasPriceOverride",     label: "Your gas price (optional)",       unit: "$/gal", type: "slider", min: 0, max: 8,   step: 0.05, default: 0, hint: "Leave at $0 to use your state's live gas price.",  quickPicks: [0, 3, 3.5, 4, 5] },
+      { name: "electricRateOverride", label: "Your electricity rate (optional)", unit: "$/kWh", type: "slider", min: 0, max: 0.6, step: 0.01, default: 0, hint: "Leave at $0 to use your state's live home rate.", quickPicks: [0, 0.12, 0.16, 0.22, 0.3] },
     ],
     outputs: [
-      { key: "annualSavings", label: "Annual savings with EV", format: "currency", highlight: true, sublabel: () => "Gas cost minus EV fuel cost" },
-      { key: "annualGasCost", label: "Annual gas cost",        format: "currency",                  sublabel: (i) => `Gas car at ${i.mpg} MPG` },
-      { key: "annualEvCost",  label: "Annual EV fuel cost",    format: "currency",                  sublabel: () => "Home charging cost only" },
+      { key: "annualSavings", label: "Annual savings with EV", format: "currency", highlight: true, sublabel: (i) => `Driving ${Number(i.milesPerYear).toLocaleString()} mi/yr` },
+      { key: "annualGasCost", label: "Annual gas cost",        format: "currency",                  sublabel: (i, o) => `${i.mpg} MPG at $${(o.gasPrice ?? 0).toFixed(2)}/gal` },
+      { key: "annualEvCost",  label: "Annual EV fuel cost",    format: "currency",                  sublabel: (i, o) => `Charging at $${(o.effectiveKwhRate ?? 0).toFixed(2)}/kWh blended` },
     ],
     calculate: (inputs) => {
-      const gas = (Number(inputs.milesPerYear) / Number(inputs.mpg)) * Number(inputs.gasPrice);
-      const ev  = (Number(inputs.milesPerYear) / 100) * Number(inputs.kwhPer100mi) * Number(inputs.electricRate);
-      return { annualSavings: Math.round(gas - ev), annualGasCost: Math.round(gas), annualEvCost: Math.round(ev) };
+      const state = String(inputs.state ?? "National");
+      const gasOverride  = Number(inputs.gasPriceOverride) || 0;
+      const elecOverride = Number(inputs.electricRateOverride) || 0;
+      return calculateEvVsGas(inputs, {
+        gasPrice:         gasOverride  > 0 ? gasOverride  : getUSStateFuelPrice(state),
+        homeElectricRate: elecOverride > 0 ? elecOverride : getUSStateElectricityPrice(state),
+      });
     },
     insight: (i, o) =>
-      `Driving ${Number(i.milesPerYear).toLocaleString()} miles/yr in an EV saves $${(o.annualSavings ?? 0).toLocaleString()} vs a ${i.mpg} MPG gas car at $${i.gasPrice}/gal.`,
+      (o.annualSavings ?? 0) >= 0
+        ? `Driving ${Number(i.milesPerYear).toLocaleString()} miles/yr in an EV saves $${(o.annualSavings ?? 0).toLocaleString()} vs a ${i.mpg} MPG gas car at $${(o.gasPrice ?? 0).toFixed(2)}/gal.`
+        : `In ${i.state}, high electricity and a ${i.mpg} MPG gas car mean the EV costs $${Math.abs(o.annualSavings ?? 0).toLocaleString()} more per year to fuel.`,
   },
 
   // ── DRIP / Dividend Reinvestment ───────────────────────────────────────────
@@ -1825,19 +2157,25 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "years",         label: "Years",                unit: "yrs", type: "slider", min: 1,    max: 40,     step: 1,    default: 20,    hint: "Investment time horizon",                     quickPicks: [10, 15, 20, 25, 30] },
     ],
     outputs: [
-      { key: "finalValue",       label: "Portfolio value",    format: "currency", highlight: true, sublabel: (i) => `After ${i.years} years with DRIP` },
-      { key: "totalContributed", label: "Total invested",     format: "currency",                  sublabel: () => "Initial + all monthly contributions" },
-      { key: "totalGain",        label: "Total gain",         format: "currency",                  sublabel: () => "Growth and reinvested dividends combined" },
+      { key: "finalValue",    label: "Portfolio value",  format: "currency", highlight: true, sublabel: (i) => `After ${i.years} years with DRIP` },
+      { key: "realValue",     label: "In today's dollars",format: "currency",                  sublabel: () => `Adjusted for live ${getCpiInflationYoY()}% CPI inflation` },
+      { key: "dripAdvantage", label: "DRIP advantage",    format: "currency",                  sublabel: () => "Extra vs taking dividends as cash" },
+      { key: "annualDividendAtEnd", label: "Final-year dividends", format: "currency",          sublabel: (i) => `${i.dividendYield}% yield, paid without selling` },
     ],
-    calculate: (inputs) => {
-      const mr = (Number(inputs.dividendYield) + Number(inputs.priceGrowth)) / 100 / 12;
-      const mo = Number(inputs.years) * 12;
-      const fv = Number(inputs.initial) * Math.pow(1 + mr, mo) + (Number(inputs.monthlyAdd) > 0 ? Number(inputs.monthlyAdd) * ((Math.pow(1 + mr, mo) - 1) / mr) : 0);
-      const contrib = Math.round(Number(inputs.initial) + Number(inputs.monthlyAdd) * mo);
-      return { finalValue: Math.round(fv), totalContributed: contrib, totalGain: Math.round(fv) - contrib };
-    },
+    calculate: (i) =>
+      calculateDrip(
+        {
+          initial:       Number(i.initial),
+          monthlyAdd:    Number(i.monthlyAdd),
+          dividendYield: Number(i.dividendYield),
+          priceGrowth:   Number(i.priceGrowth),
+          years:         Number(i.years),
+        },
+        { annualInflationPct: getCpiInflationYoY() },
+      ),
     insight: (i, o) =>
-      `$${Number(i.initial).toLocaleString()} with $${i.monthlyAdd}/mo at ${i.dividendYield}% yield + ${i.priceGrowth}% growth compounds to $${(o.finalValue ?? 0).toLocaleString()} in ${i.years} years.`,
+      `$${Number(i.initial).toLocaleString()} + $${i.monthlyAdd}/mo at ${i.dividendYield}% yield + ${i.priceGrowth}% growth compounds to $${(o.finalValue ?? 0).toLocaleString()} in ${i.years} years — ` +
+      `about $${(o.dripAdvantage ?? 0).toLocaleString()} more than taking the dividends as cash.`,
   },
 
   // ── Down Payment Countdown ─────────────────────────────────────────────────
@@ -1851,19 +2189,41 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { name: "downPct",      label: "Down payment %",     unit: "%",  type: "slider", min: 3,      max: 30,      step: 1,     default: 20,     hint: "20% avoids PMI; FHA loans allow 3.5%",    quickPicks: [3, 5, 10, 15, 20] },
       { name: "currentSaved", label: "Currently saved",    unit: "$",  type: "slider", min: 0,      max: 200000,  step: 1000,  default: 5000,   hint: "How much you already have set aside",     quickPicks: [0, 5000, 10000, 25000, 50000] },
       { name: "months",       label: "Months to goal",     unit: "mo", type: "slider", min: 6,      max: 120,     step: 3,     default: 36,     hint: "How many months until you want to buy",   quickPicks: [12, 24, 36, 48, 60] },
+      { name: "appreciationPct", label: "Home appreciation", unit: "%", type: "slider", min: 0,    max: 10,      step: 0.5,   default: 4,      hint: "Expected annual home-price growth — your target rises as prices do", quickPicks: [0, 3, 4, 5, 7] },
+      { name: "hysaApyOverride",  label: "Your savings APY (optional)", unit: "%", type: "slider", min: 0, max: 8, step: 0.1, default: 0, hint: "Leave at 0 to use the live high-yield savings average.", quickPicks: [0, 4, 4.5, 5, 5.5] },
+      { name: "closingCostPct",   label: "Your closing-cost rate (optional)", unit: "%", type: "slider", min: 0, max: 6, step: 0.1, default: 0, hint: "Leave at 0 to use the ~3% national estimate.", quickPicks: [0, 2, 3, 4, 5] },
     ],
     outputs: [
-      { key: "monthlySavings", label: "Save per month",       format: "currency", highlight: true, sublabel: (i, o) => `To reach $${(o.targetDown ?? 0).toLocaleString()} in ${i.months} months` },
-      { key: "targetDown",     label: "Down payment needed",  format: "currency",                  sublabel: (i) => `${i.downPct}% of $${Number(i.homePrice).toLocaleString()}` },
-      { key: "remaining",      label: "Still to save",        format: "currency",                  sublabel: () => "After subtracting current savings" },
+      { key: "monthlySavings", label: "Save per month",       format: "currency", highlight: true,
+        sublabel: (i, o) => `Into a HYSA at ${Number(i.hysaApyOverride) > 0 ? Number(i.hysaApyOverride) : HYSA_APY}% APY — $${Number(o.monthlyInterestSavings ?? 0).toLocaleString()}/mo less than a 0% account` },
+      { key: "targetDown",     label: "Down payment at purchase", format: "currency",
+        sublabel: (i, o) => `${i.downPct}% of the ~$${Number(o.futureHomePrice ?? 0).toLocaleString()} price after ${i.appreciationPct}% growth` },
+      { key: "interestEarned", label: "Interest while saving", format: "currency",
+        sublabel: () => `Your HYSA does part of the saving for you` },
+      { key: "cashToClose",    label: "Total cash to close",  format: "currency",
+        sublabel: (_i, o) => `Down payment + ~$${Number(o.closingCosts ?? 0).toLocaleString()} closing costs` },
     ],
-    calculate: (inputs) => {
-      const target = Number(inputs.homePrice) * Number(inputs.downPct) / 100;
-      const rem    = Math.max(0, target - Number(inputs.currentSaved));
-      return { monthlySavings: Math.round(rem / Number(inputs.months)), targetDown: Math.round(target), remaining: Math.round(rem) };
+    calculate: (i) => {
+      const hysaOverride = Number(i.hysaApyOverride) || 0;
+      const closingOverride = Number(i.closingCostPct) || 0;
+      return calculateDownPayment(
+        {
+          homePrice:       Number(i.homePrice),
+          downPct:         Number(i.downPct),
+          currentSaved:    Number(i.currentSaved),
+          months:          Number(i.months),
+          appreciationPct: Number(i.appreciationPct),
+        },
+        {
+          hysaApyPct: hysaOverride > 0 ? hysaOverride : HYSA_APY,
+          annualInflationPct: getCpiInflationYoY(),
+          closingCostRate: closingOverride > 0 ? closingOverride / 100 : undefined,
+        },
+      );
     },
     insight: (i, o) =>
-      `A ${i.downPct}% down on $${Number(i.homePrice).toLocaleString()} = $${(o.targetDown ?? 0).toLocaleString()}. Save $${(o.monthlySavings ?? 0).toLocaleString()}/month for ${i.months} months.`,
+      `A ${i.downPct}% down payment on your $${Number(i.homePrice).toLocaleString()} home rises to $${(o.targetDown ?? 0).toLocaleString()} after ${i.appreciationPct}% appreciation. ` +
+      `Save $${(o.monthlySavings ?? 0).toLocaleString()}/month into a HYSA — interest covers $${(o.interestEarned ?? 0).toLocaleString()} of it — and budget $${(o.cashToClose ?? 0).toLocaleString()} total cash to close.`,
   },
 
   // ── Airbnb Profit Estimator ────────────────────────────────────────────────
@@ -1883,11 +2243,13 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "monthlyRevenue", label: "Monthly gross revenue", format: "currency",                  sublabel: (i) => `${i.occupancyPct}% occupancy` },
       { key: "annualProfit",   label: "Annual profit",         format: "currency",                  sublabel: () => "Monthly net x 12" },
     ],
-    calculate: (inputs) => {
-      const gross = Number(inputs.nightlyRate) * 30 * Number(inputs.occupancyPct) / 100;
-      const net   = gross * (1 - Number(inputs.platformFeePct) / 100) - Number(inputs.monthlyExpenses);
-      return { monthlyRevenue: Math.round(gross), monthlyProfit: Math.round(net), annualProfit: Math.round(net * 12) };
-    },
+    calculate: (inputs) =>
+      calculateAirbnbProfit({
+        nightlyRate:     Number(inputs.nightlyRate),
+        occupancyPct:    Number(inputs.occupancyPct),
+        platformFeePct:  Number(inputs.platformFeePct),
+        monthlyExpenses: Number(inputs.monthlyExpenses),
+      }),
     insight: (i, o) =>
       `At $${i.nightlyRate}/night with ${i.occupancyPct}% occupancy, nets $${(o.monthlyProfit ?? 0).toLocaleString()}/month — $${(o.annualProfit ?? 0).toLocaleString()}/year.`,
   },
@@ -1908,13 +2270,12 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "quarterlyPayment",  label: "Quarterly payment",    format: "currency",                  sublabel: () => "Due Jan, Apr, Jun & Sep 15" },
       { key: "annualTaxEstimate", label: "Annual tax estimate",  format: "currency",                  sublabel: () => "Income + 15.3% self-employment tax" },
     ],
-    calculate: (inputs) => {
-      const net   = Math.max(0, Number(inputs.grossIncome) - Number(inputs.businessExpenses));
-      const seTax = net * 0.9235 * 0.153;
-      const fed   = (net - seTax / 2) * Number(inputs.federalRate) / 100;
-      const total = Math.round(seTax + fed);
-      return { annualTaxEstimate: total, quarterlyPayment: Math.round(total / 4), monthlyReserve: Math.round(total / 12) };
-    },
+    calculate: (inputs) =>
+      calculateSelfEmployedTax({
+        grossIncome:      Number(inputs.grossIncome),
+        businessExpenses: Number(inputs.businessExpenses),
+        federalRate:      Number(inputs.federalRate),
+      }),
     insight: (i, o) =>
       `On $${Number(i.grossIncome).toLocaleString()} gross with $${Number(i.businessExpenses).toLocaleString()} expenses, set aside $${(o.monthlyReserve ?? 0).toLocaleString()}/month for ~$${(o.annualTaxEstimate ?? 0).toLocaleString()} annual tax.`,
   },
@@ -1936,15 +2297,20 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     outputs: [
       { key: "effectiveA",  label: "Job A effective comp",    format: "currency", highlight: true, sublabel: () => "Salary + benefits minus commute" },
       { key: "effectiveB",  label: "Job B effective comp",    format: "currency",                  sublabel: () => "Salary + benefits minus commute" },
-      { key: "difference",  label: "Annual gap (A minus B)",  format: "currency",                  sublabel: () => "Positive = Job A wins; negative = Job B" },
+      { key: "difference",  label: "Annual gap",              format: "currency",                  sublabel: (_, o) => `${(o.difference ?? 0) >= 0 ? "Job A" : "Job B"} wins · $${Math.abs(Math.round(o.monthlyGap ?? 0)).toLocaleString()}/mo` },
+      { key: "tenYearInvestedGap", label: "10-yr wealth gap (invested)", format: "currency",        sublabel: () => "If the monthly gap were invested at 7%" },
     ],
-    calculate: (inputs) => {
-      const effA = Number(inputs.salaryA) + Number(inputs.benefitsValueA) - Number(inputs.commuteCostA);
-      const effB = Number(inputs.salaryB) + Number(inputs.benefitsValueB) - Number(inputs.commuteCostB);
-      return { effectiveA: Math.round(effA), effectiveB: Math.round(effB), difference: Math.round(effA - effB) };
-    },
+    calculate: (inputs) =>
+      calculateJobOffer({
+        salaryA:        Number(inputs.salaryA),
+        salaryB:        Number(inputs.salaryB),
+        commuteCostA:   Number(inputs.commuteCostA),
+        commuteCostB:   Number(inputs.commuteCostB),
+        benefitsValueA: Number(inputs.benefitsValueA),
+        benefitsValueB: Number(inputs.benefitsValueB),
+      }),
     insight: (i, o) =>
-      `Job A: $${(o.effectiveA ?? 0).toLocaleString()} effective comp vs Job B: $${(o.effectiveB ?? 0).toLocaleString()} — $${Math.abs(o.difference ?? 0).toLocaleString()} in favour of ${(o.difference ?? 0) >= 0 ? "Job A" : "Job B"}.`,
+      `Job A: $${(o.effectiveA ?? 0).toLocaleString()} effective comp vs Job B: $${(o.effectiveB ?? 0).toLocaleString()} — $${Math.abs(o.difference ?? 0).toLocaleString()}/yr in favour of ${(o.difference ?? 0) >= 0 ? "Job A" : "Job B"} ($${Math.abs(Math.round(o.tenYearInvestedGap ?? 0)).toLocaleString()} over 10 years if invested).`,
   },
 
   // ── Caffeine Half-Life Calculator ──────────────────────────────────────────
@@ -1991,14 +2357,13 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "year1Savings",  label: "Year 1 savings",   format: "currency",                  sublabel: () => "First year electricity bill reduction" },
       { key: "savings25yr",   label: "25-year savings",  format: "currency",                  sublabel: () => "Total over panel lifetime" },
     ],
-    calculate: (inputs) => {
-      const cost = Number(inputs.systemCost), bill = Number(inputs.monthlyBill);
-      const off  = Number(inputs.solarOffset) / 100, inf = Number(inputs.utilityInflation) / 100;
-      const y1   = bill * 12 * off;
-      let t25 = 0, a = y1;
-      for (let y = 0; y < 25; y++) { t25 += a; a *= 1 + inf; }
-      return { paybackMonths: Math.round(cost / (y1 / 12)), year1Savings: Math.round(y1), savings25yr: Math.round(t25) };
-    },
+    calculate: (inputs) =>
+      calculateSolarRoi({
+        systemCost:       Number(inputs.systemCost),
+        monthlyBill:      Number(inputs.monthlyBill),
+        solarOffset:      Number(inputs.solarOffset),
+        utilityInflation: Number(inputs.utilityInflation),
+      }),
     insight: (i, o) =>
       `A $${Number(i.systemCost).toLocaleString()} solar system pays back in ${o.paybackMonths} months and saves $${(o.savings25yr ?? 0).toLocaleString()} over 25 years.`,
   },
@@ -2007,24 +2372,308 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "appliance-energy-cost": {
     id: "appliance-energy-cost",
     category: "other",
-    description: "See the exact cost of running any appliance or device per day, month, and year.",
+    description: "See the exact cost of running any appliance or device per day, month, and year using your state's live residential electricity rate.",
     label: "Appliance Energy Cost Calculator",
     inputs: [
-      { name: "watts",        label: "Power draw",        unit: "W",      type: "slider", min: 1,    max: 5000, step: 10,   default: 200,  hint: "TV ~100W, fridge ~150W, AC ~1500W",        quickPicks: [10, 100, 200, 600, 1500] },
-      { name: "hoursPerDay",  label: "Hours per day",     unit: "hrs",    type: "slider", min: 0.25, max: 24,   step: 0.25, default: 8,    hint: "Average daily run time",                   quickPicks: [1, 4, 8, 12, 24] },
-      { name: "electricRate", label: "Electricity rate",  unit: "$/kWh",  type: "slider", min: 0.05, max: 0.50, step: 0.01, default: 0.15, hint: "US avg ~$0.13-0.16/kWh",                   quickPicks: [0.10, 0.12, 0.15, 0.18, 0.25] },
+      { name: "state",       label: "Your state",    type: "dropdown", default: "National", options: US_ENERGY_STATE_OPTIONS, hint: "We use your state's live residential electricity rate" },
+      { name: "watts",       label: "Power draw",    unit: "W",   type: "slider", min: 1,    max: 5000, step: 5,    default: 200, hint: "LED bulb ~10W · TV ~100W · fridge ~150W · space heater ~1500W", quickPicks: [10, 100, 200, 800, 1500] },
+      { name: "hoursPerDay", label: "Hours per day", unit: "hrs", type: "slider", min: 0.25, max: 24,   step: 0.25, default: 8,   hint: "On a day you use it",                                           quickPicks: [1, 4, 8, 12, 24] },
+      { name: "daysPerWeek", label: "Days per week", unit: "days",type: "slider", min: 1,    max: 7,    step: 1,    default: 7,   hint: "A dryer might run 3 days; a fridge runs 7",                     quickPicks: [1, 2, 3, 5, 7] },
+      { name: "quantity",    label: "How many",      unit: "units",type: "slider",min: 1,    max: 20,   step: 1,    default: 1,   hint: "Number of identical devices (e.g. light bulbs)",                quickPicks: [1, 2, 4, 8, 12] },
+      { name: "electricRateOverride", label: "Your electricity rate (optional)", unit: "$/kWh", type: "slider", min: 0, max: 0.6, step: 0.01, default: 0, hint: "Leave at $0 to use your state's live rate.", quickPicks: [0, 0.12, 0.16, 0.22, 0.3] },
     ],
     outputs: [
-      { key: "monthlyCost", label: "Monthly cost", format: "currency", highlight: true, sublabel: () => "30 days at your usage" },
-      { key: "dailyCost",   label: "Daily cost",   format: "currency",                  sublabel: () => "Cost per day" },
-      { key: "annualCost",  label: "Annual cost",  format: "currency",                  sublabel: () => "365 days" },
+      { key: "annualCost",  label: "Annual cost",  format: "currency", highlight: true, sublabel: (i, o) => `${Number(i.quantity) > 1 ? `${i.quantity}× ` : ""}${i.watts}W · ${i.hoursPerDay}h/day · ${i.daysPerWeek}d/wk` },
+      { key: "monthlyCost", label: "Monthly cost", format: "currency",                  sublabel: (i, o) => `Averaged · $${(o.electricRate ?? 0).toFixed(3)}/kWh${Number(i.electricRateOverride) > 0 ? " (your rate)" : ` in ${i.state === "National" ? "the US" : i.state}`}` },
+      { key: "dailyCost",   label: "Cost per day used", format: "currency",              sublabel: (i, o) => `${(o.kWhPerYear ?? 0).toLocaleString()} kWh/yr` },
     ],
     calculate: (inputs) => {
-      const d = Number(inputs.watts) / 1000 * Number(inputs.hoursPerDay) * Number(inputs.electricRate);
-      return { dailyCost: Math.round(d * 100) / 100, monthlyCost: Math.round(d * 30 * 100) / 100, annualCost: Math.round(d * 365 * 100) / 100 };
+      const state = String(inputs.state ?? "National");
+      const elecOverride = Number(inputs.electricRateOverride) || 0;
+      return calculateApplianceCost(
+        {
+          watts:       Number(inputs.watts),
+          hoursPerDay: Number(inputs.hoursPerDay),
+          daysPerWeek: Number(inputs.daysPerWeek),
+          quantity:    Number(inputs.quantity),
+        },
+        { electricRate: elecOverride > 0 ? elecOverride : getUSStateElectricityPrice(state) },
+      );
     },
     insight: (i, o) =>
-      `Your ${i.watts}W device at ${i.hoursPerDay}h/day costs $${o.monthlyCost}/month — $${(o.annualCost ?? 0)} per year.`,
+      `Running ${Number(i.quantity) > 1 ? `${i.quantity}× ` : ""}this ${i.watts}W device ${i.hoursPerDay}h/day in ${i.state === "National" ? "the US" : i.state} costs $${(o.annualCost ?? 0).toLocaleString()}/yr — about $${(o.monthlyCost ?? 0).toLocaleString()}/month at $${(o.electricRate ?? 0).toFixed(3)}/kWh.`,
+  },
+
+  // ── EV Charging Cost Calculator ────────────────────────────────────────────
+  "ev-charging-cost": {
+    id:          "ev-charging-cost",
+    category:    "other",
+    description: "Calculate exactly what it costs to charge your electric vehicle — broken down by home vs. public charging, with your state's live electricity rate and TOU/overnight rate savings.",
+    label:       "EV Charging Cost Calculator",
+    inputs: [
+      {
+        name: "state", label: "Your state", type: "dropdown", default: "National",
+        options: US_ENERGY_STATE_OPTIONS,
+        hint: "Loads your state's live all-in residential electricity rate",
+      },
+      {
+        name: "milesPerYear", label: "Miles per year", unit: "mi", type: "slider",
+        min: 1000, max: 30000, step: 500, default: 12000,
+        hint: "Average US driver ~13,500 miles/year",
+        quickPicks: [5000, 10000, 12000, 15000, 20000],
+      },
+      {
+        name: "kwhPer100mi", label: "EV efficiency", unit: "kWh/100mi", type: "slider",
+        min: 20, max: 50, step: 1, default: 30,
+        hint: "Check your window sticker — Tesla Model 3 ≈ 26, Rivian R1T ≈ 44",
+        quickPicks: [24, 28, 30, 34, 40],
+      },
+      {
+        name: "publicChargingPct", label: "Public fast-charging %", unit: "%", type: "slider",
+        min: 0, max: 100, step: 5, default: 10,
+        hint: "DC fast-chargers cost ~3× home charging — road-trippers use more",
+        quickPicks: [0, 10, 25, 50, 100],
+      },
+      {
+        name: "touPlan", label: "Home rate plan", type: "select", default: "none",
+        hint: "Dedicated EV overnight rates can cut your home-charging bill by up to 35%",
+        options: [
+          { label: "Standard residential rate",           value: "none"    },
+          { label: "Basic TOU / off-peak plan (~20% off)", value: "basic"   },
+          { label: "EV overnight rate (PG&E, Xcel…) ~35% off", value: "ev_rate" },
+        ],
+      },
+      {
+        name: "homeRateOverride", label: "Your home electricity rate (optional)", unit: "$/kWh", type: "slider",
+        min: 0, max: 0.6, step: 0.01, default: 0,
+        hint: "Leave at $0 to use your state's live rate.",
+        quickPicks: [0, 0.12, 0.16, 0.22, 0.3],
+      },
+    ],
+    outputs: [
+      {
+        key: "annualTotalCost", label: "Annual charging cost", format: "currency", highlight: true,
+        sublabel: (i) => `Home + public in ${i.state === "National" ? "US avg" : String(i.state)}`,
+      },
+      {
+        key: "monthlyCost", label: "Monthly average", format: "currency",
+        sublabel: () => "Annual ÷ 12",
+      },
+      {
+        key: "costPerMileCents", label: "Cost per mile", format: "decimal",
+        sublabel: () => "¢ per mile (home + public blend)",
+      },
+      {
+        key: "homeAnnualCost", label: "Home charging / yr", format: "currency",
+        sublabel: (i) => `${100 - Number(i.publicChargingPct)}% of miles at home`,
+      },
+    ],
+    calculate: (inputs) => {
+      const rateOverride = Number(inputs.homeRateOverride) || 0;
+      const homeRateRaw = rateOverride > 0 ? rateOverride : getUSStateElectricityPrice(String(inputs.state ?? "National"));
+      return calculateEvChargingCost(
+        {
+          milesPerYear:      Number(inputs.milesPerYear),
+          kwhPer100mi:       Number(inputs.kwhPer100mi),
+          publicChargingPct: Number(inputs.publicChargingPct),
+          touPlan:           String(inputs.touPlan ?? "none") as "none" | "basic" | "ev_rate",
+        },
+        { homeRateRaw },
+      );
+    },
+    insight: (i, o) => {
+      const state   = i.state === "National" ? "the US average" : String(i.state);
+      const tou     = i.touPlan !== "none" ? ` (including your TOU discount)` : "";
+      return `Charging your EV ${Number(i.milesPerYear).toLocaleString()} miles/yr in ${state} costs $${(o.annualTotalCost ?? 0).toLocaleString()}/yr${tou} — about $${(o.monthlyCost ?? 0).toFixed(0)}/month at ${(o.costPerMileCents ?? 0).toFixed(1)}¢/mile.`;
+    },
+  },
+
+  // ── Home Heating Cost Calculator ───────────────────────────────────────────
+  "heating-cost": {
+    id:          "heating-cost",
+    category:    "other",
+    description: "Calculate your annual home heating cost by fuel type — using your state's live natural gas price, adjusted for home size and insulation quality.",
+    label:       "Home Heating Cost Calculator",
+    inputs: [
+      {
+        name: "state", label: "Your state", type: "dropdown", default: "National",
+        options: US_ENERGY_STATE_OPTIONS,
+        hint: "Loads your state's live residential natural gas rate (and electricity rate if needed)",
+      },
+      {
+        name: "heatingDays", label: "Heating days per year", unit: "days", type: "slider",
+        min: 30, max: 250, step: 5, default: 150,
+        hint: "How many days per year does your heating run? Deep South ~60; New England ~200",
+        quickPicks: [60, 100, 150, 180, 220],
+      },
+      {
+        name: "homeSqFt", label: "Home size", unit: "sq ft", type: "slider",
+        min: 500, max: 5000, step: 100, default: 1500,
+        hint: "Heated square footage — US median is ~1,500–1,800 sq ft",
+        quickPicks: [800, 1200, 1500, 2000, 3000],
+      },
+      {
+        name: "heatSource", label: "Primary heat source", type: "select", default: "gas",
+        hint: "We calculate all three fuel costs so you can compare",
+        options: [
+          { label: "Natural gas furnace",     value: "gas"      },
+          { label: "Electric resistance",     value: "electric" },
+          { label: "Propane furnace",         value: "propane"  },
+        ],
+      },
+      {
+        name: "insulation", label: "Insulation quality", type: "select", default: "average",
+        hint: "The biggest lever you control — poor vs. excellent can mean 2× the energy bill",
+        options: [
+          { label: "Poor (pre-1980, minimal insulation)", value: "poor"      },
+          { label: "Average (code-min 2000s home)",       value: "average"   },
+          { label: "Good (well-insulated, air-sealed)",   value: "good"      },
+          { label: "Excellent (passive-house class)",     value: "excellent" },
+        ],
+      },
+      {
+        name: "fuelPriceOverride", label: "Your fuel price (optional)", unit: "$", type: "slider",
+        min: 0, max: 6, step: 0.01, default: 0,
+        hint: "Your unit price for the selected fuel ($/therm gas · $/kWh electric · $/gal propane). $0 = use live.",
+        quickPicks: [0, 0.15, 1.2, 2.6, 4],
+      },
+    ],
+    outputs: [
+      {
+        key: "annualHeatingCost", label: "Annual heating cost", format: "currency", highlight: true,
+        sublabel: (i) => `${String(i.heatSource) === "gas" ? "Gas" : String(i.heatSource) === "electric" ? "Electric" : "Propane"} heat · ${i.state === "National" ? "US avg" : String(i.state)} rates`,
+      },
+      {
+        key: "monthlyCost", label: "Monthly average", format: "currency",
+        sublabel: () => "Annual ÷ 12",
+      },
+      {
+        key: "costPerHeatingDay", label: "Cost per heating day", format: "currency",
+        sublabel: (i) => `On a day you heat in ${i.state === "National" ? "US avg" : String(i.state)}`,
+      },
+      {
+        key: "thermsEquivalent", label: "Heat energy used", format: "decimal",
+        sublabel: () => "Therms-equivalent per year",
+      },
+    ],
+    calculate: (inputs) => {
+      const state = String(inputs.state ?? "National");
+      const heatSource = String(inputs.heatSource ?? "gas") as "gas" | "electric" | "propane";
+      const ov = Number(inputs.fuelPriceOverride) || 0;
+      let gasPrice     = getUSStateNaturalGasPrice(state);
+      let electricRate = getUSStateElectricityPrice(state);
+      let propanePrice = US_PROPANE_NATIONAL_AVG;
+      if (ov > 0) {
+        if (heatSource === "electric")     electricRate = ov;
+        else if (heatSource === "propane") propanePrice = ov;
+        else                               gasPrice     = ov;
+      }
+      return calculateHeatingCost(
+        {
+          heatingDays: Number(inputs.heatingDays),
+          homeSqFt:    Number(inputs.homeSqFt),
+          heatSource,
+          insulation:  String(inputs.insulation  ?? "average") as "poor" | "average" | "good" | "excellent",
+        },
+        { gasPrice, electricRate, propanePrice },
+      );
+    },
+    insight: (i, o) => {
+      const state    = i.state === "National" ? "the US average" : String(i.state);
+      const fuel     = String(i.heatSource) === "gas" ? "gas" : String(i.heatSource) === "electric" ? "electric" : "propane";
+      return `A ${Number(i.homeSqFt).toLocaleString()} sq ft home in ${state} on ${fuel} heat with ${String(i.insulation)} insulation costs $${(o.annualHeatingCost ?? 0).toLocaleString()}/yr to heat — about $${(o.monthlyCost ?? 0).toFixed(0)}/month over ${i.heatingDays} heating days.`;
+    },
+  },
+
+  // ── Water Bill Calculator ───────────────────────────────────────────────────
+  "water-bill-calculator": {
+    id:          "water-bill-calculator",
+    category:    "other",
+    description: "Estimate your annual water and sewer bill using your state's live utility rates, household size, and usage habits.",
+    label:       "Water Bill Calculator",
+    inputs: [
+      {
+        name: "state", label: "Your state", type: "dropdown", default: "National",
+        options: US_ENERGY_STATE_OPTIONS,
+        hint: "Loads your state's live combined water + sewer rate ($/1,000 gal)",
+      },
+      {
+        name: "householdSize", label: "People in household", unit: "people", type: "slider",
+        min: 1, max: 8, step: 1, default: 3,
+        hint: "US average household is ~2.5–3 people",
+        quickPicks: [1, 2, 3, 4, 5],
+      },
+      {
+        name: "usageLevel", label: "Indoor water use", type: "select", default: "average",
+        hint: "Based on EPA 82 gal/person/day average",
+        options: [
+          { label: "Low (WaterSense fixtures, short showers)", value: "low"     },
+          { label: "Average (typical US household)",           value: "average" },
+          { label: "High (long showers, frequent laundry)",    value: "high"    },
+        ],
+      },
+      {
+        name: "outdoorWatering", label: "Outdoor watering", type: "select", default: "none",
+        hint: "Lawn and garden irrigation can add 20–45% to your bill",
+        options: [
+          { label: "None / minimal",              value: "none"     },
+          { label: "Seasonal lawn & garden",      value: "seasonal" },
+          { label: "Heavy (large yard, dry climate)", value: "heavy" },
+        ],
+      },
+      {
+        name: "billingType", label: "Bill includes sewer?", type: "select", default: "combined",
+        hint: "Select water-only if you're on septic or sewer is billed separately",
+        options: [
+          { label: "Yes — combined water + sewer", value: "combined"   },
+          { label: "Water only (septic / separate)", value: "water_only" },
+        ],
+      },
+      {
+        name: "rateOverride", label: "Your water rate (optional)", unit: "$/1,000 gal", type: "slider",
+        min: 0, max: 40, step: 0.5, default: 0,
+        hint: "From your bill's combined water + sewer rate. $0 = use your state's live rate.",
+        quickPicks: [0, 8, 12, 18, 25],
+      },
+    ],
+    outputs: [
+      {
+        key: "annualWaterCost", label: "Annual water bill", format: "currency", highlight: true,
+        sublabel: (i) => `${i.state === "National" ? "US avg" : String(i.state)} · live $/1,000 gal`,
+      },
+      {
+        key: "monthlyCost", label: "Monthly average", format: "currency",
+        sublabel: () => "Annual ÷ 12",
+      },
+      {
+        key: "dailyCost", label: "Daily water cost", format: "currency",
+        sublabel: () => "Per calendar day",
+      },
+      {
+        key: "gallonsPerDay", label: "Water used per day", format: "decimal", decimalPlaces: 0,
+        sublabel: () => "Gallons for your household",
+      },
+    ],
+    calculate: (inputs) => {
+      const state = String(inputs.state ?? "National");
+      const rateOverride = Number(inputs.rateOverride) || 0;
+      return calculateWaterBill(
+        {
+          householdSize:   Number(inputs.householdSize),
+          usageLevel:      String(inputs.usageLevel      ?? "average") as UsageLevel,
+          outdoorWatering: String(inputs.outdoorWatering ?? "none")    as OutdoorLevel,
+          billingType:     String(inputs.billingType     ?? "combined") as BillingType,
+        },
+        {
+          combinedRatePer1000Gal: rateOverride > 0 ? rateOverride : getUSStateWaterRate(state),
+          nationalRatePer1000Gal: usStateWaterRatesDataset.national,
+        },
+      );
+    },
+    insight: (i, o) => {
+      const state = i.state === "National" ? "the US average" : String(i.state);
+      return `A ${Number(i.householdSize)}-person household in ${state} on ${String(i.usageLevel)} indoor use costs about $${(o.annualWaterCost ?? 0).toLocaleString()}/yr for water — ~$${(o.monthlyCost ?? 0).toFixed(0)}/month at ${(o.gallonsPerDay ?? 0).toLocaleString()} gallons/day.`;
+    },
   },
 
   // ── TDEE / Calorie Calculator ──────────────────────────────────────────────
@@ -2170,20 +2819,15 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "recommendedAsk",  label: "Recommended ask",     format: "currency", highlight: true, sublabel: () => "Your ideal opening number" },
       { key: "confidenceScore", label: "Leverage score",      format: "decimal",  decimalPlaces: 0, unit: "/100", sublabel: () => "Based on experience, fit, and urgency" },
     ],
-    calculate: (inputs) => {
-      const marketLow = Number(inputs.marketLow), marketHigh = Number(inputs.marketHigh);
-      const marketMid = (marketLow + marketHigh) / 2;
-      const leverageScore =
-        (Number(inputs.experienceYears) / 10) +
-        (Number(inputs.skillMatch) / 100) +
-        (inputs.offerUrgency === "high" ? 0.2 : 0);
-      const recommendedAsk = Math.max(marketMid, Number(inputs.currentOffer) * (1.1 + leverageScore * 0.05));
-      return {
-        marketMid: Math.round(marketMid),
-        recommendedAsk: Math.round(recommendedAsk),
-        confidenceScore: Math.min(leverageScore * 100, 100),
-      };
-    },
+    calculate: (inputs) =>
+      calculateSalaryNegotiation({
+        currentOffer:     Number(inputs.currentOffer),
+        marketLow:        Number(inputs.marketLow),
+        marketHigh:       Number(inputs.marketHigh),
+        experienceYears:  Number(inputs.experienceYears),
+        skillMatch:       Number(inputs.skillMatch),
+        offerUrgencyHigh: inputs.offerUrgency === "high",
+      }),
     insight: (i, o) =>
       `With ${i.experienceYears} years of experience and ${i.skillMatch}% skill match, your recommended ask is $${o.recommendedAsk.toLocaleString()} vs your current offer of $${Number(i.currentOffer).toLocaleString()}.`,
   },
@@ -2205,17 +2849,13 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "yearlyNet",       label: "Yearly net income",    format: "currency",                  sublabel: () => "12-month projection" },
       { key: "hourlyEffective", label: "True hourly rate",     format: "currency",                  sublabel: () => "What you actually earn per hour worked" },
     ],
-    calculate: (inputs) => {
-      const monthlyRevenue = Number(inputs.hoursPerWeek) * Number(inputs.rate) * 4.33;
-      const expenses = monthlyRevenue * (Number(inputs.expensePct) / 100);
-      const tax = (monthlyRevenue - expenses) * (Number(inputs.taxRate) / 100);
-      const net = monthlyRevenue - expenses - tax;
-      return {
-        netMonthly: Math.round(net),
-        yearlyNet: Math.round(net * 12),
-        hourlyEffective: Math.round((net / (Number(inputs.hoursPerWeek) * 4.33)) * 100) / 100,
-      };
-    },
+    calculate: (inputs) =>
+      calculateSideHustle({
+        hoursPerWeek: Number(inputs.hoursPerWeek),
+        rate:         Number(inputs.rate),
+        expensePct:   Number(inputs.expensePct),
+        taxRate:      Number(inputs.taxRate),
+      }),
     insight: (i, o) =>
       `At $${i.rate}/hr for ${i.hoursPerWeek} hrs/week, your true hourly rate after ${i.expensePct}% expenses and ${i.taxRate}% tax is $${o.hourlyEffective}/hr — netting $${o.yearlyNet.toLocaleString()}/year.`,
   },
@@ -2224,29 +2864,29 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "alcohol-cost-calculator": {
     id: "alcohol-cost-calculator",
     category: "other",
-    description: "See what your weekly drinking habit costs you annually — and what it would be worth invested.",
+    description: "See what your drinking habit costs you annually, what it's worth invested, and how much you'd save by cutting a few per week.",
     label: "Alcohol Cost Calculator",
     inputs: [
-      { name: "drinksPerWeek", label: "Drinks per week",   unit: "drinks", type: "slider", min: 1,  max: 50, step: 1,   default: 10, hint: "Include all drinks — home, bars, restaurants", quickPicks: [3, 7, 10, 14, 21] },
-      { name: "costPerDrink",  label: "Average cost/drink", unit: "$",     type: "slider", min: 1,  max: 30, step: 0.5, default: 8,  hint: "Blend of home and out-of-home drinking cost",  quickPicks: [3, 5, 8, 12, 18] },
+      { name: "drinksPerWeek",  label: "Drinks per week",         unit: "drinks", type: "slider", min: 1, max: 50, step: 1,   default: 10, hint: "All drinks — home, bars, restaurants",                 quickPicks: [3, 7, 10, 14, 21] },
+      { name: "costPerDrink",   label: "Average cost per drink",  unit: "$",      type: "slider", min: 1, max: 30, step: 0.50, default: 8, hint: "Blend of home ($3–4) and out ($12–14)",                quickPicks: [3, 5, 8, 12, 18] },
+      { name: "reduceDrinksBy", label: "What if you cut (per wk)",unit: "drinks", type: "slider", min: 0, max: 20, step: 1,   default: 3,  hint: "How many fewer drinks per week? 0 = no change",        quickPicks: [0, 2, 3, 5, 7] },
     ],
     outputs: [
-      { key: "yearlyCost",   label: "Annual spend",            format: "currency",                  sublabel: () => "Total alcohol spend per year" },
-      { key: "tenYearCost",  label: "10-year total",           format: "currency", highlight: true, sublabel: () => "A decade of drinking" },
-      { key: "investedValue", label: "Invested instead (10yr)", format: "currency",                  sublabel: () => "At 7% annual return over 10 years" },
+      { key: "yearlyCost",       label: "Annual spend",            format: "currency", highlight: true, sublabel: (i) => `${i.drinksPerWeek} drinks/wk at $${i.costPerDrink}` },
+      { key: "investedValue10yr", label: "Invested instead (10yr)", format: "currency",                  sublabel: () => "At 7% annual return" },
+      { key: "cutYearlySaving",  label: "Saving from cutting",     format: "currency",                  sublabel: (i) => `Cut ${i.reduceDrinksBy} drinks/wk` },
+      { key: "cutInvested10yr",  label: "Cut savings invested",    format: "currency",                  sublabel: () => "10-year value at 7%" },
     ],
     calculate: (inputs) => {
-      const weekly = Number(inputs.drinksPerWeek) * Number(inputs.costPerDrink);
-      const yearly = weekly * 52;
-      const tenYear = yearly * 10;
-      return {
-        yearlyCost: Math.round(yearly),
-        tenYearCost: Math.round(tenYear),
-        investedValue: Math.round(yearly * ((Math.pow(1.07, 10) - 1) / 0.07)),
-      };
+      return calculateAlcoholCost({
+        drinksPerWeek:  Number(inputs.drinksPerWeek),
+        costPerDrink:   Number(inputs.costPerDrink),
+        reduceDrinksBy: Number(inputs.reduceDrinksBy),
+      });
     },
     insight: (i, o) =>
-      `${i.drinksPerWeek} drinks/week at $${i.costPerDrink} each = $${o.yearlyCost.toLocaleString()}/year. Over 10 years that's $${o.tenYearCost.toLocaleString()}, or $${o.investedValue.toLocaleString()} if invested instead.`,
+      `${i.drinksPerWeek} drinks/wk at $${i.costPerDrink} each = $${(o.yearlyCost ?? 0).toLocaleString()}/yr. ` +
+      `Cut ${i.reduceDrinksBy}/wk to save $${(o.cutYearlySaving ?? 0).toLocaleString()}/yr — $${(o.cutInvested10yr ?? 0).toLocaleString()} if invested over 10 years.`,
   },
 
   // ── Work From Home Savings Calculator ───────────────────────────────────
@@ -2266,16 +2906,13 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "monthlySavings", label: "Monthly savings",        format: "currency",                  sublabel: () => "Average per month" },
       { key: "timeSavedHours", label: "Hours reclaimed/year",   format: "integer",                   sublabel: () => "Hours you get back from not commuting" },
     ],
-    calculate: (inputs) => {
-      const commuteCost = Number(inputs.dailyCommuteCost) * Number(inputs.officeDays) * 52;
-      const foodCost = Number(inputs.dailyFood) * Number(inputs.officeDays) * 52;
-      const yearly = commuteCost + foodCost;
-      return {
-        yearlySavings: Math.round(yearly),
-        monthlySavings: Math.round(yearly / 12),
-        timeSavedHours: Math.round(Number(inputs.commuteMinutes) * 2 * Number(inputs.officeDays) * 52 / 60),
-      };
-    },
+    calculate: (inputs) =>
+      calculateWfhSavings({
+        dailyCommuteCost: Number(inputs.dailyCommuteCost),
+        officeDays:       Number(inputs.officeDays),
+        dailyFood:        Number(inputs.dailyFood),
+        commuteMinutes:   Number(inputs.commuteMinutes),
+      }),
     insight: (i, o) =>
       `Working from home ${i.officeDays} day(s)/week saves you $${o.yearlySavings.toLocaleString()}/year and reclaims ${o.timeSavedHours} hours of commuting annually.`,
   },
@@ -2299,17 +2936,14 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "biologicalAge", label: "Biological age", format: "integer", highlight: true, sublabel: (_, o) => o.biologicalAge > 0 ? `Based on your lifestyle inputs` : "Looking great" },
       { key: "riskScore",     label: "Ageing risk score", format: "integer", unit: "/100", sublabel: () => "0 = optimal, 100 = maximum risk" },
     ],
-    calculate: (inputs) => {
-      let adjustment = 0;
-      if (Number(inputs.sleep) < 6)    adjustment += 5;
-      if (Number(inputs.exercise) < 2) adjustment += 4;
-      if (Number(inputs.smoker) === 1) adjustment += 8;
-      if (Number(inputs.bmi) > 30)     adjustment += 6;
-      return {
-        biologicalAge: Number(inputs.age) + adjustment,
-        riskScore: Math.min(adjustment * 10, 100),
-      };
-    },
+    calculate: (inputs) =>
+      calculateBiologicalAge({
+        age:      Number(inputs.age),
+        sleep:    Number(inputs.sleep),
+        exercise: Number(inputs.exercise),
+        bmi:      Number(inputs.bmi),
+        smoker:   Number(inputs.smoker) === 1,
+      }),
     insight: (i, o) =>
       `Based on your inputs (sleep: ${i.sleep}hrs, exercise: ${i.exercise}x/week, BMI: ${i.bmi}, smoker: ${Number(i.smoker) === 1 ? "yes" : "no"}), your estimated biological age is ${o.biologicalAge}.`,
   },
@@ -2357,13 +2991,14 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "yearlyCost",   label: "Annual cost",    format: "currency",                  sublabel: () => "Total cost per year" },
       { key: "lifetimeCost", label: "Lifetime cost",  format: "currency", highlight: true, sublabel: (i) => `Over ${i.years} years` },
     ],
-    calculate: (inputs) => {
-      const yearly = Number(inputs.food) + Number(inputs.vet) + Number(inputs.insurance) + Number(inputs.misc);
-      return {
-        yearlyCost: yearly,
-        lifetimeCost: yearly * Number(inputs.years),
-      };
-    },
+    calculate: (inputs) =>
+      calculatePetCost({
+        food:      Number(inputs.food),
+        vet:       Number(inputs.vet),
+        insurance: Number(inputs.insurance),
+        misc:      Number(inputs.misc),
+        years:     Number(inputs.years),
+      }),
     insight: (i, o) =>
       `Your pet costs $${o.yearlyCost.toLocaleString()}/year — over a ${i.years}-year lifespan that totals $${o.lifetimeCost.toLocaleString()}.`,
   },
@@ -2377,25 +3012,28 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     inputs: [
       { name: "current",  label: "Current savings",     unit: "$",  type: "slider", min: 0,      max: 2000000, step: 5000,  default: 100000,  hint: "Total invested assets today",                          quickPicks: [25000, 50000, 100000, 250000, 500000] },
       { name: "target",   label: "FIRE target",         unit: "$",  type: "slider", min: 100000, max: 5000000, step: 25000, default: 1500000, hint: "Your final retirement number (25× annual expenses)",   quickPicks: [500000, 1000000, 1500000, 2000000, 3000000] },
-      { name: "rate",     label: "Annual return",       unit: "%",  type: "slider", min: 1,      max: 15,      step: 0.5,   default: 7,       hint: "Expected annual investment return (7% is conservative)", quickPicks: [5, 6, 7, 8, 10] },
+      { name: "rate",     label: "Annual return",       unit: "%",  type: "slider", min: 1,      max: 15,      step: 0.5,   default: 7,       hint: "Nominal return before inflation — ~7–10% is typical; we subtract live CPI for the real figure", quickPicks: [5, 6, 7, 8, 10] },
       { name: "years",    label: "Years until retirement", unit: "yrs", type: "slider", min: 1, max: 50,      step: 1,     default: 25,      hint: "How many years until your target retirement age",        quickPicks: [10, 15, 20, 25, 30, 35] },
     ],
     outputs: [
-      { key: "requiredNow", label: "Coast FIRE number",    format: "currency", highlight: true, sublabel: () => "Amount needed today — then stop contributing" },
-      { key: "coastValue",  label: "Projected portfolio",  format: "currency",                  sublabel: (i) => `Your $${Number(i.current).toLocaleString()} grown at ${i.rate}% for ${i.years} years` },
+      { key: "requiredNow", label: "Coast FIRE number",   format: "currency", highlight: true,
+        sublabel: (_i, o) => `Inflation-adjusted at ${(o.realRatePct ?? 0).toFixed(1)}% real return — then stop contributing` },
+      { key: "coastValue",  label: "Projected portfolio", format: "currency",
+        sublabel: (i) => `Your $${Number(i.current).toLocaleString()} grown in today's dollars over ${i.years} years` },
+      { key: "coastShortfall", label: "Still needed today", format: "currency",
+        sublabel: (_i, o) => (o.alreadyCoasting ?? 0) === 1 ? "✓ Already coasting" : "To reach your coast number" },
+      { key: "requiredNowNominal", label: "Naive (no-inflation) figure", format: "currency",
+        sublabel: (_i, o) => `Understates by $${Number(o.inflationPenalty ?? 0).toLocaleString()}` },
     ],
-    calculate: (inputs) => {
-      const r = Number(inputs.rate) / 100;
-      const y = Number(inputs.years);
-      const coastValue = Number(inputs.current) * Math.pow(1 + r, y);
-      const requiredNow = Number(inputs.target) / Math.pow(1 + r, y);
-      return {
-        coastValue: Math.round(coastValue),
-        requiredNow: Math.round(requiredNow),
-      };
-    },
+    calculate: (i) =>
+      calculateCoastFire(
+        { current: Number(i.current), target: Number(i.target), rate: Number(i.rate), years: Number(i.years) },
+        { annualInflationPct: getCpiInflationYoY() },
+      ),
     insight: (i, o) =>
-      `You need $${o.requiredNow.toLocaleString()} saved today to coast to a $${Number(i.target).toLocaleString()} FIRE target in ${i.years} years at ${i.rate}% return. Your current $${Number(i.current).toLocaleString()} would grow to $${o.coastValue.toLocaleString()}.`,
+      `To coast to a $${Number(i.target).toLocaleString()} target in ${i.years} years you need $${(o.requiredNow ?? 0).toLocaleString()} invested today — ` +
+      `using a ${(o.realRatePct ?? 0).toFixed(1)}% real return after live ${getCpiInflationYoY()}% inflation, ` +
+      `$${Number(o.inflationPenalty ?? 0).toLocaleString()} more than the naive figure most calculators show.`,
   },
 
   // ── Credit Card Payoff Calculator ────────────────────────────────────────
@@ -2414,25 +3052,12 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "interest",  label: "Total interest",    format: "currency",                  sublabel: () => "Interest charges over the full payoff period" },
       { key: "totalPaid", label: "Total paid",        format: "currency",                  sublabel: () => "Balance + all interest charges" },
     ],
-    calculate: (inputs) => {
-      let balance = Number(inputs.balance);
-      let months = 0;
-      let interest = 0;
-      const r = Number(inputs.apr) / 100 / 12;
-      const pmt = Number(inputs.payment);
-      while (balance > 0 && months < 600) {
-        const interestMonth = balance * r;
-        interest += interestMonth;
-        balance = balance + interestMonth - pmt;
-        months++;
-      }
-      const principalPaid = Number(inputs.balance);
-      return {
-        months,
-        interest: Math.round(interest),
-        totalPaid: Math.round(interest + principalPaid),
-      };
-    },
+    calculate: (inputs) =>
+      calculateCreditCardPayoff({
+        balance: Number(inputs.balance),
+        apr:     Number(inputs.apr),
+        payment: Number(inputs.payment),
+      }),
     insight: (i, o) =>
       `Paying $${i.payment}/month on a $${Number(i.balance).toLocaleString()} balance at ${i.apr}% APR will take ${o.months} months and cost $${o.interest.toLocaleString()} in interest.`,
   },
@@ -2452,13 +3077,12 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "burnoutRisk", label: "Burnout risk score", format: "integer", unit: "/100", highlight: true,
         sublabel: (_, o) => o.burnoutRisk > 70 ? "⚠ High risk — act immediately" : o.burnoutRisk > 40 ? "Moderate risk — monitor your load" : "✓ Low risk — healthy balance" },
     ],
-    calculate: (inputs) => {
-      const score =
-        (Number(inputs.hours) / 60) * 40 +
-        (Number(inputs.stress) / 10) * 30 +
-        (Number(inputs.sleep) < 6 ? 20 : 0);
-      return { burnoutRisk: Math.min(Math.round(score), 100) };
-    },
+    calculate: (inputs) =>
+      calculateBurnout({
+        hours:  Number(inputs.hours),
+        stress: Number(inputs.stress),
+        sleep:  Number(inputs.sleep),
+      }),
     insight: (i, o) =>
       `At ${i.hours} hours/week, stress level ${i.stress}/10, and ${i.sleep}hrs sleep — your burnout risk score is ${o.burnoutRisk}/100.`,
   },
@@ -2467,26 +3091,28 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "vaping-cost-calculator": {
     id: "vaping-cost-calculator",
     category: "other",
-    description: "See the real annual and 5-year cost of vaping — and what it would be worth invested.",
+    description: "See the annual cost of vaping, what it's worth invested, savings from cutting daily spend, and how it compares to smoking.",
     label: "Vaping Cost Calculator",
     inputs: [
-      { name: "dailyCost", label: "Daily vaping cost", unit: "$", type: "slider", min: 1, max: 30, step: 0.5, default: 6, hint: "Daily spend on pods, liquids, and device costs", quickPicks: [2, 4, 6, 8, 12, 20] },
+      { name: "dailyCost",  label: "Daily vaping cost",   unit: "$", type: "slider", min: 1,   max: 30, step: 0.50, default: 6, hint: "Pods, liquids, disposables + prorated device cost", quickPicks: [2, 4, 6, 8, 12] },
+      { name: "cutDailyBy", label: "What if you cut by",  unit: "$", type: "slider", min: 0,   max: 15, step: 0.50, default: 2, hint: "Reduce daily spend — switch device type or cut frequency", quickPicks: [0, 1, 2, 3, 5] },
     ],
     outputs: [
-      { key: "yearlyCost", label: "Annual cost",              format: "currency",                  sublabel: () => "Total vaping spend per year" },
-      { key: "fiveYear",   label: "5-year total",             format: "currency", highlight: true, sublabel: () => "Five years of vaping costs" },
-      { key: "invested",   label: "Invested instead (5yr)",   format: "currency",                  sublabel: () => "At 7% annual return over 5 years" },
+      { key: "yearlyCost",       label: "Annual cost",              format: "currency", highlight: true, sublabel: (i) => `$${i.dailyCost}/day × 365 days` },
+      { key: "investedValue10yr", label: "Invested instead (10yr)", format: "currency",                  sublabel: () => "At 7% annual return" },
+      { key: "cutYearlySaving",  label: "Saving from cutting",      format: "currency",                  sublabel: (i) => `Cut $${i.cutDailyBy}/day` },
+      { key: "vsSmokingDiff",    label: "vs Smoking (saved)",       format: "currency",                  sublabel: () => "vs 1 pack/day at $10" },
     ],
     calculate: (inputs) => {
-      const yearly = Number(inputs.dailyCost) * 365;
-      return {
-        yearlyCost: Math.round(yearly),
-        fiveYear: Math.round(yearly * 5),
-        invested: Math.round(yearly * ((Math.pow(1.07, 5) - 1) / 0.07)),
-      };
+      return calculateVapingCost({
+        dailyCost:  Number(inputs.dailyCost),
+        cutDailyBy: Number(inputs.cutDailyBy),
+      });
     },
     insight: (i, o) =>
-      `At $${i.dailyCost}/day, you spend $${o.yearlyCost.toLocaleString()}/year vaping — $${o.fiveYear.toLocaleString()} over 5 years, or $${o.invested.toLocaleString()} if invested instead.`,
+      `$${i.dailyCost}/day vaping costs $${(o.yearlyCost ?? 0).toLocaleString()}/yr. ` +
+      `Cut $${i.cutDailyBy}/day to save $${(o.cutYearlySaving ?? 0).toLocaleString()}/yr. ` +
+      `vs smoking: you save $${(o.vsSmokingDiff ?? 0).toLocaleString()}/yr.`,
   },
 
   // ── Life in Weeks Calculator ─────────────────────────────────────────────
@@ -2504,15 +3130,11 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "weeksLived",     label: "Weeks lived",      format: "integer",                  sublabel: () => "Weeks you've already used" },
       { key: "percentUsed",    label: "Life used",        format: "decimal", decimalPlaces: 1, unit: "%", sublabel: () => "Percentage of expected lifespan elapsed" },
     ],
-    calculate: (inputs) => {
-      const totalWeeks = Number(inputs.lifeExpectancy) * 52;
-      const lived = Number(inputs.age) * 52;
-      return {
-        weeksLived: Math.round(lived),
-        weeksRemaining: Math.round(totalWeeks - lived),
-        percentUsed: Math.round((lived / totalWeeks) * 1000) / 10,
-      };
-    },
+    calculate: (inputs) =>
+      calculateLifeInWeeks({
+        age:            Number(inputs.age),
+        lifeExpectancy: Number(inputs.lifeExpectancy),
+      }),
     insight: (i, o) =>
       `At ${i.age} years old, you've used ${o.percentUsed}% of your life expectancy (${o.weeksLived} weeks). You have approximately ${o.weeksRemaining} weeks remaining.`,
   },
@@ -2658,48 +3280,8 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
       { key: "yearlySavings", label: "Already saving per year",  format: "currency", decimalPlaces: 2, sublabel: (i) => `Cooking ${i.meals} meals/week currently` },
       { key: "costPerMeal",   label: "Cost per home meal",       format: "currency", decimalPlaces: 2, sublabel: () => "vs eating out" },
     ],
-    calculate: (inputs) => {
-      const regional = getRegionalBenchmarks(String(inputs.diningRegion ?? "National"));
-      const DINING_COSTS: Record<string, number> = {
-        fastfood:    regional.fastFoodCombo,
-        delivery:    regional.deliveryMeal,
-        restaurant:  regional.restaurantMeal,
-        takeout:     Math.round((regional.restaurantMeal * 0.8 + regional.fastFoodCombo) / 2 * 100) / 100,
-        convenience: Math.round(regional.fastFoodCombo * 1.1 * 100) / 100,
-        mixed:       Math.round((regional.restaurantMeal + regional.fastFoodCombo) / 2 * 100) / 100,
-      };
-      const takeoutCostDerived = (() => {
-        const diningStyles = String(inputs.diningStyle ?? "takeout").split(",").filter(Boolean);
-        const costs = diningStyles.map((s) => DINING_COSTS[s] ?? 15);
-        return Math.round(costs.reduce((a, b) => a + b, 0) / costs.length * 100) / 100;
-      })();
-      const homeMealCost  = Math.round(regional.groceryMonthly / 60 * 100) / 100;
-      const meals         = Number(inputs.meals ?? 10);
-      const savingPerMeal = takeoutCostDerived - homeMealCost;
-      const weeklySavings = meals * savingPerMeal;
-      const yearlySavings = Math.round(weeklySavings * 52 * 100) / 100;
-      const tenYearIfInvested   = Math.round(yearlySavings * 13.8164 * 100) / 100;
-      const weeklyEatingOutCost = Math.round(meals * takeoutCostDerived * 100) / 100;
-      const monthlyFoodCost     = Math.round(meals * homeMealCost * (52 / 12) * 100) / 100;
-      const TOTAL_WEEKLY_MEALS  = 21;
-      const mealsOutsourced     = Math.max(0, TOTAL_WEEKLY_MEALS - meals);
-      const extraMeals          = Math.min(Number(inputs.extraMeals ?? 1), mealsOutsourced);
-      const extraWeeklySavings  = Math.round(extraMeals * savingPerMeal * 100) / 100;
-      const extraYearlySavings  = Math.round(extraWeeklySavings * 52 * 100) / 100;
-      return {
-        costPerMeal: homeMealCost,
-        weeklySavings: Math.round(weeklySavings * 100) / 100,
-        yearlySavings,
-        tenYearIfInvested,
-        weeklyEatingOutCost,
-        monthlyFoodCost,
-        takeoutCostDerived,
-        mealsOutsourced,
-        extraMeals,
-        extraWeeklySavings,
-        extraYearlySavings,
-      };
-    },
+    calculate: (inputs) =>
+      calculateMealPrep(inputs, getRegionalBenchmarks(String(inputs.diningRegion ?? "National"))),
     insight: (i, o) => {
       const extra = Number(i.extraMeals ?? 1);
       return `You're already saving $${(o.yearlySavings ?? 0).toLocaleString()}/year cooking ${i.meals} meals/week. Cook ${extra} more meal${extra !== 1 ? "s" : ""}/week and that's another $${(o.extraYearlySavings ?? 0).toLocaleString()}/year.`;
@@ -2738,37 +3320,95 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     id: "401k-calculator",
     category: "finance",
     label: "401k Calculator",
-    description: "Project your 401k balance with employer match and compound growth.",
+    description: "Project your 401(k) at retirement with a realistic employer match, the IRS contribution limit, salary raises, and inflation — and see if you're leaving free match money on the table.",
     inputs: [
-      { name: "current",      label: "Current balance",      unit: "$",    type: "slider", min: 0,    max: 500000, step: 1000, default: 0   },
-      { name: "contribution", label: "Monthly contribution", unit: "$",    type: "slider", min: 50,   max: 5000,   step: 50,   default: 500 },
-      { name: "match",        label: "Employer match",       unit: "%",    type: "slider", min: 0,    max: 100,    step: 5,    default: 50  },
-      { name: "rate",         label: "Annual return",        unit: "%",    type: "slider", min: 1,    max: 12,     step: 0.5,  default: 7   },
-      { name: "years",        label: "Years to retirement",  unit: "yrs",  type: "slider", min: 1,    max: 50,     step: 1,    default: 30  },
+      {
+        name: "salary", label: "Annual salary", unit: "$", type: "slider",
+        min: 20000, max: 300000, step: 1000, default: 65000,
+        hint: "Your gross annual pay — contributions are a % of this",
+        quickPicks: [45000, 65000, 90000, 120000, 180000],
+      },
+      {
+        name: "contributionPct", label: "You contribute", unit: "%", type: "slider",
+        min: 0, max: 50, step: 0.5, default: 6,
+        hint: "Percent of salary you defer (IRS caps deferrals at $24,500 in 2026)",
+        quickPicks: [3, 6, 10, 15, 20],
+      },
+      {
+        name: "employerMatchPct", label: "Employer match rate", unit: "%", type: "slider",
+        min: 0, max: 200, step: 5, default: 50,
+        hint: "Cents matched per $1 you contribute — 50% = $0.50 on the dollar",
+        quickPicks: [0, 25, 50, 100],
+      },
+      {
+        name: "matchLimitPct", label: "Match up to", unit: "%", type: "slider",
+        min: 0, max: 15, step: 0.5, default: 6,
+        hint: "Employer matches only up to this % of your salary",
+        quickPicks: [3, 4, 5, 6],
+      },
+      {
+        name: "currentBalance", label: "Current balance", unit: "$", type: "slider",
+        min: 0, max: 1000000, step: 1000, default: 15000,
+        hint: "What you've already saved in this 401(k)",
+        quickPicks: [0, 15000, 50000, 150000],
+      },
+      {
+        name: "rate", label: "Annual return", unit: "%", type: "slider",
+        min: 1, max: 12, step: 0.5, default: 7,
+        hint: "Long-run stock-market average is ~7% after inflation, ~10% before",
+        quickPicks: [5, 6, 7, 8, 10],
+      },
+      {
+        name: "years", label: "Years to retirement", unit: "years", type: "slider",
+        min: 1, max: 50, step: 1, default: 30,
+        hint: "How long until you start drawing down",
+        quickPicks: [10, 20, 30, 40],
+      },
+      {
+        name: "annualRaisePct", label: "Annual raise", unit: "%", type: "slider",
+        min: 0, max: 8, step: 0.5, default: 3,
+        hint: "Average yearly pay rise — lifts your contributions over time",
+        quickPicks: [0, 2, 3, 5],
+      },
     ],
     outputs: [
-      { key: "balance",      label: "Projected balance",     format: "currency", highlight: true },
-      { key: "contributions",label: "Your contributions",    format: "currency" },
-      { key: "matchValue",   label: "Employer match total",  format: "currency" },
+      {
+        key: "balance", label: "Balance at retirement", format: "currency", highlight: true,
+        sublabel: (i) => `After ${i.years} years at ${i.rate}% return`,
+      },
+      {
+        key: "realBalance", label: "In today's dollars", format: "currency",
+        sublabel: () => `Adjusted for live ${getCpiInflationYoY()}% CPI inflation`,
+      },
+      {
+        key: "employerMatch", label: "Free employer match", format: "currency",
+        sublabel: (i, o) =>
+          (o.matchLeftOnTable ?? 0) > 0
+            ? `⚠ $${Number(o.matchLeftOnTable ?? 0).toLocaleString()} more match left unclaimed`
+            : `Full match captured at ${i.contributionPct}%`,
+      },
+      {
+        key: "growth", label: "Investment growth", format: "currency",
+        sublabel: () => "Compounding on top of every dollar in",
+      },
     ],
-    calculate: (inputs) => {
-      const current      = Number(inputs.current);
-      const contribution = Number(inputs.contribution);
-      const matchFrac    = Number(inputs.match) / 100;
-      const r            = Number(inputs.rate) / 100 / 12;
-      const n            = Number(inputs.years) * 12;
-      const monthly      = contribution + contribution * matchFrac;
-      const balance      = r === 0
-        ? current + monthly * n
-        : current * Math.pow(1 + r, n) + monthly * ((Math.pow(1 + r, n) - 1) / r);
-      return {
-        balance:       Math.round(balance),
-        contributions: Math.round(contribution * n),
-        matchValue:    Math.round(contribution * matchFrac * n),
-      };
-    },
+    calculate: (i) =>
+      calculate401k(
+        {
+          currentBalance:   Number(i.currentBalance),
+          salary:           Number(i.salary),
+          contributionPct:  Number(i.contributionPct),
+          employerMatchPct: Number(i.employerMatchPct),
+          matchLimitPct:    Number(i.matchLimitPct),
+          rate:             Number(i.rate),
+          years:            Number(i.years),
+          annualRaisePct:   Number(i.annualRaisePct),
+        },
+        { annualInflationPct: getCpiInflationYoY() },
+      ),
     insight: (i, o) =>
-      `Contributing $${i.contribution}/mo with ${i.match}% employer match at ${i.rate}% for ${i.years} years grows to $${(o.balance ?? 0).toLocaleString()}.`,
+      `Contributing ${i.contributionPct}% of $${Number(i.salary).toLocaleString()} with a ${i.employerMatchPct}% match for ${i.years} years grows to ` +
+      `$${(o.balance ?? 0).toLocaleString()} — about $${(o.realBalance ?? 0).toLocaleString()} in today's money, including $${(o.employerMatch ?? 0).toLocaleString()} of free employer match.`,
   },
 
   // ── Student Loan Calculator ──────────────────────────────────────────────────
@@ -2806,29 +3446,44 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     id: "budget-calculator",
     category: "finance",
     label: "Budget Calculator",
-    description: "Break down monthly take-home pay and see how much is left over.",
+    description: "Break down monthly take-home pay against the 50/30/20 rule and see the sales tax hidden inside your spending using your state's live combined rate.",
     inputs: [
-      { name: "income",    label: "Monthly take-home",  unit: "$", type: "slider", min: 500,  max: 20000, step: 100, default: 5000 },
-      { name: "housing",   label: "Housing",            unit: "$", type: "slider", min: 0,    max: 10000, step: 50,  default: 1500 },
+      { name: "state",     label: "Your state",         type: "dropdown", default: "US Average", options: SALES_TAX_STATE_OPTIONS, hint: "Loads your state's live sales tax rate to estimate the tax inside your spending" },
+      { name: "income",    label: "Monthly take-home",  unit: "$", type: "slider", min: 500,  max: 20000, step: 100, default: 5000, quickPicks: [3000, 5000, 8000, 12000] },
+      { name: "housing",   label: "Housing",            unit: "$", type: "slider", min: 0,    max: 10000, step: 50,  default: 1500, hint: "Rent/mortgage + utilities", quickPicks: [800, 1500, 2500, 4000] },
       { name: "food",      label: "Food & groceries",   unit: "$", type: "slider", min: 0,    max: 3000,  step: 50,  default: 600  },
       { name: "transport", label: "Transport",          unit: "$", type: "slider", min: 0,    max: 3000,  step: 50,  default: 400  },
       { name: "debt",      label: "Debt payments",      unit: "$", type: "slider", min: 0,    max: 5000,  step: 50,  default: 300  },
-      { name: "other",     label: "Other expenses",     unit: "$", type: "slider", min: 0,    max: 5000,  step: 50,  default: 500  },
+      { name: "other",     label: "Other / discretionary", unit: "$", type: "slider", min: 0, max: 5000,  step: 50,  default: 500, hint: "Dining out, shopping, subscriptions — your 'wants'" },
+      { name: "rateOverride", label: "Your sales tax rate (optional)", unit: "%", type: "slider", min: 0, max: 12, step: 0.05, default: 0, hint: "Leave at 0 to use your state's live combined rate.", quickPicks: [0, 6, 7.25, 8.25, 9.5] },
     ],
     outputs: [
-      { key: "leftover", label: "Left over", format: "currency", highlight: true },
+      { key: "leftover",       label: "Left over to save",   format: "currency", highlight: true, sublabel: (_i, o) => `${(o.savingsRate ?? 0).toFixed(0)}% of take-home` },
+      { key: "savingsRate",    label: "Savings rate",        format: "percent",                   sublabel: () => "50/30/20 target is 20%" },
+      { key: "expenseRatio",   label: "Spent",               format: "percent",                   sublabel: (_i, o) => `Needs ${(o.needsRatio ?? 0).toFixed(0)}% · wants ${(o.wantsRatio ?? 0).toFixed(0)}%` },
+      { key: "salesTaxAnnual", label: "Sales tax in spending", format: "currency",                sublabel: (i, o) => `${(o.resolvedRate ?? 0).toFixed(2)}% on taxable spend${Number(i.rateOverride) > 0 ? " (your rate)" : ` in ${i.state === "US Average" ? "the US" : i.state}`}` },
     ],
     calculate: (inputs) => {
-      const income    = Number(inputs.income);
-      const housing   = Number(inputs.housing);
-      const food      = Number(inputs.food);
-      const transport = Number(inputs.transport);
-      const debt      = Number(inputs.debt);
-      const other     = Number(inputs.other);
-      return { leftover: Math.round(income - housing - food - transport - debt - other) };
+      const state = String(inputs.state ?? "US Average");
+      const override = Number(inputs.rateOverride) || 0;
+      const rate = override > 0 ? override : (SALES_TAX_RATE_BY_NAME[state] ?? NATIONAL_AVG_SALES_TAX);
+      const stateData = SALES_TAX_RATES.find((s) => s.name === state);
+      const r = calculateBudget(
+        {
+          income:    Number(inputs.income),
+          housing:   Number(inputs.housing),
+          food:      Number(inputs.food),
+          transport: Number(inputs.transport),
+          debt:      Number(inputs.debt),
+          other:     Number(inputs.other),
+        },
+        { salesTaxRate: rate, groceryExempt: stateData?.groceryExempt ?? false },
+      );
+      return { ...r, resolvedRate: rate };
     },
     insight: (i, o) =>
-      `On $${Number(i.income).toLocaleString()}/mo take-home, you have $${(o.leftover ?? 0).toLocaleString()} left over after core expenses.`,
+      `On $${Number(i.income).toLocaleString()}/mo take-home you keep $${(o.leftover ?? 0).toLocaleString()} (${(o.savingsRate ?? 0).toFixed(0)}% savings rate). ` +
+      `About $${(o.salesTaxAnnual ?? 0).toLocaleString()}/yr of your spending is sales tax in ${i.state === "US Average" ? "the US" : i.state}.`,
   },
 
   // ── BMR Calculator ───────────────────────────────────────────────────────────
@@ -2871,28 +3526,29 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
   "inflation-impact-calculator": {    id: "inflation-impact-calculator",
     category: "finance",
     label: "Inflation Impact Calculator",
-    description: "See how inflation erodes the purchasing power of your money over time.",
+    description: "See how inflation erodes the purchasing power of your money — defaulting to the live FRED CPI rate, with the mirror amount you'd need later to keep pace.",
     inputs: [
-      { name: "amount", label: "Amount today", unit: "$",  type: "slider", min: 100,  max: 1000000, step: 100, default: 10000 },
-      { name: "rate",   label: "Inflation rate", unit: "%", type: "slider", min: 0.5, max: 15,      step: 0.5, default: 3.5   },
-      { name: "years",  label: "Years ahead",   unit: "yr", type: "slider", min: 1,   max: 50,      step: 1,   default: 20    },
+      { name: "amount", label: "Amount today",   unit: "$",  type: "slider", min: 100,  max: 1000000, step: 100, default: 10000, quickPicks: [1000, 10000, 50000, 100000, 500000] },
+      { name: "rate",   label: "Inflation rate",  unit: "%",  type: "slider", min: 0.5, max: 15,      step: 0.1, default: getCpiInflationYoY(), hint: `Defaults to the live FRED CPI rate (${getCpiInflationYoY()}% YoY, ${fredBenchmarks.currentPeriodLabel}) — override for your own scenario`, quickPicks: [2, 3.2, 5, 8, 12] },
+      { name: "years",  label: "Years ahead",     unit: "yr", type: "slider", min: 1,   max: 50,      step: 1,   default: 20,    quickPicks: [5, 10, 20, 30, 40] },
     ],
     outputs: [
-      { key: "futureValue", label: "Future buying power", format: "currency", highlight: true },
-      { key: "loss",        label: "Purchasing power lost", format: "currency" },
-      { key: "lossPercent", label: "Eroded", format: "percent" },
+      { key: "futureValue",    label: "Future buying power",   format: "currency", highlight: true, sublabel: (i) => `What $${Number(i.amount).toLocaleString()} buys in ${i.years} yr at ${Number(i.rate).toFixed(1)}%` },
+      { key: "loss",           label: "Purchasing power lost", format: "currency",                  sublabel: (_i, o) => `${(o.lossPercent ?? 0).toFixed(1)}% eroded` },
+      { key: "requiredFuture", label: "Needed to keep pace",   format: "currency",                  sublabel: (i) => `To match today's $${Number(i.amount).toLocaleString()} in ${i.years} yr` },
+      { key: "yearsToHalve",   label: "Money halves in",       format: "decimal", decimalPlaces: 1, sublabel: () => "Years to lose half its value" },
     ],
-    calculate: (inputs) => {
-      const amount = Number(inputs.amount);
-      const rate   = Number(inputs.rate) / 100;
-      const years  = Number(inputs.years);
-      const futureValue = Math.round(amount / Math.pow(1 + rate, years));
-      const loss        = amount - futureValue;
-      const lossPercent = Math.round((loss / amount) * 100);
-      return { futureValue, loss, lossPercent };
-    },
+    calculate: (inputs) =>
+      calculateInflationImpact(
+        {
+          amount: Number(inputs.amount),
+          rate:   Number(inputs.rate),
+          years:  Number(inputs.years),
+        },
+        { currentCpiRate: getCpiInflationYoY() },
+      ),
     insight: (i, o) =>
-      `At ${i.rate}% inflation, $${Number(i.amount).toLocaleString()} today buys only $${(o.futureValue ?? 0).toLocaleString()} worth in ${i.years} years — ${o.lossPercent ?? 0}% eroded.`,
+      `At ${Number(i.rate).toFixed(1)}% inflation, $${Number(i.amount).toLocaleString()} today buys only $${(o.futureValue ?? 0).toLocaleString()} worth in ${i.years} years — ${(o.lossPercent ?? 0).toFixed(1)}% eroded. You'd need $${(o.requiredFuture ?? 0).toLocaleString()} to keep pace.`,
   },
 
   // ── Child Support Calculator ─────────────────────────────────────────────────
@@ -2933,5 +3589,713 @@ export const CALCULATOR_CONFIGS: CalculatorRegistry = {
     },
     insight: (i, o) =>
       `With ${i.children} child${Number(i.children) > 1 ? "ren" : ""}, $${Number(i.payerIncome).toLocaleString()} payer income, and ${i.custodySplit}% custody, estimated support is $${(o.support ?? 0).toLocaleString()}/month.`,
+  },
+
+  // ── Home Equity Calculator ───────────────────────────────────────────────────
+  "home-equity-calculator": {
+    id: "home-equity-calculator",
+    category: "finance",
+    label: "Home Equity Calculator",
+    description: "See how much equity you've built, your loan-to-value ratio, and how much you could borrow against your home via a HELOC.",
+    inputs: [
+      { name: "homeValue", label: "Current home value",    unit: "$", type: "slider", min: 50000, max: 2000000, step: 5000, default: 450000, quickPicks: [250000, 450000, 700000, 1000000] },
+      { name: "mortgage",  label: "Mortgage balance owed", unit: "$", type: "slider", min: 0,     max: 2000000, step: 5000, default: 280000, quickPicks: [100000, 280000, 500000, 800000] },
+    ],
+    outputs: [
+      { key: "equity",        label: "Home equity",       format: "currency", highlight: true, sublabel: (_i, o) => `${(o.equityPercent ?? 0).toFixed(1)}% of the home is yours` },
+      { key: "ltv",           label: "Loan-to-value",     format: "percent",                   sublabel: () => "Lenders want 80% or less for a HELOC" },
+      { key: "borrowable",    label: "Borrowable (HELOC)", format: "currency",                  sublabel: () => "Up to 80% LTV" },
+    ],
+    calculate: (inputs) => {
+      const homeValue = Number(inputs.homeValue);
+      const mortgage  = Number(inputs.mortgage);
+      const equity        = homeValue - mortgage;
+      const ltv           = homeValue > 0 ? (mortgage / homeValue) * 100 : 0;
+      const equityPercent = homeValue > 0 ? (equity / homeValue) * 100 : 0;
+      const borrowable    = Math.max(0, homeValue * 0.8 - mortgage);
+      const toHeloc80ltv  = ltv > 80 ? Math.round(mortgage - homeValue * 0.8) : 0;
+      return {
+        equity:               Math.round(equity),
+        ltv:                  Math.round(ltv * 10) / 10,
+        borrowable:           Math.round(borrowable),
+        equityPercent:        Math.round(equityPercent * 10) / 10,
+        toHeloc80ltv,
+        equityAnnualSalaries: Math.round((equity / 65000) * 10) / 10,
+      };
+    },
+    insight: (i, o) =>
+      `On a $${Number(i.homeValue).toLocaleString()} home with $${Number(i.mortgage).toLocaleString()} owed, you hold $${(o.equity ?? 0).toLocaleString()} in equity (${(o.equityPercent ?? 0).toFixed(1)}% ownership) at a ${(o.ltv ?? 0).toFixed(1)}% LTV.`,
+  },
+
+  // ── Mortgage Refinance Calculator ─────────────────────────────────────────────
+  "mortgage-refinance-calculator": {
+    id: "mortgage-refinance-calculator",
+    category: "finance",
+    label: "Mortgage Refinance Calculator",
+    description: "Find out whether refinancing pays off — your monthly savings, break-even point on closing costs, and net savings over your time in the home.",
+    inputs: [
+      { name: "oldPayment",   label: "Current monthly payment", unit: "$",  type: "slider", min: 500, max: 10000, step: 50,  default: 2200, quickPicks: [1500, 2200, 3000, 4500] },
+      { name: "newPayment",   label: "New monthly payment",     unit: "$",  type: "slider", min: 500, max: 10000, step: 50,  default: 1900, quickPicks: [1300, 1900, 2600, 4000] },
+      { name: "closingCosts", label: "Closing costs",           unit: "$",  type: "slider", min: 0,   max: 20000, step: 100, default: 4500, quickPicks: [2000, 4500, 8000, 12000] },
+      { name: "years",        label: "Years you'll stay",       unit: "yr", type: "slider", min: 1,   max: 30,    step: 1,   default: 10,   quickPicks: [3, 5, 10, 20] },
+    ],
+    outputs: [
+      { key: "savingsPerMonth", label: "Monthly savings",   format: "currency", highlight: true, sublabel: (_i, o) => `$${(o.annualSavings ?? 0).toLocaleString()}/yr freed up` },
+      { key: "breakEvenMonths", label: "Break-even",        format: "integer", unit: "mo",        sublabel: (_i, o) => `${((o.breakEvenYears ?? 0)).toFixed(1)} years to recoup costs` },
+      { key: "totalSavings",    label: "Net savings",       format: "currency",                   sublabel: (i) => `Over ${i.years} years, after closing costs` },
+    ],
+    calculate: (inputs) => {
+      const oldPayment   = Number(inputs.oldPayment);
+      const newPayment   = Number(inputs.newPayment);
+      const closingCosts = Number(inputs.closingCosts);
+      const years        = Number(inputs.years);
+      const savingsPerMonth = oldPayment - newPayment;
+      const annualSavings   = savingsPerMonth * 12;
+      const grossSavings    = annualSavings * years;
+      const totalSavings    = grossSavings - closingCosts;
+      const breakEvenMonths = savingsPerMonth > 0 ? Math.ceil(closingCosts / savingsPerMonth) : 9999;
+      return {
+        savingsPerMonth,
+        breakEvenMonths,
+        totalSavings:   Math.round(totalSavings),
+        breakEvenYears: Math.round((breakEvenMonths / 12) * 10) / 10,
+        savingsRatio:   closingCosts > 0 ? Math.round((grossSavings / closingCosts) * 10) / 10 : 0,
+        annualSavings,
+      };
+    },
+    insight: (i, o) =>
+      (o.savingsPerMonth ?? 0) > 0
+        ? `Refinancing saves $${(o.savingsPerMonth ?? 0).toLocaleString()}/month and breaks even on $${Number(i.closingCosts).toLocaleString()} closing costs in ${o.breakEvenMonths} months — a net $${(o.totalSavings ?? 0).toLocaleString()} over ${i.years} years.`
+        : `Your new payment isn't lower, so this refinance wouldn't reduce monthly costs — it only makes sense to shorten the term or pull out equity.`,
+  },
+
+  // ── Time to Retirement Calculator ─────────────────────────────────────────────
+  "time-to-retirement-calculator": {
+    id: "time-to-retirement-calculator",
+    category: "finance",
+    label: "Time to Retirement Calculator",
+    description: "Estimate how many years until you can retire using the 25× rule — based on your spending, current savings, monthly contributions, and return rate.",
+    inputs: [
+      { name: "expenses",       label: "Monthly spending in retirement", unit: "$",  type: "slider", min: 1000, max: 20000,   step: 100,  default: 4000,  quickPicks: [3000, 4000, 6000, 9000] },
+      { name: "current",        label: "Current savings",                 unit: "$",  type: "slider", min: 0,    max: 2000000, step: 1000, default: 50000, quickPicks: [10000, 50000, 250000, 750000] },
+      { name: "monthlySavings", label: "Monthly contributions",           unit: "$",  type: "slider", min: 0,    max: 10000,   step: 50,   default: 1000,  quickPicks: [500, 1000, 2500, 5000] },
+      { name: "returnRate",     label: "Annual return",                   unit: "%",  type: "slider", min: 1,    max: 12,      step: 0.5,  default: 7,     quickPicks: [4, 6, 7, 9] },
+    ],
+    outputs: [
+      { key: "yearsToRetire",    label: "Years to retirement", format: "integer", unit: "yr", highlight: true, sublabel: (_i, o) => `${((o.savingsProgress ?? 0) * 100).toFixed(0)}% of the way there` },
+      { key: "retirementTarget", label: "Your retirement number", format: "currency",                          sublabel: () => "25× annual spending (4% rule)" },
+      { key: "retirementGap",    label: "Still to save",          format: "currency",                          sublabel: () => "Gap from current savings" },
+    ],
+    calculate: (inputs) => {
+      const expenses       = Number(inputs.expenses);
+      const current        = Number(inputs.current);
+      const monthlySavings = Number(inputs.monthlySavings);
+      const returnRate     = Number(inputs.returnRate);
+      const retirementTarget   = expenses * 12 * 25;
+      const annualContribution = monthlySavings * 12;
+      const r = returnRate / 100;
+      let balance = current;
+      let years   = 0;
+      if (current < retirementTarget) {
+        while (balance < retirementTarget && years < 80) {
+          balance = balance * (1 + r) + annualContribution;
+          years += 1;
+        }
+      }
+      const projectedBalance10yr =
+        current * Math.pow(1 + r, 10) +
+        (r === 0 ? annualContribution * 10 : annualContribution * ((Math.pow(1 + r, 10) - 1) / r));
+      return {
+        yearsToRetire:        years,
+        retirementTarget:     Math.round(retirementTarget),
+        retirementGap:        Math.max(0, Math.round(retirementTarget - current)),
+        savingsProgress:      current / Math.max(retirementTarget, 1),
+        projectedBalance10yr: Math.round(projectedBalance10yr),
+        annualContribution,
+      };
+    },
+    insight: (i, o) =>
+      (o.yearsToRetire ?? 0) > 0
+        ? `Saving $${Number(i.monthlySavings).toLocaleString()}/month at ${i.returnRate}%, you reach a $${(o.retirementTarget ?? 0).toLocaleString()} target in about ${o.yearsToRetire} years.`
+        : `Your $${Number(i.current).toLocaleString()} already meets the $${(o.retirementTarget ?? 0).toLocaleString()} target for $${Number(i.expenses).toLocaleString()}/month spending.`,
+  },
+
+  // ── Lottery vs Investing Calculator ──────────────────────────────────────────
+  "lottery-vs-investing": {
+    id: "lottery-vs-investing",
+    category: "finance",
+    label: "Lottery vs Investing Calculator",
+    description: "Compare years of lottery ticket spending against the same money invested in an index fund — and see the statistical expected loss.",
+    inputs: [
+      { name: "weekly", label: "Weekly ticket spend", unit: "$",  type: "slider", min: 1,  max: 200, step: 1,   default: 20, quickPicks: [5, 20, 50, 100] },
+      { name: "years",  label: "Over how many years", unit: "yr", type: "slider", min: 1,  max: 50,  step: 1,   default: 20, quickPicks: [5, 10, 20, 30] },
+      { name: "return", label: "Annual return",       unit: "%",  type: "slider", min: 1,  max: 12,  step: 0.5, default: 7,  quickPicks: [4, 6, 7, 9] },
+    ],
+    outputs: [
+      { key: "invested", label: "If invested instead", format: "currency", highlight: true, sublabel: (i) => `At ${i.return}% over ${i.years} years` },
+      { key: "spent",    label: "Total spent on tickets", format: "currency",                sublabel: (i) => `$${Number(i.weekly).toLocaleString()}/week for ${i.years} years` },
+      { key: "gap",      label: "Compound growth missed", format: "currency",                sublabel: () => "Invested value minus what you put in" },
+    ],
+    calculate: (inputs) => {
+      const weekly = Number(inputs.weekly);
+      const years  = Number(inputs.years);
+      const ret    = Number(inputs.return);
+      const annual = weekly * 52;
+      const r      = ret / 100;
+      const invested = r === 0 ? annual * years : annual * ((Math.pow(1 + r, years) - 1) / r);
+      const spent    = annual * years;
+      return {
+        invested:     Math.round(invested),
+        spent:        Math.round(spent),
+        gap:          Math.max(0, Math.round(invested - spent)),
+        lossMultiple: spent > 0 ? Math.round((invested / spent) * 10) / 10 : 0,
+        monthlySpend: Math.round((weekly * 52) / 12),
+        dailyCost:    Math.round((weekly / 7) * 100) / 100,
+      };
+    },
+    insight: (i, o) =>
+      `$${Number(i.weekly).toLocaleString()}/week on lottery tickets is $${(o.spent ?? 0).toLocaleString()} over ${i.years} years. The same money invested at ${i.return}% would grow to $${(o.invested ?? 0).toLocaleString()}.`,
+  },
+
+  // ── Gambling Loss Calculator ──────────────────────────────────────────────────
+  "gambling-loss-calculator": {
+    id: "gambling-loss-calculator",
+    category: "finance",
+    label: "Gambling Loss Calculator",
+    description: "Total up your gambling spend over time and compare it against investing the same amount in an index fund at 7%.",
+    inputs: [
+      { name: "weeklySpend", label: "Weekly gambling spend", unit: "$",  type: "slider", min: 5, max: 1000, step: 5, default: 50, quickPicks: [25, 50, 100, 250] },
+      { name: "years",       label: "Over how many years",   unit: "yr", type: "slider", min: 1, max: 40,   step: 1, default: 5,  quickPicks: [3, 5, 10, 20] },
+    ],
+    outputs: [
+      { key: "totalLoss",       label: "Total wagered",      format: "currency", highlight: true, sublabel: (_i, o) => `$${(o.weeklyInMonthlyTerms ?? 0).toLocaleString()}/month` },
+      { key: "investedValue",   label: "If invested at 7%",  format: "currency",                  sublabel: (i) => `Over ${i.years} years` },
+      { key: "opportunityCost", label: "Opportunity cost",   format: "currency",                  sublabel: () => "Growth you'd have gained instead" },
+    ],
+    calculate: (inputs) => {
+      const weekly = Number(inputs.weeklySpend);
+      const years  = Number(inputs.years);
+      const annual = weekly * 52;
+      const r      = 0.07;
+      const totalLoss     = annual * years;
+      const investedValue = annual * ((Math.pow(1 + r, years) - 1) / r);
+      return {
+        totalLoss:            Math.round(totalLoss),
+        investedValue:        Math.round(investedValue),
+        opportunityCost:      Math.round(investedValue - totalLoss),
+        weeklyInMonthlyTerms: Math.round(annual / 12),
+        dailyCost:            Math.round((weekly / 7) * 100) / 100,
+        returnMultiple:       totalLoss > 0 ? Math.round((investedValue / totalLoss) * 10) / 10 : 0,
+      };
+    },
+    insight: (i, o) =>
+      `$${Number(i.weeklySpend).toLocaleString()}/week for ${i.years} years is $${(o.totalLoss ?? 0).toLocaleString()} wagered. Invested at 7% it would be $${(o.investedValue ?? 0).toLocaleString()} — a $${(o.opportunityCost ?? 0).toLocaleString()} opportunity cost.`,
+  },
+
+  // ── Social Media Time Calculator ──────────────────────────────────────────────
+  "social-media-time-calculator": {
+    id: "social-media-time-calculator",
+    category: "other",
+    label: "Social Media Time Calculator",
+    description: "Translate your daily social media habit into hours, full days, and working years lost over time.",
+    inputs: [
+      { name: "dailyHours", label: "Hours per day on social media", unit: "hr", type: "slider", min: 0.5, max: 12, step: 0.5, default: 2,  quickPicks: [1, 2, 4, 6] },
+      { name: "years",      label: "Over how many years",           unit: "yr", type: "slider", min: 1,   max: 50, step: 1,   default: 10, quickPicks: [5, 10, 20, 30] },
+    ],
+    outputs: [
+      { key: "yearlyHours",   label: "Hours per year",   format: "integer", unit: "h", highlight: true, sublabel: (_i, o) => `${Math.round((o.yearlyHours ?? 0) / 24)} full days a year` },
+      { key: "lifetimeHours", label: "Total hours",      format: "integer", unit: "h",                  sublabel: (i) => `Over ${i.years} years` },
+      { key: "daysLost",      label: "Full days spent",  format: "integer", unit: "days",               sublabel: (_i, o) => `${(o.yearsLostDecimal ?? 0).toFixed(1)} years of 24h days` },
+    ],
+    calculate: (inputs) => {
+      const hours = Number(inputs.dailyHours);
+      const years = Number(inputs.years);
+      const yearlyHours   = hours * 365;
+      const lifetimeHours = hours * 365 * years;
+      const daysLost      = lifetimeHours / 24;
+      const yearsLostDecimal = daysLost / 365;
+      return {
+        yearlyHours:      Math.round(yearlyHours),
+        lifetimeHours:    Math.round(lifetimeHours),
+        daysLost:         Math.round(daysLost),
+        yearsLost:        Math.round(yearsLostDecimal),
+        yearsLostDecimal: Math.round(yearsLostDecimal * 10) / 10,
+        workingYearsLost: Math.round((lifetimeHours / 2080) * 10) / 10,
+      };
+    },
+    insight: (i, o) =>
+      `${i.dailyHours} hours a day is ${(o.yearlyHours ?? 0).toLocaleString()} hours a year. Over ${i.years} years that's ${(o.daysLost ?? 0).toLocaleString()} full days — ${(o.yearsLostDecimal ?? 0).toFixed(1)} years of 24-hour days.`,
+  },
+
+  // ── Life Expectancy Calculator ────────────────────────────────────────────────
+  "life-expectancy-calculator": {
+    id: "life-expectancy-calculator",
+    category: "health",
+    label: "Life Expectancy Calculator",
+    description: "Estimate life expectancy from modifiable lifestyle factors — smoking, exercise, and BMI — and see the years and weeks remaining.",
+    inputs: [
+      { name: "age",      label: "Your age",             unit: "yr", type: "slider", min: 18, max: 90, step: 1,   default: 35, quickPicks: [25, 35, 45, 60] },
+      { name: "smoker",   label: "Smoker",               unit: "",   type: "select", default: 0, options: [{ label: "Non-smoker", value: 0 }, { label: "Smoker", value: 1 }] },
+      { name: "exercise", label: "Exercise sessions/week", unit: "",  type: "slider", min: 0, max: 7, step: 1,    default: 2,  quickPicks: [0, 2, 3, 5] },
+      { name: "bmi",      label: "BMI",                  unit: "",   type: "slider", min: 15, max: 45, step: 0.5, default: 24, quickPicks: [21, 24, 28, 33] },
+    ],
+    outputs: [
+      { key: "lifeExpectancy", label: "Estimated life expectancy", format: "decimal", decimalPlaces: 1, unit: "yr", highlight: true, sublabel: () => "US average is 76.1 (CDC 2022)" },
+      { key: "yearsRemaining", label: "Years remaining",           format: "integer", unit: "yr",                   sublabel: (_i, o) => `${(o.weeksRemaining ?? 0).toLocaleString()} weeks` },
+      { key: "weeksRemaining", label: "Weeks remaining",           format: "integer", unit: "weeks" },
+    ],
+    calculate: (inputs) => {
+      const age      = Number(inputs.age);
+      const smoker   = Number(inputs.smoker);
+      const exercise = Number(inputs.exercise);
+      const bmi      = Number(inputs.bmi);
+      let le = 79;
+      if (smoker === 1) le -= 9;
+      if (exercise === 0) le -= 4;
+      else if (exercise >= 5) le += 3;
+      else if (exercise >= 3) le += 2;
+      if (bmi >= 30) le -= 5;
+      else if (bmi >= 25) le -= 1;
+      else if (bmi < 18.5) le -= 2;
+      else le += 1;
+      const lifeExpectancy = Math.round(le * 10) / 10;
+      const yearsRemaining = Math.max(0, Math.round(lifeExpectancy - age));
+      return {
+        lifeExpectancy,
+        yearsRemaining,
+        weeksRemaining:           yearsRemaining * 52,
+        daysRemaining:            yearsRemaining * 365,
+        productiveYearsRemaining: Math.max(0, 65 - age),
+        improvementPotential:     (smoker === 1 ? 8 : 0) + (exercise === 0 ? 4 : 0) + (bmi >= 30 ? 5 : 0),
+      };
+    },
+    insight: (i, o) =>
+      `At ${i.age}, your modifiable-factor estimate is ${(o.lifeExpectancy ?? 0).toFixed(1)} years — about ${o.yearsRemaining} years (${(o.weeksRemaining ?? 0).toLocaleString()} weeks) remaining.`,
+  },
+
+  // ── Crypto Loss Calculator ────────────────────────────────────────────────────
+  "crypto-loss-calculator": {
+    id: "crypto-loss-calculator",
+    category: "finance",
+    label: "Crypto Loss Calculator",
+    description: "See your crypto profit or loss, the break-even gain needed to recover, and how the same money would have done in an S&P 500 index fund.",
+    inputs: [
+      { name: "invested",     label: "Amount invested",   unit: "$",  type: "slider", min: 100, max: 500000,  step: 100, default: 10000, quickPicks: [1000, 10000, 50000, 100000] },
+      { name: "currentValue", label: "Current value",     unit: "$",  type: "slider", min: 0,   max: 1000000, step: 100, default: 4000,  quickPicks: [0, 4000, 15000, 50000] },
+      { name: "yearsHeld",    label: "Years held",        unit: "yr", type: "slider", min: 1,   max: 15,      step: 1,   default: 3,     quickPicks: [1, 3, 5, 10] },
+    ],
+    outputs: [
+      { key: "pnl",              label: "Profit / loss",      format: "currency", highlight: true, sublabel: (_i, o) => `${(o.pnlPercent ?? 0) >= 0 ? "+" : ""}${(o.pnlPercent ?? 0).toFixed(0)}% vs entry` },
+      { key: "indexAlternative", label: "S&P 500 alternative", format: "currency",                 sublabel: (i) => `At 10.7%/yr over ${i.yearsHeld} years` },
+      { key: "opportunityGap",   label: "Gap vs index",       format: "currency",                  sublabel: () => "Index value minus current crypto value" },
+    ],
+    calculate: (inputs) => {
+      const invested = Number(inputs.invested);
+      const current  = Number(inputs.currentValue);
+      const yearsHeld = Number(inputs.yearsHeld);
+      const pnl              = current - invested;
+      const indexAlternative = Math.round(invested * Math.pow(1.107, yearsHeld));
+      return {
+        pnl:               Math.round(pnl),
+        pnlPercent:        invested > 0 ? Math.round(((current - invested) / invested) * 100) : 0,
+        indexAlternative,
+        opportunityGap:    Math.round(indexAlternative - current),
+        breakEvenMultiple: current > 0 ? Math.round((invested / current) * 100) / 100 : 0,
+        indexGainPercent:  Math.round((Math.pow(1.107, yearsHeld) - 1) * 100),
+      };
+    },
+    insight: (i, o) =>
+      `$${Number(i.invested).toLocaleString()} is now worth $${Number(i.currentValue).toLocaleString()} — a ${(o.pnl ?? 0) >= 0 ? "gain" : "loss"} of $${Math.abs(o.pnl ?? 0).toLocaleString()} (${(o.pnlPercent ?? 0)}%). An S&P 500 fund would be worth $${(o.indexAlternative ?? 0).toLocaleString()}.`,
+  },
+
+  // ── GPA Calculator ────────────────────────────────────────────────────────────
+  "gpa-calculator": {
+    id: "gpa-calculator",
+    category: "other",
+    label: "GPA Calculator",
+    description: "Find the exact average GPA you need across your remaining credits to hit a target cumulative GPA — with a feasibility check against the 4.0 ceiling.",
+    inputs: [
+      { name: "currentGpa",       label: "Current cumulative GPA", unit: "",   type: "slider", min: 0, max: 4,   step: 0.01, default: 3.2,  quickPicks: [2.5, 3.0, 3.5] },
+      { name: "creditsDone",      label: "Credits completed",      unit: "cr", type: "slider", min: 0, max: 200, step: 1,    default: 60,   quickPicks: [30, 60, 90, 120] },
+      { name: "remainingCredits", label: "Credits remaining",      unit: "cr", type: "slider", min: 1, max: 120, step: 1,    default: 30,   quickPicks: [15, 30, 60] },
+      { name: "targetGpa",        label: "Target cumulative GPA",  unit: "",   type: "slider", min: 0, max: 4,   step: 0.01, default: 3.5,  quickPicks: [3.0, 3.5, 3.7, 4.0] },
+    ],
+    outputs: [
+      { key: "requiredGpa",      label: "GPA needed (remaining credits)", format: "decimal", decimalPlaces: 2, highlight: true, sublabel: (_i, o) => (o.alreadyLocked ?? 0) === 1 ? "Already locked in — any grade works" : (o.feasible ?? 0) === 1 ? `About a ${gpaToLetter(o.requiredGpa ?? 0)} average — reachable` : "Above 4.0 — not reachable" },
+      { key: "maxAchievableGpa", label: "Best possible final GPA",        format: "decimal", decimalPlaces: 2,                  sublabel: () => "If you ace every remaining credit" },
+      { key: "neededQualityPoints", label: "Quality points to earn",      format: "decimal", decimalPlaces: 0,                  sublabel: (i) => `On top of your current ${Number(i.currentGpa).toFixed(2)} GPA` },
+    ],
+    calculate: (inputs) =>
+      calculateGpa({
+        currentGpa:       Number(inputs.currentGpa),
+        creditsDone:      Number(inputs.creditsDone),
+        remainingCredits: Number(inputs.remainingCredits),
+        targetGpa:        Number(inputs.targetGpa),
+      }),
+    insight: (i, o) =>
+      (o.feasible ?? 0) === 1
+        ? `To reach a ${Number(i.targetGpa).toFixed(2)} GPA, average ${(o.requiredGpa ?? 0).toFixed(2)} (≈ ${gpaToLetter(o.requiredGpa ?? 0)}) over your last ${i.remainingCredits} credits.`
+        : `A ${Number(i.targetGpa).toFixed(2)} GPA isn't reachable with ${i.remainingCredits} credits left — straight A's only gets you to ${(o.maxAchievableGpa ?? 0).toFixed(2)}.`,
+  },
+
+  // ── Work Hours Calculator ───────────────────────────────────────────────────
+  "work-hours-calculator": {
+    id: "work-hours-calculator",
+    category: "work",
+    label: "Work Hours Calculator",
+    description: "Total work hours from daily hours, days per week, and weeks — with FLSA weekly overtime, gross pay at an optional rate, and a full-time-equivalent comparison.",
+    inputs: [
+      { name: "hoursPerDay", label: "Hours per day",   unit: "hr", type: "slider", min: 0.5, max: 16, step: 0.25, default: 8,  quickPicks: [4, 6, 8, 10, 12] },
+      { name: "daysPerWeek", label: "Days per week",   unit: "d",  type: "slider", min: 1,   max: 7,  step: 1,    default: 5,  quickPicks: [3, 4, 5, 6] },
+      { name: "weeksWorked", label: "Weeks in period", unit: "wk", type: "slider", min: 1,   max: 52, step: 1,    default: 52, quickPicks: [1, 2, 4, 26, 52] },
+      { name: "hourlyRate",  label: "Hourly rate (optional)", unit: "$", type: "slider", min: 0, max: 200, step: 1, default: 25, hint: "Set to 0 to skip earnings.", quickPicks: [0, 15, 25, 50, 100] },
+    ],
+    outputs: [
+      { key: "totalHours",    label: "Total hours",   format: "decimal", decimalPlaces: 1, highlight: true, sublabel: (_i, o) => `${(o.fte ?? 0).toFixed(2)}× a full-time year` },
+      { key: "weeklyHours",   label: "Hours per week", format: "decimal", decimalPlaces: 1,                 sublabel: (_i, o) => (o.overtimeHours ?? 0) > 0 ? "Over the 40h overtime line" : "Within standard time" },
+      { key: "overtimeHours", label: "Overtime hours", format: "decimal", decimalPlaces: 1,                 sublabel: () => "Hours over 40/week (FLSA, 1.5×)" },
+      { key: "grossPay",      label: "Gross pay",      format: "currency",                                  sublabel: (i) => Number(i.hourlyRate) > 0 ? `At $${Number(i.hourlyRate)}/hr before tax` : "Set an hourly rate to see pay" },
+    ],
+    calculate: (inputs) =>
+      calculateWorkHours({
+        hoursPerDay: Number(inputs.hoursPerDay),
+        daysPerWeek: Number(inputs.daysPerWeek),
+        weeksWorked: Number(inputs.weeksWorked),
+        hourlyRate:  Number(inputs.hourlyRate),
+      }),
+    insight: (i, o) =>
+      `${(o.totalHours ?? 0).toLocaleString()} hours over ${i.weeksWorked} week${Number(i.weeksWorked) === 1 ? "" : "s"} (${(o.fte ?? 0).toFixed(2)} FTE)` +
+      ((o.overtimeHours ?? 0) > 0 ? `, including ${(o.overtimeHours ?? 0).toLocaleString()} overtime hours` : "") +
+      (Number(i.hourlyRate) > 0 ? ` — ${(o.grossPay ?? 0).toLocaleString()} gross at $${Number(i.hourlyRate)}/hr.` : "."),
+  },
+
+  // ── Working Days Calculator ─────────────────────────────────────────────────
+  "working-days-calculator": {
+    id: "working-days-calculator",
+    category: "work",
+    label: "Working Days Calculator",
+    description: "Estimate working (business) days in a span of calendar days, excluding weekends and public holidays — with support for non-standard work weeks.",
+    inputs: [
+      { name: "calendarDays",    label: "Calendar days in range", unit: "d", type: "slider", min: 1, max: 730, step: 1, default: 90, quickPicks: [7, 30, 90, 180, 365] },
+      { name: "holidays",        label: "Public holidays in range", unit: "", type: "slider", min: 0, max: 30, step: 1, default: 0, quickPicks: [0, 1, 2, 5, 11] },
+      { name: "workDaysPerWeek", label: "Work days per week",     unit: "d", type: "slider", min: 1, max: 7, step: 1, default: 5, hint: "5 for a standard week; 6 for many retail/hospitality schedules.", quickPicks: [4, 5, 6] },
+    ],
+    outputs: [
+      { key: "workingDays",  label: "Working days",   format: "integer", highlight: true, sublabel: (_i, o) => `${(o.pctWorking ?? 0).toFixed(0)}% of the calendar span` },
+      { key: "weekendDays",  label: "Non-working days", format: "integer",                sublabel: () => "Weekends in the range" },
+      { key: "workingWeeks", label: "Working weeks",  format: "decimal", decimalPlaces: 1, sublabel: () => "At your work-week length" },
+    ],
+    calculate: (inputs) =>
+      calculateWorkingDays({
+        calendarDays:    Number(inputs.calendarDays),
+        holidays:        Number(inputs.holidays),
+        workDaysPerWeek: Number(inputs.workDaysPerWeek),
+      }),
+    insight: (i, o) =>
+      `${i.calendarDays} calendar days on a ${i.workDaysPerWeek}-day week is about ${o.workingDays ?? 0} working days${Number(i.holidays) > 0 ? ` after ${i.holidays} holidays` : ""} — roughly ${(o.workingWeeks ?? 0).toFixed(1)} working weeks.`,
+  },
+
+  // ── Time Between Dates Calculator ────────────────────────────────────────────
+  "time-between-dates-calculator": {
+    id: "time-between-dates-calculator",
+    category: "other",
+    label: "Time Between Dates Calculator",
+    description: "Convert a span of days into weeks, months, years, and business days — using accurate average month/year lengths so conversions don't drift.",
+    inputs: [
+      { name: "days", label: "Days between the dates", unit: "d", type: "slider", min: 1, max: 3650, step: 1, default: 90, quickPicks: [30, 90, 180, 365, 730] },
+    ],
+    outputs: [
+      { key: "weeks",        label: "Weeks",        format: "decimal", decimalPlaces: 1, highlight: true, sublabel: (_i, o) => `${o.fullWeeks ?? 0} full weeks + ${o.remainderDays ?? 0} days` },
+      { key: "months",       label: "Months",       format: "decimal", decimalPlaces: 1,                  sublabel: () => "Using the 30.44-day average" },
+      { key: "businessDays", label: "Business days", format: "integer",                                   sublabel: () => "Weekdays only (≈ days × 5/7)" },
+    ],
+    calculate: (inputs) =>
+      calculateTimeBetween({ days: Number(inputs.days) }),
+    insight: (i, o) =>
+      `${i.days} days is ${(o.weeks ?? 0).toFixed(1)} weeks (${o.fullWeeks ?? 0} weeks ${o.remainderDays ?? 0} days), about ${(o.months ?? 0).toFixed(1)} months, and ${o.businessDays ?? 0} business days.`,
+  },
+
+  // ── Pomodoro Calculator ──────────────────────────────────────────────────────
+  "pomodoro-calculator": {
+    id: "pomodoro-calculator",
+    category: "work",
+    label: "Pomodoro Calculator",
+    description: "See how many focus sessions and deep-work hours fit your day — for any session length and break — with focus density and weekly output.",
+    inputs: [
+      { name: "hoursAvailable", label: "Hours available", unit: "hr", type: "slider", min: 0.5, max: 12, step: 0.5, default: 6, quickPicks: [2, 4, 6, 8] },
+      { name: "sessionMinutes", label: "Session length", unit: "min", type: "select", default: 25, options: [
+        { label: "25 min (classic)", value: 25 },
+        { label: "45 min", value: 45 },
+        { label: "52 min (study-optimal)", value: 52 },
+        { label: "90 min (ultradian)", value: 90 },
+      ] },
+      { name: "breakMinutes", label: "Break length", unit: "min", type: "slider", min: 0, max: 30, step: 1, default: 5, quickPicks: [5, 10, 17, 20] },
+      { name: "daysPerWeek", label: "Days per week", unit: "d", type: "slider", min: 1, max: 7, step: 1, default: 5, quickPicks: [3, 5, 6, 7] },
+    ],
+    outputs: [
+      { key: "sessions",        label: "Sessions per day",  format: "integer", highlight: true, sublabel: (_i, o) => `${(o.deepWorkHours ?? 0).toFixed(1)}h of deep work` },
+      { key: "focusDensity",    label: "Focus density",     format: "percent",                  sublabel: () => "Share of your block spent working" },
+      { key: "weeklyDeepHours", label: "Weekly deep-work hours", format: "decimal", decimalPlaces: 1, sublabel: (_i, o) => `${o.weeklySessions ?? 0} sessions a week` },
+    ],
+    calculate: (inputs) =>
+      calculatePomodoro({
+        hoursAvailable: Number(inputs.hoursAvailable),
+        sessionMinutes: Number(inputs.sessionMinutes),
+        breakMinutes:   Number(inputs.breakMinutes),
+        daysPerWeek:    Number(inputs.daysPerWeek),
+      }),
+    insight: (i, o) =>
+      `${i.hoursAvailable}h of ${i.sessionMinutes}-min sessions fits ${o.sessions ?? 0} sessions (${(o.deepWorkHours ?? 0).toFixed(1)}h deep work, ${(o.focusDensity ?? 0).toFixed(0)}% focus density) — ${(o.weeklyDeepHours ?? 0).toFixed(1)}h a week.`,
+  },
+
+  // ── Protein Intake Calculator ────────────────────────────────────────────────
+  "protein-intake-calculator": {
+    id: "protein-intake-calculator",
+    category: "health",
+    label: "Protein Intake Calculator",
+    description: "Your daily protein target in grams from body weight and activity level — with calories from protein, a per-meal split, and the muscle-building range.",
+    inputs: [
+      { name: "weight", label: "Body weight", unit: "", type: "slider", min: 30, max: 400, step: 1, default: 160, quickPicks: [120, 150, 180, 220] },
+      { name: "weightIsKg", label: "Weight unit", type: "select", default: 0, options: [
+        { label: "Pounds (lb)", value: 0 },
+        { label: "Kilograms (kg)", value: 1 },
+      ] },
+      { name: "multiplier", label: "Activity level", unit: "g/kg", type: "select", default: 1.6, options: [
+        { label: "Sedentary — RDA minimum (0.8 g/kg)", value: 0.8 },
+        { label: "Lightly active (1.2 g/kg)", value: 1.2 },
+        { label: "Active / building muscle (1.6 g/kg)", value: 1.6 },
+        { label: "Hard training (2.0 g/kg)", value: 2.0 },
+        { label: "Elite athlete / cutting (2.4 g/kg)", value: 2.4 },
+      ] },
+      { name: "mealsPerDay", label: "Meals per day", unit: "", type: "slider", min: 1, max: 6, step: 1, default: 4, quickPicks: [3, 4, 5] },
+    ],
+    outputs: [
+      { key: "proteinGrams",        label: "Daily protein (g)",       format: "integer", highlight: true, sublabel: (_i, o) => `${o.rdaMultiple ?? 0}× the RDA minimum` },
+      { key: "perMealGrams",        label: "Per meal (g)",            format: "integer",                  sublabel: (i) => `Across ${i.mealsPerDay} meals` },
+      { key: "caloriesFromProtein", label: "Calories from protein",   format: "integer",                  sublabel: () => "At 4 kcal per gram" },
+    ],
+    calculate: (inputs) =>
+      calculateProtein({
+        weight:      Number(inputs.weight),
+        weightIsKg:  Number(inputs.weightIsKg),
+        multiplier:  Number(inputs.multiplier),
+        mealsPerDay: Number(inputs.mealsPerDay),
+      }),
+    insight: (i, o) =>
+      `At ${Number(i.multiplier).toFixed(1)} g/kg, your daily protein target is ${o.proteinGrams ?? 0} g (${o.caloriesFromProtein ?? 0} kcal) — about ${o.perMealGrams ?? 0} g across ${i.mealsPerDay} meals.`,
+  },
+
+  // ── Expense Split Calculator ─────────────────────────────────────────────────
+  "expense-split-calculator": {
+    id: "expense-split-calculator",
+    category: "other",
+    label: "Expense Split Calculator",
+    description: "Split a shared bill equally across a group, with optional tip and tax — plus a whole-dollar collection mode for easy payback.",
+    inputs: [
+      { name: "amount", label: "Total amount", unit: "$", type: "slider", min: 5, max: 2000, step: 5, default: 200, quickPicks: [50, 100, 200, 500] },
+      { name: "people", label: "Number of people", unit: "", type: "slider", min: 1, max: 30, step: 1, default: 4, quickPicks: [2, 4, 6, 10] },
+      { name: "tipPct", label: "Tip", unit: "%", type: "slider", min: 0, max: 30, step: 1, default: 18, quickPicks: [0, 15, 18, 20, 25] },
+      { name: "taxPct", label: "Tax (optional)", unit: "%", type: "slider", min: 0, max: 15, step: 0.5, default: 0, hint: "Leave at 0 if the total already includes tax.", quickPicks: [0, 6, 8.875, 10] },
+    ],
+    outputs: [
+      { key: "perPersonTotal",   label: "Each person pays", format: "currency", highlight: true, sublabel: (i, o) => `${i.people} ways · ${(o.tipPerPerson ?? 0) > 0 ? `${o.tipPerPerson} tip each` : "no tip"}` },
+      { key: "grandTotal",       label: "Grand total",      format: "currency",                  sublabel: (i) => `Bill + ${i.tipPct}% tip${Number(i.taxPct) > 0 ? ` + ${i.taxPct}% tax` : ""}` },
+      { key: "roundedPerPerson", label: "Rounded each",     format: "currency",                  sublabel: (_i, o) => (o.collectionBuffer ?? 0) > 0 ? `${o.collectionBuffer} buffer for the tip` : "Already a round number" },
+    ],
+    calculate: (inputs) =>
+      calculateExpenseSplit({
+        amount: Number(inputs.amount),
+        people: Number(inputs.people),
+        tipPct: Number(inputs.tipPct),
+        taxPct: Number(inputs.taxPct),
+      }),
+    insight: (i, o) =>
+      `A $${Number(i.amount).toLocaleString()} bill split ${i.people} ways with ${i.tipPct}% tip is $${(o.perPersonTotal ?? 0).toLocaleString()} each ($${(o.grandTotal ?? 0).toLocaleString()} total).`,
+  },
+
+  // ── Tile Calculator ──────────────────────────────────────────────────────────
+  "tile-calculator": {
+    id: "tile-calculator",
+    category: "construction",
+    label: "Tile Calculator",
+    description: "How many tiles a room needs from its dimensions and tile size, with a waste allowance for cuts and breakage — plus optional material cost.",
+    inputs: [
+      { name: "roomLength", label: "Room length", unit: "ft", type: "slider", min: 1, max: 100, step: 0.5, default: 12, quickPicks: [8, 10, 12, 16] },
+      { name: "roomWidth",  label: "Room width",  unit: "ft", type: "slider", min: 1, max: 100, step: 0.5, default: 10, quickPicks: [8, 10, 12, 16] },
+      { name: "tileAreaSqFt", label: "Tile size", unit: "", type: "select", default: 1, options: [
+        { label: "12 × 12 in (1.0 ft²)", value: 1 },
+        { label: "18 × 18 in (2.25 ft²)", value: 2.25 },
+        { label: "24 × 24 in (4.0 ft²)", value: 4 },
+        { label: "12 × 24 in (2.0 ft²)", value: 2 },
+        { label: "6 × 24 in plank (1.0 ft²)", value: 1 },
+        { label: "3 × 6 in subway (0.125 ft²)", value: 0.125 },
+      ] },
+      { name: "wastePct", label: "Waste allowance", unit: "%", type: "slider", min: 0, max: 25, step: 1, default: 10, quickPicks: [10, 15, 20] },
+      { name: "pricePerTile", label: "Price per tile (optional)", unit: "$", type: "slider", min: 0, max: 50, step: 0.5, default: 0, hint: "Leave at 0 to skip material cost.", quickPicks: [0, 2, 5, 10] },
+    ],
+    outputs: [
+      { key: "tilesNeeded",  label: "Tiles to order", format: "integer", highlight: true, sublabel: (i, o) => `Incl. ${o.wasteTiles ?? 0} spare at ${i.wastePct}% waste` },
+      { key: "roomArea",     label: "Area to tile",   format: "decimal", decimalPlaces: 1, sublabel: () => "Square feet" },
+      { key: "materialCost", label: "Tile cost",      format: "currency",                  sublabel: (i) => Number(i.pricePerTile) > 0 ? `At $${Number(i.pricePerTile)}/tile` : "Add a price per tile" },
+    ],
+    calculate: (inputs) =>
+      calculateTile({
+        roomLength:   Number(inputs.roomLength),
+        roomWidth:    Number(inputs.roomWidth),
+        tileAreaSqFt: Number(inputs.tileAreaSqFt),
+        wastePct:     Number(inputs.wastePct),
+        pricePerTile: Number(inputs.pricePerTile),
+      }),
+    insight: (i, o) =>
+      `A ${i.roomLength}×${i.roomWidth} ft room (${(o.roomArea ?? 0)} ft²) needs ${o.tilesNeeded ?? 0} tiles with a ${i.wastePct}% waste allowance` +
+      (Number(i.pricePerTile) > 0 ? ` — about $${(o.materialCost ?? 0).toLocaleString()} in tile.` : "."),
+  },
+
+  "flooring-cost-calculator": {
+    id: "flooring-cost-calculator",
+    category: "construction",
+    label: "Flooring Cost Calculator",
+    description: "Total installed flooring cost from room size, material price per ft² (with a waste allowance), and labor price per ft² — material and labor priced independently for an honest estimate.",
+    inputs: [
+      { name: "roomLength", label: "Room length", unit: "ft", type: "slider", min: 1, max: 100, step: 0.5, default: 15, quickPicks: [10, 12, 15, 20] },
+      { name: "roomWidth",  label: "Room width",  unit: "ft", type: "slider", min: 1, max: 100, step: 0.5, default: 12, quickPicks: [10, 12, 15, 20] },
+      { name: "materialPerSqFt", label: "Material price", unit: "$/ft²", type: "slider", min: 0.5, max: 40, step: 0.5, default: 4, hint: "Laminate $1–5 · LVP $2–7 · engineered $4–12 · solid hardwood $5–15.", quickPicks: [2, 4, 7, 12] },
+      { name: "laborPerSqFt",    label: "Labor price",    unit: "$/ft²", type: "slider", min: 0, max: 20, step: 0.5, default: 3, hint: "Set to 0 for a DIY (materials-only) estimate.", quickPicks: [0, 2, 3, 6] },
+      { name: "wastePct", label: "Waste allowance", unit: "%", type: "slider", min: 0, max: 25, step: 1, default: 10, hint: "10% standard · 15–20% diagonal · 20–25% herringbone.", quickPicks: [10, 15, 20] },
+    ],
+    outputs: [
+      { key: "totalCost",            label: "Total project cost", format: "currency", highlight: true, sublabel: (i, o) => `${o.costPerSqFtInstalled ?? 0 ? `$${o.costPerSqFtInstalled}/ft² installed` : ""}` },
+      { key: "materialCost",         label: "Material cost",      format: "currency", sublabel: (i) => `Incl. ${i.wastePct}% waste` },
+      { key: "laborCost",            label: "Labor cost",         format: "currency", sublabel: (i, o) => Number(i.laborPerSqFt) > 0 ? `${o.laborShare ?? 0}% of total` : "DIY — no labor" },
+    ],
+    calculate: (inputs) =>
+      calculateFlooringCost({
+        roomLength:      Number(inputs.roomLength),
+        roomWidth:       Number(inputs.roomWidth),
+        materialPerSqFt: Number(inputs.materialPerSqFt),
+        laborPerSqFt:    Number(inputs.laborPerSqFt),
+        wastePct:        Number(inputs.wastePct),
+      }),
+    insight: (i, o) =>
+      `A ${i.roomLength}×${i.roomWidth} ft room (${o.area ?? 0} ft²) runs about $${(o.totalCost ?? 0).toLocaleString()} installed` +
+      (Number(i.laborPerSqFt) > 0 ? ` — ${o.laborShare ?? 0}% of that is labor.` : ` as a DIY job.`),
+  },
+
+  "moving-cost-calculator": {
+    id: "moving-cost-calculator",
+    category: "finance",
+    label: "Moving Cost Calculator",
+    description: "Total relocation budget from your line items — movers/truck, fuel, packing, storage, tips & misc — plus a contingency buffer and an optional cost per mile.",
+    inputs: [
+      { name: "moversCost",  label: "Movers / truck rental", unit: "$", type: "slider", min: 0, max: 12000, step: 50, default: 1200, quickPicks: [300, 1200, 3000, 5000] },
+      { name: "fuelCost",    label: "Fuel",            unit: "$", type: "slider", min: 0, max: 2000, step: 10, default: 150, quickPicks: [50, 150, 400, 800] },
+      { name: "packingCost", label: "Packing supplies", unit: "$", type: "slider", min: 0, max: 1500, step: 10, default: 120, quickPicks: [50, 120, 300, 600] },
+      { name: "storageCost", label: "Storage",         unit: "$", type: "slider", min: 0, max: 3000, step: 25, default: 0, quickPicks: [0, 150, 400, 800] },
+      { name: "miscCost",    label: "Tips, food & misc", unit: "$", type: "slider", min: 0, max: 2000, step: 10, default: 180, quickPicks: [100, 180, 400, 700] },
+      { name: "bufferPct",   label: "Contingency buffer", unit: "%", type: "slider", min: 0, max: 40, step: 1, default: 15, hint: "Real moves run 15–30% over the first quote.", quickPicks: [10, 15, 20, 30] },
+      { name: "miles",       label: "Distance (optional)", unit: "mi", type: "slider", min: 0, max: 3500, step: 10, default: 0, hint: "Leave at 0 to skip cost per mile.", quickPicks: [0, 100, 500, 1500] },
+    ],
+    outputs: [
+      { key: "total",       label: "Total move budget", format: "currency", highlight: true, sublabel: (i, o) => Number(i.miles) > 0 && (o.costPerMile ?? 0) > 0 ? `$${o.costPerMile}/mile` : `Incl. ${i.bufferPct}% buffer` },
+      { key: "subtotal",    label: "Line-item subtotal", format: "currency", sublabel: () => "Before buffer" },
+      { key: "buffer",      label: "Contingency buffer", format: "currency", sublabel: (i) => `${i.bufferPct}% cushion` },
+    ],
+    calculate: (inputs) =>
+      calculateMovingCost({
+        moversCost:  Number(inputs.moversCost),
+        fuelCost:    Number(inputs.fuelCost),
+        packingCost: Number(inputs.packingCost),
+        storageCost: Number(inputs.storageCost),
+        miscCost:    Number(inputs.miscCost),
+        bufferPct:   Number(inputs.bufferPct),
+        miles:       Number(inputs.miles),
+      }),
+    insight: (i, o) =>
+      `Your move budgets to about $${(o.total ?? 0).toLocaleString()} all-in, including a ${i.bufferPct}% buffer of $${(o.buffer ?? 0).toLocaleString()}` +
+      (Number(i.miles) > 0 && (o.costPerMile ?? 0) > 0 ? ` — roughly $${o.costPerMile}/mile.` : `.`),
+  },
+
+  "tax-bracket-calculator": {
+    id: "tax-bracket-calculator",
+    category: "finance",
+    label: "Tax Bracket Calculator",
+    description: "Computes your 2025 federal income tax across the progressive brackets, then shows the difference between your marginal bracket and your true effective rate.",
+    inputs: [
+      { name: "grossIncome", label: "Gross annual income", unit: "$", type: "slider", min: 0, max: 750000, step: 1000, default: 75000, quickPicks: [40000, 75000, 120000, 250000] },
+      {
+        name: "filingStatus", label: "Filing status", type: "select", default: "single",
+        options: [
+          { label: "Single",                   value: "single" },
+          { label: "Married filing jointly",    value: "married" },
+          { label: "Head of household",         value: "hoh" },
+        ],
+      },
+      { name: "pretaxContributions", label: "Pre-tax 401(k)/HSA/IRA", unit: "$", type: "slider", min: 0, max: 60000, step: 500, default: 0, hint: "Lowers taxable income before brackets apply.", quickPicks: [0, 7000, 15000, 23000] },
+    ],
+    outputs: [
+      { key: "federalTax",    label: "Federal income tax", format: "currency", highlight: true, sublabel: (i, o) => `${o.effectiveRate ?? 0}% effective rate` },
+      { key: "marginalRate",  label: "Marginal bracket",   format: "percent", decimalPlaces: 0, sublabel: () => "Rate on your last dollar" },
+      { key: "effectiveRate", label: "Effective rate",     format: "percent", sublabel: (i, o) => `${(o.taxableIncome ?? 0).toLocaleString()} taxable` },
+    ],
+    calculate: (inputs) =>
+      calculateTaxBracket({
+        grossIncome:         Number(inputs.grossIncome),
+        filingStatus:        String(inputs.filingStatus ?? "single") as FilingStatus,
+        pretaxContributions: Number(inputs.pretaxContributions),
+      }),
+    insight: (i, o) =>
+      `On $${Number(i.grossIncome).toLocaleString()} gross you owe about $${(o.federalTax ?? 0).toLocaleString()} in federal income tax — a ${o.effectiveRate ?? 0}% effective rate, well below your ${o.marginalRate ?? 0}% top bracket.`,
+  },
+
+  "payroll-calculator": {
+    id: "payroll-calculator",
+    category: "finance",
+    label: "Payroll Calculator",
+    description: "True fully-loaded cost of a workforce — gross payroll plus employer taxes and benefits — with cost per employee, the burden rate, and an all-in cost per billable hour.",
+    inputs: [
+      { name: "employees", label: "Employees", unit: "", type: "slider", min: 1, max: 500, step: 1, default: 10, quickPicks: [1, 5, 10, 50] },
+      { name: "avgSalary", label: "Average salary", unit: "$", type: "slider", min: 0, max: 300000, step: 1000, default: 60000, quickPicks: [40000, 60000, 90000, 150000] },
+      { name: "employerTaxPct", label: "Employer payroll tax", unit: "%", type: "slider", min: 0, max: 20, step: 0.1, default: 10, hint: "FICA 7.65% + FUTA/SUTA (typically ~2–3%).", quickPicks: [7.65, 10, 12, 15] },
+      { name: "benefitsPerEmployee", label: "Benefits per employee", unit: "$", type: "slider", min: 0, max: 50000, step: 500, default: 15000, hint: "Health, 401(k) match, PTO, workers' comp.", quickPicks: [5000, 15000, 25000] },
+      { name: "billableHours", label: "Billable hours / yr (optional)", unit: "hrs", type: "slider", min: 0, max: 2500, step: 50, default: 1800, hint: "Leave at 0 to skip cost per billable hour.", quickPicks: [0, 1500, 1800, 2080] },
+    ],
+    outputs: [
+      { key: "totalCost",       label: "Total workforce cost", format: "currency", highlight: true, sublabel: (i, o) => `${Math.round(Number(o.burdenPct ?? 0))}% burden over salary` },
+      { key: "costPerEmployee", label: "Cost per employee",    format: "currency", sublabel: (i, o) => (o.costPerBillableHour ?? 0) > 0 ? `$${o.costPerBillableHour}/billable hr` : "All-in, per year" },
+      { key: "employerTaxes",   label: "Employer taxes",       format: "currency", sublabel: (i) => `${i.employerTaxPct}% of payroll` },
+    ],
+    calculate: (inputs) =>
+      calculatePayroll({
+        employees:           Number(inputs.employees),
+        avgSalary:           Number(inputs.avgSalary),
+        employerTaxPct:      Number(inputs.employerTaxPct),
+        benefitsPerEmployee: Number(inputs.benefitsPerEmployee),
+        billableHours:       Number(inputs.billableHours),
+      }),
+    insight: (i, o) =>
+      `${i.employees} employees at $${Number(i.avgSalary).toLocaleString()} average cost about $${(o.totalCost ?? 0).toLocaleString()} all-in — roughly $${(o.costPerEmployee ?? 0).toLocaleString()} per head, a ${Math.round(Number(o.burdenPct ?? 0))}% burden over salary.`,
+  },
+
+  "global-wealth-percentile": {
+    id: "global-wealth-percentile",
+    category: "finance",
+    label: "Global Wealth Percentile Calculator",
+    description: "Estimates where your net worth and income rank among the world's adults using log-normal models calibrated to the Credit Suisse Global Wealth Report and global income data.",
+    inputs: [
+      { name: "netWorth", label: "Net worth", unit: "$", type: "slider", min: 0, max: 5000000, step: 1000, default: 250000, hint: "Assets minus debts, in USD.", quickPicks: [10000, 100000, 500000, 1000000] },
+      { name: "annualIncome", label: "Annual income", unit: "$", type: "slider", min: 0, max: 1000000, step: 1000, default: 60000, hint: "Gross individual income, in USD.", quickPicks: [15000, 40000, 75000, 150000] },
+    ],
+    outputs: [
+      { key: "wealthPercentile", label: "Wealth percentile", format: "percent", decimalPlaces: 1, highlight: true, sublabel: (i, o) => `Global top ${o.wealthTopPct ?? 0}% by net worth` },
+      { key: "incomePercentile", label: "Income percentile", format: "percent", decimalPlaces: 1, sublabel: (i, o) => `Global top ${o.incomeTopPct ?? 0}% by income` },
+      { key: "dailyIncome",      label: "Daily income",      format: "currency", sublabel: () => "Income ÷ 365" },
+    ],
+    calculate: (inputs) =>
+      calculateGlobalWealthPercentile({
+        netWorth:     Number(inputs.netWorth),
+        annualIncome: Number(inputs.annualIncome),
+      }),
+    insight: (i, o) =>
+      `A net worth of $${Number(i.netWorth).toLocaleString()} ranks in the global top ${o.wealthTopPct ?? 0}% (${o.wealthPercentile ?? 0}th percentile), and a $${Number(i.annualIncome).toLocaleString()} income in the top ${o.incomeTopPct ?? 0}% — far higher than most people expect.`,
   },
 };

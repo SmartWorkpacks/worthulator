@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Student Loan Calculator 2026 – Monthly Payment & Total Interest",
@@ -60,7 +59,6 @@ export default function StudentLoanCalculator() {
       <InsightStrip text="On a $35,000 loan at 6.5%, you'll pay over $12,000 in interest alone — nearly 35% more than you borrowed." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What every borrower should know" cards={CONTENT_CARDS} />
-      <InsightTable slug="student-loan-calculator" />
       <SEOTextBlock
         title="How student loan interest works"
         formula={`r = Annual Rate ÷ 12 ÷ 100   (monthly rate)

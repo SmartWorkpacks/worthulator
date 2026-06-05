@@ -1,124 +1,162 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import VapingCostWithInsights from "@/components/worthcore/VapingCostWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
-  StatChipsRow,
-  ContentCardGrid,
-  SEOTextBlock,
-  InsightStrip,
-  RelatedCalcCards,
+  StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
 
 export const metadata: Metadata = {
   title: "Vaping Cost Calculator 2026 – What Does Vaping Really Cost?",
   description:
-    "Calculate your annual and 5-year vaping cost, and what that money would be worth invested instead. See the true financial cost of vaping.",
-  keywords: ["vaping cost calculator", "how much does vaping cost", "vaping money calculator", "e-cigarette cost calculator"],
+    "Calculate your annual vaping cost, see the investment opportunity cost, find savings from cutting daily spend, and compare to smoking.",
+  keywords: ["vaping cost calculator", "how much does vaping cost", "vaping money calculator", "e-cigarette cost calculator", "vaping vs smoking cost"],
   alternates: { canonical: "https://worthulator.com/tools/vaping-cost-calculator" },
+  robots: { index: true, follow: true },
 };
 
 const FAQS = [
   {
-    q: "How much does vaping cost per year on average?",
-    a: "The average vaper spends $1,000–$3,000 per year depending on the device type and frequency of use. Disposable vape users at the top end of the market can spend $5,000+ annually, while refillable pod systems can cost as little as $600–$800/year.",
+    q: "How much does vaping cost per year?",
+    a: "At $6/day (a common pod-system spend), vaping costs $2,190/year. Disposable users at $8–12/day spend $2,920–$4,380/year. Refillable mod users at $2–3/day can keep it under $1,100/year.",
   },
   {
     q: "Is vaping cheaper than smoking?",
-    a: "Generally yes — a pack-a-day smoker in the US spends around $3,000–$7,000 per year. Most vapers spend less, but the cost is still significant, particularly for disposable vape users who go through multiple devices per week.",
+    a: "Usually. At $6/day, vaping costs $2,190/year vs $3,650/year for a 1 pack/day cigarette habit at $10/pack — saving $1,460/year. But heavy disposable users ($10+/day) can approach or exceed cigarette costs.",
   },
   {
-    q: "What is included in the daily cost estimate?",
-    a: "Include everything: pods, liquid, coils, disposables, and a prorated share of device purchase and replacement costs. If you buy a new device every 6 months for $40, that adds about $0.22/day to your daily cost.",
+    q: "What does the 'what if you cut' slider do?",
+    a: "It shows how much you'd save by reducing your daily vaping spend. Cutting $2/day — e.g. switching from disposables to a refillable pod — saves $730/year. Invested at 7%, that's $10,086 over 10 years.",
+  },
+  {
+    q: "What should I include in the daily cost?",
+    a: "Everything: pods, e-liquid, coils, disposable devices, and a prorated share of device purchases. If you buy a new device every 6 months for $40, that adds ~$0.22/day to your cost.",
   },
   {
     q: "How is the invested value calculated?",
-    a: "The calculator uses the future value of an annuity at 7% annual return over 5 years, assuming you invest your annual vaping cost at the start of each year. This represents the opportunity cost — what that money could have grown to.",
+    a: "The calculator uses the future value of an annuity at 7% annual return — the historical long-term average of the US stock market. It shows what your annual vaping spend would grow to if invested over 10 years.",
   },
   {
-    q: "What if I want to quit vaping?",
-    a: "Use the 5-year total as your motivation number. Beyond the financial cost, NHS and CDC resources offer free stop-smoking and stop-vaping programmes. Nicotine replacement therapy significantly improves cessation success rates.",
+    q: "What's the cheapest way to vape?",
+    a: "Refillable pod systems or mod/tank setups with DIY e-liquid cost $2–3/day ($730–$1,095/yr). Disposables are the most expensive at $8–15/day. Switching device type is the single biggest cost lever for vapers.",
   },
 ];
 
 const STATS = [
-  { stat: "$1,800", color: "text-emerald-600", accent: "bg-emerald-500", label: "average annual vaping cost for a daily pod or disposable user" },
-  { stat: "$9,000", color: "text-amber-600", accent: "bg-amber-500", label: "5-year vaping cost at $5/day — before factoring in investment opportunity cost" },
-  { stat: "4.5M", color: "text-blue-600", accent: "bg-blue-500", label: "adults in the UK currently vape, with disposable vapes growing the fastest" },
+  { stat: "$2,190/yr", color: "text-emerald-600", accent: "bg-emerald-500", label: "Annual vaping cost at $6/day — $183/month on pods, liquids, and devices" },
+  { stat: "$1,460",    color: "text-blue-600",    accent: "bg-blue-500",    label: "Annual saving vs a 1 pack/day cigarette habit at $10/pack" },
+  { stat: "$10,086",   color: "text-amber-600",   accent: "bg-amber-500",   label: "What $730/year (cut $2/day) grows to in 10 years invested at 7%" },
 ];
 
 const CONTENT_CARDS = [
   {
     icon: "💨",
-    title: "The cost creep of disposables",
-    body: "Single-use disposable vapes cost $10–$20 each and last 1–3 days. Users who go through 3–4 per week spend $1,500–$3,000 per year. Switching to a refillable system cuts costs by 60–70% while maintaining the same habit.",
+    title: "Disposables are the most expensive option",
+    body: "Single-use disposable vapes cost $10–$20 each and last 1–3 days. Users going through 3–4 per week spend $1,500–$3,000/year. Switching to a refillable pod system cuts costs by 60–70% while delivering the same nicotine.",
   },
   {
-    icon: "📈",
-    title: "5 years of opportunity cost",
-    body: "At $5/day, you spend $9,125 on vaping over 5 years. Invested at 7% annual return, that same money grows to over $10,600. The combined loss — spent money plus foregone growth — exceeds $10,000 over just 5 years.",
+    icon: "🔄",
+    title: "Vaping vs smoking: cheaper but not free",
+    body: "At $6/day, vaping saves $1,460/year compared to smoking. But $2,190/year is still real money. Invested at 7%, that's $30,258 in 10 years. Knowing the number helps you decide whether the cost is worth it.",
   },
   {
-    icon: "💡",
-    title: "Partial reduction adds up",
-    body: "You do not have to quit entirely to save significant money. Cutting from $8/day to $4/day saves $1,460/year. Over 10 years, that reduction alone amounts to over $20,000 saved — or invested.",
+    icon: "✂️",
+    title: "Small daily cuts compound fast",
+    body: "Cutting $2/day from your vaping spend — one fewer pod, switching to a cheaper liquid brand — saves $730/year. Over 10 years invested at 7%, that's over $10,000. You don't have to quit to benefit financially.",
   },
 ];
 
 const RELATED_CALCS = [
-  { title: "Quit Smoking Calculator", description: "See the true cost of smoking over time.", href: "/tools/quit-smoking-calculator", icon: "🚭", accent: "bg-red-500/10" },
-  { title: "Alcohol Cost Calculator", description: "What drinking really costs annually.", href: "/tools/alcohol-cost-calculator", icon: "🍺", accent: "bg-amber-500/10" },
-  { title: "Latte Factor Calculator", description: "Small daily habits and their long-term cost.", href: "/tools/latte-factor", icon: "☕", accent: "bg-yellow-500/10" },
-  { title: "Compound Interest Calculator", description: "See what saved money grows to over time.", href: "/tools/compound-interest-calculator", icon: "📊", accent: "bg-emerald-500/10" },
+  { title: "Quit Smoking Calculator",      description: "See the financial impact of quitting cigarettes.",      href: "/tools/quit-smoking-calculator",     icon: "🚭", accent: "bg-red-500/10" },
+  { title: "Alcohol Cost Calculator",      description: "What your drinking habit really costs per year.",       href: "/tools/alcohol-cost-calculator",     icon: "🍺", accent: "bg-amber-500/10" },
+  { title: "Latte Factor Calculator",      description: "The cost of any small daily habit over 30 years.",      href: "/tools/latte-factor",               icon: "☕", accent: "bg-yellow-500/10" },
+  { title: "Savings Calculator",           description: "See what saved money grows to over time.",               href: "/tools/savings-calculator",          icon: "🏦", accent: "bg-emerald-500/10" },
 ];
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
+export default function VapingCostCalculatorPage() {
+  const jsonLd = [
     {
+      "@context": "https://schema.org",
       "@type": "WebApplication",
       name: "Vaping Cost Calculator",
-      url: "https://worthulator.com/tools/vaping-cost-calculator",
       applicationCategory: "FinanceApplication",
-      description: "Calculate the annual and 5-year cost of vaping, and what it would be worth if invested instead.",
+      operatingSystem: "Web",
+      description: "Calculate annual vaping cost, investment opportunity cost, cut-saving projections, and comparison to smoking.",
+      url: "https://worthulator.com/tools/vaping-cost-calculator",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
     {
+      "@context": "https://schema.org",
       "@type": "FAQPage",
-      mainEntity: FAQS.map((f) => ({
+      mainEntity: FAQS.map((faq) => ({
         "@type": "Question",
-        name: f.q,
-        acceptedAnswer: { "@type": "Answer", text: f.a },
+        name: faq.q,
+        acceptedAnswer: { "@type": "Answer", text: faq.a },
       })),
     },
-  ],
-};
+  ];
 
-export default function VapingCostCalculator() {
   return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    <main className="bg-white text-gray-900">
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
+
       <SimpleCalculatorHero
         eyebrowIcon="💨"
-        eyebrowText="Vaping Cost"
-        title="What Does Your Vaping Habit Cost Over 5 Years?"
-        description="Enter your daily vaping spend to see your annual cost, 5-year total, and what that money would grow to if invested at 7% instead."
-        chips={["Annual cost", "5-year total", "Investment opportunity cost"]}
+        eyebrowText="Lifestyle · Spending"
+        title="Vaping Cost Calculator"
+        description="Enter your daily vaping spend and see the annual cost, investment opportunity cost, savings from cutting back, and how it compares to smoking."
+        chips={["Annual cost", "vs Smoking comparison", "Cut-and-save projection"]}
       >
-        <CalculatorEngineLoader slug="vaping-cost-calculator" />
+        <VapingCostWithInsights />
       </SimpleCalculatorHero>
-      <InsightStrip text="A $5/day vaping habit costs $9,125 over 5 years — or $10,600+ if invested." />
+
+      <InsightStrip
+        text='$6/day vaping costs <span class="font-semibold text-gray-900">$2,190/year</span> — cheaper than smoking ($3,650) but still $30,258 over 10 years if invested.'
+      />
+
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="The real cost of vaping" cards={CONTENT_CARDS} />
+
+      <ContentCardGrid
+        title="The real cost of vaping — quantified"
+        subtitle="Cheaper than cigarettes, but far from free."
+        cards={CONTENT_CARDS}
+      />
+
       <SEOTextBlock
         title="How the Vaping Cost Calculator Works"
+        formula={`Annual Cost        = Daily Cost × 365
+Invested (10yr)    = FV of annuity at 7%
+
+Cut Saving / Year  = Cut Amount × 365
+Cut Invested (10yr)= FV of annuity(Cut Saving, 10, 7%)
+
+vs Smoking         = ($10/pack × 365) − Annual Vaping Cost
+
+Example: $6/day vaping, cut $2/day
+  Annual     = $6 × 365 = $2,190
+  Invested   = $30,258 in 10 years at 7%
+  Cut saves  = $2 × 365 = $730/yr → $10,086 invested
+  vs smoking = $3,650 − $2,190 = $1,460 saved`}
+        steps={[
+          { label: "Enter daily vaping cost",   description: "Include pods, e-liquid, disposables, and prorated device costs. $6/day is typical for a pod system user." },
+          { label: "Set how much to cut",        description: "Slide to see savings from reducing daily spend — e.g. switching device types or buying in bulk." },
+          { label: "See the full picture",        description: "Annual cost, 10-year investment value, savings from cutting, and the comparison to a 1 pack/day cigarette habit." },
+        ]}
         paragraphs={[
-          "Enter your average daily spend on vaping — including pods, liquid, disposables, and a share of device costs. The calculator multiplies by 365 for the annual figure and by 5 for the 5-year total.",
-          "The invested value uses the future value of an annuity formula at 7% per year over 5 years — showing what your annual vaping budget would grow to in a broad market index fund.",
+          "Most vaping cost calculators show annual spend and stop there. This one adds three things: the investment opportunity cost at 7%, a cut-saving projection for reducing daily spend, and a direct comparison to the cost of smoking at $10/pack per day.",
+          "The vaping vs smoking comparison uses the US national average cigarette price ($10/pack). At $6/day, vaping saves $1,460/year compared to smoking — but both are significant recurring costs that compound over time.",
         ]}
       />
-      <StandardFAQSection faqs={FAQS} />
-      <RelatedCalcCards items={RELATED_CALCS} />
-    </>
+
+      <StandardFAQSection faqs={FAQS} bg="bg-gray-50" />
+
+      <RelatedCalcCards
+        title="Related Calculators"
+        subtitle="More tools for understanding the cost of habits."
+        items={RELATED_CALCS}
+      />
+    </main>
   );
 }

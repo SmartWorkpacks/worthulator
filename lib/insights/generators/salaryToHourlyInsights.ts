@@ -51,10 +51,11 @@ export function generateSalaryToHourlyInsights(
   // ── 1. Per-minute rate (always fires) ────────────────────────────────────
   insights.push({
     id:       "salary.per-minute",
-    type:     "neutral",
-    title:    `You earn $${(perMinuteRate).toFixed(2)} every minute you work`,
-    body:     `At $${hourlyRate.toFixed(2)}/hour, your time breaks down to $${perMinuteRate.toFixed(2)} per minute — or ${minutesPerDollar.toFixed(1)} minutes of work per dollar earned. That daily rate of $${dailyRate.toFixed(0)} represents ${Math.round(hoursPerWeek / 5)} hours of your time.`,
-    priority: 60,
+    severity: "neutral",
+    category: "comparison",
+    title:    `$${hourlyRate.toFixed(2)}/hour — $${perMinuteRate.toFixed(2)} every minute you work`,
+    body:     `At $${hourlyRate.toFixed(2)}/hour, one minute of your work time is worth $${perMinuteRate.toFixed(2)}. Your daily rate is $${dailyRate.toFixed(0)} across ${Math.round(hoursPerWeek / 5)} hours. You work ${hoursPerYear.toLocaleString()} hours per year.`,
+    metric:   { label: "Hourly rate", value: `$${hourlyRate.toFixed(2)}` },
   });
 
   // ── 2. Below US median ────────────────────────────────────────────────────
@@ -62,10 +63,19 @@ export function generateSalaryToHourlyInsights(
     const gap = Math.round((US_MEDIAN_HOURLY - hourlyRate) * hoursPerYear);
     insights.push({
       id:       "salary.below-median",
-      type:     "neutral",
-      title:    `$${hourlyRate.toFixed(2)}/hr is below the US median of ~$${US_MEDIAN_HOURLY}`,
-      body:     `The US median wage is around $${US_MEDIAN_HOURLY}/hour. Closing this gap would add ~$${gap.toLocaleString()} to your annual income. Industry certifications, negotiation, or a role change in the same field often yield the fastest salary jumps.`,
-      priority: 80,
+      severity: "neutral",
+      category: "comparison",
+      title:    `$${hourlyRate.toFixed(2)}/hr is below the US median of ~$${US_MEDIAN_HOURLY}/hr`,
+      body:     `The US median wage is approximately $${US_MEDIAN_HOURLY}/hour. Closing that gap would add $${gap.toLocaleString()} to your annual income. In the same field, a role change, certification, or negotiation at next review commonly produces the fastest movement.`,
+      metric:   { label: "Gap to US median/yr", value: `$${gap.toLocaleString()}` },
+      visualization: {
+        type:           "benchmark-bar",
+        userValue:      hourlyRate,
+        userLabel:      "Your hourly rate",
+        benchmarkValue: US_MEDIAN_HOURLY,
+        benchmarkLabel: "US median hourly",
+        format:         "currency",
+      },
     });
   }
 
@@ -73,10 +83,11 @@ export function generateSalaryToHourlyInsights(
   if (hourlyRate >= 50) {
     insights.push({
       id:       "salary.strong-rate",
-      type:     "positive",
-      title:    `$${hourlyRate.toFixed(2)}/hr puts you in the top quartile`,
-      body:     `At $${hourlyRate.toFixed(2)}/hour, your salary exceeds the US median by ${Math.round((hourlyRate / US_MEDIAN_HOURLY - 1) * 100)}%. At this level, maximising tax-advantaged accounts (401k, HSA, backdoor Roth) has the most impact on long-term wealth.`,
-      priority: 85,
+      severity: "positive",
+      category: "comparison",
+      title:    `$${hourlyRate.toFixed(2)}/hr — ${Math.round((hourlyRate / US_MEDIAN_HOURLY - 1) * 100)}% above the US median`,
+      body:     `At $${hourlyRate.toFixed(2)}/hour, you are in the upper quartile of US earners. At this income level, maxing tax-advantaged accounts (401k, HSA, backdoor Roth) has the largest impact on long-term wealth relative to after-tax alternatives.`,
+      metric:   { label: "Above median", value: `+${Math.round((hourlyRate / US_MEDIAN_HOURLY - 1) * 100)}%` },
     });
   }
 
@@ -85,10 +96,11 @@ export function generateSalaryToHourlyInsights(
     const standardHourly = Math.round(annualSalary / (40 * weeksPerYear) * 100) / 100;
     insights.push({
       id:       "salary.overtime-dilution",
-      type:     "neutral",
-      title:    `Working ${hoursPerWeek}h/week dilutes your effective hourly rate`,
-      body:     `If your role was 40 hours/week, your hourly would be $${standardHourly.toFixed(2)}. Those extra ${hoursPerWeek - 40} hours/week reduce your effective rate by ${Math.round((1 - hourlyRate / standardHourly) * 100)}%. Overtime without pay is a hidden salary cut.`,
-      priority: 90,
+      severity: "neutral",
+      category: "hidden-cost",
+      title:    `${hoursPerWeek}h/week reduces your effective hourly from $${standardHourly.toFixed(2)} to $${hourlyRate.toFixed(2)}`,
+      body:     `If your role were 40 hours/week, your hourly would be $${standardHourly.toFixed(2)}. The extra ${hoursPerWeek - 40} hours/week cuts your effective rate by ${Math.round((1 - hourlyRate / standardHourly) * 100)}%. Those additional hours are compensated at $0/hr — a hidden salary reduction.`,
+      metric:   { label: "Rate dilution", value: `-${Math.round((1 - hourlyRate / standardHourly) * 100)}%` },
     });
   }
 
@@ -98,10 +110,11 @@ export function generateSalaryToHourlyInsights(
     const vacationValue = Math.round(hourlyRate * hoursPerWeek * vacationWeeks);
     insights.push({
       id:       "salary.vacation-cost",
-      type:     "neutral",
-      title:    `${vacationWeeks} vacation week(s) = $${vacationValue.toLocaleString()} in foregone earnings`,
-      body:     `You're calculating on ${weeksPerYear} worked weeks. Those ${vacationWeeks} week(s) off represent $${vacationValue.toLocaleString()} of compensation. If your role doesn't include paid leave, this is real out-of-pocket cost to factor in.`,
-      priority: 70,
+      severity: "neutral",
+      category: "hidden-cost",
+      title:    `${vacationWeeks} week${vacationWeeks > 1 ? "s" : ""} off = $${vacationValue.toLocaleString()} in foregone earnings`,
+      body:     `You are calculating on ${weeksPerYear} worked weeks. Those ${vacationWeeks} week${vacationWeeks > 1 ? "s" : ""} off represent $${vacationValue.toLocaleString()} of earnings at your rate. Roles without paid leave absorb this cost directly — it is a real factor in total compensation comparisons.`,
+      metric:   { label: "Value of time off", value: `$${vacationValue.toLocaleString()}` },
     });
   }
 

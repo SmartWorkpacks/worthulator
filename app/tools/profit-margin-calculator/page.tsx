@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
@@ -110,7 +109,7 @@ export default function ProfitMarginCalculatorPage() {
         description="Enter your revenue and cost to instantly see gross profit, margin percentage, and markup."
         chips={["Gross profit", "Margin %", "Markup %"]}
       >
-        <CalculatorEngineLoader slug="profit-margin" afterResults={<InsightsSection slug="profit-margin" />} />
+        <EngineWithInsights slug="profit-margin" />
       </SimpleCalculatorHero>
       <InsightStrip text='Margin and markup are not the same thing — <span class="font-semibold text-gray-900">confusing them is one of the most common pricing mistakes in business.</span>' />
       <StatChipsRow stats={STATS} />

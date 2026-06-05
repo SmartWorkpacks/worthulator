@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Salary to Hourly Calculator 2026 – Convert Annual Salary Instantly",
@@ -116,7 +115,6 @@ export default function SalaryToHourlyCalculatorPage() {
       <ContentCardGrid title="Understanding your true hourly value" subtitle="What your salary really means per hour." cards={CONTENT_CARDS}
       />
 
-      <InsightTable slug="salary-to-hourly" />
       <SEOTextBlock
         title="How the Salary to Hourly Calculator Works"
         formula={`Hourly Rate  = Annual Salary ÷ (Hours/Week × Weeks/Year)

@@ -56,7 +56,7 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
     title:       `${name} — ${typeLabel} | Worthulator`,
     description,
     keywords,
-    robots:      { index: shouldIndex, follow: true },
+    robots:      { index: false, follow: false },
     alternates:  { canonical: `https://worthulator.com/value-engine/result/${intent}` },
   };
 }

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import WfhSavingsWithInsights from "@/components/worthcore/WfhSavingsWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
+import { calculateWfhSavings } from "@/calculations/work/wfhSavings";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
   StatChipsRow,
@@ -9,6 +10,10 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
+
+// ── Worked example derived from the calculator's default inputs (Step 5c) ─────
+const EX = calculateWfhSavings({ dailyCommuteCost: 15, officeDays: 3, dailyFood: 18, commuteMinutes: 45 });
+const usd0 = (n: number) => `$${Math.round(n).toLocaleString()}`;
 
 export const metadata: Metadata = {
   title: "WFH Savings Calculator 2026 – How Much Does Working From Home Save?",
@@ -105,7 +110,7 @@ export default function WfhSavingsCalculator() {
         description="Enter your commute cost, food spend, and office days to see your annual savings in money and the hours you reclaim by working remotely."
         chips={["Annual savings", "Monthly savings", "Hours reclaimed"]}
       >
-        <CalculatorEngineLoader slug="wfh-savings-calculator" />
+        <WfhSavingsWithInsights />
       </SimpleCalculatorHero>
       <InsightStrip text="Remote workers save an average of $4,000/year in commuting and food costs alone." />
       <StatChipsRow stats={STATS} />
@@ -115,6 +120,7 @@ export default function WfhSavingsCalculator() {
         paragraphs={[
           "Enter your daily commute cost (fuel, parking, or transit), the number of days you would commute to the office, your daily food spend (coffee, lunch, snacks), and your one-way commute time. The calculator multiplies daily savings by office days and 52 weeks to give an annual figure.",
           "Time saved is calculated as a two-way commute (doubled one-way time) across all office days per year — showing the total hours you reclaim by working from home.",
+          `Worked example using the calculator's starting numbers: $15/day commute and $18/day food across 3 office days saves ${usd0(EX.yearlySavings)}/year (${usd0(EX.monthlySavings)}/month) and reclaims ${EX.timeSavedHours.toLocaleString()} hours — about ${Math.round(EX.timeSavedHours / 40)} working weeks. Invested at 7%, those savings would grow to roughly ${usd0(EX.investedSavings10yr)} over a decade.`,
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

@@ -5,7 +5,14 @@ import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
+import { getCpiInflationYoY, fredBenchmarks } from "@/lib/datasets/finance/fredBenchmarks";
+
+// ── Live-data (Step 5c): worked examples derive from the live US CPI rate so
+// the inflation copy auto-refreshes when FRED data updates ───────────────────
+const CPI = getCpiInflationYoY();
+const AS_OF = fredBenchmarks.currentPeriodLabel;
+// Real value of a 5% nominal raise at the current inflation rate.
+const REAL_ON_5 = Math.round(((1.05 / (1 + CPI / 100)) - 1) * 1000) / 10;
 
 export const metadata: Metadata = {
   title: "Salary Increase Calculator 2026 – Calculate the Real Value of Your Raise",
@@ -23,7 +30,7 @@ const FAQS = [
   },
   {
     q: "What is the real value of a raise after inflation?",
-    a: "If you get a 3% raise but inflation is 3%, your purchasing power hasn't increased at all — you're on a treadmill. A 5% raise with 3% inflation gives you roughly a 1.9% real raise in terms of what you can actually buy. This calculator shows the inflation-adjusted raise so you know the true value.",
+    a: `If you get a ${CPI}% raise but inflation is ${CPI}%, your purchasing power hasn't increased at all — you're on a treadmill. With US inflation running at ${CPI}% (CPI-U, ${AS_OF}), a 5% raise works out to roughly a ${REAL_ON_5}% real raise in terms of what you can actually buy. This calculator defaults to the live inflation rate and shows the inflation-adjusted raise so you know the true value.`,
   },
   {
     q: "Why do small raises have a massive lifetime earnings impact?",
@@ -53,8 +60,8 @@ const CONTENT_CARDS = [
   },
   {
     icon: "📊",
-    title: "Inflation makes a 3% raise feel like nothing",
-    body: "If inflation runs at 3% and your raise is 3%, you haven't received a real pay increase. You need a raise above inflation just to maintain purchasing power. This calculator shows you your real inflation-adjusted raise — not just the nominal one.",
+    title: `Inflation makes a ${CPI}% raise feel like nothing`,
+    body: `With US inflation at ${CPI}% (CPI-U, ${AS_OF}), a raise that only matches it leaves your purchasing power flat. You need a raise above inflation just to stay even. This calculator defaults to the live inflation rate and shows your real, inflation-adjusted raise — not just the nominal one.`,
   },
   {
     icon: "🎯",
@@ -146,7 +153,6 @@ export default function SalaryIncreaseCalculatorPage() {
       />
 
 
-      <InsightTable slug="salary-increase-calculator" />
       <SEOTextBlock
         title="How the Salary Increase Calculator Works"
         formula={`New Salary = Current Salary + Raise Amount

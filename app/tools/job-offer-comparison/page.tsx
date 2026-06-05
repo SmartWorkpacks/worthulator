@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import JobOfferComparisonWithInsights from "@/components/worthcore/JobOfferComparisonWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
+import { calculateJobOffer } from "@/calculations/work/jobOffer";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
   StatChipsRow,
@@ -9,6 +10,16 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
+
+// ── Worked example derived from the calculator's default inputs (Step 5c) so
+// the SEO copy stays in lockstep with the engine if defaults ever change ──────
+const usd0 = (n: number) => `$${Math.round(Math.abs(n)).toLocaleString()}`;
+const EX = calculateJobOffer({
+  salaryA: 85000, salaryB: 95000,
+  commuteCostA: 3000, commuteCostB: 500,
+  benefitsValueA: 12000, benefitsValueB: 8000,
+});
+const EX_WINNER = EX.difference >= 0 ? "A" : "B";
 
 export const metadata: Metadata = {
   title: "Job Offer Comparison Calculator 2026 – Compare Two Job Offers Side by Side",
@@ -110,7 +121,7 @@ export default function JobOfferComparison() {
         description="Go beyond base salary. Compare two job offers on total effective compensation — including benefits value, commute costs, and real take-home."
         chips={["Salary + benefits", "Commute costs deducted", "True gap shown"]}
       >
-        <CalculatorEngineLoader slug="job-offer-comparison" />
+        <JobOfferComparisonWithInsights />
       </SimpleCalculatorHero>
       <InsightStrip text="A job with lower salary but no commute and better benefits often wins on total compensation." />
       <StatChipsRow stats={STATS} />
@@ -118,8 +129,9 @@ export default function JobOfferComparison() {
       <SEOTextBlock
         title="How the Job Offer Comparison Works"
         paragraphs={[
-          "Effective compensation for each job = annual salary + estimated benefits value − annual commute cost. The calculator then shows you both figures side-by-side and the dollar difference between them.",
-          "This is a pre-tax comparison. For an after-tax comparison, apply your marginal tax rate to the salary portion. Benefits like health insurance and 401k matches are typically not taxed as income, which makes them even more valuable than the raw numbers suggest.",
+          "Effective compensation for each job = annual salary + estimated benefits value − annual commute cost. The calculator then shows you both figures side-by-side, the dollar difference, the monthly take-home gap, and the 10-year wealth gap if that monthly difference were invested.",
+          `Take a concrete example using the calculator's starting numbers: Job A pays ${usd0(85000)} with ${usd0(12000)} of benefits and a ${usd0(3000)} commute — about ${usd0(EX.effectiveA)} in effective comp. Job B pays ${usd0(95000)} with ${usd0(8000)} of benefits and a ${usd0(500)} commute — about ${usd0(EX.effectiveB)}. Job ${EX_WINNER} comes out ${usd0(EX.difference)}/year ahead, roughly ${usd0(EX.monthlyGap)}/month — and about ${usd0(EX.tenYearInvestedGap)} over ten years if the difference were invested at 7%.`,
+          "This is a pre-tax salary comparison. For an after-tax view, apply your marginal tax rate to the salary portion. Benefits like health insurance and 401k matches are typically not taxed as income, which makes them even more valuable than the raw numbers suggest.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

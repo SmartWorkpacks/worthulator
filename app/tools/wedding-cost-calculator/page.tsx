@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Wedding Cost Calculator 2026 – Estimate Your Total Wedding Budget",
@@ -111,7 +110,6 @@ export default function WeddingCostCalculator() {
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Plan your wedding budget wisely" cards={CONTENT_CARDS} />
 
-      <InsightTable slug="wedding-cost-calculator" />
       <SEOTextBlock
         title="How the Wedding Cost Calculator Works"
         formula={`Total Cost     = Venue + (Guests × Catering per Head) + Photography + Other

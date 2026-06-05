@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
 import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
@@ -110,7 +109,7 @@ export default function MarkupCalculatorPage() {
         description="Enter your cost price and markup percentage to instantly get the selling price, profit, and gross margin."
         chips={["Selling price", "Profit per unit", "Gross margin %"]}
       >
-        <CalculatorEngineLoader slug="markup-calculator" afterResults={<InsightsSection slug="markup-calculator" />} />
+        <EngineWithInsights slug="markup-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text='A 50% markup is NOT a 50% margin — <span class="font-semibold text-gray-900">knowing the difference could be the most valuable thing you learn about pricing today.</span>' />
       <StatChipsRow stats={STATS} />

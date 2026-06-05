@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import Retirement401kWithInsights from "@/components/worthcore/Retirement401kWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -9,34 +9,32 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
-  title: "401k Calculator 2026 – Project Your Retirement Balance",
-  description: "Will you actually be able to stop working? See what your current lifestyle looks like in retirement money.",
-  keywords: ["401k calculator", "401k retirement calculator", "how much will my 401k be worth", "401k balance calculator", "employer match calculator"],
+  title: "401k Calculator 2026 – Retirement Balance, Match & Real Value",
+  description: "Project your 401(k) at retirement with a realistic employer match, the 2026 IRS limit, salary raises, and live inflation. See your balance in today's dollars and whether you're leaving free match money on the table.",
+  keywords: ["401k calculator", "401k retirement calculator", "employer match calculator", "401k balance calculator", "how much will my 401k be worth", "401k inflation adjusted"],
   alternates: { canonical: "https://worthulator.com/tools/401k-calculator" },
 };
 
 const FAQS = [
-  { q: "How much should I contribute to my 401k?", a: "At minimum, contribute enough to capture your full employer match — that's a 50–100% instant return. The general rule of thumb is 15% of gross income including any match." },
-  { q: "What is the 2025 401k contribution limit?", a: "The IRS limit for 2025 is $23,500 for employee contributions ($31,000 if you're 50+). Total contributions including employer match can't exceed $70,000." },
-  { q: "What return should I assume?", a: "A 7% annual return is commonly used — it reflects the S&P 500's historical average after adjusting for inflation. More aggressive portfolios may average 8–10%; conservative ones 4–5%." },
-  { q: "What happens if I withdraw early?", a: "Early withdrawals before age 59½ incur a 10% penalty plus ordinary income taxes. A $50,000 withdrawal could cost you $20,000+ in taxes and penalties depending on your bracket." },
-  { q: "Should I choose traditional or Roth 401k?", a: "Traditional reduces taxable income now; you pay taxes on withdrawals. Roth uses after-tax dollars; withdrawals in retirement are tax-free. If you expect to be in a higher bracket later, Roth usually wins." },
+  { q: "How much should I contribute to my 401(k)?", a: "At minimum, contribute enough to capture your full employer match — anything less is turning down free money. In the default example, contributing 6% (the match cap) instead of 3% claims about $46,000 of extra match over 30 years. A common overall target is 15% of gross income including the match." },
+  { q: "What is the 2026 401(k) contribution limit?", a: "This calculator caps employee deferrals at the 2026 IRS elective-deferral limit of $24,500 (those 50+ can add a catch-up contribution on top). Total contributions including employer match are limited separately by a higher overall cap." },
+  { q: "What does 'in today's dollars' mean?", a: "Your projected balance is a future, nominal number. We deflate it by the live FRED CPI inflation rate to show its real buying power now. In the default scenario, a $934,000 balance in 30 years has the purchasing power of roughly $363,000 today — plan your retirement income off the real figure." },
+  { q: "What return should I assume?", a: "A 7% annual return is a common planning figure — close to the S&P 500's long-run average after fees. Aggressive portfolios may assume 8–10%; conservative ones 4–6%. Returns are never guaranteed, so it's worth testing a lower rate too." },
+  { q: "Why does the employer match matter so much?", a: "A 50%-on-6% match is an instant 50% return on every matched dollar — before the market does anything. Over decades that head start compounds: in the default example employer match alone contributes about $93,000 of the final balance." },
 ];
 
 const STATS = [
-  { stat: "$87K",  color: "text-amber-600",   accent: "bg-amber-500",   label: "average 401k balance across all US workers" },
-  { stat: "50%",   color: "text-emerald-600", accent: "bg-emerald-500", label: "typical employer match rate on your contributions" },
-  { stat: "$1M+",  color: "text-rose-600",    accent: "bg-rose-500",    label: "where $500/mo grows over 30 years at 7%" },
+  { stat: "$934K",   color: "text-emerald-600", accent: "bg-emerald-500", label: "Default projection: 6% of a $65k salary + 50% match, 30 yrs at 7% with 3% raises" },
+  { stat: "$363K",   color: "text-blue-600",    accent: "bg-blue-500",    label: "That same balance in today's dollars after live CPI inflation — the real buying power" },
+  { stat: "$46K",    color: "text-rose-600",    accent: "bg-rose-500",    label: "Free match forfeited over 30 yrs by contributing 3% instead of the full 6% cap" },
 ];
 
 const CONTENT_CARDS = [
-  { icon: "🎁", title: "The power of employer match", body: "A 50% match on 6% of salary is a 3% pay raise — completely free. Leaving this on the table is the single biggest retirement planning mistake most people make." },
-  { icon: "📈", title: "Compound growth over time", body: "The difference between starting at 25 vs 35 is enormous. A $300/month contributor starting at 25 ends up with roughly double the balance of someone who starts at 35, at the same rate." },
-  { icon: "📊", title: "The 4% rule", body: "At retirement, many planners use the 4% rule: you can withdraw 4% of your portfolio annually with a high probability of not running out of money over 30 years." },
+  { icon: "🎁", title: "Capture the full match first", body: "The single biggest 401(k) mistake is contributing below the match cap. A 50% match on 6% of salary is a guaranteed 3%-of-pay bonus. Skipping it — say contributing 3% instead of 6% — quietly costs about $46,000 over 30 years in the default scenario." },
+  { icon: "🛡️", title: "Plan in today's dollars", body: "A near-million-dollar balance sounds like enough until inflation is accounted for. At the current CPI rate, $934,000 in 30 years buys what about $363,000 buys today. The real number is what should drive your retirement income plan." },
+  { icon: "📈", title: "Growth does the heavy lifting", body: "Of the default $934,000 balance, roughly $641,000 is pure compound growth — far more than the contributions and match combined. That's only possible with decades of runway, which is why starting early beats contributing more later." },
 ];
 
 const RELATED_CALCS = [
@@ -51,26 +49,33 @@ export default function FourOhOneKCalculator() {
     <>
       <SimpleCalculatorHero
         eyebrowIcon="📈"
-        eyebrowText="401k"
+        eyebrowText="401k · Match + Real Value"
         title="401k Calculator"
-        description="Project your 401k balance at retirement. Adjust your monthly contribution, employer match, expected return, and years to see what compound growth actually looks like."
-        chips={["Employer match included", "Compound growth", "Projected balance"]}
+        description="Project your 401(k) at retirement with a realistic employer match, the 2026 IRS limit, and salary raises — then see it in today's dollars and whether you're leaving free match money on the table."
+        chips={["Employer-match cap modelled", "Value in today's dollars", "Free-match gap detector"]}
       >
-        <CalculatorEngineLoader slug="401k-calculator" afterResults={<InsightsSection slug="401k-calculator" />} />
+        <Retirement401kWithInsights />
       </SimpleCalculatorHero>
-      <InsightStrip text="Never leave an employer match on the table — it's a 50–100% instant return on your contribution, guaranteed." />
+      <InsightStrip text='Contribute at least up to the match cap. <span class="font-semibold text-gray-900">An employer match is an instant 50–100% return — the rarest thing in investing.</span>' />
       <StatChipsRow stats={STATS} />
-      <ContentCardGrid title="How to maximise your 401k" cards={CONTENT_CARDS} />
-      <InsightTable slug="401k-calculator" />
+      <ContentCardGrid title="How to maximise your 401(k)" cards={CONTENT_CARDS} />
       <SEOTextBlock
-        title="How the 401k projection works"
-        formula={`Monthly Contribution = Salary × (Your % + Employer Match%)
-New Balance = Old Balance × (1 + r/12) + Monthly Contribution
-r = Annual Return Rate ÷ 100
-Final Balance = compounded month by month to retirement`}
+        title="How the 401(k) projection works"
+        formula={`Employee/yr  = min(Salary × Your%, $24,500 IRS limit)
+Match/yr     = Salary × min(Your%, Cap%) × MatchRate%
+Balance      = Σ monthly [ prev × (1 + r/12) + (Employee + Match)/12 ]
+Salary grows by your raise % each year
+Today's $    = Balance ÷ (1 + inflation)^years`}
+        steps={[
+          { label: "Enter your salary and contribution %", description: "Contributions are a percentage of pay, capped at the $24,500 IRS deferral limit for 2026." },
+          { label: "Set the employer match", description: "The match rate (e.g. 50% = $0.50 per $1) and the cap it applies up to (e.g. 6% of salary)." },
+          { label: "Add your current balance and return", description: "Existing savings compound alongside new contributions at your assumed annual return." },
+          { label: "Set years and expected raises", description: "Salary grows each year, lifting both your contributions and the match." },
+          { label: "Read the real value and match gap", description: "The result is deflated by live inflation, and flags any employer match you're not capturing." },
+        ]}
         paragraphs={[
-          "Each month: new balance = old balance × (1 + monthly rate) + your contribution + employer match. This compounds continuously, which is why starting early has such a dramatic effect.",
-          "The calculator uses your inputs to simulate month-by-month growth over your chosen time horizon. Real balances will vary based on fund performance, fees, and contribution changes.",
+          "Each month the balance compounds and absorbs your contribution plus the employer match. The match only applies up to the cap — so if you contribute below it, the calculator shows exactly how much free money you're forfeiting. In the default scenario, dropping from 6% to 3% leaves about $46,000 of match unclaimed over 30 years.",
+          "With the default inputs (6% of a $65,000 salary, 50% match up to 6%, 7% return, 3% raises, 30 years), the balance reaches about $934,000 — of which roughly $186,000 is your contributions, $93,000 is employer match, and $641,000 is compound growth. After live CPI inflation, that pot is worth about $363,000 in today's dollars.",
         ]}
       />
       <StandardFAQSection faqs={FAQS} />

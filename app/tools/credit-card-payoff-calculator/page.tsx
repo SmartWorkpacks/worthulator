@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateCreditCardPayoff } from "@/calculations/finance/creditCardPayoff";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -18,6 +19,16 @@ export const metadata: Metadata = {
   alternates: { canonical: "https://worthulator.com/tools/credit-card-payoff-calculator" },
 };
 
+// ── Step 5c: worked examples derived from the live calculation module ────────
+// A $5,000 balance at 22% APR — the figures used throughout the static copy
+// below are computed here so they always match the calculator's own logic.
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX_MIN = calculateCreditCardPayoff({ balance: 5000, apr: 22, payment: 100 });
+const EX_150 = calculateCreditCardPayoff({ balance: 5000, apr: 22, payment: 150 });
+const EX_250 = calculateCreditCardPayoff({ balance: 5000, apr: 22, payment: 250 });
+const EX_300 = calculateCreditCardPayoff({ balance: 5000, apr: 22, payment: 300 });
+const EX_EXTRA_SAVING = EX_150.interest - EX_250.interest;
+
 const FAQS = [
   {
     q: "How is the payoff timeline calculated?",
@@ -25,7 +36,7 @@ const FAQS = [
   },
   {
     q: "What is a good monthly payment to make?",
-    a: "Always pay more than the minimum. On a $5,000 balance at 22% APR, the minimum payment might be $100 — which takes 9+ years and $7,000 in interest to clear. Paying $300/month clears it in 20 months and costs $900 in interest.",
+    a: `Always pay more than the minimum. On a $5,000 balance at 22% APR, paying only $100/month takes ${EX_MIN.payoffYears} years and ${usd(EX_MIN.interest)} in interest to clear. Paying $300/month clears it in ${EX_300.months} months and costs just ${usd(EX_300.interest)} in interest.`,
   },
   {
     q: "What is the difference between APR and interest rate?",
@@ -44,19 +55,19 @@ const FAQS = [
 const STATS = [
   { stat: "$6,501", color: "text-red-600", accent: "bg-red-500", label: "average credit card debt per US household carrying a balance in 2024" },
   { stat: "22%", color: "text-amber-600", accent: "bg-amber-500", label: "average credit card APR in the US — a record high as of 2024" },
-  { stat: "9 yrs", color: "text-blue-600", accent: "bg-blue-500", label: "how long it takes to pay off $5,000 at 22% APR making only minimum payments" },
+  { stat: `${EX_MIN.payoffYears} yrs`, color: "text-blue-600", accent: "bg-blue-500", label: "how long it takes to pay off $5,000 at 22% APR paying only $100/month" },
 ];
 
 const CONTENT_CARDS = [
   {
     icon: "💳",
     title: "Minimum payments are a trap",
-    body: "Credit card minimum payments are designed to keep you in debt for as long as possible. A $5,000 balance at 22% APR on minimum payments can take over a decade to clear and cost more in interest than the original balance.",
+    body: `Credit card minimum payments are designed to keep you in debt for as long as possible. A $5,000 balance at 22% APR paying only $100/month takes ${EX_MIN.payoffYears} years to clear and costs ${usd(EX_MIN.interest)} in interest — more than the original balance.`,
   },
   {
     icon: "📉",
     title: "Extra payments have outsized impact",
-    body: "Increasing your monthly payment from $150 to $250 on a $5,000 balance at 22% cuts your payoff time from 5 years to 2 years and saves over $2,500 in interest. Small increases compound dramatically.",
+    body: `Increasing your monthly payment from $150 to $250 on a $5,000 balance at 22% cuts your payoff time from ${EX_150.payoffYears} years to ${EX_250.payoffYears} years and saves ${usd(EX_EXTRA_SAVING)} in interest. Small increases compound dramatically.`,
   },
   {
     icon: "🔀",
@@ -105,7 +116,7 @@ export default function CreditCardPayoffCalculator() {
         description="Enter your balance, APR, and monthly payment to see exactly how many months it takes to clear your debt and the total interest you will pay."
         chips={["Months to payoff", "Total interest", "Total cost"]}
       >
-        <CalculatorEngineLoader slug="credit-card-payoff-calculator" />
+        <EngineWithInsights slug="credit-card-payoff-calculator" />
       </SimpleCalculatorHero>
       <InsightStrip text="Paying just $100 more per month can cut your payoff time by years." />
       <StatChipsRow stats={STATS} />

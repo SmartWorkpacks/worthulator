@@ -1,17 +1,28 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import RoadTripCostWithInsights from "@/components/worthcore/RoadTripCostWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
   StatChipsRow, ContentCardGrid, SEOTextBlock, InsightStrip, RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightsSection from "@/components/insights/InsightsSection";
-import InsightTable from "@/components/insights/InsightTable";
+import { calculateRoadTripCost } from "@/calculations/travel/roadTripCost";
+import { getUSStateFuelPrice, usStateFuelDataset } from "@/lib/datasets/usStateFuelPrices";
+
+// ─── Live worked example (300-mi trip — refreshes with the gas dataset) ───────
+const LIVE_GAS = getUSStateFuelPrice("National");
+const AS_OF = usStateFuelDataset.currentPeriodLabel;
+const usd = (n: number) => `$${Math.round(n).toLocaleString()}`;
+const usd2 = (n: number) => `$${n.toFixed(2)}`;
+const EX = calculateRoadTripCost(
+  { distanceMiles: 300, mpg: 28, highwayPct: 85, tolls: 0, passengers: 1 },
+  { gasPrice: LIVE_GAS },
+);
+const EX_PER_4 = Math.round((EX.totalTripCost / 4) * 100) / 100;
 
 export const metadata: Metadata = {
-  title: "Road Trip Cost Calculator 2026 – Gas Cost Estimator",
+  title: "Road Trip Cost Calculator 2026 – Live Gas Price Fuel Estimator",
   description:
-    "Calculate total fuel cost for any road trip based on distance, your car's MPG, and local gas prices. Includes per-person split for group trips.",
+    "Calculate real-world fuel cost for any road trip using your state's live gas price, highway/city MPG blend, tolls, and per-person split.",
   keywords: ["road trip cost calculator", "gas cost calculator", "fuel cost estimator", "road trip fuel calculator", "how much gas for road trip"],
   alternates: { canonical: "https://worthulator.com/tools/road-trip-cost" },
   robots: { index: true, follow: true },
@@ -20,79 +31,55 @@ export const metadata: Metadata = {
 const FAQS = [
   {
     q: "How do I calculate fuel cost for a road trip?",
-    a: "Fuel Cost = (Distance / MPG) × Gas Price Per Gallon. For a 300-mile trip at 30 MPG with gas at $3.50/gal: 300 / 30 = 10 gallons × $3.50 = $35 one way, $70 round trip. This calculator does the math instantly for any combination of values.",
+    a: `Effective MPG = your EPA combined × a highway/city blend factor. Then: Gallons = Distance ÷ Effective MPG, and Fuel Cost = Gallons × Gas Price. For a 300-mile one-way trip at 28 MPG (85% highway → ${EX.effectiveMpg.toFixed(1)} effective MPG) and the current ${usd2(LIVE_GAS)}/gal US average (${AS_OF}): 600 ÷ ${EX.effectiveMpg.toFixed(1)} = ${EX.gallonsRoundTrip.toFixed(1)} gallons × ${usd2(LIVE_GAS)} = ${usd2(EX.roundTripFuelCost)} round trip.`,
   },
   {
-    q: "What is a realistic MPG for road trips?",
-    a: "Highway driving is more efficient than city driving — most cars get 10–20% better MPG on the highway than their combined EPA rating. Check your car's specific EPA highway rating at fueleconomy.gov. For a rough estimate, use your combined rating; for a more accurate result, use your highway MPG.",
+    q: "Why does the calculator adjust my MPG for highway vs city?",
+    a: "Your EPA combined rating is a lab blend — real highway driving runs ~10% better, city ~15% worse. A road trip at 85% highway pushes your effective MPG above the sticker number, meaning fewer gallons and lower cost. The slider lets you dial in the actual mix for your route.",
   },
   {
-    q: "How do I find the current gas price in my area?",
-    a: "GasBuddy.com and the GasBuddy app show current prices by zip code and gas station. The AAA national average is updated daily and is a good proxy if you're estimating for a multi-state trip. You can also check Google Maps — it shows gas prices at stations along your route.",
+    q: "Does the calculator include tolls and overnight stops?",
+    a: "Tolls are a direct input and get added to fuel for the total trip cost. For long hauls (over ~500 miles one-way), it also flags likely hotel nights so the true cost isn't understated — though lodging itself isn't added to the headline number.",
   },
   {
-    q: "Why is the calculator round-trip by default?",
-    a: "Most road trips are return journeys. The calculator shows one-way fuel cost separately so you can plan for trips where you won't be driving back (e.g. moving, one-way flights). The per-person cost is based on the round-trip total, divided evenly.",
+    q: "How much does carpooling really save?",
+    a: `With 4 passengers, each person pays 25% of the total — a ${usd2(EX.totalTripCost)} solo trip becomes ${usd2(EX_PER_4)} per person. Carpooling is the single biggest lever for road trip costs because fuel consumption doesn't change with more passengers (weight impact is negligible for most cars).`,
   },
   {
-    q: "What other costs should I budget for a road trip?",
-    a: "Fuel is typically 30–40% of road trip costs. Other major expenses: accommodation ($80–$200/night), food ($30–$60/person/day), tolls, and parking. Electric vehicle drivers should budget for charging stops and time, which varies significantly by route and charging infrastructure.",
+    q: "When is driving cheaper than flying?",
+    a: "At the average domestic round-trip airfare of ~$380/person (BTS), solo driving is cheaper for most trips under ~1,500 miles. With 3–4 passengers, driving wins on almost any distance — the per-person fuel cost drops so fast that even a cross-country drive can undercut flights. Factor in hotel nights for trips over 500 miles one-way.",
   },
 ];
 
 const STATS = [
-  { stat: "$3.50",    color: "text-amber-600",   accent: "bg-amber-500",   label: "Approximate average US regular gas price in 2026 — check local prices before a long trip" },
-  { stat: "28 MPG",   color: "text-emerald-600", accent: "bg-emerald-500", label: "Approximate average fuel economy of new US passenger vehicles — highway driving is typically better" },
-  { stat: "÷ people", color: "text-blue-600",    accent: "bg-blue-500",    label: "Split the total cost evenly among all passengers — carpooling dramatically cuts per-person fuel cost" },
+  { stat: `${EX.effectiveMpg.toFixed(1)} MPG`, color: "text-emerald-600", accent: "bg-emerald-500", label: "Effective MPG at 85% highway — 10% better than a 28 MPG EPA combined rating" },
+  { stat: "÷ people", color: "text-blue-600",    accent: "bg-blue-500",    label: "Splitting fuel among passengers is the single biggest road trip cost lever" },
+  { stat: "~$380",    color: "text-amber-600",   accent: "bg-amber-500",   label: "Average US domestic round-trip airfare (BTS) — the drive-vs-fly benchmark" },
 ];
 
 const CONTENT_CARDS = [
   {
+    icon: "📍",
+    title: "Your state sets the price",
+    body: "Gas isn't one national number. California regularly runs over $4.50/gallon while Gulf Coast and Mountain states sit far lower. This calculator pulls your state's live average so the same 300-mile trip shows very different costs depending on where you start.",
+  },
+  {
     icon: "⛽",
-    title: "Highway MPG is higher than city MPG",
-    body: "Long highway drives are more fuel-efficient than city driving. If your car's combined EPA rating is 30 MPG, your highway MPG is likely 32–36 MPG. Use the highway figure for an accurate road trip estimate — otherwise you'll overestimate your fuel spend.",
+    title: "Highway MPG is higher than you think",
+    body: `Road trips are mostly highway miles. At 85% highway, a 28 MPG car runs at ~${EX.effectiveMpg.toFixed(1)} effective MPG — using fewer gallons than the sticker implies. The highway/city slider lets you see exactly how much your route profile matters.`,
   },
   {
     icon: "👥",
-    title: "Carpooling is a massive cost multiplier",
-    body: "Driving solo costs $70 in fuel for a 300-mile round trip at 30 MPG and $3.50/gal. With 4 people, each person pays $17.50. The per-person cost drops almost four-fold for the same trip. This is why carpooling is one of the most impactful transport cost savings available.",
-  },
-  {
-    icon: "🗺️",
-    title: "Fuel is only 30–40% of road trip costs",
-    body: "Gas is often the most visible road trip cost but rarely the biggest. Accommodation, food, and tolls usually exceed fuel costs on multi-day trips. Use this calculator for fuel, then add $100–$150/person/day for a full trip budget estimate.",
+    title: "Carpooling is the biggest lever",
+    body: `Adding passengers doesn't meaningfully increase fuel consumption — but it divides the cost. With 4 people a ${usd2(EX.totalTripCost)} round trip becomes ${usd2(EX_PER_4)} each. For group trips, driving almost always beats flying on a per-person basis.`,
   },
 ];
 
 const RELATED_CALCS = [
-  {
-    title: "Car Loan Calculator",
-    description: "Calculate your monthly payment and total interest on any vehicle loan.",
-    href: "/tools/car-loan-calculator",
-    icon: "🚗",
-    accent: "bg-blue-500/10",
-  },
-  {
-    title: "Commute Time Value Calculator",
-    description: "See the real cost of your daily commute in money and time.",
-    href: "/tools/commute-time-value",
-    icon: "🏙️",
-    accent: "bg-emerald-500/10",
-  },
-  {
-    title: "Laundry Cost Calculator",
-    description: "Calculate the true cost per load of laundry.",
-    href: "/tools/laundry-cost-calculator",
-    icon: "🧺",
-    accent: "bg-amber-500/10",
-  },
-  {
-    title: "Tip Calculator",
-    description: "Calculate the right tip and split a bill among your group.",
-    href: "/tools/tip-calculator",
-    icon: "🧾",
-    accent: "bg-violet-500/10",
-  },
+  { title: "Commute Cost Calculator",     description: "See the annual cost of your daily commute.",                href: "/tools/commute-cost-calculator",     icon: "🏙️", accent: "bg-emerald-500/10" },
+  { title: "EV vs Gas Calculator",        description: "Compare annual driving costs for EV vs gas.",              href: "/tools/ev-vs-gas",                   icon: "⚡", accent: "bg-blue-500/10" },
+  { title: "Car Loan Calculator",         description: "Calculate monthly payment and total interest on a car loan.", href: "/tools/car-loan-calculator",       icon: "🚗", accent: "bg-amber-500/10" },
+  { title: "Tip Calculator",              description: "Calculate the right tip and split a bill among your group.", href: "/tools/tip-calculator",             icon: "🧾", accent: "bg-violet-500/10" },
 ];
 
 export default function RoadTripCostPage() {
@@ -103,7 +90,7 @@ export default function RoadTripCostPage() {
       name: "Road Trip Cost Calculator",
       applicationCategory: "UtilitiesApplication",
       operatingSystem: "Web",
-      description: "Calculate total road trip fuel cost based on distance, MPG, and gas price — with per-person split for group travel.",
+      description: "Calculate real-world fuel cost for any road trip using your state's live gas price, highway/city MPG blend, tolls, and per-person split.",
       url: "https://worthulator.com/tools/road-trip-cost",
       offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
     },
@@ -128,44 +115,42 @@ export default function RoadTripCostPage() {
         eyebrowIcon="🚗"
         eyebrowText="Travel · Transport"
         title="Road Trip Cost Calculator"
-        description="Enter your trip distance, car's fuel efficiency, and local gas price to instantly calculate one-way and round-trip fuel cost — split by passenger."
-        chips={["One-way and round-trip cost", "Per-person split", "Total gallons used"]}
+        description="Pick your state for a live gas price, set your route distance and highway mix, then see one-way and round-trip fuel cost — with per-person split and a drive-vs-fly comparison."
+        chips={["Live state gas prices", "Highway/city MPG blend", "Drive vs fly comparison"]}
       >
-        <CalculatorEngineLoader slug="road-trip-cost" afterResults={<InsightsSection slug="road-trip-cost" />} />
+        <RoadTripCostWithInsights />
       </SimpleCalculatorHero>
 
       <InsightStrip
-        text='With 4 passengers, your per-person road trip fuel cost drops to a quarter of driving solo. <span class="font-semibold text-gray-900">Carpooling is one of the biggest easy wins in personal transport costs.</span>'
+        text='With 4 passengers, your per-person road trip fuel cost drops to a quarter of driving solo — <span class="font-semibold text-gray-900">carpooling is one of the biggest easy wins in personal transport costs.</span>'
       />
 
       <StatChipsRow stats={STATS} />
 
       <ContentCardGrid
-        title="Get your road trip fuel budget right"
-        subtitle="Three things that affect your real-world fuel cost."
+        title="What really drives your road trip cost"
+        subtitle="State gas prices, driving profile, and passenger count matter more than distance alone."
         cards={CONTENT_CARDS}
       />
 
-      <InsightTable slug="road-trip-cost" />
-
       <SEOTextBlock
         title="How the Road Trip Cost Calculator Works"
-        formula={`Gallons (one way) = Distance (miles) / MPG
-Gallons (round trip) = Gallons (one way) × 2
-
-One-Way Cost  = Gallons (one way) × Gas Price
-Round-Trip Cost = Gallons (round trip) × Gas Price
-
-Cost Per Person = Round-Trip Cost / Passengers`}
+        formula={`Effective MPG    = EPA Combined × (Hwy% × 1.10 + City% × 0.85)
+Gallons One Way  = Distance ÷ Effective MPG
+Gallons Round Trip = Gallons One Way × 2
+Fuel Cost (RT)   = Gallons Round Trip × State Gas Price
+Total Trip Cost  = Fuel Cost + Tolls
+Cost Per Person  = Total Trip Cost ÷ Passengers`}
         steps={[
-          { label: "Enter one-way distance", description: "Miles from your starting point to destination. Check Google Maps or your navigation app for an accurate figure." },
-          { label: "Set your fuel efficiency", description: "Use your car's EPA highway rating for a road trip — this is typically 10–20% better than the combined rating." },
-          { label: "Enter current gas price", description: "Check GasBuddy, AAA, or Google Maps for local prices. National averages are a reliable fallback." },
-          { label: "Add passengers for split", description: "Set to 1 for solo travel. For group trips, the per-person cost updates automatically." },
+          { label: "Pick your state", description: "Loads the live average gas price for your state, so the estimate reflects where you actually fill up." },
+          { label: "Enter one-way distance", description: "Miles from start to destination. The calculator doubles it for the round trip." },
+          { label: "Set your fuel economy", description: "Your EPA combined MPG — the calculator blends it with your highway/city mix for a real-world figure." },
+          { label: "Adjust highway %", description: "Road trips are ~85% highway. More highway means better effective MPG and lower cost." },
+          { label: "Add tolls and passengers", description: "Tolls are added to fuel cost. Passengers split the total evenly — 4 people means 75% off per person." },
         ]}
         paragraphs={[
-          "The formula is simple — distance divided by MPG gives gallons, multiplied by price gives cost. The power is in running it for different scenarios quickly: comparing routes, evaluating whether driving vs flying makes sense, or budgeting for a long trip with multiple legs.",
-          "For EV drivers: this calculator assumes a combustion engine. Electric vehicle range and charging costs vary by model and route. A rough EV equivalent: use kWh/100 miles from your vehicle spec, multiply by route miles, then multiply by your electricity rate (or average charging rate on the route).",
+          "The key innovation is the highway/city blend. Your EPA combined rating averages city and highway driving 55/45 — but a real road trip is 80–95% highway. We adjust your MPG accordingly: highway runs ~10% above the combined sticker, city ~15% below. This means the calculator estimates fewer gallons than a naive distance ÷ MPG, which is more accurate for actual trips.",
+          "Because fuel uses your state's live gas price, the same 300-mile trip costs very different amounts starting in California vs Texas. We also compare driving against the average domestic round-trip airfare (~$380/person, BTS), so you can see at what passenger count driving becomes cheaper than flying.",
         ]}
       />
 
@@ -173,7 +158,7 @@ Cost Per Person = Round-Trip Cost / Passengers`}
 
       <RelatedCalcCards
         title="Related Calculators"
-        subtitle="More tools for travel and everyday costs."
+        subtitle="More tools for travel and driving costs."
         items={RELATED_CALCS}
       />
     </main>

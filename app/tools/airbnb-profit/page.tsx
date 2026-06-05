@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
+import { calculateAirbnbProfit } from "@/calculations/finance/airbnbProfit";
+import EngineWithInsights from "@/components/worthcore/EngineWithInsights";
 import SimpleCalculatorHero from "@/src/templates/take-home-pay/SimpleCalculatorHero";
 import StandardFAQSection from "@/src/templates/take-home-pay/StandardFAQSection";
 import {
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
   keywords: ["Airbnb profit calculator", "short term rental income calculator", "STR calculator", "Airbnb earnings estimator"],
   alternates: { canonical: "https://worthulator.com/tools/airbnb-profit" },
 };
+
+// ── Step 5c: worked example derived from the calculator's default inputs ─────
+const usd = (n: number) => "$" + Math.round(n).toLocaleString();
+const EX = calculateAirbnbProfit({ nightlyRate: 150, occupancyPct: 70, platformFeePct: 15, monthlyExpenses: 800 });
 
 const FAQS = [
   {
@@ -110,7 +115,7 @@ export default function AirbnbProfit() {
         description="Estimate your monthly and annual net profit from short-term rentals. Set your nightly rate, occupancy, platform fee, and monthly expenses."
         chips={["Occupancy-based revenue", "Platform fee deducted", "Monthly + annual profit"]}
       >
-        <CalculatorEngineLoader slug="airbnb-profit" />
+        <EngineWithInsights slug="airbnb-profit" />
       </SimpleCalculatorHero>
       <InsightStrip text="The average US Airbnb host earns ~$1,900/month — but location and management make the real difference." />
       <StatChipsRow stats={STATS} />
@@ -119,6 +124,7 @@ export default function AirbnbProfit() {
         title="How the Airbnb Profit Calculator Works"
         paragraphs={[
           "Monthly gross revenue = nightly rate × (30 days × occupancy rate). Net revenue = gross × (1 - platform fee %). Monthly net profit = net revenue - monthly expenses.",
+          `Worked example: at $150/night, 70% occupancy and a 15% platform fee, gross revenue is ${usd(EX.monthlyRevenue)}/month. After fees and $800 of monthly expenses that nets ${usd(EX.monthlyProfit)}/month — ${usd(EX.annualProfit)}/year — a ${EX.profitMarginPct}% margin that breaks even at ${EX.breakEvenOcc}% occupancy.`,
           "This is a simplified estimate. Actual earnings vary based on seasonality, local regulations, listing quality, reviews, and response time. Use this as a starting point, then verify with local STR market data.",
         ]}
       />

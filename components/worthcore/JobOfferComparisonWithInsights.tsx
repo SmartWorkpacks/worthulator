@@ -1,7 +1,8 @@
 "use client";
 import CalculatorEngineLoader from "@/components/calculator-engine/CalculatorEngineLoader";
-import LiveInsightBlock       from "@/components/worthcore/LiveInsightBlock";
+import LiveInsightBlock from "@/components/worthcore/LiveInsightBlock";
 import type { CalculatorValues, CalculatorOutputs } from "@/components/calculator-engine/types";
+
 export default function JobOfferComparisonWithInsights() {
   return (
     <CalculatorEngineLoader

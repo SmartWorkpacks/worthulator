@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Closing Cost Calculator 2026 – Estimate What You'll Pay at Closing",
@@ -111,7 +110,6 @@ export default function ClosingCostCalculator() {
       <InsightStrip text="Closing costs catch many first-time buyers off guard — budget 2–5% of the purchase price on top of your down payment." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="What to know before closing day" cards={CONTENT_CARDS} />
-      <InsightTable slug="closing-cost-calculator" />
       <SEOTextBlock
         title="How the Closing Cost Calculator Works"
         formula={`Estimated Costs = Purchase Price × Rate%

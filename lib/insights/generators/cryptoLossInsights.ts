@@ -1,12 +1,14 @@
-import type { Insight } from "../index";
+import type { Insight } from "../types";
+import { futureValueAnnuity } from "../projections";
+import { formatCurrency } from "../benchmarks";
 
-interface CryptoLossInputs {
+interface CryptoInputs {
   invested:     number;
   currentValue: number;
   yearsHeld:    number;
 }
 
-interface CryptoLossOutputs {
+interface CryptoOutputs {
   pnl?:               number;
   pnlPercent?:        number;
   indexAlternative?:  number;
@@ -16,91 +18,74 @@ interface CryptoLossOutputs {
 }
 
 export function cryptoLossInsights(
-  inputs: CryptoLossInputs,
-  outputs: CryptoLossOutputs
+  inputs: CryptoInputs,
+  outputs: CryptoOutputs,
 ): Insight[] {
   const results: Insight[] = [];
 
-  const invested  = Number(inputs.invested);
-  const current   = Number(inputs.currentValue);
-  const years     = Number(inputs.yearsHeld);
-  const pnl       = outputs.pnl               ?? 0;
-  const pnlPct    = outputs.pnlPercent         ?? 0;
-  const index     = outputs.indexAlternative   ?? 0;
-  const gap       = outputs.opportunityGap     ?? 0;
-  const multiple  = outputs.breakEvenMultiple  ?? 1;
-  const indexPct  = outputs.indexGainPercent   ?? 0;
+  const invested      = Number(inputs.invested);
+  const current       = Number(inputs.currentValue);
+  const yearsHeld     = Number(inputs.yearsHeld);
+  const pnl           = outputs.pnl          ?? (current - invested);
+  const pnlPct        = outputs.pnlPercent   ?? (invested > 0 ? Math.round(((current - invested) / invested) * 100) : 0);
+  const indexAlt      = outputs.indexAlternative;
+  const oppGap        = outputs.opportunityGap;
 
-  // 1. Core P&L framing
-  if (pnl < 0) {
-    results.push({
-      id: "crypto.loss-framing",
-      type: "warning",
-      message: `You've lost $${Math.abs(pnl).toLocaleString()} (${Math.abs(pnlPct)}%) over ${years} years in crypto.`,
-      detail: `To break even, your portfolio needs to ${multiple > 1 ? `${multiple}x from here` : "recover its losses"} — a significant move from current levels.`,
-    });
-  } else {
-    results.push({
-      id: "crypto.gain-framing",
-      type: "positive",
-      message: `You're up $${pnl.toLocaleString()} (${pnlPct}%) over ${years} years in crypto.`,
-      detail: `Crypto gains can be volatile — locking in gains through diversification or rebalancing protects against drawdowns.`,
-    });
-  }
+  if (invested <= 0) return results;
 
-  // 2. Index comparison — always shown
+  const loss          = Math.max(0, invested - current);
+  const gain          = Math.max(0, current - invested);
+  const isLoss        = current < invested;
+
+  // S&P 500 historical 10.7% annualised over the last 30 years
+  const sp500Value    = Math.round(invested * Math.pow(1.107, yearsHeld));
+  const sp500Gap      = sp500Value - current;
+  const indexAltFinal = indexAlt ?? sp500Value;
+
+  // 1. P&L fact
   results.push({
-    id: "crypto.index-comparison",
-    type: "info",
-    message: `The same $${invested.toLocaleString()} in an S&P 500 index fund at 7%/year would be $${index.toLocaleString()} today — a ${indexPct}% gain.`,
-    detail: `The index doesn't make headlines. It just compounds, reliably, over decades. It's the baseline any alternative investment should beat.`,
+    id:       "crypto.pnl-fact",
+    severity: isLoss ? "warning" : "positive",
+    category: "spending",
+    title:    `${formatCurrency(Math.abs(pnl))} ${isLoss ? "loss" : "gain"} — ${Math.abs(pnlPct)}% ${isLoss ? "down" : "up"}`,
+    body:     `${formatCurrency(invested)} invested over ${yearsHeld} year${yearsHeld !== 1 ? "s" : ""}, now worth ${formatCurrency(current)}. That is a ${isLoss ? `loss of ${formatCurrency(loss)}` : `gain of ${formatCurrency(gain)}`} — ${Math.abs(pnlPct)}% ${isLoss ? "below" : "above"} the entry price. Crypto assets regularly move 30–70% in weeks in either direction; volatility is the defining characteristic of the asset class.`,
+    metric:   { label: isLoss ? "Total loss" : "Total gain", value: formatCurrency(Math.abs(pnl)) },
+    visualization: {
+      type:   "delta-card",
+      before: { label: "Invested",       value: formatCurrency(invested) },
+      after:  { label: "Current value",   value: formatCurrency(current) },
+      delta:  { label: "P&L",             value: formatCurrency(pnl), positive: pnl >= 0 },
+    },
   });
 
-  // 3. Opportunity gap (if losing vs index)
-  if (gap > 5_000) {
-    results.push({
-      id: "crypto.opportunity-gap",
-      type: "warning",
-      message: `Your crypto portfolio is $${gap.toLocaleString()} behind where index investing would have put you.`,
-      detail: `This is the opportunity cost of the bet — not just what you lost, but the compound growth you didn't get.`,
-    });
-  } else if (gap < 0) {
-    // Crypto outperformed the index
-    results.push({
-      id: "crypto.beat-index",
-      type: "positive",
-      message: `Your crypto portfolio outperformed the S&P 500 by $${Math.abs(gap).toLocaleString()} over ${years} years — a genuine beat.`,
-      detail: `Crypto can outperform in bull cycles. The challenge is sustaining that edge over full market cycles, which few investors achieve.`,
-    });
-  }
+  // 2. S&P 500 comparison — standard benchmark
+  results.push({
+    id:       "crypto.sp500-comparison",
+    severity: "neutral",
+    category: "comparison",
+    title:    `The S&P 500 has averaged 10.7% annually over the last 30 years`,
+    body:     `${formatCurrency(invested)} in a broad S&P 500 index fund at 10.7% historical average would be ${formatCurrency(sp500Value)} after ${yearsHeld} year${yearsHeld !== 1 ? "s" : ""}. Compared to the current crypto value of ${formatCurrency(current)}, that is a difference of ${formatCurrency(Math.abs(sp500Gap))} ${sp500Gap > 0 ? "in favour of the index" : "in favour of crypto"}.`,
+    metric:   { label: "S&P 500 equivalent value", value: formatCurrency(sp500Value) },
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      current,
+      userLabel:      "Current crypto value",
+      benchmarkValue: sp500Value,
+      benchmarkLabel: `S&P 500 over ${yearsHeld}yr`,
+      format:         "currency",
+    },
+  });
 
-  // 4. Break-even framing (if in loss)
-  if (pnl < 0 && multiple > 1.2) {
+  // 3. Break-even math for losses
+  if (isLoss && loss > 0) {
+    const breakEvenMultiple = outputs.breakEvenMultiple ?? Math.round((invested / current) * 100) / 100;
     results.push({
-      id: "crypto.break-even",
-      type: "warning",
-      message: `To break even, your portfolio needs to grow ${multiple}x from its current value of $${current.toLocaleString()}.`,
-      detail: `A 50% loss requires a 100% gain to recover. The mathematics of recovery are asymmetric — that's the hidden danger of large drawdowns.`,
-    });
-  }
-
-  // 5. Reframe toward strategy
-  if (pnl < 0) {
-    results.push({
-      id: "crypto.strategy-reframe",
-      type: "opportunity",
-      message: `Redirecting $${Math.round(invested / years / 12).toLocaleString()}/month from speculative crypto into index funds would compound to $${Math.round((invested / years / 12) * ((Math.pow(1.07, 10) - 1) / 0.07)).toLocaleString()} in 10 years.`,
-      detail: `The lesson of crypto losses isn't to avoid risk — it's to ensure the risk you take is commensurate with expected return.`,
-    });
-  }
-
-  // 6. Tax-loss harvesting nudge
-  if (pnl < -1000) {
-    results.push({
-      id: "crypto.tax-loss",
-      type: "opportunity",
-      message: `A loss of $${Math.abs(pnl).toLocaleString()} may be eligible for tax-loss harvesting — potentially offsetting capital gains elsewhere.`,
-      detail: `Consult a tax professional. In the US, crypto losses can offset capital gains and up to $3,000/year of ordinary income.`,
+      id:       "crypto.break-even",
+      severity: "neutral",
+      category: "investment",
+      title:    `A ${Math.round((breakEvenMultiple - 1) * 100)}% gain is needed to break even`,
+      body:     `To recover a ${Math.abs(pnlPct)}% loss, the asset must gain more than ${Math.abs(pnlPct)}% — because a 50% loss requires a 100% gain just to get back to the starting point. Your current position requires a ${Math.round((breakEvenMultiple - 1) * 100)}% gain to return to the original ${formatCurrency(invested)}.`,
+      metric:   { label: "Required gain to break even", value: `${Math.round((breakEvenMultiple - 1) * 100)}%` },
     });
   }
 

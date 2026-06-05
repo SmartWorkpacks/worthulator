@@ -1,127 +1,149 @@
-// ─── Savings Goal Insight Generator ──────────────────────────────────────────
+// ─── WorthCore Insight Engine — Savings Goal Generator ───────────────────────
 //
-// Produces live WorthCore insights for the savings-goal-calculator.
-// Called on every slider change via LiveInsightBlock → GENERATOR_REGISTRY.
+// PURPOSE:
+//   Visual, live-captioned insights for the savings-goal calculator. Shows how
+//   growth lowers the required monthly deposit, the deposits-vs-growth split,
+//   the live inflation-adjusted goal, and the path to the target over time.
 //
-// Rules:
-//   savingsgoal.returns-do-heavy-lifting — interestSharePct > 30% → positive
-//   savingsgoal.interest-helpful         — interestSharePct 10–30% → neutral
-//   savingsgoal.zero-return              — annualReturn = 0 → neutral (opportunity cost)
-//   savingsgoal.high-monthly-burden      — monthlyContribution > 1000 → neutral
-//   savingsgoal.interest-multiplier      — interestToContribRatio > 0.3 → positive
-//   savingsgoal.low-rate-tip             — annualReturn < 3% → neutral (HYSA nudge)
+// RULES:
+//   ✅ Pure TypeScript — synchronous, deterministic
+//   ✅ Live CPI carries a provenance caption
+//   ❌ Never import React · never call fetch()
 //
 // ─────────────────────────────────────────────────────────────────────────────
 
-import type { Insight } from "@/lib/insights/types";
+import type { Insight, InsightVisualization } from "@/lib/insights/types";
+import { formatCurrency } from "@/lib/insights/benchmarks";
+import { fredBenchmarks } from "@/lib/datasets/finance/fredBenchmarks";
 
-export interface SavingsGoalInputs {
-  goalAmount:     number;   // $
-  currentSavings: number;   // $
-  years:          number;   // years
-  annualReturn:   number;   // %
+export interface SavingsGoalInsightInputs {
+  goalAmount: number;
+  currentSavings: number;
+  years: number;
+  annualReturn: number;
 }
 
-export interface SavingsGoalOutputs {
-  monthlyContribution:  number;
-  totalContributed:     number;
-  interestEarned:       number;
-  interestSharePct:     number;
-  interestToContribRatio?: number;
-  annualSavingsRequired?:  number;
-  goalYears?:              number;
+export interface SavingsGoalInsightOutputs {
+  monthlyContribution: number;
+  totalContributed: number;
+  interestEarned: number;
+  interestSharePct: number;
+  monthlyNoGrowth: number;
+  monthlySavedByGrowth: number;
+  inflationAdjustedGoal: number;
+  monthlyForRealGoal: number;
 }
+
+const CPI_CAPTION = {
+  text: `US CPI ${fredBenchmarks.cpiInflationYoY}% YoY (FRED ${fredBenchmarks.currentPeriodLabel})`,
+  asOf: fredBenchmarks.currentPeriodLabel,
+  live: true,
+};
 
 export function generateSavingsGoalInsights(
-  inputs:  SavingsGoalInputs,
-  outputs: SavingsGoalOutputs,
+  inputs: SavingsGoalInsightInputs,
+  outputs: SavingsGoalInsightOutputs,
 ): Insight[] {
   const insights: Insight[] = [];
-
   const { goalAmount, currentSavings, years, annualReturn } = inputs;
   const {
-    monthlyContribution,
-    totalContributed,
-    interestEarned,
-    interestSharePct,
-    interestToContribRatio = totalContributed > 0 ? interestEarned / totalContributed : 0,
-    annualSavingsRequired  = Math.round(monthlyContribution * 12),
+    monthlyContribution, totalContributed, interestEarned, interestSharePct,
+    monthlyNoGrowth, monthlySavedByGrowth, inflationAdjustedGoal, monthlyForRealGoal,
   } = outputs;
 
-  // ── 1. Returns doing heavy lifting ──────────────────────────────────────
-  if (interestSharePct > 30) {
+  if (goalAmount <= 0 || years <= 0) return [];
+
+  // ── 1. Growth lowers the monthly — benchmark-bar ───────────────────────────
+  if (monthlySavedByGrowth > 0) {
     insights.push({
-      id:       "savingsgoal.returns-heavy-lifting",
-      type:     "positive",
-      title:    `Interest covers ${Math.round(interestSharePct)}% of your goal`,
-      body:     `At ${annualReturn}% return, $${Math.round(interestEarned).toLocaleString()} of your $${goalAmount.toLocaleString()} goal is funded by growth — not your deposits. You're putting in $${Math.round(totalContributed).toLocaleString()} and letting compounding do the rest.`,
-      priority: 100,
-    });
-  } else if (interestSharePct >= 10) {
-    insights.push({
-      id:       "savingsgoal.interest-helpful",
-      type:     "neutral",
-      title:    `Returns add $${Math.round(interestEarned).toLocaleString()} toward your goal`,
-      body:     `Your ${annualReturn}% annual return contributes ${Math.round(interestSharePct)}% of the target. Increasing the return rate — even to a high-yield savings account (4–5%) — amplifies this further.`,
-      priority: 85,
+      id: "savings-goal.growth-discount",
+      title: `Earning ${annualReturn}% cuts your deposit to ${formatCurrency(monthlyContribution)}/mo`,
+      body: `Without any return you'd need ${formatCurrency(monthlyNoGrowth)}/month. Letting the balance earn ${annualReturn}% does ${formatCurrency(monthlySavedByGrowth)}/month of the work for you — ${formatCurrency(monthlySavedByGrowth * years * 12)} less out of pocket over ${years} years.`,
+      severity: "positive",
+      category: "savings",
+      metric: { label: "Monthly deposit", value: formatCurrency(monthlyContribution) },
+      visualization: {
+        type: "benchmark-bar",
+        userValue: Math.round(monthlyContribution),
+        userLabel: `At ${annualReturn}%`,
+        benchmarkValue: Math.round(monthlyNoGrowth),
+        benchmarkLabel: "At 0%",
+        format: "currency",
+      } satisfies InsightVisualization,
     });
   }
 
-  // ── 2. Zero / near-zero return ───────────────────────────────────────────
-  if (annualReturn < 1) {
-    insights.push({
-      id:       "savingsgoal.zero-return",
-      type:     "neutral",
-      title:    `0% return means every dollar comes from you`,
-      body:     `You're saving $${Math.round(monthlyContribution).toLocaleString()}/month with no investment return. Moving this into a high-yield savings account at 4–5% APY could shave months off your timeline or reduce required contributions.`,
-      priority: 90,
-    });
-  }
+  // ── 2. Deposits vs growth — donut ──────────────────────────────────────────
+  insights.push({
+    id: "savings-goal.split",
+    title: `Returns fund ${interestSharePct.toFixed(1)}% of your ${formatCurrency(goalAmount)} goal`,
+    body: `Of the ${formatCurrency(goalAmount)} target, you deposit ${formatCurrency(totalContributed)} and growth supplies ${formatCurrency(interestEarned)} (plus your ${formatCurrency(currentSavings)} starting balance does its own compounding). The longer the timeline, the bigger that growth slice.`,
+    severity: "neutral",
+    category: "investment",
+    visualization: {
+      type: "donut",
+      segments: [
+        { label: "Your deposits", value: Math.round(totalContributed), color: "#64748b" },
+        { label: "Growth", value: Math.round(interestEarned), color: "#10b981" },
+        { label: "Starting balance", value: Math.round(currentSavings), color: "#3b82f6" },
+      ],
+      centerLabel: formatCurrency(goalAmount),
+      format: "currency",
+    } satisfies InsightVisualization,
+  });
 
-  // ── 3. Low-rate nudge ────────────────────────────────────────────────────
-  if (annualReturn >= 1 && annualReturn < 3) {
-    insights.push({
-      id:       "savingsgoal.low-rate-tip",
-      type:     "neutral",
-      title:    `${annualReturn}% return — HYSA rates are currently 4–5%`,
-      body:     `Many high-yield savings accounts are paying 4–5% APY right now. Switching from ${annualReturn}% to 4.5% could meaningfully reduce your monthly contribution requirement for the same goal.`,
-      priority: 80,
-    });
-  }
+  // ── 3. Inflation-adjusted goal — delta-card (live CPI) ─────────────────────
+  insights.push({
+    id: "savings-goal.real-goal",
+    title: `${formatCurrency(goalAmount)} today = ${formatCurrency(inflationAdjustedGoal)} in ${years} years`,
+    body: `Goals quietly inflate too. To buy in ${years} years what ${formatCurrency(goalAmount)} buys today, you'll actually need ${formatCurrency(inflationAdjustedGoal)} at the current ${fredBenchmarks.cpiInflationYoY}% CPI — which means saving ${formatCurrency(monthlyForRealGoal)}/month to truly keep pace.`,
+    severity: "neutral",
+    category: "projection",
+    visualization: {
+      type: "delta-card",
+      before: { label: "Goal today", value: formatCurrency(goalAmount) },
+      after: { label: `In ${years} yr`, value: formatCurrency(inflationAdjustedGoal) },
+      delta: { label: "Inflation gap", value: formatCurrency(inflationAdjustedGoal - goalAmount), positive: false },
+      caption: CPI_CAPTION,
+    } satisfies InsightVisualization,
+  });
 
-  // ── 4. High monthly burden ───────────────────────────────────────────────
-  if (monthlyContribution > 1000) {
-    insights.push({
-      id:       "savingsgoal.high-monthly-burden",
-      type:     "neutral",
-      title:    `$${Math.round(monthlyContribution).toLocaleString()}/month is a significant commitment`,
-      body:     `You'd need to set aside $${annualSavingsRequired.toLocaleString()} per year. If that's a stretch, extending the timeline by even 12 months reduces the monthly requirement — and more time means more compounding.`,
-      priority: 75,
-    });
-  }
+  // ── 4. Path to goal — projection-line ──────────────────────────────────────
+  const r = annualReturn / 100 / 12;
+  const milestones = [0, Math.round(years * 0.25), Math.round(years * 0.5), Math.round(years * 0.75), years]
+    .filter((v, i, a) => a.indexOf(v) === i);
+  const points = milestones.map((yr) => {
+    const m = Math.round(yr * 12);
+    const bal = r === 0
+      ? currentSavings + monthlyContribution * m
+      : currentSavings * Math.pow(1 + r, m) + monthlyContribution * ((Math.pow(1 + r, m) - 1) / r);
+    return { label: yr === 0 ? "Now" : `Yr ${yr}`, value: Math.round(bal) };
+  });
+  insights.push({
+    id: "savings-goal.path",
+    title: `On track to ${formatCurrency(goalAmount)} by year ${years}`,
+    body: `Saving ${formatCurrency(monthlyContribution)}/month grows your ${formatCurrency(currentSavings)} starting balance to the goal on this curve. Front-loading deposits — or nudging the return up — pulls the finish line closer.`,
+    severity: "neutral",
+    category: "projection",
+    visualization: {
+      type: "projection-line",
+      points,
+      format: "currency",
+      yLabel: "Balance",
+      color: "#10b981",
+      caption: { text: `${formatCurrency(monthlyContribution)}/mo at ${annualReturn}%` },
+    } satisfies InsightVisualization,
+  });
 
-  // ── 5. Strong interest multiplier ────────────────────────────────────────
-  if (interestToContribRatio > 0.3 && annualReturn >= 3) {
-    insights.push({
-      id:       "savingsgoal.interest-multiplier",
-      type:     "positive",
-      title:    `Every $1 you save earns an extra $${interestToContribRatio.toFixed(2)} in returns`,
-      body:     `Over ${years} years at ${annualReturn}%, your deposits generate ${Math.round(interestToContribRatio * 100)}¢ in interest for every dollar contributed. The longer the timeline, the more powerful this ratio becomes.`,
-      priority: 70,
-    });
-  }
-
-  // ── 6. Head start framing ────────────────────────────────────────────────
-  if (currentSavings > 0) {
-    const headStartPct = Math.round((currentSavings / goalAmount) * 100);
-    insights.push({
-      id:       "savingsgoal.head-start",
-      type:     "positive",
-      title:    `You're already ${headStartPct}% of the way there`,
-      body:     `Your $${currentSavings.toLocaleString()} head start is compounding now. That existing balance reduces your monthly requirement — and every year it compounds before you reach the goal date adds to your lead.`,
-      priority: 65,
-    });
-  }
+  // ── 5. Out-of-pocket reality ───────────────────────────────────────────────
+  insights.push({
+    id: "savings-goal.out-of-pocket",
+    title: `You'll personally save ${formatCurrency(totalContributed)}`,
+    body: `Across ${years} years that's ${formatCurrency(monthlyContribution)} a month of real deposits. Automating the transfer the day you're paid is the single highest-impact move — it removes the monthly decision and makes the goal nearly automatic.`,
+    severity: "neutral",
+    category: "savings",
+    metric: { label: "Total deposits", value: formatCurrency(totalContributed) },
+  });
 
   return insights;
 }

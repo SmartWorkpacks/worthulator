@@ -1,0 +1,62 @@
+name: Refresh live data
+
+# Keeps the live-price datasets (gas, electricity, cigarettes) current via the
+# Apify scraper, then commits any changes. This is what makes the "live data"
+# moat real instead of a one-time manual snapshot.
+#
+# Requires repo secret: APIFY_API_TOKEN
+
+on:
+  schedule:
+    # Every Monday at 06:00 UTC
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-live-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Refresh live prices (Apify)
+        env:
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+        run: npm run energy:refresh
+
+      - name: Refresh macro rates (FRED)
+        run: npm run fred:refresh
+
+      - name: Commit refreshed datasets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add lib/datasets/usStateFuelPrices.ts \
+                  lib/datasets/regional/usStateElectricityPrices.ts \
+                  lib/datasets/regional/usStateCigarettePrices.ts \
+                  lib/datasets/regional/usStateNaturalGasPrices.ts \
+                  lib/datasets/regional/usStateWaterRates.ts \
+                  lib/datasets/regional/usStateMedianWages.ts \
+                  lib/datasets/finance/fredBenchmarks.ts
+          if git diff --staged --quiet; then
+            echo "No price changes to commit."
+          else
+            git commit -m "chore(data): refresh live prices ($(date -u +%Y-%m-%d))"
+            git push
+          fi

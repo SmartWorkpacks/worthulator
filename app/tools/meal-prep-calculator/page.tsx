@@ -9,7 +9,6 @@ import {
   InsightStrip,
   RelatedCalcCards,
 } from "@/src/templates/take-home-pay/StandardSEOSection";
-import InsightTable from "@/components/insights/InsightTable";
 
 export const metadata: Metadata = {
   title: "Cooking at Home Savings Calculator 2026 – How Much Do You Actually Save?",
@@ -111,7 +110,6 @@ export default function MealPrepCalculator() {
       <InsightStrip text="Fast food costs $13 a meal. Delivery averages $31 with fees and tip. Cook the same meal at home for under $6 — and the gap becomes one of the easiest wins in personal finance." />
       <StatChipsRow stats={STATS} />
       <ContentCardGrid title="Why cooking at home is one of the most reliable savings habits" cards={CONTENT_CARDS} />
-      <InsightTable slug="meal-prep-calculator" />
       <SEOTextBlock
         title="How the Cooking at Home Savings Calculator Works"
         formula={`Dining Baseline    = State-adjusted cost for your selected eating style(s)\nCost per Home Meal = State grocery benchmark ÷ 60 meals / month\nSaving per Meal    = Dining Baseline − Cost per Home Meal\nWeekly Savings     = Saving per Meal × Meals Cooked per Week\nAnnual Savings     = Weekly Savings × 52`}

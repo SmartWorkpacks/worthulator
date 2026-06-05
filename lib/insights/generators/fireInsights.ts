@@ -1,144 +1,163 @@
-import type { Insight } from "../index";
+import type { Insight } from "../types";
+import { futureValueAnnuity } from "../projections";
+import { formatCurrency } from "../benchmarks";
 
 interface FireInputs {
   monthlyExpenses: number;
-  currentSavings: number;
-  monthlySavings: number;
-  annualReturn: number;
+  currentSavings:  number;
+  monthlySavings:  number;
+  annualReturn:    number;
 }
 
 interface FireOutputs {
-  fireNumber?: number;
-  yearsToFire?: number;
-  progressPercent?: number;
-  passiveIncomeNow?: number;
-  annualReturnNow?: number;
+  fireNumber?:         number;
+  yearsToFire?:        number;
+  savingsRate?:        number;
+  percentFunded?:      number;
+  passiveIncomeNow?:   number;
   yearsFasterWith500?: number;
 }
 
+// The 4% rule: William Bengen (1994) — a 4% annual withdrawal from a diversified
+// portfolio historically survives 30+ years. FIRE number = 25× annual expenses.
+// Trinity Study (1998) confirmed: 30-year horizon, 95% success rate at 4% withdrawal.
+
 export function fireInsights(
   inputs: FireInputs,
-  outputs: FireOutputs
+  outputs: FireOutputs,
 ): Insight[] {
   const results: Insight[] = [];
 
-  const fireNum    = outputs.fireNumber      ?? 0;
-  const years      = outputs.yearsToFire     ?? 0;
-  const progress   = outputs.progressPercent ?? 0;
-  const passive    = outputs.passiveIncomeNow ?? 0;
-  const returns    = outputs.annualReturnNow  ?? 0;
-  const faster500  = outputs.yearsFasterWith500 ?? 0;
-  const monthly    = Number(inputs.monthlyExpenses);
-  const savings    = Number(inputs.currentSavings);
-  const contrib    = Number(inputs.monthlySavings);
+  const monthly   = Number(inputs.monthlyExpenses);
+  const savings   = Number(inputs.currentSavings);
+  const contrib   = Number(inputs.monthlySavings);
+  const rate      = Number(inputs.annualReturn);
+  const fireNum   = outputs.fireNumber         ?? Math.round(monthly * 12 * 25);
+  const years     = outputs.yearsToFire        ?? 0;
+  const progress  = outputs.percentFunded      ?? (fireNum > 0 ? Math.min(100, (savings / fireNum) * 100) : 0);
+  const passive   = outputs.passiveIncomeNow   ?? Math.round(savings * 0.04 / 12);
+  const faster500 = outputs.yearsFasterWith500 ?? 0;
+  const srFromOutputs = outputs.savingsRate;
+  const srComputed    = (contrib + monthly) > 0 ? Math.round((contrib / (contrib + monthly)) * 1000) / 10 : 0;
+  const savingsRatePct = srFromOutputs ?? srComputed;
+  const annualReturn   = Math.round(savings * rate / 100);
 
-  // 1. Progress milestone (always shown)
-  if (progress > 0 && progress < 100) {
-    const pct = progress.toFixed(1);
-    if (progress >= 75) {
-      results.push({
-        id: "fire.progress-milestone",
-        type: "milestone",
-        message: `You're ${pct}% of the way to FIRE — the finish line is close.`,
-        detail: `$${savings.toLocaleString()} of your $${fireNum.toLocaleString()} FIRE number is already invested.`,
-      });
-    } else if (progress >= 50) {
-      results.push({
-        id: "fire.progress-milestone",
-        type: "milestone",
-        message: `You're ${pct}% of the way to FIRE — past the halfway mark.`,
-        detail: `Every dollar you invest now grows toward your $${fireNum.toLocaleString()} target.`,
-      });
-    } else if (progress >= 25) {
-      results.push({
-        id: "fire.progress-milestone",
-        type: "milestone",
-        message: `You're ${pct}% to your FIRE number. You've built a real foundation.`,
-        detail: `$${savings.toLocaleString()} invested. $${(fireNum - savings).toLocaleString()} still to go.`,
-      });
-    } else {
-      results.push({
-        id: "fire.progress-milestone",
-        type: "info",
-        message: `You're ${pct}% of the way to FIRE — the best time to accelerate is now.`,
-        detail: `Your FIRE number is $${fireNum.toLocaleString()} (25× your $${monthly.toLocaleString()}/mo expenses).`,
-      });
-    }
-  }
-
-  // 2. Already at FIRE
+  // 1. Already at FIRE
   if (progress >= 100) {
     results.push({
-      id: "fire.already-there",
-      type: "milestone",
-      message: `Your savings already cover your FIRE number. You may already be financially independent.`,
-      detail: `At a 4% withdrawal rate, $${savings.toLocaleString()} supports $${Math.round(savings * 0.04 / 12).toLocaleString()}/month indefinitely.`,
+      id:       "fire.already-there",
+      severity: "positive",
+      category: "savings",
+      title:    `FIRE number reached — ${formatCurrency(savings)} covers your target`,
+      body:     `Your ${formatCurrency(savings)} portfolio has passed your FIRE number of ${formatCurrency(fireNum)}. At the 4% withdrawal rule (Bengen 1994 / Trinity Study 1998), this supports ${formatCurrency(Math.round(savings * 0.04 / 12))}/month in passive income — indefinitely, based on 30+ years of historical success. You could stop contributing today.`,
+      metric:   { label: "Monthly passive income", value: `${formatCurrency(Math.round(savings * 0.04 / 12))}/mo` },
     });
     return results;
   }
 
-  // 3. Passive income now
+  // 2. Progress fact — always shown
+  results.push({
+    id:       "fire.progress",
+    severity: progress >= 75 ? "positive" : progress >= 50 ? "neutral" : "neutral",
+    category: "projection",
+    title:    `${progress.toFixed(1)}% funded — ${formatCurrency(savings)} of a ${formatCurrency(fireNum)} target`,
+    body:     `Your FIRE number is 25× your annual expenses: ${formatCurrency(monthly)}/month × 12 × 25 = ${formatCurrency(fireNum)}. You have ${formatCurrency(savings)} invested — ${progress.toFixed(1)}% of the target. At ${formatCurrency(contrib)}/month invested at ${rate}% return, the projected timeline is ${years > 0 ? `${years} years` : "not yet calculable with current inputs"}.`,
+    metric:   { label: "Current progress", value: `${progress.toFixed(1)}%` },
+    visualization: {
+      type:           "benchmark-bar",
+      userValue:      savings,
+      userLabel:      "Current savings",
+      benchmarkValue: fireNum,
+      benchmarkLabel: `FIRE number (${formatCurrency(fireNum)})`,
+      format:         "currency",
+    },
+  });
+
+  // 3. Passive income already generating
   if (passive > 0) {
     results.push({
-      id: "fire.passive-income-now",
-      type: "info",
-      message: `Your $${savings.toLocaleString()} already generates $${passive.toLocaleString()}/month at the 4% rule.`,
-      detail: `That's passive income working for you today — and it grows every time you invest.`,
+      id:       "fire.passive-income-now",
+      severity: "positive",
+      category: "savings",
+      title:    `${formatCurrency(savings)} already generates ${formatCurrency(passive)}/month at the 4% rule`,
+      body:     `Even before reaching FIRE, your current portfolio generates ${formatCurrency(passive)}/month in passive income at a 4% annual withdrawal rate — that is ${formatCurrency(passive * 12)}/year. The annual investment return on your current balance is approximately ${formatCurrency(annualReturn)}/year, which accumulates as growth without any additional contributions.`,
+      metric:   { label: "Passive income now", value: `${formatCurrency(passive)}/mo` },
     });
   }
 
-  // 4. Annual market return
-  if (returns > 500) {
-    results.push({
-      id: "fire.market-working",
-      type: "info",
-      message: `Your investments are earning ~$${returns.toLocaleString()} per year at ${inputs.annualReturn}% — without you lifting a finger.`,
-      detail: `That's $${Math.round(returns / 12).toLocaleString()}/month in compounding returns on your current balance.`,
-    });
-  }
-
-  // 5. Accelerator: $500 extra
+  // 4. $500/month accelerator — with delta-card visualization
   if (faster500 >= 1) {
+    const acceleratedYears = Math.round((years - faster500) * 10) / 10;
     results.push({
-      id: "fire.accelerator-500",
-      type: "opportunity",
-      message: `Adding $500/month shaves ${faster500} year${faster500 === 1 ? "" : "s"} off your FIRE timeline.`,
-      detail: `That's ${faster500} fewer years of working. If you can find $500/month — a side hustle, a subscription audit — your freedom date moves up.`,
+      id:       "fire.accelerator-500",
+      severity: "positive",
+      category: "opportunity-cost",
+      title:    `${formatCurrency(500)}/month extra cuts ${faster500} year${faster500 === 1 ? "" : "s"} off the timeline`,
+      body:     `Adding ${formatCurrency(500)}/month moves your FIRE date from year ${years} to year ${acceleratedYears} — a ${faster500}-year acceleration. At ${rate}% return, the extra ${formatCurrency(500)}/month over those remaining years isn't just linear: each dollar compounds for the full remaining period, so the time saved grows disproportionately with the timeline.`,
+      metric:   { label: "Years saved with +$500/mo", value: `${faster500}yr` },
+      visualization: {
+        type:   "delta-card",
+        before: { label: "Current timeline", value: `${years} yrs` },
+        after:  { label: "With +$500/mo",    value: `${acceleratedYears} yrs` },
+        delta:  { label: "Time saved",        value: `-${faster500} yr`, positive: true },
+      },
     });
   }
 
-  // 6. Contribution vs expenses ratio
-  const savingsRate = monthly > 0 ? (contrib / monthly) * 100 : 0;
-  if (savingsRate >= 50) {
+  // 5. Savings rate — benchmarked against FIRE movement targets
+  if (savingsRatePct >= 30 || contrib > 0) {
+    const rateColor = savingsRatePct >= 50 ? "positive" : savingsRatePct >= 33 ? "neutral" : "neutral";
+    const benchmark = savingsRatePct >= 50
+      ? "above the 50% FIRE target — historically ~17 years to FIRE"
+      : savingsRatePct >= 33
+        ? "approaching the 50% FIRE target"
+        : "well below the 50% FIRE target";
     results.push({
-      id: "fire.high-savings-rate",
-      type: "milestone",
-      message: `You're saving ${savingsRate.toFixed(0)}% of your monthly expenses — an elite savings rate.`,
-      detail: `FIRE practitioners recommend 50%+ to retire early. You're already there.`,
-    });
-  } else if (savingsRate < 25 && contrib > 0) {
-    results.push({
-      id: "fire.low-savings-rate",
-      type: "warning",
-      message: `Your savings rate is ${savingsRate.toFixed(0)}% of monthly expenses. Reaching 50% would dramatically accelerate FIRE.`,
-      detail: `FIRE calculators assume a tight link between spending and saving. Reducing $${monthly.toLocaleString()}/mo expenses is often faster than raising income.`,
+      id:       "fire.high-savings-rate",
+      severity: rateColor,
+      category: "comparison",
+      title:    `${savingsRatePct.toFixed(1)}% savings rate — ${benchmark}`,
+      body:     `Your savings rate (investments ÷ total cash flow) is ${savingsRatePct.toFixed(1)}%. The FIRE movement's key insight: at 50%, you reach financial independence in ~17 years regardless of income level; at 75%, roughly 7 years. Savings rate determines the timeline more than return rate because it simultaneously reduces the FIRE target and increases the speed of accumulation.`,
+      metric:   { label: "Savings rate", value: `${savingsRatePct.toFixed(1)}%` },
     });
   }
 
-  // 7. Timeline framing
+  // 6. Long timeline — projection-line showing portfolio growth curve
   if (years >= 20) {
+    const r = rate;
+    const pv = savings;
+    const annualContrib = contrib * 12;
+    // Build points every 5 years from 0 to target
+    const maxYr = Math.min(Math.ceil(years), 50);
+    const step  = maxYr <= 25 ? 5 : 10;
+    const points = [];
+    for (let yr = 0; yr <= maxYr; yr += step) {
+      const growth = yr > 0 ? pv * Math.pow(1 + r / 100, yr) : pv;
+      const accumulated = yr > 0 ? futureValueAnnuity(annualContrib, yr, r) : 0;
+      points.push({ label: `Yr ${yr}`, value: Math.round(growth + accumulated) });
+    }
+    // Always include the final target year if it's not already there
+    if (points[points.length - 1]?.label !== `Yr ${maxYr}`) {
+      const growth = pv * Math.pow(1 + r / 100, maxYr);
+      const accumulated = futureValueAnnuity(annualContrib, maxYr, r);
+      points.push({ label: `Yr ${maxYr}`, value: Math.round(growth + accumulated) });
+    }
+
+    const extraContrib100 = Math.round(futureValueAnnuity(100 * 12, Math.round(years), r));
     results.push({
-      id: "fire.long-timeline",
-      type: "warning",
-      message: `At your current pace, FIRE is ${years} years away. Increasing contributions now has an outsized compound effect.`,
-      detail: `With ${years} years of compounding ahead, every extra $100/month today is worth significantly more than the same $100 in year 10.`,
-    });
-  } else if (years > 0 && years < 10) {
-    results.push({
-      id: "fire.short-timeline",
-      type: "milestone",
-      message: `You're on track for FIRE in under 10 years. That's early retirement territory.`,
-      detail: `Stay consistent — market downturns close to your FIRE date are the main risk. Keep 1–2 years of expenses in cash as a buffer.`,
+      id:       "fire.long-timeline",
+      severity: "neutral",
+      category: "projection",
+      title:    `${years} years at current pace — your portfolio growth curve`,
+      body:     `With ${years} years of compounding ahead, an extra ${formatCurrency(100)}/month started today would grow to approximately ${formatCurrency(extraContrib100)} by the target date (at ${rate}%/yr). The same ${formatCurrency(100)}/month started 10 years from now produces far less — compounding rewards contributions made early, not late.`,
+      metric:   { label: "Years to FIRE", value: `${years}yr` },
+      visualization: {
+        type:    "projection-line",
+        points,
+        format:  "currency",
+        yLabel:  "Portfolio value",
+        color:   "#10b981",
+      },
     });
   }
 

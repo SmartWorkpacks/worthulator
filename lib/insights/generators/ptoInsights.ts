@@ -45,20 +45,22 @@ export function generatePtoInsights(
   // ── 1. Daily value framing (always fires) ────────────────────────────────
   insights.push({
     id:       "pto.daily-value",
-    type:     "neutral",
-    title:    `Each PTO day is worth $${dailyCashValue.toLocaleString()} to you`,
-    body:     `At $${hourlyRate}/hour for a ${hoursPerDay}-hour day, each vacation day carries a $${dailyCashValue.toLocaleString()} value. Your current ${daysRemaining} days remaining equals $${cashValue.toLocaleString()} in total — roughly ${ptoDaysAsWeeks} weeks of time off.`,
-    priority: 60,
+    severity: "neutral",
+    category: "comparison",
+    title:    `Each PTO day is worth $${dailyCashValue.toLocaleString()} — you have ${daysRemaining} days ($${cashValue.toLocaleString()}) remaining`,
+    body:     `At $${hourlyRate}/hour for a ${hoursPerDay}-hour day, each vacation day carries a $${dailyCashValue.toLocaleString()} cash value. Your ${daysRemaining} remaining days equal $${cashValue.toLocaleString()} total — ${ptoDaysAsWeeks} work weeks of paid time.`,
+    metric:   { label: "Total PTO value", value: `$${cashValue.toLocaleString()}` },
   });
 
   // ── 2. High balance warning ───────────────────────────────────────────────
   if (daysRemaining > 15) {
     insights.push({
       id:       "pto.high-balance",
-      type:     "neutral",
-      title:    `${daysRemaining} days is a large PTO balance — check your policy`,
-      body:     `Many employers cap PTO accrual or have "use-it-or-lose-it" policies. With ${daysRemaining} days, that's $${cashValue.toLocaleString()} at risk if your balance expires. Review your company policy — or start booking.`,
-      priority: 90,
+      severity: "warning",
+      category: "hidden-cost",
+      title:    `${daysRemaining} days is a large balance — $${cashValue.toLocaleString()} at risk under use-it-or-lose-it policies`,
+      body:     `Many employers cap PTO accrual or cancel unused balances at year end. With ${daysRemaining} days, that is $${cashValue.toLocaleString()} at risk. Review your company's policy and start booking — unused PTO that expires is compensation you earned but did not receive.`,
+      metric:   { label: "PTO at risk", value: `$${cashValue.toLocaleString()}` },
     });
   }
 
@@ -66,10 +68,11 @@ export function generatePtoInsights(
   if (cashValue >= 5000) {
     insights.push({
       id:       "pto.large-cash-value",
-      type:     "neutral",
-      title:    `You're sitting on $${cashValue.toLocaleString()} in PTO value`,
-      body:     `That's a significant employer benefit — equivalent to $${weeklyEarningRate.toLocaleString()} per week if paid out. Some employers allow PTO buy-back or carryover; others forfeit it. Treat unused PTO as a financial asset you should actively manage.`,
-      priority: 80,
+      severity: "neutral",
+      category: "savings",
+      title:    `$${cashValue.toLocaleString()} in PTO value — a real financial asset`,
+      body:     `That is equivalent to $${weeklyEarningRate.toLocaleString()}/week of your pay. Some employers offer PTO buy-back programs, carryover caps, or payout on separation. Unused PTO should be tracked and managed as an asset, not treated as an afterthought.`,
+      metric:   { label: "Weekly earning rate", value: `$${weeklyEarningRate.toLocaleString()}` },
     });
   }
 
@@ -77,10 +80,11 @@ export function generatePtoInsights(
   if (ptoDaysAsWeeks >= 2) {
     insights.push({
       id:       "pto.weeks-framing",
-      type:     "positive",
-      title:    `That's ${ptoDaysAsWeeks} full weeks of paid time off`,
-      body:     `${daysRemaining} days = ${ptoDaysAsWeeks} work weeks. That's a meaningful amount of flexibility — whether used for rest, side projects, or job searching. Burned-out employees who take less vacation tend to be less productive even during work hours.`,
-      priority: 70,
+      severity: "positive",
+      category: "comparison",
+      title:    `${daysRemaining} days = ${ptoDaysAsWeeks} full work weeks of paid time off`,
+      body:     `That is a meaningful amount of flexibility. Research consistently shows employees who take more vacation are more productive in the hours they work. The ROI on rest is real — and your employer has already paid for it.`,
+      metric:   { label: "PTO in weeks", value: `${ptoDaysAsWeeks}wks` },
     });
   }
 
