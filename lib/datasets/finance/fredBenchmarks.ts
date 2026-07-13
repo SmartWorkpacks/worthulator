@@ -56,15 +56,15 @@ export interface FredBenchmarksDataset {
 
 // FRED values as of Q1 2026 (commercial-bank average rates).
 export const fredBenchmarks: FredBenchmarksDataset = {
-  autoLoanNew48moAPR: 7.4,
+  autoLoanNew48moAPR: 7.5,
   usedCarPremium: 3.4,
-  creditCardAPR: 21.0,
-  personalLoan24moAPR: 11.4,
-  mortgage30yr: 6.4,
+  creditCardAPR: 20.9,
+  personalLoan24moAPR: 11.9,
+  mortgage30yr: 6.5,
   mortgage15yr: 5.8,
   fedFundsRate: 3.6,
   cpiInflationYoY: 4.3,
-  lastUpdated: "2026-07-06",
+  lastUpdated: "2026-07-13",
   currentPeriodLabel: "Q3 2026",
   version: 1,
 };
