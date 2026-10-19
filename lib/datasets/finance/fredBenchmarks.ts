@@ -63,8 +63,8 @@ export const fredBenchmarks: FredBenchmarksDataset = {
   mortgage30yr: 7.4,
   mortgage15yr: 6.7,
   fedFundsRate: 3.8,
-  cpiInflationYoY: 3.7,
-  lastUpdated: "2026-10-12",
+  cpiInflationYoY: 4.0,
+  lastUpdated: "2026-10-19",
   currentPeriodLabel: "Q4 2026",
   version: 1,
 };
