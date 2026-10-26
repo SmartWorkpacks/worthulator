@@ -60,11 +60,11 @@ export const fredBenchmarks: FredBenchmarksDataset = {
   usedCarPremium: 3.4,
   creditCardAPR: 21.2,
   personalLoan24moAPR: 11.9,
-  mortgage30yr: 7.4,
+  mortgage30yr: 7.3,
   mortgage15yr: 6.7,
   fedFundsRate: 3.8,
   cpiInflationYoY: 4.0,
-  lastUpdated: "2026-10-19",
+  lastUpdated: "2026-10-26",
   currentPeriodLabel: "Q4 2026",
   version: 1,
 };
