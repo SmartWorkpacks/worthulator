@@ -193,7 +193,7 @@ const HOME_SERVICES: VerticalConfig = {
     amazon:       '',
     ebay:         '',
     stockx:       '',
-    'google-maps': 'apify/google-maps-scraper',
+    'google-maps': 'johnvc/google-maps-places-api',
     angi:         'apify/website-content-crawler',
     fixture:      '',
   },
