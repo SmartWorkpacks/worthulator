@@ -127,10 +127,16 @@ export async function fetchStockX(
 interface GoogleMapsItem {
   placeId?:     string;
   title?:       string;
-  price?:       string;   // Google Maps price range — "$", "$$", "No price info"
+  priceLevel?:  string;   // Google Maps price range, e.g. "$1-10"
   address?:     string;
-  url?:         string;
   [k: string]:  unknown;
+}
+
+// The actor returns no url field, so link to the place by its Google place ID.
+function googleMapsUrl(item: GoogleMapsItem): string {
+  if (!item.placeId) return '';
+  const query = encodeURIComponent(item.title || item.address || item.placeId);
+  return `https://www.google.com/maps/search/?api=1&query=${query}&query_place_id=${item.placeId}`;
 }
 
 export async function fetchGoogleMaps(
@@ -138,11 +144,11 @@ export async function fetchGoogleMaps(
   vertical: VerticalSlug,
   maxItems: number = 40,
 ): Promise<RawListing[]> {
-  const items = await runActor<GoogleMapsItem>('apify/google-maps-scraper', {
-    searchStringsArray: [query],
-    maxCrawledPlaces:   maxItems,
-    language:           'en',
-    countryCode:        'us',
+  const items = await runActor<GoogleMapsItem>('johnvc/google-maps-places-api', {
+    searchTerms:         [query],
+    maxResultsPerSearch: maxItems,
+    location:            'United States',
+    language:            'en',
   });
 
   return items.map((item) => ({
@@ -153,7 +159,7 @@ export async function fetchGoogleMaps(
     price:     null,    // GMaps gives tier symbols not $-amounts; price comes from Angi
     currency:  'USD',
     condition: null,
-    url:       item.url ?? '',
+    url:       googleMapsUrl(item),
     region:    item.address ?? 'US',
     timestamp: new Date().toISOString(),
     raw:       item as Record<string, unknown>,
